@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zentra-identity
+  labels:
+    app: zentra-identity
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zentra-identity
+  template:
+    metadata:
+      labels:
+        app: zentra-identity
+    spec:
+      containers:
+        - name: identity-api
+          image: zentra/identity-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: zentra-config

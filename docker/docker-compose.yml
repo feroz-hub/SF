@@ -1,0 +1,107 @@
+name: zentra-dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: zentra-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${ZENTRA_DB_NAME:-zentra}
+      POSTGRES_USER: ${ZENTRA_DB_USER:-zentra}
+      POSTGRES_PASSWORD: ${ZENTRA_DB_PASSWORD:-zentra}
+    ports:
+      - "${ZENTRA_DB_PORT:-55433}:5432"
+    volumes:
+      - zentra-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${ZENTRA_DB_USER:-zentra} -d ${ZENTRA_DB_NAME:-zentra}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+
+  redis:
+    image: redis:7-alpine
+    container_name: zentra-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${ZENTRA_REDIS_PORT:-56380}:6379"
+    volumes:
+      - zentra-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+  zentra:
+    build:
+      context: ..
+      dockerfile: docker/identity-api.Dockerfile
+    image: zentra/identity-api:local
+    container_name: zentra-identity
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:8443"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/app/https/zentra-devcert.pfx"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "${ZENTRA_HTTPS_CERT_PASSWORD:-zentra-dev-cert}"
+      ZENTRA_DB_CONNECTION_STRING: "Host=postgres;Port=5432;Database=${ZENTRA_DB_NAME:-zentra};Username=${ZENTRA_DB_USER:-zentra};Password=${ZENTRA_DB_PASSWORD:-zentra}"
+      SystemSettings__DBConfig__Database: PostgreSQL
+      TokenSettings__TokenConfig__IssuerUri: "${ZENTRA_ISSUER_URI:-https://localhost:5180}"
+      ZENTRA_REDIS_CONNECTION_STRING: "redis:6379"
+      ZENTRA_REDIS_INSTANCE_NAME: "zentra:"
+    ports:
+      - "${ZENTRA_PORT:-5180}:8443"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fk", "https://127.0.0.1:8443/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    volumes:
+      - zentra-data:/app/.data
+      - zentra-keys:/app/DataProtection-Keys
+      - zentra-https:/app/https
+
+  installer:
+    profiles: ["extras"]
+    build:
+      context: ..
+      dockerfile: docker/installer.Dockerfile
+    image: zentra/installer:local
+    container_name: zentra-installer
+    restart: unless-stopped
+    ports:
+      - "${ZENTRA_INSTALLER_PORT:-7039}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  gateway:
+    profiles: ["extras"]
+    build:
+      context: ..
+      dockerfile: docker/gateway.Dockerfile
+    image: zentra/gateway:local
+    container_name: zentra-gateway
+    command: ["dotnet", "--info"]
+
+volumes:
+  zentra-postgres-data:
+  zentra-redis-data:
+  zentra-data:
+  zentra-keys:
+  zentra-https:

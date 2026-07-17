@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: zentra-ingress
+spec:
+  rules:
+    - host: zentra.local
+      http:
+        paths:
+          - path: /identity
+            pathType: Prefix
+            backend:
+              service:
+                name: zentra-identity
+                port:
+                  number: 80

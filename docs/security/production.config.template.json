@@ -1,0 +1,44 @@
+{
+  "OAuth": {
+    "Authority": "https://identity.example.com",
+    "MetadataAddress": "https://identity.example.com/.well-known/openid-configuration",
+    "ClientId": "${ZENTRA_OAUTH_CLIENT_ID}",
+    "ClientSecret": "${ZENTRA_OAUTH_CLIENT_SECRET}",
+    "CallbackPath": "/signin-oidc",
+    "SignedOutCallbackPath": "/signout-callback-oidc",
+    "RequireHttpsMetadata": true,
+    "TokenEndpoint": "https://identity.example.com/security/token",
+    "RevocationEndpoint": "https://identity.example.com/security/revocation",
+    "ResourceApiBaseUrl": "https://api.example.com",
+    "ApiTimeoutSeconds": 30,
+    "RefreshBeforeExpirySeconds": 120,
+    "Scopes": [
+      "openid",
+      "profile",
+      "email",
+      "offline_access",
+      "zentra.apiresource"
+    ]
+  },
+  "Security": {
+    "Cors": {
+      "AllowedOrigins": [
+        "https://app.example.com"
+      ]
+    }
+  },
+  "SystemSettings": {
+    "DBConfig": {
+      "Database": 3,
+      "DBConnectionString": "${ZENTRA_DB_CONNECTION_STRING}"
+    },
+    "LogConfig": {
+      "WriteLogTo": "File",
+      "LogFileConfig": {
+        "FilePath": "/var/log/zentra/identity.log",
+        "RestrictedToMinimumLevel": "Information",
+        "MinimumConfiguration": "Information"
+      }
+    }
+  }
+}

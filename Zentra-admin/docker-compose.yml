@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  identity-api:
+    build:
+      context: ..
+      dockerfile: docker/identity-api.Dockerfile
+    image: zentra/identity-api:local
+    ports:
+      - '8080:8080'
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  admin-api:
+    build:
+      context: ..
+      dockerfile: docker/admin-api.Dockerfile
+    image: zentra/admin-api:local
+    ports:
+      - '8081:8080'
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  gateway:
+    build:
+      context: ..
+      dockerfile: docker/gateway.Dockerfile
+    image: zentra/gateway:local
+    command: ["dotnet", "--info"]
+
+  zentra-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: zentra/zentra-admin:local
+    ports:
+      - '3000:3000'
+    depends_on:
+      - identity-api
+    environment:
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-https://localhost:3000}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-replace-with-long-random-secret}
+      ZENTRA_ISSUER: ${ZENTRA_ISSUER:-https://localhost:5001}
+      ZENTRA_CLIENT_ID: ${ZENTRA_CLIENT_ID:-}
+      ZENTRA_CLIENT_SECRET: ${ZENTRA_CLIENT_SECRET:-}
+      ZENTRA_API_BASE_URL: ${ZENTRA_API_BASE_URL:-https://localhost:5001}
+      ZENTRA_SCOPES: ${ZENTRA_SCOPES:-openid profile email offline_access phone zentra.apiresource zentra.client zentra.user zentra.role zentra.identityresource zentra.adminuser zentra.securitytoken}
+      ZENTRA_POST_LOGOUT_REDIRECT_URI: ${ZENTRA_POST_LOGOUT_REDIRECT_URI:-https://localhost:3000/login}
+      ZENTRA_ALLOW_INSECURE_TLS: ${ZENTRA_ALLOW_INSECURE_TLS:-false}

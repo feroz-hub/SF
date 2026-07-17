@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zentra-config
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  ZENTRA__LOG_LEVEL: "Information"

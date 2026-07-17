@@ -1,0 +1,103 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.HttpOverrides;
+using Serilog;
+using ZentraInstallerMVC.Application.Abstractions;
+using ZentraInstallerMVC.Application.Services;
+using ZentraInstallerMVC.Infrastructure.Configuration;
+using ZentraInstallerMVC.Infrastructure.Persistence;
+using ZentraInstallerMVC.Infrastructure.Services;
+using ZentraInstallerMVC.Middleware;
+using ZentraInstallerMVC.Services;
+using ZentraInstallerMVC.ViewModels.Validators;
+
+var builder = WebApplication.CreateBuilder(args);
+var trustProxyHeaders = string.Equals(
+    Environment.GetEnvironmentVariable("ZENTRA_TRUST_PROXY_HEADERS"),
+    "true",
+    StringComparison.OrdinalIgnoreCase);
+var railwayPort = Environment.GetEnvironmentVariable("PORT");
+
+if (!string.IsNullOrWhiteSpace(railwayPort))
+    builder.WebHost.UseUrls($"http://+:{railwayPort}");
+
+builder.Host.UseSerilog((context, services, loggerConfiguration) => loggerConfiguration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .WriteTo.Console());
+
+builder.Services.Configure<InstallerLockOptions>(builder.Configuration.GetSection("InstallerLock"));
+builder.Services.Configure<DatabaseProvisioningOptions>(builder.Configuration);
+
+var dataProtectionKeysPath = Environment.GetEnvironmentVariable("ZENTRA_INSTALLER_DATA_PROTECTION_KEYS_PATH");
+var dataProtectionBuilder = builder.Services.AddDataProtection();
+if (!string.IsNullOrWhiteSpace(dataProtectionKeysPath))
+{
+    Directory.CreateDirectory(dataProtectionKeysPath);
+    dataProtectionBuilder.PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeysPath));
+}
+
+if (trustProxyHeaders)
+{
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        options.KnownNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
+}
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = "ZentraInstaller.Session";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+
+builder.Services
+    .AddControllersWithViews(options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); });
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+
+builder.Services.AddValidatorsFromAssemblyContaining<SetupProviderViewModelValidator>();
+
+builder.Services.AddHealthChecks()
+    .AddCheck<InstallationHealthCheck>("installation_state");
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IInstallerStateStore, ProtectedInstallerStateStore>();
+builder.Services.AddScoped<IInstallationGateService, InstallationGateService>();
+builder.Services.AddScoped<IDatabaseMigrationService, DatabaseMigrationService>();
+builder.Services.AddScoped<ISeedDataService, SeedDataService>();
+builder.Services.AddScoped<IInstallerService, InstallerService>();
+builder.Services.AddScoped<IInstallerWorkflowService, InstallerWorkflowService>();
+
+var app = builder.Build();
+
+if (trustProxyHeaders)
+    app.UseForwardedHeaders();
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
+app.UseSerilogRequestLogging();
+
+if (!app.Environment.IsDevelopment()) app.UseHsts();
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseMiddleware<SetupRedirectMiddleware>();
+app.UseRouting();
+app.UseSession();
+app.UseAuthorization();
+
+app.MapHealthChecks("/health");
+app.MapControllers();
+
+app.Run();

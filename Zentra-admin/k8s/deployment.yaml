@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zentra-admin
+  labels:
+    app: zentra-admin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zentra-admin
+  template:
+    metadata:
+      labels:
+        app: zentra-admin
+    spec:
+      containers:
+        - name: zentra-admin
+          image: zentra/zentra-admin:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXTAUTH_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: zentra-admin-config
+                  key: NEXTAUTH_URL
+            - name: NEXTAUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: zentra-admin-secrets
+                  key: NEXTAUTH_SECRET
+            - name: ZENTRA_ISSUER
+              valueFrom:
+                configMapKeyRef:
+                  name: zentra-admin-config
+                  key: ZENTRA_ISSUER
+            - name: ZENTRA_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: zentra-admin-secrets
+                  key: ZENTRA_CLIENT_ID
+            - name: ZENTRA_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: zentra-admin-secrets
+                  key: ZENTRA_CLIENT_SECRET
+            - name: ZENTRA_API_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: zentra-admin-config
+                  key: ZENTRA_API_BASE_URL
+            - name: ZENTRA_SCOPES
+              valueFrom:
+                configMapKeyRef:
+                  name: zentra-admin-config
+                  key: ZENTRA_SCOPES
+            - name: ZENTRA_POST_LOGOUT_REDIRECT_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: zentra-admin-config
+                  key: ZENTRA_POST_LOGOUT_REDIRECT_URI
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
