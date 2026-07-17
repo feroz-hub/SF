@@ -6,6 +6,7 @@ import { useState } from "react";
 import { resetPasswordAction } from "@/app/(auth)/login/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { AuthShell } from "@/components/layout/AuthShell";
 
 export default function ResetPasswordPage() {
   const [username, setUsername] = useState("");
@@ -30,82 +31,84 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <main className="login-shell">
-      <section className="login-card">
+    <AuthShell>
+      <div className="login-card-heading">
         <p className="kicker">HCL.CS Administration</p>
         <h1>Reset password</h1>
         <p>Enter your username, the reset token from your email, and a new password.</p>
+      </div>
 
-        {message ? (
-          <p className={message.type === "success" ? "inline-success" : "inline-error"}>{message.text}</p>
-        ) : null}
-
-        <div className="form-grid">
-          <div className="form-row">
-            <label htmlFor="reset-username">Username</label>
-            <Input
-              id="reset-username"
-              type="text"
-              autoComplete="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              disabled={pending}
-              placeholder="Your username"
-            />
-          </div>
-          <div className="form-row">
-            <label htmlFor="reset-token">Reset token</label>
-            <Input
-              id="reset-token"
-              type="text"
-              autoComplete="one-time-code"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-              disabled={pending}
-              placeholder="Paste the token from your email"
-            />
-          </div>
-          <div className="form-row">
-            <label htmlFor="reset-new-password">New password</label>
-            <Input
-              id="reset-new-password"
-              type="password"
-              autoComplete="new-password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              disabled={pending}
-              placeholder="At least 8 characters, no spaces"
-            />
-          </div>
-          <div className="form-row">
-            <label htmlFor="reset-confirm">Confirm new password</label>
-            <Input
-              id="reset-confirm"
-              type="password"
-              autoComplete="new-password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && void submit()}
-              disabled={pending}
-              placeholder="Same as above"
-            />
-          </div>
-        </div>
-
-        <Button type="button" onClick={submit} disabled={pending}>
-          {pending ? "Resetting…" : "Reset password"}
-        </Button>
-
-        <p style={{ marginTop: "1rem" }}>
-          <Link href="/login" className="link">
-            Back to sign in
-          </Link>
-          {" · "}
-          <Link href="/login/forgot-password" className="link">
-            Forgot password?
-          </Link>
+      {message ? (
+        <p className={message.type === "success" ? "inline-success" : "inline-error"}>
+          {message.text}
         </p>
-      </section>
-    </main>
+      ) : null}
+
+      <div className="form-grid">
+        <div className="form-row">
+          <label htmlFor="reset-username">Username</label>
+          <Input
+            id="reset-username"
+            type="text"
+            autoComplete="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            disabled={pending}
+            placeholder="Your username"
+          />
+        </div>
+        <div className="form-row">
+          <label htmlFor="reset-token">Reset token</label>
+          <Input
+            id="reset-token"
+            type="text"
+            autoComplete="one-time-code"
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+            disabled={pending}
+            placeholder="Paste the token from your email"
+          />
+        </div>
+        <div className="form-row">
+          <label htmlFor="reset-new-password">New password</label>
+          <Input
+            id="reset-new-password"
+            type="password"
+            autoComplete="new-password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            disabled={pending}
+            placeholder="At least 8 characters, no spaces"
+          />
+        </div>
+        <div className="form-row">
+          <label htmlFor="reset-confirm">Confirm new password</label>
+          <Input
+            id="reset-confirm"
+            type="password"
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && void submit()}
+            disabled={pending}
+            placeholder="Same as above"
+          />
+        </div>
+      </div>
+
+      <Button type="button" onClick={submit} disabled={pending}>
+        {pending ? "Resetting…" : "Reset password"}
+      </Button>
+
+      <p className="login-help-link">
+        <Link href="/login" className="link">
+          Back to sign in
+        </Link>
+        {" · "}
+        <Link href="/login/forgot-password" className="link">
+          Forgot password?
+        </Link>
+      </p>
+    </AuthShell>
   );
 }

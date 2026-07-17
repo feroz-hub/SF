@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:https": "next dev --experimental-https",
+    "dev:https": "next dev --port 3001 --webpack --experimental-https --experimental-https-key certificates/localhost.key --experimental-https-cert certificates/localhost.crt",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

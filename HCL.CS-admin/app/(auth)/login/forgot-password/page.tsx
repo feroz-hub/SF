@@ -6,6 +6,7 @@ import { useState } from "react";
 import { requestForgotPasswordAction } from "@/app/(auth)/login/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { AuthShell } from "@/components/layout/AuthShell";
 
 export default function ForgotPasswordPage() {
   const [username, setUsername] = useState("");
@@ -25,42 +26,47 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="login-shell">
-      <section className="login-card">
+    <AuthShell>
+      <div className="login-card-heading">
         <p className="kicker">HCL.CS Administration</p>
         <h1>Forgot password</h1>
-        <p>Enter your username. If an account exists, we will send reset instructions to your registered email.</p>
-
-        {message ? (
-          <p className={message.type === "success" ? "inline-success" : "inline-error"}>{message.text}</p>
-        ) : null}
-
-        <div className="form-grid">
-          <div className="form-row">
-            <label htmlFor="forgot-username">Username</label>
-            <Input
-              id="forgot-username"
-              type="text"
-              autoComplete="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && void submit()}
-              disabled={pending}
-              placeholder="Your username"
-            />
-          </div>
-        </div>
-
-        <Button type="button" onClick={submit} disabled={pending}>
-          {pending ? "Sending..." : "Send reset instructions"}
-        </Button>
-
-        <p style={{ marginTop: "1rem" }}>
-          <Link href="/login" className="link">
-            Back to sign in
-          </Link>
+        <p>
+          Enter your username. If an account exists, we will send reset instructions to your
+          registered email.
         </p>
-      </section>
-    </main>
+      </div>
+
+      {message ? (
+        <p className={message.type === "success" ? "inline-success" : "inline-error"}>
+          {message.text}
+        </p>
+      ) : null}
+
+      <div className="form-grid">
+        <div className="form-row">
+          <label htmlFor="forgot-username">Username</label>
+          <Input
+            id="forgot-username"
+            type="text"
+            autoComplete="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && void submit()}
+            disabled={pending}
+            placeholder="Your username"
+          />
+        </div>
+      </div>
+
+      <Button type="button" onClick={submit} disabled={pending}>
+        {pending ? "Sending..." : "Send reset instructions"}
+      </Button>
+
+      <p className="login-help-link">
+        <Link href="/login" className="link">
+          Back to sign in
+        </Link>
+      </p>
+    </AuthShell>
   );
 }

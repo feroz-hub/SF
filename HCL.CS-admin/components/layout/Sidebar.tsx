@@ -2,13 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   Activity,
   Ban,
@@ -25,7 +19,7 @@ import {
   ShieldCheck,
   Users,
   Wrench,
-  type LucideIcon,
+  type LucideIcon
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -46,7 +40,7 @@ const iconMap: Record<string, LucideIcon> = {
   "/admin/audit": ScrollText,
   "/admin/notifications": Bell,
   "/admin/operations": Activity,
-  "/admin/operations/endpoints": Network,
+  "/admin/operations/endpoints": Network
 };
 
 /* ── Navigation structure ──────────────────────────────────────────────── */
@@ -54,14 +48,14 @@ const iconMap: Record<string, LucideIcon> = {
 const sections = [
   {
     label: "Overview",
-    items: [{ href: "/admin", label: "Dashboard" }],
+    items: [{ href: "/admin", label: "Dashboard" }]
   },
   {
     label: "Identity",
     items: [
       { href: "/admin/users", label: "Users" },
-      { href: "/admin/roles", label: "Roles & Claims" },
-    ],
+      { href: "/admin/roles", label: "Roles & Claims" }
+    ]
   },
   {
     label: "Security",
@@ -69,8 +63,8 @@ const sections = [
       { href: "/admin/clients", label: "Clients" },
       { href: "/admin/resources", label: "Resources & Scopes" },
       { href: "/admin/identity-resources", label: "Identity Resources" },
-      { href: "/admin/external-auth", label: "External Auth" },
-    ],
+      { href: "/admin/external-auth", label: "External Auth" }
+    ]
   },
   {
     label: "Operations",
@@ -80,9 +74,9 @@ const sections = [
       { href: "/admin/audit", label: "Audit Log" },
       { href: "/admin/notifications", label: "Notifications" },
       { href: "/admin/operations", label: "Operations" },
-      { href: "/admin/operations/endpoints", label: "Endpoints" },
-    ],
-  },
+      { href: "/admin/operations/endpoints", label: "Endpoints" }
+    ]
+  }
 ] as const;
 
 /* ── Mobile context (unchanged) ────────────────────────────────────────── */
@@ -93,31 +87,21 @@ type SidebarMobileContextValue = {
   closeMobile: () => void;
 };
 
-const SidebarMobileContext = createContext<SidebarMobileContextValue | null>(
-  null
-);
+const SidebarMobileContext = createContext<SidebarMobileContextValue | null>(null);
 
-export function SidebarMobileProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function SidebarMobileProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   const value = useMemo(
     () => ({
       open,
       toggleMobile: () => setOpen((v) => !v),
-      closeMobile: () => setOpen(false),
+      closeMobile: () => setOpen(false)
     }),
     [open]
   );
 
-  return (
-    <SidebarMobileContext.Provider value={value}>
-      {children}
-    </SidebarMobileContext.Provider>
-  );
+  return <SidebarMobileContext.Provider value={value}>{children}</SidebarMobileContext.Provider>;
 }
 
 export function useSidebarMobile(): SidebarMobileContextValue {
@@ -155,8 +139,13 @@ export function Sidebar() {
       <div>
         {/* Header: logo + collapse toggle */}
         <div className="sidebar-header">
-          <div className="sidebar-logo-mark" />
-          <span className="sidebar-logo-wordmark">HCL.CS Admin</span>
+          <div className="sidebar-logo-mark" aria-hidden="true">
+            CS
+          </div>
+          <span className="sidebar-logo-wordmark">
+            <strong>HCL.CS</strong>
+            <small>Admin Console</small>
+          </span>
           <button
             type="button"
             className="sidebar-collapse-toggle"
@@ -164,11 +153,7 @@ export function Sidebar() {
             aria-expanded={!collapsed}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            {collapsed ? (
-              <ChevronsRight size={16} />
-            ) : (
-              <ChevronsLeft size={16} />
-            )}
+            {collapsed ? <ChevronsRight size={16} /> : <ChevronsLeft size={16} />}
           </button>
         </div>
 
@@ -183,17 +168,13 @@ export function Sidebar() {
                 const active =
                   item.href === "/admin"
                     ? pathname === "/admin"
-                    : pathname === item.href ||
-                      pathname.startsWith(`${item.href}/`);
+                    : pathname === item.href || pathname.startsWith(`${item.href}/`);
                 const Icon = iconMap[item.href] ?? LayoutDashboard;
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={cn(
-                      "sidebar-link",
-                      active && "sidebar-link-active"
-                    )}
+                    className={cn("sidebar-link", active && "sidebar-link-active")}
                     aria-current={active ? "page" : undefined}
                     data-tooltip={item.label}
                   >
@@ -255,8 +236,7 @@ function toggleTheme() {
   if (typeof document === "undefined") return;
 
   const root = document.documentElement;
-  const current =
-    root.getAttribute("data-theme") === "light" ? "light" : "dark";
+  const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
   const next = current === "light" ? "dark" : "light";
   root.setAttribute("data-theme", next);
   try {

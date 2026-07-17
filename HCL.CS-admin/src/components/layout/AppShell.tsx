@@ -3,7 +3,6 @@
 import { AmbientBackground } from "@/src/components/layout/AmbientBackground";
 import { IntelligentNav } from "@/src/components/layout/IntelligentNav";
 import { CommandBar } from "@/src/components/layout/CommandBar";
-import { cn } from "@/lib/utils";
 
 type AppShellProps = {
   children: React.ReactNode;
@@ -14,19 +13,14 @@ type AppShellProps = {
 
 export function AppShell({ children, title, subtitle, className }: AppShellProps) {
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="future-shell">
       <AmbientBackground />
-      <div className="relative z-10 flex min-h-screen">
+      <div className="future-shell-frame">
         <IntelligentNav />
-        <main className="flex-1">
-          <div className="mx-auto flex h-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <main className="future-main">
+          <div className="future-main-inner">
             <CommandBar title={title} subtitle={subtitle} />
-            <section
-              className={cn(
-                "grid flex-1 grid-cols-1 gap-4 pb-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]",
-                className
-              )}
-            >
+            <section className={`future-content${className ? ` ${className}` : ""}`}>
               {children}
             </section>
           </div>
@@ -35,4 +29,3 @@ export function AppShell({ children, title, subtitle, className }: AppShellProps
     </div>
   );
 }
-
