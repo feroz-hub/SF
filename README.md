@@ -93,3 +93,7 @@ Installer PostgreSQL connection strings:
 ```bash
 dotnet run --project demos/HCL.CS.Demo.Server/HCL.CS.DemoServerApp.csproj
 ```
+
+## Native Windows setup (no Docker)
+
+The Windows PowerShell scripts under `scripts/windows` configure local PostgreSQL, the supported Installer, HTTPS, the runnable Demo Server, and Admin UI. The complete HCL.CS + SBOM procedure is documented in `../sbom/docs/WINDOWS_NATIVE_SETUP.md` when the repositories are checked out side by side.

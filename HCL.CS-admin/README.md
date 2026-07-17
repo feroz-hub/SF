@@ -7,7 +7,7 @@ This project is a Next.js admin client for HCL.CS, with login behavior aligned t
 - Automatic access-token refresh on expiry
 - Federated logout URL generation (`/security/endsession` fallback)
 
-Important: HCL.CS validates redirect URLs as HTTPS. Run this app over `https://localhost:3000`.
+Important: HCL.CS validates redirect URLs as HTTPS. Run this app over `https://localhost:3001`.
 
 ## 1) Configure env
 
@@ -24,8 +24,8 @@ Required keys:
 
 Use these in HCL.CS installer/client config:
 
-- Redirect URI: `https://localhost:3000/api/auth/callback/hcl-cs`
-- Post Logout Redirect URI: `https://localhost:3000/login`
+- Redirect URI: `https://localhost:3001/api/auth/callback/hcl-cs`
+- Post Logout Redirect URI: `https://localhost:3001/login`
 
 If you run on a different host/port, update both values accordingly.
 
@@ -39,10 +39,11 @@ If false, admin app performs local logout only and redirects to `/login`.
 ```bash
 cd HCL.CS-admin
 npm install
+npm run setup:https:windows
 npm run dev:https
 ```
 
-Open `https://localhost:3000`.
+Open `https://localhost:3001`.
 
 ## 4) If you see self-signed certificate error
 

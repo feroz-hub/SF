@@ -25,3 +25,6 @@ TestResults/
 # Logs
 *.log
 DbCreationLogs.txt
+
+# Generated native-Windows configuration, certificates, and secrets
+.windows/
