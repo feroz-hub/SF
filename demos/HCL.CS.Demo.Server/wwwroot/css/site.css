@@ -197,3 +197,637 @@ body {
     .hcl-cs-footer__inner { flex-direction: column; text-align: center; }
     .hcl-cs-footer__brand { align-items: center; }
 }
+
+/* ========== HCLTech login experience ========== */
+.hcltech-login-body {
+    margin: 0;
+    background: #f6f7fb;
+    color: #161925;
+    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.hcltech-login-body > nav,
+.hcltech-login-body > footer {
+    display: none;
+}
+
+.hcltech-login-body > .container {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+}
+
+.hcltech-login-body > .container > main {
+    padding: 0 !important;
+}
+
+.hcltech-login-page {
+    display: grid;
+    grid-template-columns: minmax(420px, 1.05fr) minmax(520px, 0.95fr);
+    min-height: 100vh;
+    overflow: hidden;
+    background: #fff;
+}
+
+.hcltech-login-story {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    color: #fff;
+    isolation: isolate;
+    background:
+        radial-gradient(circle at 18% 14%, rgba(81, 211, 255, 0.45), transparent 27%),
+        radial-gradient(circle at 92% 88%, rgba(240, 59, 255, 0.28), transparent 31%),
+        linear-gradient(142deg, #071d9c 0%, #3b21b6 48%, #7621a8 100%);
+}
+
+.hcltech-login-story::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 42rem;
+    height: 42rem;
+    right: -24rem;
+    top: 16%;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 5rem rgba(255, 255, 255, 0.035),
+        0 0 0 10rem rgba(255, 255, 255, 0.025),
+        0 0 0 15rem rgba(255, 255, 255, 0.018);
+}
+
+.hcltech-login-story::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 20rem;
+    height: 20rem;
+    left: -10rem;
+    bottom: -9rem;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4rem rgba(255, 255, 255, 0.025);
+}
+
+.hcltech-login-story__grid {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    opacity: 0.2;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: linear-gradient(to bottom right, #000, transparent 75%);
+    mask-image: linear-gradient(to bottom right, #000, transparent 75%);
+}
+
+.hcltech-login-story__glow {
+    position: absolute;
+    z-index: -1;
+    border-radius: 999px;
+    filter: blur(8px);
+    pointer-events: none;
+}
+
+.hcltech-login-story__glow--one {
+    top: -9rem;
+    right: -5rem;
+    width: 24rem;
+    height: 24rem;
+    background: rgba(31, 201, 255, 0.17);
+}
+
+.hcltech-login-story__glow--two {
+    left: 20%;
+    bottom: -13rem;
+    width: 28rem;
+    height: 28rem;
+    background: rgba(255, 40, 211, 0.12);
+}
+
+.hcltech-login-story__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    max-width: 760px;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(2.5rem, 6vw, 6.5rem) 2.5rem;
+    box-sizing: border-box;
+}
+
+.hcltech-wordmark {
+    display: inline-block;
+    width: fit-content;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.075em;
+    text-decoration: none !important;
+}
+
+.hcltech-wordmark--light {
+    color: #fff !important;
+}
+
+.hcltech-login-story__message {
+    max-width: 580px;
+    margin: 5rem 0;
+}
+
+.hcltech-product-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.6rem;
+    padding: 0.5rem 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.1);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+}
+
+.hcltech-product-label::before {
+    content: "";
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: #5ce1ff;
+    box-shadow: 0 0 0 4px rgba(92, 225, 255, 0.16), 0 0 18px rgba(92, 225, 255, 0.8);
+}
+
+.hcltech-login-story h1 {
+    margin: 0;
+    font-size: clamp(3.25rem, 5.2vw, 5.6rem);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+}
+
+.hcltech-login-story h1 span {
+    display: inline-block;
+    color: #70e4ff;
+    font-weight: 700;
+}
+
+.hcltech-login-story__message > p {
+    max-width: 510px;
+    margin: 1.75rem 0 0;
+    color: rgba(255, 255, 255, 0.79);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.75;
+}
+
+.hcltech-trust-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.75rem;
+    margin-top: 2.8rem;
+}
+
+.hcltech-trust-point {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.78rem;
+}
+
+.hcltech-trust-point strong {
+    color: #fff;
+    font-weight: 650;
+}
+
+.hcltech-trust-point__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.hcltech-trust-point__icon svg {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+.hcltech-login-story__footer {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+}
+
+.hcltech-login-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 3rem clamp(2.5rem, 5vw, 6rem);
+    background: #fff;
+}
+
+.hcltech-login-panel__inner {
+    width: 100%;
+    max-width: 440px;
+    animation: hcltech-login-enter 0.5s ease-out both;
+}
+
+@keyframes hcltech-login-enter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hcltech-wordmark--mobile {
+    display: none;
+    margin-bottom: 3rem;
+    background: linear-gradient(100deg, #0b49d9 0%, #5a24c7 58%, #a11daf 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hcltech-login-heading__eyebrow {
+    display: block;
+    margin-bottom: 0.7rem;
+    color: #5826b8;
+    font-size: 0.72rem;
+    font-weight: 750;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.hcltech-login-heading h2 {
+    margin: 0;
+    color: #151725;
+    font-size: clamp(2.15rem, 3.2vw, 2.75rem);
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+}
+
+.hcltech-login-heading p {
+    margin: 0.75rem 0 0;
+    color: #6c7082;
+    font-size: 0.94rem;
+    line-height: 1.6;
+}
+
+.hcltech-alert,
+.hcltech-validation-summary:not(.validation-summary-valid) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    margin-top: 1.35rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid #f1bdc6;
+    border-radius: 10px;
+    background: #fff5f7;
+    color: #a6273d;
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+.hcltech-alert svg {
+    flex: 0 0 auto;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin-top: 0.05rem;
+}
+
+.hcltech-validation-summary ul {
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.hcltech-validation-summary.validation-summary-valid {
+    display: none;
+}
+
+.hcltech-login-form {
+    margin-top: 2rem;
+}
+
+.hcltech-field {
+    margin-bottom: 1.2rem;
+}
+
+.hcltech-field label,
+.hcltech-field__label-row label {
+    display: block;
+    margin: 0 0 0.48rem;
+    color: #292c3b;
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+}
+
+.hcltech-field__label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.hcltech-field__label-row a {
+    margin-bottom: 0.48rem;
+    color: #4d27ac;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.hcltech-field__label-row a:hover {
+    color: #2f0e82;
+    text-decoration: underline;
+}
+
+.hcltech-field__control {
+    position: relative;
+}
+
+.hcltech-field__icon {
+    position: absolute;
+    z-index: 2;
+    left: 0.95rem;
+    top: 50%;
+    display: inline-flex;
+    color: #7b7f90;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.hcltech-field__icon svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.hcltech-field .form-control {
+    width: 100%;
+    height: 3.25rem;
+    padding: 0 3rem 0 2.8rem;
+    border: 1px solid #d8dae4;
+    border-radius: 9px;
+    background: #fff;
+    color: #171925;
+    font-size: 0.88rem;
+    box-shadow: 0 1px 2px rgba(20, 25, 50, 0.02);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.hcltech-field .form-control::placeholder {
+    color: #a0a3b0;
+}
+
+.hcltech-field .form-control:hover {
+    border-color: #b8bac7;
+}
+
+.hcltech-field .form-control:focus {
+    border-color: #6332c7;
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(99, 50, 199, 0.12);
+}
+
+.hcltech-field__control:focus-within .hcltech-field__icon {
+    color: #6332c7;
+}
+
+.hcltech-field__error {
+    display: block;
+    margin-top: 0.35rem;
+    color: #b4233d;
+    font-size: 0.74rem;
+}
+
+.hcltech-password-toggle {
+    position: absolute;
+    z-index: 3;
+    right: 0.62rem;
+    top: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #777b8c;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.hcltech-password-toggle:hover {
+    background: #f2f1f8;
+    color: #4d27ac;
+}
+
+.hcltech-password-toggle:focus-visible {
+    outline: 2px solid #6332c7;
+    outline-offset: 1px;
+}
+
+.hcltech-password-toggle svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.hcltech-password-toggle__hide {
+    display: none;
+}
+
+.hcltech-password-toggle[aria-pressed="true"] .hcltech-password-toggle__show {
+    display: none;
+}
+
+.hcltech-password-toggle[aria-pressed="true"] .hcltech-password-toggle__hide {
+    display: inline-flex;
+}
+
+.hcltech-primary-button,
+.hcltech-google-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 3.25rem;
+    border-radius: 9px;
+    font-size: 0.86rem;
+    font-weight: 650;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.hcltech-primary-button {
+    gap: 0.65rem;
+    margin-top: 1.55rem;
+    border: 0;
+    background: linear-gradient(100deg, #174bd6 0%, #5530c4 58%, #8c27b3 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(67, 43, 178, 0.2);
+}
+
+.hcltech-primary-button svg {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.18s ease;
+}
+
+.hcltech-primary-button:hover {
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 11px 24px rgba(67, 43, 178, 0.28);
+}
+
+.hcltech-primary-button:hover svg {
+    transform: translateX(2px);
+}
+
+.hcltech-primary-button:focus-visible,
+.hcltech-google-button:focus-visible {
+    outline: 3px solid rgba(99, 50, 199, 0.25);
+    outline-offset: 2px;
+}
+
+.hcltech-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1.35rem 0;
+    color: #a0a3b0;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+}
+
+.hcltech-divider::before,
+.hcltech-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e6e7ed;
+}
+
+.hcltech-google-button {
+    gap: 0.7rem;
+    border: 1px solid #d8dae4;
+    background: #fff;
+    color: #292c3b;
+    box-shadow: 0 1px 2px rgba(20, 25, 50, 0.02);
+}
+
+.hcltech-google-button:hover {
+    border-color: #b8bac7;
+    background: #fafafd;
+    color: #171925;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(20, 25, 50, 0.06);
+}
+
+.hcltech-session-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.55rem;
+    color: #858897;
+    font-size: 0.7rem;
+}
+
+.hcltech-session-note svg {
+    flex: 0 0 auto;
+    width: 0.95rem;
+    height: 0.95rem;
+    color: #1f8a63;
+}
+
+.hcltech-login-panel__footer {
+    margin: 3rem 0 0;
+    color: #a0a3b0;
+    font-size: 0.68rem;
+    text-align: center;
+}
+
+@media (max-width: 1050px) {
+    .hcltech-login-page {
+        grid-template-columns: minmax(390px, 0.9fr) minmax(490px, 1.1fr);
+    }
+
+    .hcltech-login-story__content {
+        padding-left: 3.25rem;
+        padding-right: 3.25rem;
+    }
+
+    .hcltech-login-story h1 {
+        font-size: 3.75rem;
+    }
+
+    .hcltech-trust-points {
+        display: grid;
+    }
+}
+
+@media (max-width: 820px) {
+    .hcltech-login-page {
+        display: block;
+        min-height: 100vh;
+    }
+
+    .hcltech-login-story {
+        display: none;
+    }
+
+    .hcltech-login-panel {
+        min-height: 100vh;
+        padding: 2.5rem 1.5rem;
+        background:
+            radial-gradient(circle at 100% 0, rgba(91, 52, 199, 0.08), transparent 31%),
+            #fff;
+    }
+
+    .hcltech-wordmark--mobile {
+        display: inline-block;
+    }
+}
+
+@media (max-width: 480px) {
+    .hcltech-login-panel {
+        align-items: flex-start;
+        padding: 2rem 1.25rem;
+    }
+
+    .hcltech-wordmark--mobile {
+        margin-bottom: 2.5rem;
+        font-size: 1.8rem;
+    }
+
+    .hcltech-login-heading h2 {
+        font-size: 2.15rem;
+    }
+
+    .hcltech-login-panel__footer {
+        margin-top: 2.25rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hcltech-login-panel__inner {
+        animation: none;
+    }
+
+    .hcltech-primary-button,
+    .hcltech-google-button,
+    .hcltech-primary-button svg {
+        transition: none;
+    }
+}

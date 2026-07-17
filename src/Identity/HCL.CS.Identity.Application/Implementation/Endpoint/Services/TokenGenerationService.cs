@@ -688,6 +688,18 @@ internal class TokenGenerationService(
                 if (capabilityClaims.ContainsAny())
                     resultClaims.CustomAccessTokenClaims.AddRange(capabilityClaims);
             }
+            else if (string.Equals(claimType, "tenant_id", StringComparison.OrdinalIgnoreCase))
+            {
+                // tenant_id is an identity attribute, not an API permission.
+                // Preserve its claim type so the SBOM resource server can map it
+                // to its own tenant and membership records after JWT validation.
+                var tenantClaims = consolidatedUserClaims
+                    .Where(x => string.Equals(x.Type, "tenant_id", StringComparison.OrdinalIgnoreCase))
+                    .Select(x => new Claim("tenant_id", x.Value))
+                    .ToList();
+                if (tenantClaims.ContainsAny())
+                    resultClaims.CustomAccessTokenClaims.AddRange(tenantClaims);
+            }
             else
             {
                 var selectedClaims = consolidatedUserClaims.Where(x => x.Type.ToLower() == claimType);

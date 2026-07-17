@@ -51,6 +51,8 @@ services:
       HCL_CS_DB_CONNECTION_STRING: "Host=postgres;Port=5432;Database=${HCL_CS_DB_NAME:-hcl-cs};Username=${HCL_CS_DB_USER:-hcl-cs};Password=${HCL_CS_DB_PASSWORD:-hcl-cs}"
       SystemSettings__DBConfig__Database: PostgreSQL
       TokenSettings__TokenConfig__IssuerUri: "${HCL_CS_ISSUER_URI:-https://localhost:5180}"
+      Security__Cors__AllowedOrigins__0: "https://localhost:3000"
+      Security__Cors__AllowedOrigins__1: "https://localhost:3001"
       HCL_CS_REDIS_CONNECTION_STRING: "redis:6379"
       HCL_CS_REDIS_INSTANCE_NAME: "hcl-cs:"
     ports:

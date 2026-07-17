@@ -27,6 +27,10 @@ public class ResultClaimsModel
         {
             var accessTokenClaims = new List<Claim>();
             accessTokenClaims.AddRange(IdentityTokenScopeClaims);
+            // Standard identity claims requested through openid/profile/email are
+            // also useful to resource servers. They remain scope-gated because
+            // IdentityClaims is populated only from the requested resources.
+            accessTokenClaims.AddRange(IdentityClaims);
             accessTokenClaims.AddRange(RoleClaims);
             accessTokenClaims.AddRange(TransactionClaims);
             accessTokenClaims.AddRange(PermissionClaims);

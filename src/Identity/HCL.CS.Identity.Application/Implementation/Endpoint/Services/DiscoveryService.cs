@@ -44,6 +44,7 @@ internal class DiscoveryService : SecurityBase, IDiscoveryService
         await GetSupportedClaims();
         var tokenAuthMethods = new[]
         {
+            AuthenticationMethods.None,
             AuthenticationMethods.ClientSecretBasic,
             AuthenticationMethods.ClientSecretPost
         };
