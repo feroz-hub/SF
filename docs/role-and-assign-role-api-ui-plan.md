@@ -1,6 +1,6 @@
 # Role & Assign Role – API Analysis and UI/UX Plan
 
-This document describes the **Create Role**, **Assign Role to User**, and related APIs, their full flow, and where they are (or will be) implemented in the Zentra Admin UI.
+This document describes the **Create Role**, **Assign Role to User**, and related APIs, their full flow, and where they are (or will be) implemented in the HCL.CS Admin UI.
 
 ---
 
@@ -104,7 +104,7 @@ This document describes the **Create Role**, **Assign Role to User**, and relate
 
 ---
 
-## 6. File Reference (Zentra-admin)
+## 6. File Reference (HCL.CS-admin)
 
 | Area | File |
 |------|------|

@@ -1,4 +1,4 @@
-# Google OIDC Configuration Guide — Zentra Platform
+# Google OIDC Configuration Guide — HCL.CS Platform
 
 ## Part 1: Google Cloud Console Setup
 
@@ -8,7 +8,7 @@
 
 - Go to [console.cloud.google.com](https://console.cloud.google.com)
 - Click **Select a project** → **New Project**
-- Name it (e.g., "Zentra Auth") and click **Create**
+- Name it (e.g., "HCL.CS Auth") and click **Create**
 
 ### 2. Enable the Google Identity API
 
@@ -33,7 +33,7 @@
 - Go to **APIs & Services → Credentials**
 - Click **Create Credentials → OAuth client ID**
 - Application type: **Web application**
-- Name: e.g., "Zentra OIDC"
+- Name: e.g., "HCL.CS OIDC"
 - **Authorized redirect URIs** — add all environments:
 
   ```
@@ -46,16 +46,16 @@
 
 ---
 
-## Part 2: Configure in Zentra Admin UI
+## Part 2: Configure in HCL.CS Admin UI
 
 ### Prerequisites
 
-- Your admin account must have the `zentra.externalauth.manage` scope
-- The database migration must have run (table `Zentra_ExternalAuthProviderConfig` exists)
+- Your admin account must have the `hcl-cs.externalauth.manage` scope
+- The database migration must have run (table `HclCs_ExternalAuthProviderConfig` exists)
 
 ### Steps
 
-1. **Navigate** to `/admin/external-auth` in the Zentra Admin panel (under **Security** in the sidebar)
+1. **Navigate** to `/admin/external-auth` in the HCL.CS Admin panel (under **Security** in the sidebar)
 
 2. **Click "Add Provider"**
 
@@ -142,7 +142,7 @@ If you prefer file-based config (e.g., for local development), the Demo Server r
 | Google login redirects to error page | Callback Path mismatch | Ensure the Callback Path in Admin UI matches the Authorized redirect URI in Google Cloud Console |
 | `redirect_uri_mismatch` error from Google | URI not registered in Google Console | Add the exact redirect URI (including protocol and port) to Google Cloud Console → Credentials → Authorized redirect URIs |
 | Users can't auto-provision | Domain not in Allowed Domains list | Add their email domain to the Allowed Email Domains field, or leave it empty to allow all |
-| 401 on Admin UI page | Missing scopes | Ensure your admin token includes `zentra.externalauth.read` and `zentra.externalauth.manage` |
+| 401 on Admin UI page | Missing scopes | Ensure your admin token includes `hcl-cs.externalauth.read` and `hcl-cs.externalauth.manage` |
 | Provider card shows "Disabled" | Enabled checkbox not checked | Edit the provider and check the "Enabled" checkbox |
 | Client Secret shows as masked (`Gocl****`) | Expected behavior | Secrets are masked after save for security — re-enter the full secret only if you need to change it |
 
@@ -152,8 +152,8 @@ If you prefer file-based config (e.g., for local development), the Demo Server r
 
 - **Client Secret** is stored encrypted in the `ConfigJson` column and masked in API responses (first 4 chars + `****`)
 - The Admin UI never displays the full Client Secret after initial save
-- Only users with the `zentra.externalauth.manage` scope can create, edit, or delete providers
-- Read-only access requires the `zentra.externalauth.read` scope
+- Only users with the `hcl-cs.externalauth.manage` scope can create, edit, or delete providers
+- Read-only access requires the `hcl-cs.externalauth.read` scope
 - The **Test** operation only verifies metadata endpoint reachability — it does not perform a full OAuth flow
 
 ---
@@ -163,7 +163,7 @@ If you prefer file-based config (e.g., for local development), the Demo Server r
 - [ ] Google Cloud Project created
 - [ ] OAuth consent screen configured with `openid`, `email`, `profile` scopes
 - [ ] OAuth 2.0 Client ID created with correct redirect URIs
-- [ ] Provider added in Zentra Admin UI with Client ID and Client Secret
+- [ ] Provider added in HCL.CS Admin UI with Client ID and Client Secret
 - [ ] Provider marked as **Enabled**
 - [ ] "Test" button shows **Test Passed**
 - [ ] Auto-provisioning configured (if needed)

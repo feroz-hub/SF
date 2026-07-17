@@ -3,4 +3,4 @@
 
 -- Example bootstrap values:
 -- INSERT INTO Roles (Id, Name) VALUES ('admin-role-id', 'Administrator');
--- INSERT INTO Users (Id, UserName, Email) VALUES ('admin-user-id', 'admin', 'admin@zentra.local');
+-- INSERT INTO Users (Id, UserName, Email) VALUES ('admin-user-id', 'admin', 'admin@hcl-cs.local');

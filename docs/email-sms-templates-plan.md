@@ -1,6 +1,6 @@
 # Email, SMS & Mail Templates – Configuration & Flow
 
-This document describes how **Email**, **SMS**, and **notification templates** are configured and used across the Zentra Identity platform.
+This document describes how **Email**, **SMS**, and **notification templates** are configured and used across the HCL.CS Identity platform.
 
 ---
 
@@ -18,17 +18,17 @@ This document describes how **Email**, **SMS**, and **notification templates** a
 
 | Purpose | File(s) | Section / content |
 |--------|---------|-------------------|
-| **System (SMTP + SMS)** | `src/Identity/Zentra.Identity.Infrastructure.Resources/Settings/SystemSettings.json` | `SystemSettings.EmailConfig`, `SystemSettings.SMSConfig` |
-| **Templates (email + SMS)** | `src/Identity/Zentra.Identity.Infrastructure.Resources/Settings/NotificationTemplateSettings.json` | `NotificationTemplateSettings.EmailTemplateCollection`, `SMSTemplateCollection` |
-| **Demo server** | `demos/Zentra.Demo.Server/Configurations/` | Same structure; `Program.cs` loads `NotificationTemplateSettings.json` and system settings |
-| **Integration tests** | `tests/Zentra.IntegrationTests/Configurations/NotificationTemplateSettings.json` | Same structure; `ZentraFakeSetup` loads it |
+| **System (SMTP + SMS)** | `src/Identity/HCL.CS.Identity.Infrastructure.Resources/Settings/SystemSettings.json` | `SystemSettings.EmailConfig`, `SystemSettings.SMSConfig` |
+| **Templates (email + SMS)** | `src/Identity/HCL.CS.Identity.Infrastructure.Resources/Settings/NotificationTemplateSettings.json` | `NotificationTemplateSettings.EmailTemplateCollection`, `SMSTemplateCollection` |
+| **Demo server** | `demos/HCL.CS.Demo.Server/Configurations/` | Same structure; `Program.cs` loads `NotificationTemplateSettings.json` and system settings |
+| **Integration tests** | `tests/HCL.CS.IntegrationTests/Configurations/NotificationTemplateSettings.json` | Same structure; `HclCsFakeSetup` loads it |
 
-Config is **deserialized** in `ZentraExtension.DeserializeConfiguration`: it builds an `IConfiguration` from the system, notification template, and token JSON paths, then binds `SystemSettings`, `NotificationTemplateSettings`, and `TokenSettings` into a single `ZentraConfig` used for the rest of the app.
+Config is **deserialized** in `HclCsExtension.DeserializeConfiguration`: it builds an `IConfiguration` from the system, notification template, and token JSON paths, then binds `SystemSettings`, `NotificationTemplateSettings`, and `TokenSettings` into a single `HclCsConfig` used for the rest of the app.
 
 ### 2.2 Domain Model (Config Types)
 
-- **`ZentraConfig`** (`Zentra.Identity.Domain/ZentraConfig.cs`): Holds `SystemSettings`, `NotificationTemplateSettings`, `TokenSettings`.
-- **`SystemConfig.cs`** (`Zentra.Identity.Domain/Configurations/Api/SystemConfig.cs`):
+- **`HclCsConfig`** (`HCL.CS.Identity.Domain/HclCsConfig.cs`): Holds `SystemSettings`, `NotificationTemplateSettings`, `TokenSettings`.
+- **`SystemConfig.cs`** (`HCL.CS.Identity.Domain/Configurations/Api/SystemConfig.cs`):
   - **EmailConfig**: `SmtpServer`, `Port` (int), `UserName`, `Password`, `EmailNotificationType` (Token/Link), `SecureSocketOptions` (bool).
   - **SMSConfig**: `SMSAccountIdentification`, `SMSAccountPassword`, `SMSAccountFrom`, `SMSStatusCallbackURL`.
   - **EmailTemplate**: `Name`, `Subject`, `FromAddress`, `FromName`, `CC`, `TemplateFormat`.
@@ -39,7 +39,7 @@ Config is **deserialized** in `ZentraExtension.DeserializeConfiguration`: it bui
 In `SystemSettings.json`, secrets are often placeholders:
 
 - **Email**: `SmtpServer`, `Port`, `UserName`, `Password`, `SecureSocketOptions`.
-  - Example placeholders: `"UserName": "${ZENTRA_SMTP_USERNAME}"`, `"Password": "${ZENTRA_SMTP_PASSWORD}"`.
+  - Example placeholders: `"UserName": "${HCL_CS_SMTP_USERNAME}"`, `"Password": "${HCL_CS_SMTP_PASSWORD}"`.
 - **SMS**: `SMSAccountIdentification`, `SMSAccountPassword`, `SMSAccountFrom`; `SMSStatusCallbackURL` may be a fixed URL (e.g. `https://localhost:50001/account/SMSCallback/`).
 
 These placeholders are typically replaced by the host (e.g. env vars or a config layer) before binding; the code only sees the final string/int values.
@@ -56,7 +56,7 @@ These placeholders are typically replaced by the host (e.g. env vars or a config
 
 ### 3.2 Validation at Startup
 
-In `ZentraExtension.ValidateEmailConfiguration`:
+In `HclCsExtension.ValidateEmailConfiguration`:
 
 - Requires: `SmtpServer`, `UserName`, `Password` non-empty and `Port > 0`.
 - Optionally connects with MailKit (SSL or StartTls) and sets `GlobalConfiguration.IsEmailConfigurationValid = true`. If any check fails, errors are collected and can cause startup to fail.
@@ -69,7 +69,7 @@ In `ZentraExtension.ValidateEmailConfiguration`:
 4. **Build/send**: A `MimeMessage` is built (from address from template or config, subject, HTML body); MailKit’s `SmtpClient` (wrapped by `SmtpClientWrapper`) sends it using `EmailConfig` (SmtpServer, Port, SecureSocketOptions).
 5. **Persistence**: A `Notification` entity is stored (e.g. for audit) via `emailRepository`.
 
-Implemented in: `src/Identity/Zentra.Identity.Infrastructure/Implementation/EmailService.cs`. Dependency: `ZentraConfig` (for `NotificationTemplateSettings` and `SystemSettings.EmailConfig`).
+Implemented in: `src/Identity/HCL.CS.Identity.Infrastructure/Implementation/EmailService.cs`. Dependency: `HclCsConfig` (for `NotificationTemplateSettings` and `SystemSettings.EmailConfig`).
 
 ---
 
@@ -82,7 +82,7 @@ Implemented in: `src/Identity/Zentra.Identity.Infrastructure/Implementation/Emai
 
 ### 4.2 Validation at Startup
 
-In `ZentraExtension.ValidateSmsConfiguration`:
+In `HclCsExtension.ValidateSmsConfiguration`:
 
 - All four properties must be non-empty to set `GlobalConfiguration.IsSmsConfigurationValid = true`. So **SMSStatusCallbackURL is required** for SMS to be considered configured.
 
@@ -94,7 +94,7 @@ In `ZentraExtension.ValidateSmsConfiguration`:
 4. **Send**: Twilio is initialized from `SMSConfig`; `MessageResource.CreateAsync` sends to `ToAddress` from `SMSAccountFrom` with the resolved body; optional status callback URL from config.
 5. **Persistence**: A `Notification` record is saved.
 
-Implemented in: `src/Identity/Zentra.Identity.Infrastructure/Implementation/SmsService.cs`.
+Implemented in: `src/Identity/HCL.CS.Identity.Infrastructure/Implementation/SmsService.cs`.
 
 ---
 
@@ -121,11 +121,11 @@ Documented in `NotificationTemplateSettings.json` and implemented in `TemplateEx
 
 Replacement order: first the key/value pairs in `parameters`, then the fixed user placeholders above. So custom parameters can override if needed.
 
-File: `src/Identity/Zentra.Identity.Infrastructure/Extension/TemplateExtension.cs`.
+File: `src/Identity/HCL.CS.Identity.Infrastructure/Extension/TemplateExtension.cs`.
 
 ### 5.3 Template Name Constants & Resolution
 
-**Constants** (`Zentra.Identity.Domain/Constants/Constants.cs` – `NotificationConstants`):
+**Constants** (`HCL.CS.Identity.Domain/Constants/Constants.cs` – `NotificationConstants`):
 
 - `EmailVerification`, `PhoneNumberVerification`, `GenerateTwoFactorToken`, `ResetPasswordUsingToken`
 - `EmailVerificationUsingLink`, `EmailVerificationUsingToken`, `PhoneNumberVerificationToken`
@@ -174,7 +174,7 @@ Other template names present in JSON (e.g. `ChangeEmailAddress`, `DisableUser`, 
 
 ### 7.1 Changing content or SMTP/SMS settings
 
-- **Email/SMS config**: Edit `SystemSettings.json` (or host-specific override). Ensure env placeholders are substituted (e.g. `ZENTRA_SMTP_*`, `ZENTRA_SMS_*`). Port in JSON can be string `"25"`; binder maps it to `EmailConfig.Port` (int).
+- **Email/SMS config**: Edit `SystemSettings.json` (or host-specific override). Ensure env placeholders are substituted (e.g. `HCL_CS_SMTP_*`, `HCL_CS_SMS_*`). Port in JSON can be string `"25"`; binder maps it to `EmailConfig.Port` (int).
 - **Template body/subject**: Edit `NotificationTemplateSettings.json` (or demo/test copies). Change `Subject`, `TemplateFormat`, `FromAddress`, `FromName`, `CC` only; keep **Name** in sync with constants used in code.
 
 ### 7.2 Adding a new template
@@ -188,9 +188,9 @@ Other template names present in JSON (e.g. `ChangeEmailAddress`, `DisableUser`, 
 
 ### 7.3 Where config is loaded
 
-- **Main API / host**: `ZentraExtension.AddZentra(systemSettingsJsonPath, tokenConfigSettingsJsonPath, notificationTemplateSettingsJsonPath)` → `DeserializeConfiguration` loads and binds the three JSON files.
-- **Demo**: `demos/Zentra.Demo.Server/Program.cs` loads system + token + `./Configurations/NotificationTemplateSettings.json` and passes the three objects to `AddZentra(...)`.
-- **Integration tests**: `ZentraFakeSetup.LoadNotificationTemplateSettings(integrationRootPath)` loads `NotificationTemplateSettings.json` under the integration root; that settings object is used when building the test host/config.
+- **Main API / host**: `HclCsExtension.AddHclCs(systemSettingsJsonPath, tokenConfigSettingsJsonPath, notificationTemplateSettingsJsonPath)` → `DeserializeConfiguration` loads and binds the three JSON files.
+- **Demo**: `demos/HCL.CS.Demo.Server/Program.cs` loads system + token + `./Configurations/NotificationTemplateSettings.json` and passes the three objects to `AddHclCs(...)`.
+- **Integration tests**: `HclCsFakeSetup.LoadNotificationTemplateSettings(integrationRootPath)` loads `NotificationTemplateSettings.json` under the integration root; that settings object is used when building the test host/config.
 
 ---
 
@@ -199,7 +199,7 @@ Other template names present in JSON (e.g. `ChangeEmailAddress`, `DisableUser`, 
 ```
 Host / Demo / Tests
   → Load SystemSettings.json + NotificationTemplateSettings.json (+ TokenSettings)
-  → ZentraConfig (SystemSettings, NotificationTemplateSettings, TokenSettings)
+  → HclCsConfig (SystemSettings, NotificationTemplateSettings, TokenSettings)
   → ValidateEmailConfiguration / ValidateSmsConfiguration
   → GlobalConfiguration.IsEmailConfigurationValid / IsSmsConfigurationValid
 
@@ -223,15 +223,15 @@ EmailService / SmsService
 
 | Area | File |
 |------|------|
-| Config (system) | `Zentra.Identity.Infrastructure.Resources/Settings/SystemSettings.json` |
-| Config (templates) | `Zentra.Identity.Infrastructure.Resources/Settings/NotificationTemplateSettings.json` |
-| Config types | `Zentra.Identity.Domain/Configurations/Api/SystemConfig.cs`, `Zentra.Identity.Domain/ZentraConfig.cs` |
-| Load & validate | `Zentra.Identity.API/Extensions/ZentraExtension.cs` |
-| Template names | `Zentra.Identity.Domain/Constants/Constants.cs` (NotificationConstants) |
-| Purpose → template | `Zentra.Identity.Application/.../Api/Utils/NotificationUtil.cs` |
-| Placeholders | `Zentra.Identity.Infrastructure/Extension/TemplateExtension.cs` |
-| Email send | `Zentra.Identity.Infrastructure/Implementation/EmailService.cs` |
-| SMS send | `Zentra.Identity.Infrastructure/Implementation/SmsService.cs` |
-| Callers | `Zentra.Identity.Application/.../Api/Services/UserTokenService.cs`, `UserAccountService` (partial) |
+| Config (system) | `HCL.CS.Identity.Infrastructure.Resources/Settings/SystemSettings.json` |
+| Config (templates) | `HCL.CS.Identity.Infrastructure.Resources/Settings/NotificationTemplateSettings.json` |
+| Config types | `HCL.CS.Identity.Domain/Configurations/Api/SystemConfig.cs`, `HCL.CS.Identity.Domain/HclCsConfig.cs` |
+| Load & validate | `HCL.CS.Identity.API/Extensions/HclCsExtension.cs` |
+| Template names | `HCL.CS.Identity.Domain/Constants/Constants.cs` (NotificationConstants) |
+| Purpose → template | `HCL.CS.Identity.Application/.../Api/Utils/NotificationUtil.cs` |
+| Placeholders | `HCL.CS.Identity.Infrastructure/Extension/TemplateExtension.cs` |
+| Email send | `HCL.CS.Identity.Infrastructure/Implementation/EmailService.cs` |
+| SMS send | `HCL.CS.Identity.Infrastructure/Implementation/SmsService.cs` |
+| Callers | `HCL.CS.Identity.Application/.../Api/Services/UserTokenService.cs`, `UserAccountService` (partial) |
 
 This completes the plan and analysis of how Email, SMS, and mail/notification templates are configured and used in the project.

@@ -1,4 +1,4 @@
-# GitHub Configuration Guide — Zentra Platform
+# GitHub Configuration Guide — HCL.CS Platform
 
 This document explains every `.github` configuration file in this repository, what it does, how GitHub uses it, and how the team should interact with it.
 
@@ -8,9 +8,9 @@ This document explains every `.github` configuration file in this repository, wh
 
 | Field | Value |
 |---|---|
-| **Repo** | `future-beyond-tech/fbt-platform-zentra` |
+| **Repo** | `hcltech/hcltech-platform-hcl-cs` |
 | **Stack** | .NET 8, IdentityServer / OpenIddict, Entity Framework Core |
-| **Components** | Identity Server, Admin Portal (`Zentra-admin/`), Docker, Kubernetes |
+| **Components** | Identity Server, Admin Portal (`HCL.CS-admin/`), Docker, Kubernetes |
 | **Test Command** | `dotnet test` |
 
 ---
@@ -44,10 +44,10 @@ Tells GitHub **who must review and approve pull requests** before they can be me
 ### Our Configuration
 
 ```
-* @future-beyond-tech
+* @hcltech
 ```
 
-Every file in the repo requires approval from `@future-beyond-tech`.
+Every file in the repo requires approval from `@hcltech`.
 
 ### How to Enable Enforcement
 
@@ -62,12 +62,12 @@ Every file in the repo requires approval from `@future-beyond-tech`.
 When you want per-folder ownership, e.g.:
 
 ```
-/src/                      @future-beyond-tech/identity
-/Zentra-admin/             @future-beyond-tech/identity
-/docker/                   @future-beyond-tech/devops
-/k8s/                      @future-beyond-tech/devops
-/installer/                @future-beyond-tech/devops
-/.github/                  @future-beyond-tech/devops
+/src/                      @hcltech/identity
+/HCL.CS-admin/             @hcltech/identity
+/docker/                   @hcltech/devops
+/k8s/                      @hcltech/devops
+/installer/                @hcltech/devops
+/.github/                  @hcltech/devops
 ```
 
 ---
@@ -227,7 +227,7 @@ Go to **Settings → Code security and analysis** → Enable:
    → Security scan runs                            ← workflows/security-scan.yml
 
 5. CODE REVIEW
-   → @future-beyond-tech auto-requested            ← CODEOWNERS
+   → @hcltech auto-requested            ← CODEOWNERS
    → Reviewer approves (extra scrutiny for auth changes)
 
 6. MERGE & DEPLOY
@@ -250,7 +250,7 @@ Go to **Settings → Code security and analysis** → Enable:
   - Require CI status checks to pass
 - [ ] Enable Dependabot alerts and security updates
 - [ ] Create labels: `bug`, `enhancement`, `dependencies`, `nuget`, `ci`, `docker`
-- [ ] Add `@future-beyond-tech` to repo with **Write** access
+- [ ] Add `@hcltech` to repo with **Write** access
 - [ ] Enable **private vulnerability reporting** (Settings → Code security → Private vulnerability reporting)
 
 ---

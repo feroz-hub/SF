@@ -1,8 +1,8 @@
-# Google Sign-In Integration (Zentra)
+# Google Sign-In Integration (HCL.CS)
 
 ## Overview
 
-Zentra now supports Google Sign-In in addition to Local and LDAP providers.
+HCL.CS now supports Google Sign-In in addition to Local and LDAP providers.
 
 - Start endpoint: `GET /auth/external/google/start`
 - Callback endpoint: `GET /auth/external/google/callback`
@@ -16,9 +16,9 @@ The implementation uses OpenID Connect Authorization Code flow with server-side 
 ```mermaid
 sequenceDiagram
     participant U as User Browser
-    participant Z as Zentra Demo Server
+    participant Z as HCL.CS Demo Server
     participant G as Google OIDC
-    participant DB as Zentra DB
+    participant DB as HCL.CS DB
 
     U->>Z: GET /auth/external/google/start?returnUrl=...&tenantId=...
     Z->>G: OIDC challenge (state/correlation/nonce)
@@ -64,7 +64,7 @@ On first Google sign-in:
 4. If no match, auto-provision only when enabled by policy.
 5. If auto-provision is disabled, login fails with account-not-found message.
 
-Linked external identities are stored in `Zentra_ExternalIdentities`.
+Linked external identities are stored in `HclCs_ExternalIdentities`.
 
 ## Security Controls
 
@@ -83,7 +83,7 @@ Linked external identities are stored in `Zentra_ExternalIdentities`.
 
 ## Configuration
 
-Configure in `demos/Zentra.Demo.Server/appsettings*.json` or environment overrides:
+Configure in `demos/HCL.CS.Demo.Server/appsettings*.json` or environment overrides:
 
 ```json
 {
@@ -117,13 +117,13 @@ Environment variable examples:
 
 1. Create OAuth Client ID (Web application).
 2. Add authorized redirect URI:
-   - `https://<your-zentra-host>/auth/external/google/signin-callback`
+   - `https://<your-hcl-cs-host>/auth/external/google/signin-callback`
 3. Add authorized JavaScript origin if needed for your deployment.
 4. Configure client id/secret in secure secret storage (not source control).
 
 ## Database Changes
 
-`Zentra_ExternalIdentities` added with:
+`HclCs_ExternalIdentities` added with:
 
 - Unique: `(Provider, Issuer, Subject)`
 - Indexes: `(UserId)`, `(TenantId, Email)`
@@ -133,13 +133,13 @@ Migration scripts are under `scripts/migrations/20260304_externalidentities_*.sq
 
 ## Troubleshooting
 
-### Zentra-admin: "This localhost page can't be found" (HTTP 404) when clicking "Sign in with Google"
+### HCL.CS-admin: "This localhost page can't be found" (HTTP 404) when clicking "Sign in with Google"
 
-The admin sends the browser to `{ZENTRA_DEMO_SERVER_BASE_URL}/auth/external/google/start`. A 404 usually means one of:
+The admin sends the browser to `{HCL_CS_DEMO_SERVER_BASE_URL}/auth/external/google/start`. A 404 usually means one of:
 
-1. **Wrong URL** – The URL is not the **Zentra Demo Server** (the project that has the Google routes). The `/auth/external/google/start` route exists only in **Zentra.Demo.Server**, not in the Identity API or Gateway alone.
-   - **Fix:** Run the **Demo Server** project (`demos/Zentra.Demo.Server`). If it runs on a different port than your issuer (e.g. Demo Server on `https://localhost:5002` and Identity on `https://localhost:5001`), set in the admin `.env`:
-     - `ZENTRA_DEMO_SERVER_BASE_URL=https://localhost:5002` (use the port where the Demo Server actually runs).
+1. **Wrong URL** – The URL is not the **HCL.CS Demo Server** (the project that has the Google routes). The `/auth/external/google/start` route exists only in **HCL.CS.Demo.Server**, not in the Identity API or Gateway alone.
+   - **Fix:** Run the **Demo Server** project (`demos/HCL.CS.Demo.Server`). If it runs on a different port than your issuer (e.g. Demo Server on `https://localhost:5002` and Identity on `https://localhost:5001`), set in the admin `.env`:
+     - `HCL_CS_DEMO_SERVER_BASE_URL=https://localhost:5002` (use the port where the Demo Server actually runs).
 
 2. **Google sign-in disabled** – If the request reaches the Demo Server but Google is disabled, the server now returns **503** with the message "Google sign-in is not enabled" instead of 404.
    - **Fix:** In Demo Server config (e.g. `appsettings.Development.json` or environment), set:
@@ -147,4 +147,4 @@ The admin sends the browser to `{ZENTRA_DEMO_SERVER_BASE_URL}/auth/external/goog
      - `Authentication:Google:ClientId=<your-google-client-id>`
      - `Authentication:Google:ClientSecret=<your-google-client-secret>`
 
-3. **Demo Server not running** – Ensure the Demo Server app is started (e.g. run `demos/Zentra.Demo.Server` and confirm it listens on the URL you use for `ZENTRA_DEMO_SERVER_BASE_URL`).
+3. **Demo Server not running** – Ensure the Demo Server app is started (e.g. run `demos/HCL.CS.Demo.Server` and confirm it listens on the URL you use for `HCL_CS_DEMO_SERVER_BASE_URL`).

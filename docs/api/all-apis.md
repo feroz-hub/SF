@@ -1,10 +1,10 @@
-# Zentra API Inventory
+# HCL.CS API Inventory
 
 Generated from route sources in code (gateway handlers, endpoint registration, controller attributes, and program mappings).
 
 ## Identity Management APIs (Gateway)
 
-These endpoints are served by `UseZentraApi` and currently processed as `POST` routes.
+These endpoints are served by `UseHclCsApi` and currently processed as `POST` routes.
 
 | Method | Path | Handler | Route Key |
 |---|---|---|---|
@@ -151,7 +151,7 @@ These endpoints are served by `UseZentraApi` and currently processed as `POST` r
 
 ## OAuth/OIDC Endpoints
 
-These endpoints are served by `UseZentraEndpoint` through registered `SecurityEndpointModel` handlers.
+These endpoints are served by `UseHclCsEndpoint` through registered `SecurityEndpointModel` handlers.
 
 | Method | Path | Handler |
 |---|---|---|

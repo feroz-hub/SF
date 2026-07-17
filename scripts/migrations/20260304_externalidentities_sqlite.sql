@@ -1,6 +1,6 @@
 -- Apply once per SQLite database.
-CREATE TABLE IF NOT EXISTS "Zentra_ExternalIdentities" (
-    "Id" TEXT NOT NULL CONSTRAINT "PK_Zentra_ExternalIdentities" PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS "HclCs_ExternalIdentities" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_HclCs_ExternalIdentities" PRIMARY KEY,
     "IsDeleted" INTEGER NOT NULL DEFAULT 0,
     "CreatedOn" TEXT NOT NULL,
     "ModifiedOn" TEXT NULL,
@@ -16,15 +16,15 @@ CREATE TABLE IF NOT EXISTS "Zentra_ExternalIdentities" (
     "EmailVerified" INTEGER NOT NULL,
     "LinkedAt" TEXT NOT NULL,
     "LastSignInAt" TEXT NULL,
-    CONSTRAINT "FK_Zentra_ExternalIdentities_Zentra_Users_UserId"
-        FOREIGN KEY ("UserId") REFERENCES "Zentra_Users" ("Id") ON DELETE RESTRICT
+    CONSTRAINT "FK_HclCs_ExternalIdentities_HclCs_Users_UserId"
+        FOREIGN KEY ("UserId") REFERENCES "HclCs_Users" ("Id") ON DELETE RESTRICT
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS "IX_EXTID_PROVIDER_ISSUER_SUBJECT"
-    ON "Zentra_ExternalIdentities" ("Provider", "Issuer", "Subject");
+    ON "HclCs_ExternalIdentities" ("Provider", "Issuer", "Subject");
 
 CREATE INDEX IF NOT EXISTS "IX_EXTID_USERID"
-    ON "Zentra_ExternalIdentities" ("UserId");
+    ON "HclCs_ExternalIdentities" ("UserId");
 
 CREATE INDEX IF NOT EXISTS "IX_EXTID_TENANT_EMAIL"
-    ON "Zentra_ExternalIdentities" ("TenantId", "Email");
+    ON "HclCs_ExternalIdentities" ("TenantId", "Email");

@@ -1,4 +1,4 @@
-# Zentra Identity Platform
+# HCL.CS Identity Platform
 ## OAuth 2.0 and OpenID Connect Technical Security Documentation
 
 **Document Version:** 1.0  
@@ -32,11 +32,11 @@
 
 ### 1.1 System Overview
 
-The Zentra Identity Platform is a comprehensive, production-grade identity and access management system implementing the OAuth 2.0 authorization framework and OpenID Connect (OIDC) authentication layer. The system is architected as a security-first identity provider (IdP) capable of serving enterprise-scale authentication and authorization requirements.
+The HCL.CS Identity Platform is a comprehensive, production-grade identity and access management system implementing the OAuth 2.0 authorization framework and OpenID Connect (OIDC) authentication layer. The system is architected as a security-first identity provider (IdP) capable of serving enterprise-scale authentication and authorization requirements.
 
 ### 1.2 Standards Compliance
 
-The Zentra platform maintains strict compliance with the following industry standards:
+The HCL.CS platform maintains strict compliance with the following industry standards:
 
 | Standard | Description |
 |----------|-------------|
@@ -76,7 +76,7 @@ Compliance with these standards provides:
 
 ### 2.1 High-Level Architecture
 
-The Zentra platform follows a layered Clean Architecture pattern with clear separation of concerns:
+The HCL.CS platform follows a layered Clean Architecture pattern with clear separation of concerns:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -143,7 +143,7 @@ The Zentra platform follows a layered Clean Architecture pattern with clear sepa
 
 ### 2.3 Role Definitions
 
-#### 2.3.1 Identity Provider (Zentra)
+#### 2.3.1 Identity Provider (HCL.CS)
 - Authenticates resource owners (end users)
 - Issues access tokens, ID tokens, and refresh tokens
 - Validates client applications
@@ -168,11 +168,11 @@ The Zentra platform follows a layered Clean Architecture pattern with clear sepa
 
 ### 3.1 Flow Overview
 
-The Zentra platform implements the Authorization Code Flow as defined in RFC 6749 Section 4.1, with mandatory PKCE extension per RFC 7636.
+The HCL.CS platform implements the Authorization Code Flow as defined in RFC 6749 Section 4.1, with mandatory PKCE extension per RFC 7636.
 
 ```
 ┌─────────┐                                           ┌─────────────────┐
-│  Client │                                           │  Zentra IdP     │
+│  Client │                                           │  HCL.CS IdP     │
 │         │                                           │                 │
 │         │──(A) Authorization Request + PKCE──────▶  │                 │
 │         │     response_type=code                     │                 │
@@ -319,7 +319,7 @@ All errors conform to RFC 6749 Section 5.2 and RFC 6750:
 
 ### 4.1 PKCE Rationale
 
-Proof Key for Code Exchange (PKCE) mitigates authorization code interception attacks, particularly for public clients. The Zentra platform mandates PKCE for all authorization code flows.
+Proof Key for Code Exchange (PKCE) mitigates authorization code interception attacks, particularly for public clients. The HCL.CS platform mandates PKCE for all authorization code flows.
 
 ### 4.2 S256 Enforcement
 
@@ -417,7 +417,7 @@ ID tokens are JWTs conforming to RFC 7519 with OIDC-specific claims:
 **Payload:**
 ```json
 {
-  "iss": "https://identity.zentra.example",
+  "iss": "https://identity.hcl-cs.example",
   "sub": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "aud": "client-application-id",
   "exp": 1704067200,
@@ -513,14 +513,14 @@ Returns OIDC Discovery 1.0 compliant metadata:
 
 ```json
 {
-  "issuer": "https://identity.zentra.example",
-  "authorization_endpoint": "https://identity.zentra.example/security/authorize",
-  "token_endpoint": "https://identity.zentra.example/security/token",
-  "userinfo_endpoint": "https://identity.zentra.example/security/userinfo",
-  "jwks_uri": "https://identity.zentra.example/.well-known/openid-configuration/jwks",
-  "end_session_endpoint": "https://identity.zentra.example/security/endsession",
-  "introspection_endpoint": "https://identity.zentra.example/security/introspect",
-  "revocation_endpoint": "https://identity.zentra.example/security/revocation",
+  "issuer": "https://identity.hcl-cs.example",
+  "authorization_endpoint": "https://identity.hcl-cs.example/security/authorize",
+  "token_endpoint": "https://identity.hcl-cs.example/security/token",
+  "userinfo_endpoint": "https://identity.hcl-cs.example/security/userinfo",
+  "jwks_uri": "https://identity.hcl-cs.example/.well-known/openid-configuration/jwks",
+  "end_session_endpoint": "https://identity.hcl-cs.example/security/endsession",
+  "introspection_endpoint": "https://identity.hcl-cs.example/security/introspect",
+  "revocation_endpoint": "https://identity.hcl-cs.example/security/revocation",
   "scopes_supported": ["openid", "profile", "email", "offline_access"],
   "response_types_supported": ["code"],
   "response_modes_supported": ["query", "form_post"],
@@ -560,7 +560,7 @@ Publishes public keys for token signature verification:
 
 ### 6.1 Signing Algorithms
 
-The Zentra platform supports the following signing algorithms:
+The HCL.CS platform supports the following signing algorithms:
 
 | Algorithm | Type | Usage | Status |
 |-----------|------|-------|--------|
@@ -1293,7 +1293,7 @@ The platform supports horizontal scaling:
 
 ### 15.1 Formal Declaration
 
-The Zentra Identity Platform formally declares compliance with the following specifications and security requirements:
+The HCL.CS Identity Platform formally declares compliance with the following specifications and security requirements:
 
 #### 15.1.1 Authorization Code Flow
 
@@ -1383,7 +1383,7 @@ This implementation is suitable for security certifications including:
 
 ### 15.3 Document Approval
 
-This document serves as the authoritative technical specification for the Zentra Identity Platform's OAuth 2.0 and OpenID Connect implementation.
+This document serves as the authoritative technical specification for the HCL.CS Identity Platform's OAuth 2.0 and OpenID Connect implementation.
 
 ---
 

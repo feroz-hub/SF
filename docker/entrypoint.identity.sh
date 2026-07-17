@@ -2,26 +2,26 @@
 set -euo pipefail
 
 APP_DIR="/app"
-DB_CONNECTION_STRING="${ZENTRA_DB_CONNECTION_STRING:-}"
+DB_CONNECTION_STRING="${HCL_CS_DB_CONNECTION_STRING:-}"
 PSQL_CONNECTION_STRING=""
-SEED_SCRIPT="${APP_DIR}/scripts/seed/PostgreSql/ZentraPostgreSqlV1.sql"
+SEED_SCRIPT="${APP_DIR}/scripts/seed/PostgreSql/HclCsPostgreSqlV1.sql"
 MIGRATIONS_DIR="${APP_DIR}/scripts/migrations"
-HTTPS_DIR="${ZENTRA_HTTPS_DIR:-${APP_DIR}/https}"
-HTTPS_CERT_PATH="${ZENTRA_HTTPS_CERT_PATH:-${HTTPS_DIR}/zentra-devcert.pfx}"
-HTTPS_CERT_PASSWORD="${ZENTRA_HTTPS_CERT_PASSWORD:-zentra-dev-cert}"
-HTTPS_CERT_PEM="${HTTPS_DIR}/zentra-devcert.crt"
-HTTPS_KEY_PEM="${HTTPS_DIR}/zentra-devcert.key"
+HTTPS_DIR="${HCL_CS_HTTPS_DIR:-${APP_DIR}/https}"
+HTTPS_CERT_PATH="${HCL_CS_HTTPS_CERT_PATH:-${HTTPS_DIR}/hcl-cs-devcert.pfx}"
+HTTPS_CERT_PASSWORD="${HCL_CS_HTTPS_CERT_PASSWORD:-hcl-cs-dev-cert}"
+HTTPS_CERT_PEM="${HTTPS_DIR}/hcl-cs-devcert.crt"
+HTTPS_KEY_PEM="${HTTPS_DIR}/hcl-cs-devcert.key"
 ASPNETCORE_URLS_VALUE="${ASPNETCORE_URLS:-}"
 
 log() {
-  printf '[zentra-entrypoint] %s\n' "$*"
+  printf '[hcl-cs-entrypoint] %s\n' "$*"
 }
 
 configure_binding_url() {
   if [[ -n "${PORT:-}" ]] && [[ -z "${ASPNETCORE_URLS_VALUE}" || "${ASPNETCORE_URLS_VALUE}" == "https://+:8443" ]]; then
     ASPNETCORE_URLS_VALUE="http://+:${PORT}"
     export ASPNETCORE_URLS="${ASPNETCORE_URLS_VALUE}"
-    log "Detected Railway-style PORT=${PORT}; binding Zentra over internal HTTP."
+    log "Detected Railway-style PORT=${PORT}; binding HCL.CS over internal HTTP."
   fi
 }
 
@@ -71,7 +71,7 @@ build_psql_connection_string() {
 
 wait_for_postgres() {
   if [[ -z "${DB_CONNECTION_STRING}" ]]; then
-    log "ZENTRA_DB_CONNECTION_STRING is not set. Skipping PostgreSQL bootstrap."
+    log "HCL_CS_DB_CONNECTION_STRING is not set. Skipping PostgreSQL bootstrap."
     return 0
   fi
 
@@ -79,10 +79,10 @@ wait_for_postgres() {
 
   if [[ -z "${PSQL_CONNECTION_STRING}" ]]; then
     if [[ "${DB_CONNECTION_STRING}" == postgres://* || "${DB_CONNECTION_STRING}" == postgresql://* ]]; then
-      log "ZENTRA_DB_CONNECTION_STRING is in URL format. Railway DATABASE_URL is not valid here."
+      log "HCL_CS_DB_CONNECTION_STRING is in URL format. Railway DATABASE_URL is not valid here."
       log "Use an Npgsql-style string: Host=...;Port=...;Database=...;Username=...;Password=...;SSL Mode=Require;"
     else
-      log "ZENTRA_DB_CONNECTION_STRING could not be parsed for PostgreSQL bootstrap."
+      log "HCL_CS_DB_CONNECTION_STRING could not be parsed for PostgreSQL bootstrap."
     fi
     return 1
   fi
@@ -154,7 +154,7 @@ ensure_https_certificate() {
     return 0
   fi
 
-  log "Generating self-signed HTTPS certificate for Zentra."
+  log "Generating self-signed HTTPS certificate for HCL.CS."
   openssl req \
     -x509 \
     -nodes \
@@ -179,7 +179,7 @@ main() {
   configure_binding_url
   apply_database_bootstrap
   ensure_https_certificate
-  exec dotnet Zentra.DemoServerApp.dll
+  exec dotnet HCL.CS.DemoServerApp.dll
 }
 
 main "$@"

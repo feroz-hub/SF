@@ -1,11 +1,11 @@
-# Zentra
+# HCL.CS
 
 ![.NET](https://img.shields.io/badge/.NET-8.0-blue)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-8.0-purple)
 ![OAuth 2.0](https://img.shields.io/badge/OAuth-2.0-green)
 ![OpenID Connect](https://img.shields.io/badge/OpenID-Connect-orange)
 
-**Zentra** is a comprehensive OAuth 2.0 and OpenID Connect (OIDC) authentication and authorization framework built on
+**HCL.CS** is a comprehensive OAuth 2.0 and OpenID Connect (OIDC) authentication and authorization framework built on
 .NET 8.0. It provides enterprise-grade identity management, user authentication, role-based access control (RBAC), and
 token-based security for modern applications.
 
@@ -20,9 +20,9 @@ token-based security for modern applications.
 
 ---
 
-## 🎯 What is Zentra?
+## 🎯 What is HCL.CS?
 
-Zentra is a complete identity and access management solution that:
+HCL.CS is a complete identity and access management solution that:
 
 - ✅ Manages user authentication and authorization
 - ✅ Implements OAuth 2.0 and OpenID Connect protocols
@@ -117,7 +117,7 @@ The project follows **Clean Architecture** principles with clear separation of c
 ## 📁 Project Structure
 
 ```
-Zentra/
+HCL.CS/
 ├── Source/                 # Core framework
 │   ├── Domain/            # Business entities & models
 │   ├── DomainServices/    # Repository interfaces
@@ -161,7 +161,7 @@ Zentra/
 ```bash
 # 1. Clone the repository
 git clone <repository-url>
-cd Zentra
+cd HCL.CS
 
 # 2. Restore packages
 dotnet restore
@@ -195,7 +195,7 @@ For detailed setup instructions, see **[Getting Started Guide](GETTING_STARTED.m
 
 ## 🔒 Security
 
-Zentra implements security best practices:
+HCL.CS implements security best practices:
 
 - ✅ Password hashing with ASP.NET Core Identity
 - ✅ HTTPS enforcement

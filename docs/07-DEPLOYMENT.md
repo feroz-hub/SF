@@ -1,6 +1,6 @@
-# Zentra Deployment Guide
+# HCL.CS Deployment Guide
 
-**Document ID:** ZENTRA-DOC-07-DEPLOYMENT  
+**Document ID:** HCL.CS-DOC-07-DEPLOYMENT  
 **Version:** 1.0.0  
 **Classification:** Internal Use  
 **Last Updated:** 2026-03-01  
@@ -35,13 +35,13 @@
 ```bash
 # 1. Clone repository
 git clone <repository-url>
-cd Zentra
+cd HCL.CS
 
 # 2. Restore dependencies
-dotnet restore Zentra.sln
+dotnet restore HCL.CS.sln
 
 # 3. Build solution
-dotnet build Zentra.sln
+dotnet build HCL.CS.sln
 
 # 4. Run with demo script
 ./scripts/run-local-demo.sh \
@@ -54,8 +54,8 @@ dotnet build Zentra.sln
 #### Identity Server (Demo)
 ```bash
 dotnet run \
-  --project demos/Zentra.Demo.Server/Zentra.DemoServerApp.csproj \
-  --launch-profile "Zentra.DemoServerApp"
+  --project demos/HCL.CS.Demo.Server/HCL.CS.DemoServerApp.csproj \
+  --launch-profile "HCL.CS.DemoServerApp"
 ```
 - URL: `https://localhost:5001`
 - Discovery: `https://localhost:5001/.well-known/openid-configuration`
@@ -63,7 +63,7 @@ dotnet run \
 #### Installer MVC
 ```bash
 dotnet run \
-  --project installer/Zentra.Installer.Mvc/ZentraInstallerMVC.csproj \
+  --project installer/HCL.CS.Installer.Mvc/HclCsInstallerMVC.csproj \
   --launch-profile "https"
 ```
 - URL: `https://localhost:7039`
@@ -71,8 +71,8 @@ dotnet run \
 #### MVC Client (Demo)
 ```bash
 dotnet run \
-  --project demos/Zentra.Demo.Client.Mvc/Zentra.DemoClientMvc.csproj \
-  --launch-profile "Zentra.DemoClientCoreMvcApp"
+  --project demos/HCL.CS.Demo.Client.Mvc/HCL.CS.DemoClientMvc.csproj \
+  --launch-profile "HCL.CS.DemoClientCoreMvcApp"
 ```
 - URL: `https://localhost:5003`
 
@@ -84,12 +84,12 @@ Default development uses SQLite:
 // appsettings.Development.json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Data Source=.data/zentra_identity.db;Mode=ReadWriteCreate;Cache=Shared;"
+    "DefaultConnection": "Data Source=.data/hclCs_identity.db;Mode=ReadWriteCreate;Cache=Shared;"
   }
 }
 ```
 
-SQLite database location: `./.data/zentra_identity.db`
+SQLite database location: `./.data/hclCs_identity.db`
 
 ---
 
@@ -139,20 +139,20 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["src/Identity/Zentra.Identity.API/Zentra.Hosting.csproj", "src/Identity/Zentra.Identity.API/"]
+COPY ["src/Identity/HCL.CS.Identity.API/HCL.CS.Hosting.csproj", "src/Identity/HCL.CS.Identity.API/"]
 # ... additional COPY commands for dependencies
-RUN dotnet restore "src/Identity/Zentra.Identity.API/Zentra.Hosting.csproj"
+RUN dotnet restore "src/Identity/HCL.CS.Identity.API/HCL.CS.Hosting.csproj"
 COPY . .
-WORKDIR "/src/src/Identity/Zentra.Identity.API"
-RUN dotnet build "Zentra.Hosting.csproj" -c Release -o /app/build
+WORKDIR "/src/src/Identity/HCL.CS.Identity.API"
+RUN dotnet build "HCL.CS.Hosting.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Zentra.Hosting.csproj" -c Release -o /app/publish
+RUN dotnet publish "HCL.CS.Hosting.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Zentra.Hosting.dll"]
+ENTRYPOINT ["dotnet", "HCL.CS.Hosting.dll"]
 ```
 
 ### 2.3 Docker Compose Configuration
@@ -167,12 +167,12 @@ services:
     build:
       context: ..
       dockerfile: docker/identity-api.Dockerfile
-    image: zentra/identity-api:local
+    image: hcl-cs/identity-api:local
     ports:
       - '8080:8080'
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: "Host=postgres;Database=ZentraIdentity;Username=zentra;Password=${DB_PASSWORD}"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Database=HclCsIdentity;Username=hcl-cs;Password=${DB_PASSWORD}"
     depends_on:
       - postgres
       - redis
@@ -180,9 +180,9 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_USER: zentra
+      POSTGRES_USER: hcl-cs
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ZentraIdentity
+      POSTGRES_DB: HclCsIdentity
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -253,8 +253,8 @@ flowchart TB
         end
         
         subgraph "Configuration"
-            CM[ConfigMap<br/>zentra-config]
-            SECRET[Secret<br/>zentra-secrets]
+            CM[ConfigMap<br/>hcl-cs-config]
+            SECRET[Secret<br/>hcl-cs-secrets]
         end
         
         subgraph "External"
@@ -291,10 +291,10 @@ flowchart TB
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zentra-config
+  name: hcl-cs-config
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
-  TokenSettings__TokenConfig__IssuerUri: "https://identity.zentra.example"
+  TokenSettings__TokenConfig__IssuerUri: "https://identity.hcl-cs.example"
   Logging__LogLevel__Default: "Information"
 ```
 
@@ -306,33 +306,33 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zentra-identity
+  name: hcl-cs-identity
   labels:
-    app: zentra-identity
+    app: hcl-cs-identity
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: zentra-identity
+      app: hcl-cs-identity
   template:
     metadata:
       labels:
-        app: zentra-identity
+        app: hcl-cs-identity
     spec:
       containers:
         - name: identity-api
-          image: zentra/identity-api:latest
+          image: hcl-cs/identity-api:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: zentra-config
+                name: hcl-cs-config
           env:
             - name: ConnectionStrings__DefaultConnection
               valueFrom:
                 secretKeyRef:
-                  name: zentra-secrets
+                  name: hcl-cs-secrets
                   key: db-connection
           livenessProbe:
             httpGet:
@@ -363,9 +363,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: zentra-identity
+  name: hcl-cs-identity
   labels:
-    app: zentra-identity
+    app: hcl-cs-identity
 spec:
   type: ClusterIP
   ports:
@@ -374,7 +374,7 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: zentra-identity
+    app: hcl-cs-identity
 ```
 
 ### 3.6 Ingress
@@ -385,7 +385,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: zentra-ingress
+  name: hcl-cs-ingress
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "10m"
@@ -394,17 +394,17 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - identity.zentra.example
-      secretName: zentra-tls
+        - identity.hcl-cs.example
+      secretName: hcl-cs-tls
   rules:
-    - host: identity.zentra.example
+    - host: identity.hcl-cs.example
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: zentra-identity
+                name: hcl-cs-identity
                 port:
                   number: 8080
 ```
@@ -413,30 +413,30 @@ spec:
 
 ```bash
 # 1. Create namespace
-kubectl create namespace zentra
+kubectl create namespace hcl-cs
 
 # 2. Create secrets
-kubectl create secret generic zentra-secrets \
-  --from-literal=db-connection="Server=postgres.example.com;Database=ZentraIdentity;..." \
+kubectl create secret generic hcl-cs-secrets \
+  --from-literal=db-connection="Server=postgres.example.com;Database=HclCsIdentity;..." \
   --from-literal=signing-key="..." \
-  -n zentra
+  -n hcl-cs
 
 # 3. Apply manifests
-kubectl apply -f k8s/configmap.yaml -n zentra
-kubectl apply -f k8s/identity-deployment.yaml -n zentra
-kubectl apply -f k8s/identity-service.yaml -n zentra
-kubectl apply -f k8s/ingress.yaml -n zentra
+kubectl apply -f k8s/configmap.yaml -n hcl-cs
+kubectl apply -f k8s/identity-deployment.yaml -n hcl-cs
+kubectl apply -f k8s/identity-service.yaml -n hcl-cs
+kubectl apply -f k8s/ingress.yaml -n hcl-cs
 
 # 4. Verify deployment
-kubectl get pods -n zentra
-kubectl get svc -n zentra
-kubectl get ingress -n zentra
+kubectl get pods -n hcl-cs
+kubectl get svc -n hcl-cs
+kubectl get ingress -n hcl-cs
 
 # 5. View logs
-kubectl logs -f deployment/zentra-identity -n zentra
+kubectl logs -f deployment/hcl-cs-identity -n hcl-cs
 
 # 6. Scale deployment
-kubectl scale deployment zentra-identity --replicas=3 -n zentra
+kubectl scale deployment hcl-cs-identity --replicas=3 -n hcl-cs
 ```
 
 ### 3.8 Kubernetes Resource Recommendations
@@ -478,7 +478,7 @@ flowchart TB
   },
   "TokenSettings": {
     "TokenConfig": {
-      "IssuerUri": "https://identity.zentra.example",
+      "IssuerUri": "https://identity.hcl-cs.example",
       "ShowKeySet": true,
       "CachingLifetime": 3600
     },
@@ -591,14 +591,14 @@ flowchart LR
 **User Secrets (Recommended for local dev):**
 ```bash
 # Initialize user secrets
-dotnet user-secrets init --project src/Identity/Zentra.Identity.API
+dotnet user-secrets init --project src/Identity/HCL.CS.Identity.API
 
 # Set secrets
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" "..." \
-  --project src/Identity/Zentra.Identity.API
+  --project src/Identity/HCL.CS.Identity.API
 
 dotnet user-secrets set "TokenSettings:TokenConfig:SigningKey" "..." \
-  --project src/Identity/Zentra.Identity.API
+  --project src/Identity/HCL.CS.Identity.API
 ```
 
 ### 6.3 Docker Secrets
@@ -622,14 +622,14 @@ secrets:
 
 ```bash
 # Create secret from literal
-kubectl create secret generic zentra-secrets \
+kubectl create secret generic hcl-cs-secrets \
   --from-literal=db-connection="..." \
-  -n zentra
+  -n hcl-cs
 
 # Create secret from file
-kubectl create secret generic zentra-keys \
+kubectl create secret generic hcl-cs-keys \
   --from-file=signing-key.pem=./keys/private.pem \
-  -n zentra
+  -n hcl-cs
 ```
 
 ```yaml
@@ -638,7 +638,7 @@ env:
   - name: ConnectionStrings__DefaultConnection
     valueFrom:
       secretKeyRef:
-        name: zentra-secrets
+        name: hcl-cs-secrets
         key: db-connection
 
 # Mount secret as file
@@ -650,7 +650,7 @@ volumeMounts:
 volumes:
   - name: signing-key
     secret:
-      secretName: zentra-keys
+      secretName: hcl-cs-keys
 ```
 
 ### 6.5 Cloud Secret Management
@@ -689,7 +689,7 @@ volumes:
 echo $ConnectionStrings__DefaultConnection
 
 # Test database connectivity
-docker exec -it postgres psql -U zentra -d ZentraIdentity -c "SELECT 1;"
+docker exec -it postgres psql -U hcl-cs -d HclCsIdentity -c "SELECT 1;"
 
 # Check firewall rules
 # Ensure container/host can reach database port
@@ -742,7 +742,7 @@ docker-compose logs identity-api | grep -i error
 docker-compose logs -f identity-api
 
 # Search by correlation ID
-kubectl logs -n zentra deployment/zentra-identity | grep "correlation-id-value"
+kubectl logs -n hcl-cs deployment/hcl-cs-identity | grep "correlation-id-value"
 ```
 
 ### 7.3 Health Check Failures
@@ -769,20 +769,20 @@ kubectl logs -n zentra deployment/zentra-identity | grep "correlation-id-value"
 docker-compose restart identity-api
 
 # Kubernetes
-kubectl rollout restart deployment/zentra-identity -n zentra
-kubectl rollout status deployment/zentra-identity -n zentra
+kubectl rollout restart deployment/hcl-cs-identity -n hcl-cs
+kubectl rollout status deployment/hcl-cs-identity -n hcl-cs
 ```
 
 #### Database Recovery
 
 ```bash
 # Restore from backup (PostgreSQL example)
-pg_restore -U zentra -d ZentraIdentity --clean backup.dump
+pg_restore -U hcl-cs -d HclCsIdentity --clean backup.dump
 
 # Run pending migrations
 dotnet ef database update \
-  --project src/Identity/Zentra.Identity.Persistence \
-  --startup-project src/Identity/Zentra.Identity.API
+  --project src/Identity/HCL.CS.Identity.Persistence \
+  --startup-project src/Identity/HCL.CS.Identity.API
 ```
 
 ---

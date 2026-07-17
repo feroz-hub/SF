@@ -1,6 +1,6 @@
-# Zentra System Overview
+# HCL.CS System Overview
 
-**Document ID:** ZENTRA-DOC-01-SYSTEM-OVERVIEW  
+**Document ID:** HCL.CS-DOC-01-SYSTEM-OVERVIEW  
 **Version:** 1.0.0  
 **Classification:** Internal Use  
 **Last Updated:** 2026-03-01  
@@ -21,9 +21,9 @@
 
 ## 1. Executive Summary
 
-### 1.1 What Zentra Is
+### 1.1 What HCL.CS Is
 
-Zentra is an **OAuth 2.0 and OpenID Connect (OIDC) identity provider** built on .NET 8. It provides enterprise-grade authentication and authorization services for modern applications. This documentation covers the **legacy implementation** of Zentra as it exists in the repository today.
+HCL.CS is an **OAuth 2.0 and OpenID Connect (OIDC) identity provider** built on .NET 8. It provides enterprise-grade authentication and authorization services for modern applications. This documentation covers the **legacy implementation** of HCL.CS as it exists in the repository today.
 
 **Key Capabilities:**
 - OAuth 2.0 token issuance (access tokens, refresh tokens, identity tokens)
@@ -35,7 +35,7 @@ Zentra is an **OAuth 2.0 and OpenID Connect (OIDC) identity provider** built on 
 
 ### 1.2 System Purpose
 
-Zentra serves as a centralized identity provider enabling:
+HCL.CS serves as a centralized identity provider enabling:
 
 | Use Case | Description |
 |----------|-------------|
@@ -48,7 +48,7 @@ Zentra serves as a centralized identity provider enabling:
 
 | Standard | Status | Implementation Reference |
 |----------|--------|-------------------------|
-| OAuth 2.0 (RFC 6749) | ✅ Implemented | `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/` |
+| OAuth 2.0 (RFC 6749) | ✅ Implemented | `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/` |
 | OpenID Connect Core 1.0 | ✅ Implemented | Same as above |
 | PKCE (RFC 7636) | ✅ Mandatory | `ProofKeyParametersSpecification.cs` |
 | JWT (RFC 7519) | ✅ Implemented | `TokenGenerationService.cs` |
@@ -64,12 +64,12 @@ Zentra serves as a centralized identity provider enabling:
 
 ```mermaid
 C4Context
-    title Zentra System Context Diagram
+    title HCL.CS System Context Diagram
     
     Person(user, "End User", "Person accessing applications")
     Person(admin, "Administrator", "Person managing identity system")
     
-    System(zentra, "Zentra Identity Platform", "OAuth 2.0 / OIDC Identity Provider")
+    System(hcl-cs, "HCL.CS Identity Platform", "OAuth 2.0 / OIDC Identity Provider")
     
     System_Ext(client_app, "Client Applications", "Web apps, SPAs, mobile apps")
     System_Ext(resource_api, "Resource APIs", "Protected APIs")
@@ -77,24 +77,24 @@ C4Context
     System_Ext(email, "Email Service", "SMTP server")
     
     Rel(user, client_app, "Authenticates to")
-    Rel(client_app, zentra, "Requests tokens from", "OAuth 2.0 / OIDC")
-    Rel(resource_api, zentra, "Validates tokens with", "JWKS / Introspection")
-    Rel(admin, zentra, "Manages via Admin API")
-    Rel(zentra, ldap, "Authenticates against", "LDAP")
-    Rel(zentra, email, "Sends notifications via", "SMTP")
+    Rel(client_app, hcl-cs, "Requests tokens from", "OAuth 2.0 / OIDC")
+    Rel(resource_api, hcl-cs, "Validates tokens with", "JWKS / Introspection")
+    Rel(admin, hcl-cs, "Manages via Admin API")
+    Rel(hcl-cs, ldap, "Authenticates against", "LDAP")
+    Rel(hcl-cs, email, "Sends notifications via", "SMTP")
 ```
 
 ### 2.2 In-Scope Components
 
 | Component | Path | Responsibility |
 |-----------|------|----------------|
-| **Identity API** | `/src/Identity/Zentra.Identity.API/` | HTTP hosting, health checks |
-| **Application Layer** | `/src/Identity/Zentra.Identity.Application/` | Endpoint implementations, services |
-| **Domain Layer** | `/src/Identity/Zentra.Identity.Domain/` | Entities, models, constants |
-| **Infrastructure** | `/src/Identity/Zentra.Identity.Infrastructure*/` | Email, SMS, resources |
-| **Persistence** | `/src/Identity/Zentra.Identity.Persistence/` | EF Core, repositories, migrations |
-| **Gateway** | `/src/Gateway/Zentra.Gateway/` | Proxy services, middleware |
-| **Installer** | `/installer/Zentra.Installer.Mvc/` | Database provisioning, seeding |
+| **Identity API** | `/src/Identity/HCL.CS.Identity.API/` | HTTP hosting, health checks |
+| **Application Layer** | `/src/Identity/HCL.CS.Identity.Application/` | Endpoint implementations, services |
+| **Domain Layer** | `/src/Identity/HCL.CS.Identity.Domain/` | Entities, models, constants |
+| **Infrastructure** | `/src/Identity/HCL.CS.Identity.Infrastructure*/` | Email, SMS, resources |
+| **Persistence** | `/src/Identity/HCL.CS.Identity.Persistence/` | EF Core, repositories, migrations |
+| **Gateway** | `/src/Gateway/HCL.CS.Gateway/` | Proxy services, middleware |
+| **Installer** | `/installer/HCL.CS.Installer.Mvc/` | Database provisioning, seeding |
 | **Demo Clients** | `/demos/` | Example applications |
 
 ### 2.3 Out-of-Scope Components
@@ -115,9 +115,9 @@ C4Context
 The Identity Service is the core OAuth/OIDC token issuance engine.
 
 **Source Files:**
-- Entry point: `/src/Identity/Zentra.Identity.API/Program.cs`
-- Endpoints: `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/`
-- Services: `/src/Identity/Zentra.Identity.Application/Implementation/Api/Services/`
+- Entry point: `/src/Identity/HCL.CS.Identity.API/Program.cs`
+- Endpoints: `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/`
+- Services: `/src/Identity/HCL.CS.Identity.Application/Implementation/Api/Services/`
 
 **Key Responsibilities:**
 | Function | Implementation File |
@@ -133,7 +133,7 @@ The Identity Service is the core OAuth/OIDC token issuance engine.
 The Gateway provides reverse proxy capabilities with observability and security middleware.
 
 **Source Files:**
-- `/src/Gateway/Zentra.Gateway/`
+- `/src/Gateway/HCL.CS.Gateway/`
 
 **Key Responsibilities:**
 | Function | Implementation File |
@@ -149,7 +149,7 @@ The Gateway provides reverse proxy capabilities with observability and security 
 The Installer is an MVC application for initial system setup.
 
 **Source Files:**
-- `/installer/Zentra.Installer.Mvc/`
+- `/installer/HCL.CS.Installer.Mvc/`
 
 **Key Responsibilities:**
 | Function | Implementation File |
@@ -171,9 +171,9 @@ Demo applications demonstrate integration patterns.
 
 | Demo | Path | Purpose |
 |------|------|---------|
-| Demo Server | `/demos/Zentra.Demo.Server/` | Hosts Identity Service runtime |
-| Demo MVC Client | `/demos/Zentra.Demo.Client.Mvc/` | Web client example |
-| Demo WPF Client | `/demos/Zentra.Demo.Client.Wpf/` | Desktop client example |
+| Demo Server | `/demos/HCL.CS.Demo.Server/` | Hosts Identity Service runtime |
+| Demo MVC Client | `/demos/HCL.CS.Demo.Client.Mvc/` | Web client example |
+| Demo WPF Client | `/demos/HCL.CS.Demo.Client.Wpf/` | Desktop client example |
 
 ---
 
@@ -207,7 +207,7 @@ Demo applications demonstrate integration patterns.
 
 ### 4.3 Grant Type Constants
 
-Source: `/src/Identity/Zentra.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs`
+Source: `/src/Identity/HCL.CS.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs`
 
 ```csharp
 public static class GrantTypes
@@ -234,7 +234,7 @@ public static class GrantTypes
 
 ### 5.1 Database Provider Support
 
-Source: `/installer/Zentra.Installer.Mvc/Application/DTOs/DatabaseProviderType.cs`
+Source: `/installer/HCL.CS.Installer.Mvc/Application/DTOs/DatabaseProviderType.cs`
 
 | Provider | Enum Value | EF Provider | Status |
 |----------|------------|-------------|--------|
@@ -256,7 +256,7 @@ Source: `/installer/Zentra.Installer.Mvc/Application/DTOs/DatabaseProviderType.c
 
 The system uses a provider-specific DbContext factory pattern:
 
-Source: `/installer/Zentra.Installer.Mvc/Infrastructure/Persistence/Data/`
+Source: `/installer/HCL.CS.Installer.Mvc/Infrastructure/Persistence/Data/`
 
 ```csharp
 // Factory pattern for database provisioning
@@ -284,14 +284,14 @@ public class DatabaseProvisionerFactory
 
 **Status: Not present in legacy repo scope**
 
-The legacy Zentra implementation does **not** include multi-tenant architecture. The codebase contains tenant-related interfaces (`ITenantContext`) but no complete multi-tenant isolation implementation.
+The legacy HCL.CS implementation does **not** include multi-tenant architecture. The codebase contains tenant-related interfaces (`ITenantContext`) but no complete multi-tenant isolation implementation.
 
 ### 6.2 Tenant Interfaces Present
 
 | Interface | Path | Purpose |
 |-----------|------|---------|
-| `ITenantContext` | `/src/Identity/Zentra.Identity.DomainServices/Infra/ITenantContext.cs` | Tenant context abstraction |
-| `HttpTenantContext` | `/src/Identity/Zentra.Identity.Infrastructure/Implementation/HttpTenantContext.cs` | HTTP-based tenant resolution |
+| `ITenantContext` | `/src/Identity/HCL.CS.Identity.DomainServices/Infra/ITenantContext.cs` | Tenant context abstraction |
+| `HttpTenantContext` | `/src/Identity/HCL.CS.Identity.Infrastructure/Implementation/HttpTenantContext.cs` | HTTP-based tenant resolution |
 
 ### 6.3 Current Behavior
 
@@ -305,9 +305,9 @@ The system operates as a **single-tenant** identity provider. All data resides i
 
 | Service | Integration Type | Configuration |
 |---------|-----------------|---------------|
-| **LDAP/Active Directory** | Authentication provider | `LdapConfig` in `ZentraConfig` |
-| **SMTP Server** | Email notifications | `EmailConfig` in `ZentraConfig` |
-| **SMS Provider** | SMS notifications | `SmsConfig` in `ZentraConfig` |
+| **LDAP/Active Directory** | Authentication provider | `LdapConfig` in `HclCsConfig` |
+| **SMTP Server** | Email notifications | `EmailConfig` in `HclCsConfig` |
+| **SMS Provider** | SMS notifications | `SmsConfig` in `HclCsConfig` |
 
 ### 7.2 Client Application Types
 
@@ -317,7 +317,7 @@ The system operates as a **single-tenant** identity provider. All data resides i
 | Single Page Application | `SPA` | Public client, PKCE required |
 | Native Application | `NativeApp` | Public client, PKCE required |
 
-Source: `/src/Identity/Zentra.Identity.Domain/Enums/ApiEnums.cs`
+Source: `/src/Identity/HCL.CS.Identity.Domain/Enums/ApiEnums.cs`
 
 ### 7.3 Authentication Methods
 
@@ -336,7 +336,7 @@ Source: `/src/Identity/Zentra.Identity.Domain/Enums/ApiEnums.cs`
 | SMS OTP | `SMS` | ✅ Supported |
 | Authenticator App | `Authenticator` | ✅ Supported |
 
-Source: `/src/Identity/Zentra.Identity.Domain/Enums/ApiEnums.cs` - `TwoFactorType`
+Source: `/src/Identity/HCL.CS.Identity.Domain/Enums/ApiEnums.cs` - `TwoFactorType`
 
 ---
 
@@ -367,16 +367,16 @@ This documentation reflects the **legacy implementation** as it exists in the re
 
 | Service | URL | Project |
 |---------|-----|---------|
-| Identity Server | `https://localhost:5001` | `Zentra.Demo.Server` |
-| MVC Client | `https://localhost:5003` | `Zentra.DemoClientMvc` |
-| Installer | `https://localhost:7039` | `Zentra.Installer.Mvc` |
+| Identity Server | `https://localhost:5001` | `HCL.CS.Demo.Server` |
+| MVC Client | `https://localhost:5003` | `HCL.CS.DemoClientMvc` |
+| Installer | `https://localhost:7039` | `HCL.CS.Installer.Mvc` |
 
 ### 9.2 Key Configuration Files
 
 | File | Purpose |
 |------|---------|
 | `appsettings.json` | Application configuration |
-| `ZentraConfig.cs` | Domain configuration model |
+| `HclCsConfig.cs` | Domain configuration model |
 | `Directory.Build.props` | MSBuild properties |
 | `Directory.Packages.props` | NuGet package versions |
 

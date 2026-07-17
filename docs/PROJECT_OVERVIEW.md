@@ -1,4 +1,4 @@
-# Zentra - Comprehensive Project Overview
+# HCL.CS - Comprehensive Project Overview
 
 ## 📋 Table of Contents
 1. [Introduction](#introduction)
@@ -16,7 +16,7 @@
 
 ## 🎯 Introduction
 
-**Zentra** is a comprehensive **OAuth 2.0 and OpenID Connect (OIDC) authentication and authorization Zentra** built on .NET 8.0. It provides enterprise-grade identity management, user authentication, role-based access control (RBAC), and token-based security for modern applications.
+**HCL.CS** is a comprehensive **OAuth 2.0 and OpenID Connect (OIDC) authentication and authorization HCL.CS** built on .NET 8.0. It provides enterprise-grade identity management, user authentication, role-based access control (RBAC), and token-based security for modern applications.
 
 ### Purpose
 The framework serves as a complete identity and access management solution that:
@@ -136,7 +136,7 @@ Located in `Source/Domain/Entities/Endpoint/`:
 
 ### 2. **Configuration System**
 
-The framework uses a hierarchical configuration model (`ZentraConfig`):
+The framework uses a hierarchical configuration model (`HclCsConfig`):
 
 #### System Settings
 - **DbConfig**: Multi-database support (SQL Server, MySQL, PostgreSQL, SQLite)
@@ -290,7 +290,7 @@ IdentityResources (1) ─ (N) IdentityClaims
 ## 📁 Project Structure
 
 ```
-Zentra/
+HCL.CS/
 ├── Source/                          # Core framework source code
 │   ├── Domain/                      # Domain entities and models
 │   │   ├── Entities/
@@ -328,7 +328,7 @@ Zentra/
 │   ├── IntegrationTest/           # Test project
 │   └── TestApp.Helper/            # Test helpers
 │
-└── Zentra.sln              # Solution file
+└── HCL.CS.sln              # Solution file
 ```
 
 ---
@@ -396,7 +396,7 @@ Zentra/
 ## 🎯 Use Cases
 
 ### 1. **Enterprise Single Sign-On (SSO)**
-Organizations can use Zentra as a central authentication provider for multiple internal applications.
+Organizations can use HCL.CS as a central authentication provider for multiple internal applications.
 
 ### 2. **Microservices Authentication**
 Secure microservices architecture with centralized token issuance and validation.
@@ -418,14 +418,14 @@ Support both business-to-business and business-to-consumer authentication scenar
 ## 🔧 Configuration Example
 
 ```csharp
-var securityConfig = new ZentraConfig
+var securityConfig = new HclCsConfig
 {
     SystemSettings = new SystemSettings
     {
         DbConfig = new DbConfig
         {
             Database = DbTypes.SqlServer,
-            DbConnectionString = "Server=...;Database=Zentra;..."
+            DbConnectionString = "Server=...;Database=HCL.CS;..."
         },
         UserConfig = new UserConfig
         {
@@ -482,7 +482,7 @@ var securityConfig = new ZentraConfig
 
 ### Installation Steps
 1. Clone the repository
-2. Configure `ZentraConfig` settings
+2. Configure `HclCsConfig` settings
 3. Run database migrations using the DBMigration tool
 4. Seed initial data using SeedDataCreator
 5. Configure client applications
@@ -507,7 +507,7 @@ var securityConfig = new ZentraConfig
 
 ## 📝 Summary
 
-**Zentra** is a production-ready, enterprise-grade authentication and authorization framework that provides:
+**HCL.CS** is a production-ready, enterprise-grade authentication and authorization framework that provides:
 
 - 🔒 **Comprehensive Security**: OAuth 2.0, OpenID Connect, JWT, MFA
 - 👥 **User & Role Management**: Complete RBAC implementation
@@ -531,4 +531,4 @@ The framework follows industry best practices and standards, making it suitable 
 
 ---
 
-*This documentation provides a comprehensive overview of the Zentra framework. For specific implementation details, please refer to the source code and inline documentation.*
+*This documentation provides a comprehensive overview of the HCL.CS framework. For specific implementation details, please refer to the source code and inline documentation.*

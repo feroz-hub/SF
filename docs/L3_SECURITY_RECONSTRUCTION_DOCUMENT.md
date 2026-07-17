@@ -1,4 +1,4 @@
-# ZENTRA Identity Platform
+# HCL.CS Identity Platform
 ## L3 Security Reconstruction — Complete Transformation Documentation
 
 **Document Classification:** Internal Architecture Document  
@@ -26,7 +26,7 @@
 
 ### 1.1 Purpose of This Document
 
-This document provides a comprehensive, enterprise-grade record of all security transformations implemented during the **L3 Security Reconstruction Phase** of the ZENTRA Identity Platform. It serves multiple audiences:
+This document provides a comprehensive, enterprise-grade record of all security transformations implemented during the **L3 Security Reconstruction Phase** of the HCL.CS Identity Platform. It serves multiple audiences:
 
 | Audience | Purpose |
 |----------|---------|
@@ -104,8 +104,8 @@ This section catalogs all changes implemented during the L3 Security Reconstruct
 | `scripts/migrations/20260224_securitytokens_*.sql` | Token reuse detection schema | Critical |
 | `docs/security/key-rotation-sop.md` | Operational security procedure | High |
 | `docs/security/production.config.template.json` | Secure configuration template | High |
-| `tests/Zentra.ArchitectureTests/LayerDependencyTests.cs` | Architecture integrity verification | High |
-| `tests/Zentra.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs` | Security regression test suite | Critical |
+| `tests/HCL.CS.ArchitectureTests/LayerDependencyTests.cs` | Architecture integrity verification | High |
+| `tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs` | Security regression test suite | Critical |
 | `.github/workflows/security-scan.yml` | Automated vulnerability scanning | High |
 | `.github/workflows/ci.yml` | CI with security gates | Medium |
 
@@ -114,14 +114,14 @@ This section catalogs all changes implemented during the L3 Security Reconstruct
 ```sql
 -- SecurityTokens Table Enhancements (All Database Providers)
 
-ALTER TABLE Zentra_SecurityTokens
+ALTER TABLE HclCs_SecurityTokens
     ADD COLUMN IF NOT EXISTS ConsumedAt datetime(6) NULL;
 
-ALTER TABLE Zentra_SecurityTokens
+ALTER TABLE HclCs_SecurityTokens
     ADD COLUMN IF NOT EXISTS TokenReuseDetected tinyint(1) NOT NULL DEFAULT FALSE;
 
 CREATE INDEX IX_SECTOK_TOKTYPE_KEY 
-    ON Zentra_SecurityTokens (TokenType, Key);
+    ON HclCs_SecurityTokens (TokenType, Key);
 ```
 
 **Schema Change Rationale:**
@@ -176,7 +176,7 @@ CREATE INDEX IX_SECTOK_TOKTYPE_KEY
 | ARCH-001 | Layer dependency verification | `LayerDependencyTests.cs` | Clean Architecture |
 | ARCH-002 | Infrastructure decoupling | All persistence classes | Dependency Inversion |
 | ARCH-003 | Use-case handler separation | Endpoint service classes | Single Responsibility |
-| ARCH-004 | Policy-based authorization prep | `ZentraApiMiddleware.cs` | Open/Closed |
+| ARCH-004 | Policy-based authorization prep | `HclCsApiMiddleware.cs` | Open/Closed |
 | ARCH-005 | API gateway proxy pattern | `Proxy/` directory | Gateway Pattern |
 
 ---
@@ -333,7 +333,7 @@ Authorization codes are high-value, short-lived credentials. Replay attacks coul
 #### What Was Implemented
 ```csharp
 // TokenGenerationService.cs - CreateAccessTokenPayload
-var configuredAudience = tokenSettings.TokenConfig.ApiIdentifier; // "zentra.api"
+var configuredAudience = tokenSettings.TokenConfig.ApiIdentifier; // "hcl-cs.api"
 string audienceClaims;
 if (resultClaims.AudienceClaims.ContainsAny())
 {
@@ -444,7 +444,7 @@ Basic authentication over TLS provides:
 │                    AUTHORIZATION CODE FLOW (SECURE)                         │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
-│  Client                          ZENTRA                           Resource │
+│  Client                          HCL.CS                           Resource │
 │  (Browser/SPA)                   Identity Server                  Server   │
 │     │                                 │                              │      │
 │     │ 1. /authorize                   │                              │      │
@@ -528,15 +528,15 @@ Basic authentication over TLS provides:
 {
   "alg": "RS256",           // Algorithm: RS256 or ES256
   "typ": "at+jwt",          // Token type: Access Token + JWT
-  "kid": "zentra-rsa-2026", // Key ID for JWKS lookup
+  "kid": "hcl-cs-rsa-2026", // Key ID for JWKS lookup
   "x5t": "abc123..."        // Certificate thumbprint (optional)
 }
 
 // JWT Payload
 {
-  "iss": "https://auth.zentra.com",    // Issuer
+  "iss": "https://auth.hcl-cs.com",    // Issuer
   "sub": "user-uuid",                  // Subject (user ID)
-  "aud": "zentra.api api-resource",    // Audience(s)
+  "aud": "hcl-cs.api api-resource",    // Audience(s)
   "exp": 1704067200,                   // Expiration (Unix timestamp)
   "iat": 1704063600,                   // Issued at
   "jti": "unique-token-id",            // JWT ID (prevents replay)
@@ -694,11 +694,11 @@ public async Task<IEndpointResult> ProcessAsync(HttpContext context)
 │     • Configured API identifier                                             │
 │     • Client-specific audiences            2. Verify required               │
 │                                               audience present              │
-│  2. Add "zentra.api" as                    3. Reject if audience            │
+│  2. Add "hcl-cs.api" as                    3. Reject if audience            │
 │     mandatory audience                        mismatch                      │
 │                                                                             │
 │  3. Include in JWT payload                 4. Accept only if                │
-│     "aud": "zentra.api api1 api2"             aud contains expected         │
+│     "aud": "hcl-cs.api api1 api2"             aud contains expected         │
 │                                               API identifier                │
 │                                                                             │
 │  SECURITY BENEFITS:                                                         │
@@ -774,30 +774,30 @@ public async Task<IEndpointResult> ProcessAsync(HttpContext context)
 │                                                                             │
 │  ┌───────────────────────────────────────────────────────────────────────┐ │
 │  │                    PRESENTATION LAYER                                  │ │
-│  │   • Zentra.Identity.API (Hosting)                                     │ │
+│  │   • HCL.CS.Identity.API (Hosting)                                     │ │
 │  │   • Demo.Server Application                                           │ │
 │  │   • Gateway Proxy                                                     │ │
 │  └─────────────────────────────┬─────────────────────────────────────────┘ │
 │                                │ Depends On                                │
 │  ┌─────────────────────────────▼─────────────────────────────────────────┐ │
 │  │                    APPLICATION LAYER                                   │ │
-│  │   • Zentra.Identity.Application (Services)                            │ │
+│  │   • HCL.CS.Identity.Application (Services)                            │ │
 │  │   • Use-case handlers (Endpoint services)                             │ │
 │  │   • DTOs and validation                                               │ │
 │  └─────────────────────────────┬─────────────────────────────────────────┘ │
 │                                │ Depends On                                │
 │  ┌─────────────────────────────▼─────────────────────────────────────────┐ │
 │  │                    DOMAIN LAYER                                        │ │
-│  │   • Zentra.Identity.Domain (Entities, Models)                         │ │
-│  │   • Zentra.Identity.DomainServices (Interfaces)                       │ │
+│  │   • HCL.CS.Identity.Domain (Entities, Models)                         │ │
+│  │   • HCL.CS.Identity.DomainServices (Interfaces)                       │ │
 │  │   • Business rules and constants                                      │ │
 │  └─────────────────────────────┬─────────────────────────────────────────┘ │
 │                                │ Implemented By                            │
 │  ┌─────────────────────────────▼─────────────────────────────────────────┐ │
 │  │                   INFRASTRUCTURE LAYER                                 │ │
-│  │   • Zentra.Identity.Persistence (EF Core, Repositories)               │ │
-│  │   • Zentra.Identity.Infrastructure (Services)                         │ │
-│  │   • Zentra.Identity.Infrastructure.Resources                          │ │
+│  │   • HCL.CS.Identity.Persistence (EF Core, Repositories)               │ │
+│  │   • HCL.CS.Identity.Infrastructure (Services)                         │ │
+│  │   • HCL.CS.Identity.Infrastructure.Resources                          │ │
 │  └───────────────────────────────────────────────────────────────────────┘ │
 │                                                                             │
 │  DEPENDENCY RULE: All dependencies point inward (Domain has no outward      │
@@ -843,8 +843,8 @@ public void DomainAssembly_MustNotDependOnApplicationOrInfrastructure()
         .Select(reference => reference.Name)
         .ToArray();
 
-    references.Should().NotContain(name => name != null && name.StartsWith("Zentra.Service"));
-    references.Should().NotContain(name => name != null && name.StartsWith("Zentra.Infrastructure"));
+    references.Should().NotContain(name => name != null && name.StartsWith("HCL.CS.Service"));
+    references.Should().NotContain(name => name != null && name.StartsWith("HCL.CS.Infrastructure"));
 }
 ```
 
@@ -902,12 +902,12 @@ app.Use(async (context, next) =>
 
 app.UseSession();
 app.UseRouting();
-app.UseCors("ZentraStrictCors");
+app.UseCors("HclCsStrictCors");
 app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseZentraEndpoint();
-app.UseZentraApi();
+app.UseHclCsEndpoint();
+app.UseHclCsApi();
 ```
 
 ### 5.5 Replacement of Custom API Auth Middleware
@@ -917,7 +917,7 @@ app.UseZentraApi();
 
 ```csharp
 // Gateway API middleware with delegation
-public class ZentraApiMiddleware
+public class HclCsApiMiddleware
 {
     public async Task InvokeAsync(HttpContext httpContext, IApiGateway apiRouteWrapper)
     {
@@ -958,7 +958,7 @@ jobs:
       
       # Vulnerability scanning
       - name: Dependency vulnerability report
-        run: dotnet list Zentra.sln package --vulnerable --include-transitive
+        run: dotnet list HCL.CS.sln package --vulnerable --include-transitive
       
       # Trivy filesystem scan
       - name: Trivy filesystem scan
@@ -989,14 +989,14 @@ jobs:
           dotnet-version: 8.0.x
       
       - name: Restore
-        run: dotnet restore Zentra.sln
+        run: dotnet restore HCL.CS.sln
       
       - name: Build
-        run: dotnet build Zentra.sln --configuration Release --no-restore
+        run: dotnet build HCL.CS.sln --configuration Release --no-restore
       
       # Security regression tests
       - name: Test
-        run: dotnet test tests/Zentra.IntegrationTests/IntegrationTests.csproj 
+        run: dotnet test tests/HCL.CS.IntegrationTests/IntegrationTests.csproj 
           --configuration Release --no-build
 ```
 
@@ -1120,7 +1120,7 @@ builder.Services.AddRateLimiter(options =>
 ```csharp
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("ZentraStrictCors", policy =>
+    options.AddPolicy("HclCsStrictCors", policy =>
     {
         var allowedOrigins = builder.Configuration
             .GetSection("Security:Cors:AllowedOrigins")
@@ -1169,19 +1169,19 @@ static string ResolveSecretPlaceholders(string value, bool required = false)
 
 // Usage in configuration
 {
-  "ClientSecret": "${ZENTRA_CLIENT_SECRET}"
+  "ClientSecret": "${HCL_CS_CLIENT_SECRET}"
 }
 ```
 
 **Environment Variables for Production:**
 | Variable | Purpose | Required |
 |----------|---------|----------|
-| `ZENTRA_DB_CONNECTION_STRING` | Database connection | Yes |
-| `ZENTRA_RSA_SIGNING_CERT_BASE64` | RSA signing certificate | Yes |
-| `ZENTRA_ECDSA_SIGNING_CERT_BASE64` | ECDSA signing certificate | Yes |
-| `ZENTRA_SIGNING_CERT_PASSWORD` | Certificate password | Yes |
-| `ZENTRA_RSA_SIGNING_KID` | RSA key ID | Recommended |
-| `ZENTRA_ECDSA_SIGNING_KID` | ECDSA key ID | Recommended |
+| `HCL_CS_DB_CONNECTION_STRING` | Database connection | Yes |
+| `HCL_CS_RSA_SIGNING_CERT_BASE64` | RSA signing certificate | Yes |
+| `HCL_CS_ECDSA_SIGNING_CERT_BASE64` | ECDSA signing certificate | Yes |
+| `HCL_CS_SIGNING_CERT_PASSWORD` | Certificate password | Yes |
+| `HCL_CS_RSA_SIGNING_KID` | RSA key ID | Recommended |
+| `HCL_CS_ECDSA_SIGNING_KID` | ECDSA key ID | Recommended |
 
 ### 6.5 Removal of Debug Token Views
 
@@ -1217,7 +1217,7 @@ static string ResolveSecretPlaceholders(string value, bool required = false)
 │                                  │                                         │
 │                                  ▼                                         │
 │                         ┌─────────────────┐                                │
-│                         │  Zentra Identity │                               │
+│                         │  HCL.CS Identity │                               │
 │                         │  Server          │                               │
 │                         └─────────────────┘                                │
 │                                                                             │
@@ -1400,7 +1400,7 @@ builder.Logging.AddJsonConsole();
 
 ### 8.3 Duende IdentityServer Alignment
 
-| Feature | Duende | ZENTRA | Alignment |
+| Feature | Duende | HCL.CS | Alignment |
 |---------|--------|--------|-----------|
 | Authorization Code Flow | ✅ | ✅ | 100% |
 | PKCE | ✅ | ✅ | 100% |
@@ -1503,4 +1503,4 @@ See: `docs/security/key-rotation-sop.md`
 
 ---
 
-*This document represents the complete security transformation implemented during the L3 Security Reconstruction phase of the ZENTRA Identity Platform. All changes have been tested, verified, and are in production use.*
+*This document represents the complete security transformation implemented during the L3 Security Reconstruction phase of the HCL.CS Identity Platform. All changes have been tested, verified, and are in production use.*

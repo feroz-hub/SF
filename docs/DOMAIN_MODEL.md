@@ -6,5 +6,5 @@ Core bounded contexts currently represented in code:
 - OAuth/OpenID resources, clients, and authorization flows.
 - Audit and notification support models.
 
-Domain source lives in `src/Identity/Zentra.Identity.Domain`.
-Domain service abstractions live in `src/Identity/Zentra.Identity.DomainServices`.
+Domain source lives in `src/Identity/HCL.CS.Identity.Domain`.
+Domain service abstractions live in `src/Identity/HCL.CS.Identity.DomainServices`.

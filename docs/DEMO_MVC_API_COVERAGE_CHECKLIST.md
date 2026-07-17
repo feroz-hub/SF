@@ -4,8 +4,8 @@
 
 ## Scope
 
-- Source of truth for routed APIs: `ApiRoutePathConstants.ApiRouteModels` in `src/Identity/Zentra.Identity.Domain/Constants/ApiRoutePathConstants.cs` (commented entries excluded).
-- Coverage rule: API considered integrated when `ApiRoutePathConstants.<RouteConstant>` is referenced in `demos/Zentra.Demo.Client.Mvc/**/*.cs`.
+- Source of truth for routed APIs: `ApiRoutePathConstants.ApiRouteModels` in `src/Identity/HCL.CS.Identity.Domain/Constants/ApiRoutePathConstants.cs` (commented entries excluded).
+- Coverage rule: API considered integrated when `ApiRoutePathConstants.<RouteConstant>` is referenced in `demos/HCL.CS.Demo.Client.Mvc/**/*.cs`.
 - Note: This report measures explicit integration paths, not manual calls made through the generic API test page.
 
 ## Summary

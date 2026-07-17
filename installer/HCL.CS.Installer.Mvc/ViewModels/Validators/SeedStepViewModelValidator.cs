@@ -1,0 +1,169 @@
+using System.Text.RegularExpressions;
+using FluentValidation;
+
+namespace HclCsInstallerMVC.ViewModels.Validators;
+
+public sealed class SeedStepViewModelValidator : AbstractValidator<SeedStepViewModel>
+{
+    private const string PhonePattern = @"^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$";
+
+    public SeedStepViewModelValidator()
+    {
+        RuleFor(model => model.ClientName)
+            .NotEmpty()
+            .WithMessage("Client name is required.")
+            .Length(8, 254)
+            .WithMessage("Client name must be between 8 and 254 characters.");
+
+        RuleFor(model => model.ClientUri)
+            .NotEmpty()
+            .WithMessage("Client URI is required.")
+            .Must(BeHttpsUrl)
+            .WithMessage("Client URI must be a valid HTTPS URL.");
+
+        RuleFor(model => model)
+            .Must(HasAtLeastOneGrantType)
+            .WithMessage("At least one supported grant type is required.");
+
+        RuleFor(model => model)
+            .Must(HasValidResponseTypeSelection)
+            .WithMessage("code response type is required only when Authorization Code grant is enabled.");
+
+        RuleFor(model => model.UseHybridGrant)
+            .Equal(false)
+            .WithMessage("Hybrid grant is not allowed.");
+
+        RuleFor(model => model.UseIdTokenResponseType)
+            .Equal(false)
+            .WithMessage("id_token response type is not allowed.");
+
+        RuleFor(model => model.UseTokenResponseType)
+            .Equal(false)
+            .WithMessage("token response type is not allowed.");
+
+        RuleFor(model => model.AllowedScopes)
+            .NotEmpty()
+            .When(model => !model.UseDefaultScopes)
+            .WithMessage("Allowed scopes are required when default scopes are disabled.");
+
+        RuleFor(model => model.RedirectUris)
+            .NotEmpty()
+            .When(model => model.UseAuthorizationCodeGrant)
+            .WithMessage("At least one redirect URI is required.")
+            .Must(AllLinesContainValidUrls)
+            .WithMessage("Each redirect URI must be a valid HTTPS URL.");
+
+        RuleFor(model => model.PostLogoutRedirectUris)
+            .Must(AllLinesContainValidUrls)
+            .WithMessage("Each post logout redirect URI must be a valid HTTPS URL.");
+
+        RuleFor(model => model.FrontChannelLogoutUri)
+            .Must(BeOptionalHttpsUrl)
+            .WithMessage("Front channel logout URI must be a valid HTTPS URL.");
+
+        RuleFor(model => model.BackChannelLogoutUri)
+            .Must(BeOptionalHttpsUrl)
+            .WithMessage("Back channel logout URI must be a valid HTTPS URL.");
+
+        RuleFor(model => model.UserName)
+            .NotEmpty()
+            .WithMessage("Username is required.")
+            .Length(6, 254)
+            .WithMessage("Username must be between 6 and 254 characters.");
+
+        RuleFor(model => model.FirstName)
+            .NotEmpty()
+            .WithMessage("First name is required.")
+            .Length(2, 254)
+            .WithMessage("First name must be between 2 and 254 characters.");
+
+        RuleFor(model => model.LastName)
+            .Length(2, 254)
+            .When(model => !string.IsNullOrWhiteSpace(model.LastName))
+            .WithMessage("Last name must be between 2 and 254 characters when provided.");
+
+        RuleFor(model => model.Email)
+            .NotEmpty()
+            .WithMessage("Email is required.")
+            .EmailAddress()
+            .WithMessage("Email format is invalid.");
+
+        RuleFor(model => model.PhoneNumber)
+            .NotEmpty()
+            .WithMessage("Phone number is required.")
+            .Matches(PhonePattern)
+            .WithMessage("Phone number format is invalid.");
+
+        RuleFor(model => model.Password)
+            .NotEmpty()
+            .WithMessage("Password is required.")
+            .Length(8, 250)
+            .WithMessage("Password must be between 8 and 250 characters.")
+            .Must(MeetsPasswordComplexity)
+            .WithMessage("Password complexity is not met. Include at least one uppercase letter and one number.");
+
+        RuleFor(model => model.ConfirmPassword)
+            .Equal(model => model.Password)
+            .WithMessage("Password and confirm password do not match.");
+
+        RuleFor(model => model.IdentityProvider)
+            .NotEmpty()
+            .WithMessage("Identity provider type is required.")
+            .Must(provider => provider.Equals("Local", StringComparison.OrdinalIgnoreCase) ||
+                              provider.Equals("Ldap", StringComparison.OrdinalIgnoreCase))
+            .WithMessage("Identity provider must be either Local or Ldap.");
+    }
+
+    private static bool HasAtLeastOneGrantType(SeedStepViewModel model)
+    {
+        return model.UseAuthorizationCodeGrant
+               || model.UseClientCredentialsGrant
+               || model.UseRefreshTokenGrant
+               || model.UsePasswordGrant;
+    }
+
+    private static bool HasValidResponseTypeSelection(SeedStepViewModel model)
+    {
+        if (model.UseIdTokenResponseType || model.UseTokenResponseType)
+            return false;
+
+        if (model.UseAuthorizationCodeGrant)
+            return model.UseCodeResponseType;
+
+        return !model.UseCodeResponseType;
+    }
+
+    private static bool MeetsPasswordComplexity(string password)
+    {
+        return Regex.IsMatch(password, "[0-9]")
+               && Regex.IsMatch(password, "[A-Z]")
+               && password.Length >= 8;
+    }
+
+    private static bool AllLinesContainValidUrls(string values)
+    {
+        if (string.IsNullOrWhiteSpace(values)) return true;
+
+        var lines = values
+            .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Distinct(StringComparer.OrdinalIgnoreCase);
+
+        return lines.All(BeHttpsUrl);
+    }
+
+    private static bool BeOptionalHttpsUrl(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url)) return true;
+
+        return BeHttpsUrl(url);
+    }
+
+    private static bool BeHttpsUrl(string url)
+    {
+        if (url.Contains('*', StringComparison.Ordinal)) return false;
+
+        return Uri.TryCreate(url, UriKind.Absolute, out var validatedUri)
+               && validatedUri.Scheme == Uri.UriSchemeHttps
+               && !string.IsNullOrWhiteSpace(validatedUri.Host);
+    }
+}

@@ -1,4 +1,4 @@
-namespace Zentra.SharedKernel;
+namespace HCL.CS.SharedKernel;
 
 public static class Guard
 {

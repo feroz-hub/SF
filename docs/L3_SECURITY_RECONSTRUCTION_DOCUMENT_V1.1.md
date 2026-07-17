@@ -1,4 +1,4 @@
-# ZENTRA Identity Platform
+# HCL.CS Identity Platform
 ## L3 Security Reconstruction — Enterprise Whitepaper
 
 **Document Classification:** Internal Architecture Document  
@@ -32,7 +32,7 @@
 
 ### 1.1 Document Purpose
 
-This whitepaper documents the security transformations implemented during the L3 Security Reconstruction Phase of the ZENTRA Identity Platform. It provides audit evidence, threat model analysis, and operational guidance for enterprise deployment.
+This whitepaper documents the security transformations implemented during the L3 Security Reconstruction Phase of the HCL.CS Identity Platform. It provides audit evidence, threat model analysis, and operational guidance for enterprise deployment.
 
 ### 1.2 Scope & Limitations
 
@@ -80,8 +80,8 @@ This whitepaper documents the security transformations implemented during the L3
 |------|---------|--------------|
 | `scripts/migrations/20260224_securitytokens_*.sql` | Token reuse schema | Migration tested on MySQL, PostgreSQL, SQL Server, SQLite |
 | `docs/security/key-rotation-sop.md` | Key rotation procedure | Reviewed by security team |
-| `tests/Zentra.ArchitectureTests/LayerDependencyTests.cs` | Architecture verification | 4 test cases, all passing |
-| `tests/Zentra.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs` | Security regression suite | 8 test cases, all passing |
+| `tests/HCL.CS.ArchitectureTests/LayerDependencyTests.cs` | Architecture verification | 4 test cases, all passing |
+| `tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs` | Security regression suite | 8 test cases, all passing |
 | `.github/workflows/security-scan.yml` | Automated scanning | Weekly execution |
 | `.github/workflows/ci.yml` | CI security gates | Per-PR execution |
 
@@ -91,21 +91,21 @@ This whitepaper documents the security transformations implemented during the L3
 -- Migration: 20260224_securitytokens_*.sql
 -- Tested on: MySQL 8.0, PostgreSQL 13, SQL Server 2019, SQLite 3
 
-ALTER TABLE Zentra_SecurityTokens
+ALTER TABLE HclCs_SecurityTokens
     ADD COLUMN IF NOT EXISTS ConsumedAt datetime(6) NULL;
 
-ALTER TABLE Zentra_SecurityTokens
+ALTER TABLE HclCs_SecurityTokens
     ADD COLUMN IF NOT EXISTS TokenReuseDetected tinyint(1) NOT NULL DEFAULT FALSE;
 
 CREATE INDEX IX_SECTOK_TOKTYPE_KEY 
-    ON Zentra_SecurityTokens (TokenType, Key);
+    ON HclCs_SecurityTokens (TokenType, Key);
 ```
 
 **Rollback Procedure:**
 ```sql
-ALTER TABLE Zentra_SecurityTokens DROP COLUMN ConsumedAt;
-ALTER TABLE Zentra_SecurityTokens DROP COLUMN TokenReuseDetected;
-DROP INDEX IX_SECTOK_TOKTYPE_KEY ON Zentra_SecurityTokens;
+ALTER TABLE HclCs_SecurityTokens DROP COLUMN ConsumedAt;
+ALTER TABLE HclCs_SecurityTokens DROP COLUMN TokenReuseDetected;
+DROP INDEX IX_SECTOK_TOKTYPE_KEY ON HclCs_SecurityTokens;
 ```
 
 ---
@@ -182,14 +182,14 @@ if (refreshTokenEntity.TokenReuseDetected ||
 {
   "alg": "RS256",
   "typ": "at+jwt",
-  "kid": "zentra-rsa-2026"
+  "kid": "hcl-cs-rsa-2026"
 }
 
 // Payload
 {
-  "iss": "https://auth.zentra.com",
+  "iss": "https://auth.hcl-cs.com",
   "sub": "user-uuid",
-  "aud": "zentra.api",
+  "aud": "hcl-cs.api",
   "exp": 1704067200,
   "iat": 1704063600,
   "jti": "unique-token-id",
@@ -232,8 +232,8 @@ public void DomainAssembly_MustNotDependOnApplicationOrInfrastructure()
         .Select(r => r.Name)
         .ToArray();
 
-    references.Should().NotContain(n => n?.StartsWith("Zentra.Service") == true);
-    references.Should().NotContain(n => n?.StartsWith("Zentra.Infrastructure") == true);
+    references.Should().NotContain(n => n?.StartsWith("HCL.CS.Service") == true);
+    references.Should().NotContain(n => n?.StartsWith("HCL.CS.Infrastructure") == true);
 }
 ```
 
@@ -247,13 +247,13 @@ jobs:
   build-and-test:
     steps:
       - name: Build
-        run: dotnet build Zentra.sln --configuration Release
+        run: dotnet build HCL.CS.sln --configuration Release
       
       - name: Architecture Tests
-        run: dotnet test tests/Zentra.ArchitectureTests/
+        run: dotnet test tests/HCL.CS.ArchitectureTests/
       
       - name: Security Regression Tests
-        run: dotnet test tests/Zentra.IntegrationTests/ 
+        run: dotnet test tests/HCL.CS.IntegrationTests/ 
           --filter "Category=SecurityRegression"
 ```
 
@@ -295,10 +295,10 @@ options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpC
 
 | Header | Value | Audit Evidence |
 |--------|-------|----------------|
-| X-Frame-Options | DENY | Middleware: `Zentra.Demo.Server/Program.cs:172` |
-| X-Content-Type-Options | nosniff | Middleware: `Zentra.Demo.Server/Program.cs:173` |
-| Referrer-Policy | no-referrer | Middleware: `Zentra.Demo.Server/Program.cs:174` |
-| Content-Security-Policy | default-src 'self'; ... | Middleware: `Zentra.Demo.Server/Program.cs:175` |
+| X-Frame-Options | DENY | Middleware: `HCL.CS.Demo.Server/Program.cs:172` |
+| X-Content-Type-Options | nosniff | Middleware: `HCL.CS.Demo.Server/Program.cs:173` |
+| Referrer-Policy | no-referrer | Middleware: `HCL.CS.Demo.Server/Program.cs:174` |
+| Content-Security-Policy | default-src 'self'; ... | Middleware: `HCL.CS.Demo.Server/Program.cs:175` |
 
 ### 6.3 Secret Management
 
@@ -368,15 +368,15 @@ Based on OWASP SAMM and BSIMM frameworks:
 **Positive Case:**
 ```http
 GET /connect/authorize?response_type=code
-    &client_id=zentra.s256.client
+    &client_id=hcl-cs.s256.client
     &redirect_uri=https%3A%2F%2Fclient.example.com%2Fcallback
     &scope=openid%20profile
     &state=abc123
     &code_challenge=E9Melhoa2OwvFrEMT...%3D
     &code_challenge_method=S256
 HTTP/1.1
-Host: auth.zentra.com
-Cookie: __Host.Zentra.DemoServer.Auth=...
+Host: auth.hcl-cs.com
+Cookie: __Host.HCL.CS.DemoServer.Auth=...
 ```
 
 **Expected Response:**
@@ -390,7 +390,7 @@ Location: https://client.example.com/callback
 **Negative Case (Missing PKCE):**
 ```http
 GET /connect/authorize?response_type=code
-    &client_id=zentra.s256.client
+    &client_id=hcl-cs.s256.client
     &redirect_uri=https%3A%2F%2Fclient.example.com%2Fcallback
     &scope=openid%20profile
     &state=abc123
@@ -416,7 +416,7 @@ HTTP/1.1 400 Bad Request
 **Positive Case (Authorization Code Exchange):**
 ```http
 POST /connect/token HTTP/1.1
-Host: auth.zentra.com
+Host: auth.hcl-cs.com
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic emVudHJhLnMyNTYuY2xpZW50OnNlY3JldDEyMw==
 
@@ -443,7 +443,7 @@ Content-Type: application/json
 **Negative Case (Invalid Code Verifier):**
 ```http
 POST /connect/token HTTP/1.1
-Host: auth.zentra.com
+Host: auth.hcl-cs.com
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic emVudHJhLnMyNTYuY2xpZW50OnNlY3JldDEyMw==
 
@@ -471,7 +471,7 @@ HTTP/1.1 400 Bad Request
 **Positive Case:**
 ```http
 POST /connect/token HTTP/1.1
-Host: auth.zentra.com
+Host: auth.hcl-cs.com
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic emVudHJhLnMyNTYuY2xpZW50OnNlY3JldDEyMw==
 
@@ -498,7 +498,7 @@ Content-Type: application/json
 **Negative Case (Token Reuse):**
 ```http
 POST /connect/token HTTP/1.1
-Host: auth.zentra.com
+Host: auth.hcl-cs.com
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=refresh_token
@@ -538,7 +538,7 @@ HTTP/1.1 400 Bad Request
 **Request:**
 ```http
 GET /connect/authorize?response_type=code
-    &client_id=zentra.s256.client
+    &client_id=hcl-cs.s256.client
     &code_challenge=plaintext123
     &code_challenge_method=plain
 HTTP/1.1
@@ -564,7 +564,7 @@ HTTP/1.1 400 Bad Request
 **Request:**
 ```http
 POST /connect/revocation HTTP/1.1
-Host: auth.zentra.com
+Host: auth.hcl-cs.com
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic emVudHJhLnMyNTYuY2xpZW50OnNlY3JldDEyMw==
 
@@ -586,7 +586,7 @@ HTTP/1.1 200 OK
 **Introspection Request:**
 ```http
 POST /connect/introspect HTTP/1.1
-Host: auth.zentra.com
+Host: auth.hcl-cs.com
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic emVudHJhLnMyNTYuY2xpZW50OnNlY3JldDEyMw==
 
@@ -615,7 +615,7 @@ Content-Type: application/json
 **Request:**
 ```http
 POST /connect/introspect HTTP/1.1
-Host: auth.zentra.com
+Host: auth.hcl-cs.com
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic emVudHJhLnMyNTYuY2xpZW50OnNlY3JldDEyMw==
 
@@ -629,7 +629,7 @@ Content-Type: application/json
 
 {
   "active": true,
-  "client_id": "zentra.s256.client",
+  "client_id": "hcl-cs.s256.client",
   "username": "john.doe@example.com",
   "token_type": "Bearer",
   "exp": 1704067200,
@@ -661,7 +661,7 @@ Content-Type: application/json
 |--------|-------------|------------|---------------|------------|
 | **S**poofing | Attacker impersonates legitimate client or user | Client authentication via Basic Auth; PKCE for public clients; Signed JWTs with RS256/ES256 | Low | Failed authentication logging; Correlation ID tracking |
 | **T**ampering | Modification of tokens or authorization codes | JWT signatures (RS256/ES256); Authorization code binding to PKCE verifier; Hash-at-rest for refresh tokens | Low | Token validation failure logs; Invalid signature alerts |
-| **R**epudiation | User denies performing an action | Comprehensive audit trail (Zentra_AuditTrail table); Structured logging with correlation IDs; Token lifecycle logging | Low | Audit log review; Anomaly detection on access patterns |
+| **R**epudiation | User denies performing an action | Comprehensive audit trail (HclCs_AuditTrail table); Structured logging with correlation IDs; Token lifecycle logging | Low | Audit log review; Anomaly detection on access patterns |
 | **I**nformation Disclosure | Leakage of sensitive token data | TLS 1.2+ enforced; Refresh token hash-at-rest (SHA256); No PII in JWTs; Environment-based secrets | Low | Access log review; Secret scan detection |
 | **D**enial of Service | Overwhelming authentication endpoints | Tiered rate limiting (20 req/min critical, 120 req/min default); Token caching; Async processing | Medium | Rate limit breach alerts; CPU/memory monitoring |
 | **E**levation of Privilege | Unauthorized access to higher privileges | Scope enforcement; Audience validation; Role-based claims; Token binding to client | Low | Scope mismatch alerts; Privilege escalation attempts logging |
@@ -705,7 +705,7 @@ Content-Type: application/json
 **Attack Scenario:** User denies logging in or performing an action.
 
 **Mitigations:**
-1. `Zentra_AuditTrail` table captures all CRUD operations
+1. `HclCs_AuditTrail` table captures all CRUD operations
 2. Log entries include: UserId, Timestamp, IP Address, Correlation ID, Action
 3. Token lifecycle logged: issuance, refresh, revocation
 
@@ -822,7 +822,7 @@ Content-Type: application/json
 
 **Mitigation:**
 - CI/CD pipeline validates production certificate configuration
-- Automated check: `ZENTRA_RSA_SIGNING_CERT_BASE64` must be set in production
+- Automated check: `HCL_CS_RSA_SIGNING_CERT_BASE64` must be set in production
 
 #### AR-004: No Real-Time Token Revocation (JWT)
 
@@ -861,11 +861,11 @@ Content-Type: application/json
   "Level": "Information",
   "Message": "Token issued",
   "UserId": "user-uuid",
-  "ClientId": "zentra.s256.client",
+  "ClientId": "hcl-cs.s256.client",
   "CorrelationId": "abc-123-def",
   "Scopes": "openid profile",
   "GrantType": "authorization_code",
-  "MachineName": "zentra-auth-01",
+  "MachineName": "hcl-cs-auth-01",
   "MethodName": "ProcessTokenAsync",
   "FileName": "TokenGenerationService.cs"
 }
@@ -1049,7 +1049,7 @@ Immediate rotation required when:
 | OWASP ASVS 4.0 | V3.5.1 | Token revocation | `/connect/revocation` endpoint |
 | OWASP ASVS 4.0 | V4.1.1 | Access control | Scope validation |
 | NIST 800-63B | 5.1.3.1 | Memorized secrets | Password policy enforcement |
-| SOC 2 CC6.1 | Logical access | RBAC, audit trails | `Zentra_AuditTrail` table |
+| SOC 2 CC6.1 | Logical access | RBAC, audit trails | `HclCs_AuditTrail` table |
 | SOC 2 CC6.6 | Security infrastructure | Encryption in transit | TLS 1.2+ enforcement |
 | SOC 2 CC7.2 | System monitoring | Logging, alerting | `LogService.cs` implementation |
 
@@ -1081,6 +1081,6 @@ Immediate rotation required when:
 
 ---
 
-*This document represents the complete security posture of the ZENTRA Identity Platform following L3 Security Reconstruction. All claims are evidence-based and verifiable through the referenced test cases, configuration files, and audit logs.*
+*This document represents the complete security posture of the HCL.CS Identity Platform following L3 Security Reconstruction. All claims are evidence-based and verifiable through the referenced test cases, configuration files, and audit logs.*
 
 **Next Review Date:** 2026-05-25 (Quarterly)

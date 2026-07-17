@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "f57c190d-9c16-4f6f-8b78-1d2baf0e91df",
-    "name": "Zentra API Inventory",
+    "name": "HCL.CS API Inventory",
     "description": "Generated from docs/api/all-apis.md",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },

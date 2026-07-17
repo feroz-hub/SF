@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zentra-identity
+  name: hcl-cs-identity
   labels:
-    app: zentra-identity
+    app: hcl-cs-identity
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: zentra-identity
+      app: hcl-cs-identity
   template:
     metadata:
       labels:
-        app: zentra-identity
+        app: hcl-cs-identity
     spec:
       containers:
         - name: identity-api
-          image: zentra/identity-api:latest
+          image: hcl-cs/identity-api:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: zentra-config
+                name: hcl-cs-config

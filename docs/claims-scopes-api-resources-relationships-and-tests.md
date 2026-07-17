@@ -167,9 +167,9 @@ The following test areas exist or are recommended:
 
 ## 5. Where tests live
 
-- **API Resources, Scopes, API Resource Claims, API Scope Claims**: `tests/Zentra.IntegrationTests/Api/ApiResourceServiceTests.cs`
-- **Roles and Role Claims**: `tests/Zentra.IntegrationTests/Api/RoleServiceTests.cs`
-- **Relationship and existence**: `tests/Zentra.IntegrationTests/Api/ClaimsScopesApiResourcesRelationshipTests.cs`
+- **API Resources, Scopes, API Resource Claims, API Scope Claims**: `tests/HCL.CS.IntegrationTests/Api/ApiResourceServiceTests.cs`
+- **Roles and Role Claims**: `tests/HCL.CS.IntegrationTests/Api/RoleServiceTests.cs`
+- **Relationship and existence**: `tests/HCL.CS.IntegrationTests/Api/ClaimsScopesApiResourcesRelationshipTests.cs`
 
 ### 5.1 Test cases in ClaimsScopesApiResourcesRelationshipTests.cs
 

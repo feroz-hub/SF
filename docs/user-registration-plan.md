@@ -1,6 +1,6 @@
 # User registration: how users register to the server and what ways are available
 
-This document describes **all ways** a user can be created/registered on the Zentra server, the code paths involved, and how each method works.
+This document describes **all ways** a user can be created/registered on the HCL.CS server, the code paths involved, and how each method works.
 
 ---
 
@@ -8,10 +8,10 @@ This document describes **all ways** a user can be created/registered on the Zen
 
 | # | Method | Auth required? | Where used | Creates |
 |---|--------|----------------|------------|--------|
-| 1 | **Register User API** (self-registration or admin) | **No** (anonymous API) | Any client (e.g. Demo MVC/WPF, Zentra-admin if UI added) | Local user, default role, optional security questions/claims; email/phone unconfirmed by default |
+| 1 | **Register User API** (self-registration or admin) | **No** (anonymous API) | Any client (e.g. Demo MVC/WPF, HCL.CS-admin if UI added) | Local user, default role, optional security questions/claims; email/phone unconfirmed by default |
 | 2 | **External (Google) sign-in with auto-provisioning** | No (OAuth flow) | Demo.Server only | Local user from Google identity (email, name), default role, ExternalIdentities link; no password |
 | 3 | **LDAP first login** | No (LDAP bind) | When LDAP is enabled | Local user created/synced from LDAP attributes; email/phone confirmed; IdentityProvider = Ldap |
-| 4 | **Admin / API: UpdateUser** | Yes (token) | Zentra-admin (edit existing user) | N/A (updates only) |
+| 4 | **Admin / API: UpdateUser** | Yes (token) | HCL.CS-admin (edit existing user) | N/A (updates only) |
 
 There is **no** “Create User” (admin-only) API that is separate from Register User: the same **RegisterUser** API is used both for self-registration (no token) and for an admin creating a user (with token). The Gateway treats RegisterUser as **anonymous**, so it can be called without a token.
 
@@ -29,18 +29,18 @@ There is **no** “Create User” (admin-only) API that is separate from Registe
    - Checks user does not already exist (`FindUserByUserName`).
    - `SetDefaultValuesForCreate(user)` (e.g. sets EmailConfirmed/PhoneNumberConfirmed from config, clears lockout).
    - Maps `UserModel` → `Users`, calls `userManager.CreateAsync(usersEntity, user.Password)`.
-   - On success: adds to unit of work, password history, user security questions, user claims, assigns **default Zentra role** from `SystemSettings.UserConfig.DefaultUserRole`, saves.
+   - On success: adds to unit of work, password history, user security questions, user claims, assigns **default HCL.CS role** from `SystemSettings.UserConfig.DefaultUserRole`, saves.
 
 ### 2.2 Key files
 
 | Layer | File |
 |-------|------|
 | Route path | `ApiRoutePathConstants.RegisterUser` = `"/Security/Api/User/RegisterUser"` |
-| Gateway route | `src/Gateway/Zentra.Gateway/Routes/UserAccountServiceRoute.cs` → `RegisterUser` |
-| Gateway proxy | `src/Gateway/Zentra.Gateway/Proxy/UserAccountProxyServices.cs` → `RegisterUserAsync` (anonymous) |
-| Service | `src/Identity/Zentra.Identity.Application/Implementation/Api/Services/UserAccountService.cs` → `RegisterUserAsync` |
+| Gateway route | `src/Gateway/HCL.CS.Gateway/Routes/UserAccountServiceRoute.cs` → `RegisterUser` |
+| Gateway proxy | `src/Gateway/HCL.CS.Gateway/Proxy/UserAccountProxyServices.cs` → `RegisterUserAsync` (anonymous) |
+| Service | `src/Identity/HCL.CS.Identity.Application/Implementation/Api/Services/UserAccountService.cs` → `RegisterUserAsync` |
 | Validators | Same file: `ValidateUser`, `ValidatePassword`, `ValidateUserSecurityQuestion`, `ValidateUserClaims` |
-| Anonymous list | `src/Identity/Zentra.Identity.Domain/Constants/ProxyConstants.cs` → `AnonymousApis` includes `"RegisterUserAsync"` |
+| Anonymous list | `src/Identity/HCL.CS.Identity.Domain/Constants/ProxyConstants.cs` → `AnonymousApis` includes `"RegisterUserAsync"` |
 
 ### 2.3 Required / validated input (registration)
 
@@ -64,13 +64,13 @@ There is **no** “Create User” (admin-only) API that is separate from Registe
 ### 2.5 Who can call it
 
 - **Without token:** Yes (anonymous). Typical for self-registration (e.g. Demo MVC Register page, WPF Register screen).
-- **With token:** Yes. Can be used by Zentra-admin or other back-office apps to “create” a user by calling the same API (admin would send a full `UserModel` including CreatedBy).
+- **With token:** Yes. Can be used by HCL.CS-admin or other back-office apps to “create” a user by calling the same API (admin would send a full `UserModel` including CreatedBy).
 
 ### 2.6 Clients that use it
 
 - **Demo MVC:** `AccountController.Register` (POST) builds `UserModel` from `RegisterViewModel` and calls `httpService.PostAsync<FrameworkResult>(ApiRoutePathConstants.RegisterUser, user)`.
 - **Demo WPF:** `RegisterUserViewModel` calls the RegisterUser API.
-- **Zentra-admin:** `lib/api/users.ts` exposes `registerUser(user)` but there is **no** “Create User” UI/action that calls it yet; only list/update/lock/unlock/roles are implemented.
+- **HCL.CS-admin:** `lib/api/users.ts` exposes `registerUser(user)` but there is **no** “Create User” UI/action that calls it yet; only list/update/lock/unlock/roles are implemented.
 
 ---
 
@@ -78,7 +78,7 @@ There is **no** “Create User” (admin-only) API that is separate from Registe
 
 ### 3.1 When this creates a user
 
-Used only in **Zentra.Demo.Server** (demo host that uses external auth). When a user signs in with Google and:
+Used only in **HCL.CS.Demo.Server** (demo host that uses external auth). When a user signs in with Google and:
 
 - There is **no** existing link for that Google identity (`ExternalIdentities`), and
 - There is **no** existing local user by email (and tenant), and
@@ -101,7 +101,7 @@ then the server **creates a new local user** and links the Google identity to it
 
 | Component | File |
 |-----------|------|
-| Service | `demos/Zentra.Demo.Server/Services/ExternalAuth/ExternalAuthService.cs` |
+| Service | `demos/HCL.CS.Demo.Server/Services/ExternalAuth/ExternalAuthService.cs` |
 | Methods | `CompleteGoogleCallbackAsync`, `ResolveOrCreateUserAsync`, `CanAutoProvision`, `AutoProvisionUserAsync` |
 | Config | `ExternalAccountOptions` (e.g. `AutoProvisionEnabled`, `AllowedDomains`, `AllowedDomainsByTenant`) |
 
@@ -131,12 +131,12 @@ So **LDAP user creation goes through the same RegisterUserAsync** as the API, bu
 
 | Component | File |
 |-----------|------|
-| LDAP util | `src/Identity/Zentra.Identity.Application/Implementation/Api/Utils/LdapUtil.cs` |
+| LDAP util | `src/Identity/HCL.CS.Identity.Application/Implementation/Api/Utils/LdapUtil.cs` |
 | Methods | `LdapLoginAsync`, `CreateLdapUser`, `CreateLdapUserAsync`, `SyncLdapUserAsync`, `AssignModel` |
 
 ### 4.4 Documentation
 
-- `src/Identity/Zentra.Identity.Application/Implementation/Documentation/Main/LDAPIntegration.cs`: describes that LDAP bypasses “user registration and verification process” from the end-user’s perspective; a local account is created from LDAP and marked verified.
+- `src/Identity/HCL.CS.Identity.Application/Implementation/Documentation/Main/LDAPIntegration.cs`: describes that LDAP bypasses “user registration and verification process” from the end-user’s perspective; a local account is created from LDAP and marked verified.
 
 ---
 
@@ -145,7 +145,7 @@ So **LDAP user creation goes through the same RegisterUserAsync** as the API, bu
 | Path | Entry point | Auth | Creates user via | Typical use |
 |------|-------------|------|-------------------|-------------|
 | **Register User API** | POST `/Security/Api/User/RegisterUser` | Anonymous (no token) | `UserAccountService.RegisterUserAsync` | Self-registration, or admin creating user (if UI exists) |
-| **Google auto-provision** | Demo.Server Google callback | OAuth (no Zentra token) | `UserManager.CreateAsync` + role/claims (no RegisterUser) | First-time Google sign-in when domain allowed |
+| **Google auto-provision** | Demo.Server Google callback | OAuth (no HCL.CS token) | `UserManager.CreateAsync` + role/claims (no RegisterUser) | First-time Google sign-in when domain allowed |
 | **LDAP first login** | LDAP login (e.g. LdapUtil) | LDAP bind | `UserAccountService.RegisterUserAsync` (model built from LDAP) | First LDAP login creates local user |
 
 ---
@@ -153,6 +153,6 @@ So **LDAP user creation goes through the same RegisterUserAsync** as the API, bu
 ## 6. Recommendations
 
 1. **Self-registration:** Use **POST /Security/Api/User/RegisterUser** with a full `UserModel` (username, password, email, first/last name, optional security questions/claims). No Bearer token required.
-2. **Admin “Create User” in Zentra-admin:** Reuse the same **RegisterUser** API; add a “Create User” form that builds `UserModel` and calls `registerUser(user)` (already in `lib/api/users.ts`). Ensure required fields and validation align with server (see section 2.3).
+2. **Admin “Create User” in HCL.CS-admin:** Reuse the same **RegisterUser** API; add a “Create User” form that builds `UserModel` and calls `registerUser(user)` (already in `lib/api/users.ts`). Ensure required fields and validation align with server (see section 2.3).
 3. **Google users:** Rely on Demo.Server’s external auth and auto-provisioning when enabled; no separate “registration” call.
 4. **LDAP users:** No explicit registration; first successful LDAP login creates/syncs the local user via the existing LDAP + RegisterUser path.

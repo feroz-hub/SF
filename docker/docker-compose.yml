@@ -1,20 +1,20 @@
-name: zentra-dev
+name: hcl-cs-dev
 
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: zentra-postgres
+    container_name: hcl-cs-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${ZENTRA_DB_NAME:-zentra}
-      POSTGRES_USER: ${ZENTRA_DB_USER:-zentra}
-      POSTGRES_PASSWORD: ${ZENTRA_DB_PASSWORD:-zentra}
+      POSTGRES_DB: ${HCL_CS_DB_NAME:-hcl-cs}
+      POSTGRES_USER: ${HCL_CS_DB_USER:-hcl-cs}
+      POSTGRES_PASSWORD: ${HCL_CS_DB_PASSWORD:-hcl-cs}
     ports:
-      - "${ZENTRA_DB_PORT:-55433}:5432"
+      - "${HCL_CS_DB_PORT:-55433}:5432"
     volumes:
-      - zentra-postgres-data:/var/lib/postgresql/data
+      - hcl-cs-postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${ZENTRA_DB_USER:-zentra} -d ${ZENTRA_DB_NAME:-zentra}"]
+      test: ["CMD-SHELL", "pg_isready -U ${HCL_CS_DB_USER:-hcl-cs} -d ${HCL_CS_DB_NAME:-hcl-cs}"]
       interval: 5s
       timeout: 5s
       retries: 12
@@ -22,13 +22,13 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: zentra-redis
+    container_name: hcl-cs-redis
     restart: unless-stopped
     command: ["redis-server", "--appendonly", "yes"]
     ports:
-      - "${ZENTRA_REDIS_PORT:-56380}:6379"
+      - "${HCL_CS_REDIS_PORT:-56380}:6379"
     volumes:
-      - zentra-redis-data:/data
+      - hcl-cs-redis-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -36,25 +36,25 @@ services:
       retries: 12
       start_period: 5s
 
-  zentra:
+  hcl-cs:
     build:
       context: ..
       dockerfile: docker/identity-api.Dockerfile
-    image: zentra/identity-api:local
-    container_name: zentra-identity
+    image: hcl-cs/identity-api:local
+    container_name: hcl-cs-identity
     restart: unless-stopped
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "https://+:8443"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/app/https/zentra-devcert.pfx"
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "${ZENTRA_HTTPS_CERT_PASSWORD:-zentra-dev-cert}"
-      ZENTRA_DB_CONNECTION_STRING: "Host=postgres;Port=5432;Database=${ZENTRA_DB_NAME:-zentra};Username=${ZENTRA_DB_USER:-zentra};Password=${ZENTRA_DB_PASSWORD:-zentra}"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/app/https/hcl-cs-devcert.pfx"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "${HCL_CS_HTTPS_CERT_PASSWORD:-hcl-cs-dev-cert}"
+      HCL_CS_DB_CONNECTION_STRING: "Host=postgres;Port=5432;Database=${HCL_CS_DB_NAME:-hcl-cs};Username=${HCL_CS_DB_USER:-hcl-cs};Password=${HCL_CS_DB_PASSWORD:-hcl-cs}"
       SystemSettings__DBConfig__Database: PostgreSQL
-      TokenSettings__TokenConfig__IssuerUri: "${ZENTRA_ISSUER_URI:-https://localhost:5180}"
-      ZENTRA_REDIS_CONNECTION_STRING: "redis:6379"
-      ZENTRA_REDIS_INSTANCE_NAME: "zentra:"
+      TokenSettings__TokenConfig__IssuerUri: "${HCL_CS_ISSUER_URI:-https://localhost:5180}"
+      HCL_CS_REDIS_CONNECTION_STRING: "redis:6379"
+      HCL_CS_REDIS_INSTANCE_NAME: "hcl-cs:"
     ports:
-      - "${ZENTRA_PORT:-5180}:8443"
+      - "${HCL_CS_PORT:-5180}:8443"
     depends_on:
       postgres:
         condition: service_healthy
@@ -67,20 +67,20 @@ services:
       retries: 10
       start_period: 10s
     volumes:
-      - zentra-data:/app/.data
-      - zentra-keys:/app/DataProtection-Keys
-      - zentra-https:/app/https
+      - hcl-cs-data:/app/.data
+      - hcl-cs-keys:/app/DataProtection-Keys
+      - hcl-cs-https:/app/https
 
   installer:
     profiles: ["extras"]
     build:
       context: ..
       dockerfile: docker/installer.Dockerfile
-    image: zentra/installer:local
-    container_name: zentra-installer
+    image: hcl-cs/installer:local
+    container_name: hcl-cs-installer
     restart: unless-stopped
     ports:
-      - "${ZENTRA_INSTALLER_PORT:-7039}:8080"
+      - "${HCL_CS_INSTALLER_PORT:-7039}:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     healthcheck:
@@ -95,13 +95,13 @@ services:
     build:
       context: ..
       dockerfile: docker/gateway.Dockerfile
-    image: zentra/gateway:local
-    container_name: zentra-gateway
+    image: hcl-cs/gateway:local
+    container_name: hcl-cs-gateway
     command: ["dotnet", "--info"]
 
 volumes:
-  zentra-postgres-data:
-  zentra-redis-data:
-  zentra-data:
-  zentra-keys:
-  zentra-https:
+  hcl-cs-postgres-data:
+  hcl-cs-redis-data:
+  hcl-cs-data:
+  hcl-cs-keys:
+  hcl-cs-https:

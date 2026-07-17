@@ -1,6 +1,6 @@
-# Zentra Enterprise Architecture
+# HCL.CS Enterprise Architecture
 
-Zentra is organized using layered boundaries:
+HCL.CS is organized using layered boundaries:
 
 - `src/Identity`: identity domain, application, infrastructure, persistence, and API composition.
 - `src/Gateway`: gateway proxy components.
@@ -10,8 +10,8 @@ Zentra is organized using layered boundaries:
 
 ## Runtime topology
 
-- Identity runtime is currently hosted by `demos/Zentra.Demo.Server`.
-- Installer runtime is hosted by `installer/Zentra.Installer.Mvc`.
+- Identity runtime is currently hosted by `demos/HCL.CS.Demo.Server`.
+- Installer runtime is hosted by `installer/HCL.CS.Installer.Mvc`.
 - Gateway is currently a library package and has a container placeholder for CI/CD completeness.
 
 ## Design priorities

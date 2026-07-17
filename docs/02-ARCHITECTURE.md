@@ -1,6 +1,6 @@
-# Zentra Architecture
+# HCL.CS Architecture
 
-**Document ID:** ZENTRA-DOC-02-ARCHITECTURE  
+**Document ID:** HCL.CS-DOC-02-ARCHITECTURE  
 **Version:** 1.0.0  
 **Classification:** Internal Use  
 **Last Updated:** 2026-03-01  
@@ -25,13 +25,13 @@
 
 ```mermaid
 C4Context
-    title Zentra Identity Platform - System Context
+    title HCL.CS Identity Platform - System Context
     
     Person(user, "End User", "Person accessing client applications")
     Person(admin, "System Administrator", "Manages identity platform")
     
-    System_Boundary(zentra_boundary, "Zentra Identity Platform") {
-        System(zentra, "Zentra IdP", "OAuth 2.0 / OpenID Connect Identity Provider")
+    System_Boundary(hclCs_boundary, "HCL.CS Identity Platform") {
+        System(hcl-cs, "HCL.CS IdP", "OAuth 2.0 / OpenID Connect Identity Provider")
     }
     
     System_Ext(web_app, "Web Application", "Customer portal, admin dashboard")
@@ -45,16 +45,16 @@ C4Context
     Rel(user, spa, "Uses", "HTTPS")
     Rel(user, mobile, "Uses", "HTTPS")
     
-    Rel(web_app, zentra, "Authenticates users, requests tokens", "OAuth 2.0 / OIDC")
-    Rel(spa, zentra, "Authenticates users (PKCE)", "OAuth 2.0 / OIDC")
-    Rel(mobile, zentra, "Authenticates users (PKCE)", "OAuth 2.0 / OIDC")
+    Rel(web_app, hcl-cs, "Authenticates users, requests tokens", "OAuth 2.0 / OIDC")
+    Rel(spa, hcl-cs, "Authenticates users (PKCE)", "OAuth 2.0 / OIDC")
+    Rel(mobile, hcl-cs, "Authenticates users (PKCE)", "OAuth 2.0 / OIDC")
     
-    Rel(api, zentra, "Validates access tokens", "JWKS / Introspection")
+    Rel(api, hcl-cs, "Validates access tokens", "JWKS / Introspection")
     
-    Rel(zentra, ldap, "Authenticates users", "LDAP/LDAPS")
-    Rel(zentra, smtp, "Sends notifications", "SMTP")
+    Rel(hcl-cs, ldap, "Authenticates users", "LDAP/LDAPS")
+    Rel(hcl-cs, smtp, "Sends notifications", "SMTP")
     
-    Rel(admin, zentra, "Manages system", "Admin API")
+    Rel(admin, hcl-cs, "Manages system", "Admin API")
     
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
 ```
@@ -80,7 +80,7 @@ C4Context
 
 ```mermaid
 C4Container
-    title Zentra Identity Platform - Container Diagram
+    title HCL.CS Identity Platform - Container Diagram
     
     Person(user, "End User", "Person accessing applications")
     
@@ -125,14 +125,14 @@ C4Container
 
 | Container | Technology | Primary Responsibility | Source Location |
 |-----------|------------|----------------------|-----------------|
-| **API Gateway** | ASP.NET Core | Request routing, security headers, correlation IDs, observability | `/src/Gateway/Zentra.Gateway/` |
-| **Identity API** | ASP.NET Core | HTTP hosting, endpoint mapping, middleware pipeline | `/src/Identity/Zentra.Identity.API/` |
-| **Endpoint Layer** | C# / .NET 8 | OAuth/OIDC protocol implementations | `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/` |
-| **Application Services** | C# / .NET 8 | Business logic, validation, specifications | `/src/Identity/Zentra.Identity.Application/Implementation/Api/` |
-| **Domain Layer** | C# / .NET 8 | Entities, models, constants, enums | `/src/Identity/Zentra.Identity.Domain/` |
-| **Persistence** | EF Core 8 | Data access, repositories, mappings | `/src/Identity/Zentra.Identity.Persistence/` |
-| **Infrastructure** | C# / .NET 8 | External service integrations | `/src/Identity/Zentra.Identity.Infrastructure/` |
-| **Installer** | ASP.NET Core MVC | Database setup, migrations, seeding | `/installer/Zentra.Installer.Mvc/` |
+| **API Gateway** | ASP.NET Core | Request routing, security headers, correlation IDs, observability | `/src/Gateway/HCL.CS.Gateway/` |
+| **Identity API** | ASP.NET Core | HTTP hosting, endpoint mapping, middleware pipeline | `/src/Identity/HCL.CS.Identity.API/` |
+| **Endpoint Layer** | C# / .NET 8 | OAuth/OIDC protocol implementations | `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/` |
+| **Application Services** | C# / .NET 8 | Business logic, validation, specifications | `/src/Identity/HCL.CS.Identity.Application/Implementation/Api/` |
+| **Domain Layer** | C# / .NET 8 | Entities, models, constants, enums | `/src/Identity/HCL.CS.Identity.Domain/` |
+| **Persistence** | EF Core 8 | Data access, repositories, mappings | `/src/Identity/HCL.CS.Identity.Persistence/` |
+| **Infrastructure** | C# / .NET 8 | External service integrations | `/src/Identity/HCL.CS.Identity.Infrastructure/` |
+| **Installer** | ASP.NET Core MVC | Database setup, migrations, seeding | `/installer/HCL.CS.Installer.Mvc/` |
 
 ---
 
@@ -143,7 +143,7 @@ C4Container
 ```mermaid
 flowchart TB
     subgraph "Presentation Layer"
-        API[Identity API<br/>Zentra.Identity.API]
+        API[Identity API<br/>HCL.CS.Identity.API]
     end
     
     subgraph "Application Layer"
@@ -194,19 +194,19 @@ flowchart TB
 
 ### 3.2 Layer Details
 
-#### 3.2.1 API Layer (`Zentra.Identity.API`)
+#### 3.2.1 API Layer (`HCL.CS.Identity.API`)
 
-**Source:** `/src/Identity/Zentra.Identity.API/`
+**Source:** `/src/Identity/HCL.CS.Identity.API/`
 
 | Component | Purpose | Key Files |
 |-----------|---------|-----------|
 | Program.cs | Application entry point, DI configuration | `Program.cs` |
-| Extensions | Custom middleware registration, Zentra builder | `Extensions/ZentraBuilder.cs`, `Extensions/ZentraExtension.cs` |
+| Extensions | Custom middleware registration, HCL.CS builder | `Extensions/HclCsBuilder.cs`, `Extensions/HclCsExtension.cs` |
 | Health Checks | Dependency health verification | `Health/DatabaseDependencyHealthCheck.cs`, `Health/CacheDependencyHealthCheck.cs` |
 
-#### 3.2.2 Application Layer (`Zentra.Identity.Application`)
+#### 3.2.2 Application Layer (`HCL.CS.Identity.Application`)
 
-**Source:** `/src/Identity/Zentra.Identity.Application/`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/`
 
 | Sub-Component | Purpose | Key Files |
 |---------------|---------|-----------|
@@ -216,9 +216,9 @@ flowchart TB
 | **Validators** | Request validation | `Implementation/Endpoint/Validators/`, `Implementation/Api/Validators/` |
 | **Results** | HTTP result generation | `Implementation/Endpoint/Results/*Result.cs` |
 
-#### 3.2.3 Domain Layer (`Zentra.Identity.Domain`)
+#### 3.2.3 Domain Layer (`HCL.CS.Identity.Domain`)
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/`
 
 | Sub-Component | Purpose | Key Files |
 |---------------|---------|-----------|
@@ -228,9 +228,9 @@ flowchart TB
 | **Constants** | Application constants | `Constants/`, `Constants/Endpoint/OpenIdConstants.cs` |
 | **Enums** | Enumeration types | `Enums/`, `Enums/ApiEnums.cs`, `Enums/EndpointEnums.cs` |
 
-#### 3.2.4 Domain Services Layer (`Zentra.Identity.DomainServices`)
+#### 3.2.4 Domain Services Layer (`HCL.CS.Identity.DomainServices`)
 
-**Source:** `/src/Identity/Zentra.Identity.DomainServices/`
+**Source:** `/src/Identity/HCL.CS.Identity.DomainServices/`
 
 | Sub-Component | Purpose | Key Files |
 |---------------|---------|-----------|
@@ -240,16 +240,16 @@ flowchart TB
 
 #### 3.2.5 Infrastructure Layer
 
-**Source:** `/src/Identity/Zentra.Identity.Infrastructure*/`
+**Source:** `/src/Identity/HCL.CS.Identity.Infrastructure*/`
 
 | Sub-Component | Purpose | Key Files |
 |---------------|---------|-----------|
 | **Services** | External integrations | `Implementation/EmailService.cs`, `Implementation/SmsService.cs` |
 | **Resources** | Localization, key storage | `KeyStore.cs`, `ResourceStringHandler.cs` |
 
-#### 3.2.6 Persistence Layer (`Zentra.Identity.Persistence`)
+#### 3.2.6 Persistence Layer (`HCL.CS.Identity.Persistence`)
 
-**Source:** `/src/Identity/Zentra.Identity.Persistence/`
+**Source:** `/src/Identity/HCL.CS.Identity.Persistence/`
 
 | Sub-Component | Purpose | Key Files |
 |---------------|---------|-----------|
@@ -296,13 +296,13 @@ flowchart LR
         CLIENT[Client Application]
     end
     
-    subgraph "Gateway (Zentra.Gateway)"
+    subgraph "Gateway (HCL.CS.Gateway)"
         direction TB
         CORR[CorrelationIdMiddleware<br/>X-Correlation-ID propagation]
         SEC[SecurityHeadersMiddleware<br/>HSTS, CSP, X-Frame-Options]
         OBS[RequestObservabilityMiddleware<br/>Metrics, logging]
-        API[ZentraApiMiddleware<br/>Request processing]
-        ENDPOINT[ZentraEndpointMiddleware<br/>Endpoint routing]
+        API[HclCsApiMiddleware<br/>Request processing]
+        ENDPOINT[HclCsEndpointMiddleware<br/>Endpoint routing]
         
         CORR --> SEC
         SEC --> OBS
@@ -345,19 +345,19 @@ flowchart LR
 
 ### 4.2 Gateway Middleware Pipeline
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/`
 
 | Middleware | Purpose | Order |
 |------------|---------|-------|
 | **CorrelationIdMiddleware** | Generate/propagate correlation IDs | 1 (First) |
 | **SecurityHeadersMiddleware** | Add security response headers | 2 |
 | **RequestObservabilityMiddleware** | Metrics collection, request logging | 3 |
-| **ZentraApiMiddleware** | API request processing | 4 |
-| **ZentraEndpointMiddleware** | Endpoint-specific routing | 5 (Last) |
+| **HclCsApiMiddleware** | API request processing | 4 |
+| **HclCsEndpointMiddleware** | Endpoint-specific routing | 5 (Last) |
 
 ### 4.3 Proxy Services
 
-**Source:** `/src/Gateway/Zentra.Gateway/Proxy/`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Proxy/`
 
 | Service | Responsibility | Routes |
 |---------|---------------|--------|
@@ -372,7 +372,7 @@ flowchart LR
 
 ### 4.4 Security Headers Applied
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/SecurityHeadersMiddleware.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/SecurityHeadersMiddleware.cs`
 
 | Header | Value | Purpose |
 |--------|-------|---------|
@@ -421,7 +421,7 @@ flowchart TB
 
 ### 5.2 Installer Components
 
-**Source:** `/installer/Zentra.Installer.Mvc/`
+**Source:** `/installer/HCL.CS.Installer.Mvc/`
 
 | Component | Purpose | Key Files |
 |-----------|---------|-----------|
@@ -536,7 +536,7 @@ flowchart TB
         RESOURCE[Resource API<br/>https://localhost:5002]
         INSTALLER[Installer MVC<br/>https://localhost:7039]
         
-        SQLITE[(SQLite<br/>.data/zentra_identity.db)]
+        SQLITE[(SQLite<br/>.data/hclCs_identity.db)]
     end
     
     DEMO --> SQLITE
@@ -582,7 +582,7 @@ flowchart TB
 flowchart TB
     subgraph "Kubernetes Cluster"
         subgraph "Ingress Layer"
-            INGRESS[Nginx Ingress<br/>zentra.example.com]
+            INGRESS[Nginx Ingress<br/>hcl-cs.example.com]
         end
         
         subgraph "Service Layer"
@@ -595,7 +595,7 @@ flowchart TB
         end
         
         subgraph "Config"
-            CM[ConfigMap<br/>zentra-config]
+            CM[ConfigMap<br/>hcl-cs-config]
         end
         
         subgraph "Data Stores"
@@ -663,14 +663,14 @@ This architecture is grounded in the following source files:
 
 | Layer | Path |
 |-------|------|
-| API | `/src/Identity/Zentra.Identity.API/Program.cs` |
-| Application | `/src/Identity/Zentra.Identity.Application/Implementation/` |
-| Domain | `/src/Identity/Zentra.Identity.Domain/Entities/`, `/src/Identity/Zentra.Identity.Domain/Models/` |
-| Domain Services | `/src/Identity/Zentra.Identity.DomainServices/` |
-| Infrastructure | `/src/Identity/Zentra.Identity.Infrastructure/`, `/src/Identity/Zentra.Identity.Infrastructure.Resources/` |
-| Persistence | `/src/Identity/Zentra.Identity.Persistence/` |
-| Gateway | `/src/Gateway/Zentra.Gateway/` |
-| Installer | `/installer/Zentra.Installer.Mvc/` |
+| API | `/src/Identity/HCL.CS.Identity.API/Program.cs` |
+| Application | `/src/Identity/HCL.CS.Identity.Application/Implementation/` |
+| Domain | `/src/Identity/HCL.CS.Identity.Domain/Entities/`, `/src/Identity/HCL.CS.Identity.Domain/Models/` |
+| Domain Services | `/src/Identity/HCL.CS.Identity.DomainServices/` |
+| Infrastructure | `/src/Identity/HCL.CS.Identity.Infrastructure/`, `/src/Identity/HCL.CS.Identity.Infrastructure.Resources/` |
+| Persistence | `/src/Identity/HCL.CS.Identity.Persistence/` |
+| Gateway | `/src/Gateway/HCL.CS.Gateway/` |
+| Installer | `/installer/HCL.CS.Installer.Mvc/` |
 
 ---
 

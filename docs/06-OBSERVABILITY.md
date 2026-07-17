@@ -1,6 +1,6 @@
-# Zentra Observability
+# HCL.CS Observability
 
-**Document ID:** ZENTRA-DOC-06-OBSERVABILITY  
+**Document ID:** HCL.CS-DOC-06-OBSERVABILITY  
 **Version:** 1.0.0  
 **Classification:** Internal Use  
 **Last Updated:** 2026-03-01  
@@ -24,7 +24,7 @@
 
 The Correlation ID Middleware ensures every request can be traced end-to-end across the distributed system. It propagates a unique identifier from the gateway through all downstream services.
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/CorrelationIdMiddleware.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/CorrelationIdMiddleware.cs`
 
 ### 1.2 Behavior
 
@@ -74,7 +74,7 @@ private static string CreateCorrelationId()
 
 ### 1.5 Validation Rules
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/CorrelationIdMiddleware.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/CorrelationIdMiddleware.cs`
 
 ```csharp
 private static bool IsValidCorrelationId(string correlationId)
@@ -106,22 +106,22 @@ The correlation ID is propagated through:
 
 ## 2. Metrics and Instrumentation
 
-### 2.1 ZentraMetrics Class
+### 2.1 HclCsMetrics Class
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/ZentraMetrics.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/HclCsMetrics.cs`
 
 ```csharp
-internal static class ZentraMetrics
+internal static class HclCsMetrics
 {
-    private static readonly Meter Meter = new("Zentra.Hosting.Observability", "1.0.0");
+    private static readonly Meter Meter = new("HCL.CS.Hosting.Observability", "1.0.0");
     
     // Request counter
     private static readonly Counter<long> RequestCounter =
-        Meter.CreateCounter<long>("zentra.http.server.requests");
+        Meter.CreateCounter<long>("hcl-cs.http.server.requests");
     
     // Request duration histogram
     private static readonly Histogram<double> RequestDurationMs =
-        Meter.CreateHistogram<double>("zentra.http.server.duration.ms", "ms");
+        Meter.CreateHistogram<double>("hcl-cs.http.server.duration.ms", "ms");
 }
 ```
 
@@ -129,8 +129,8 @@ internal static class ZentraMetrics
 
 | Metric Name | Type | Labels | Description |
 |-------------|------|--------|-------------|
-| `zentra.http.server.requests` | Counter | method, route, status_code | Total HTTP requests |
-| `zentra.http.server.duration.ms` | Histogram | method, route, status_code | Request duration in milliseconds |
+| `hcl-cs.http.server.requests` | Counter | method, route, status_code | Total HTTP requests |
+| `hcl-cs.http.server.duration.ms` | Histogram | method, route, status_code | Request duration in milliseconds |
 
 ### 2.3 Metric Labels
 
@@ -144,7 +144,7 @@ internal static class ZentraMetrics
 
 ```csharp
 // Recording a request
-ZentraMetrics.RecordRequest(
+HclCsMetrics.RecordRequest(
     method: "POST",
     routeGroup: "security/token",
     statusCode: 200,
@@ -161,7 +161,7 @@ To export metrics, configure in `Program.cs`:
 builder.Services.AddOpenTelemetry()
     .WithMetrics(metrics =>
     {
-        metrics.AddMeter("Zentra.Hosting.Observability")
+        metrics.AddMeter("HCL.CS.Hosting.Observability")
                .AddPrometheusExporter()
                .AddOtlpExporter();
     });
@@ -175,7 +175,7 @@ builder.Services.AddOpenTelemetry()
 
 Captures detailed request/response information for observability, including timing, status codes, and correlation tracking.
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/RequestObservabilityMiddleware.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/RequestObservabilityMiddleware.cs`
 
 ### 3.2 Captured Information
 
@@ -252,7 +252,7 @@ The observability middleware executes in this order:
 1. `CorrelationIdMiddleware` - Generate/validate correlation ID
 2. `SecurityHeadersMiddleware` - Add security headers
 3. `RequestObservabilityMiddleware` - Capture timing and logging
-4. `ZentraApiMiddleware` / `ZentraEndpointMiddleware` - Process request
+4. `HclCsApiMiddleware` / `HclCsEndpointMiddleware` - Process request
 
 ---
 
@@ -262,7 +262,7 @@ The observability middleware executes in this order:
 
 Prevents sensitive data leakage in logs by automatically redacting known sensitive fields.
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/LogRedactionHelper.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/LogRedactionHelper.cs`
 
 ### 4.2 Sensitive Field Detection
 
@@ -347,7 +347,7 @@ logger.LogInformation(
 
 Health checks provide operational visibility into system dependencies and readiness to serve traffic.
 
-**Source:** `/src/Identity/Zentra.Identity.API/Health/`
+**Source:** `/src/Identity/HCL.CS.Identity.API/Health/`
 
 ### 5.2 Health Endpoints
 
@@ -358,7 +358,7 @@ Health checks provide operational visibility into system dependencies and readin
 
 ### 5.3 Database Health Check
 
-**Source:** `/src/Identity/Zentra.Identity.API/Health/DatabaseDependencyHealthCheck.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.API/Health/DatabaseDependencyHealthCheck.cs`
 
 ```csharp
 public class DatabaseDependencyHealthCheck : IHealthCheck
@@ -392,7 +392,7 @@ public class DatabaseDependencyHealthCheck : IHealthCheck
 
 ### 5.4 Cache Health Check
 
-**Source:** `/src/Identity/Zentra.Identity.API/Health/CacheDependencyHealthCheck.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.API/Health/CacheDependencyHealthCheck.cs`
 
 | Check | Timeout | Success Criteria |
 |-------|---------|------------------|
@@ -478,7 +478,7 @@ readinessProbe:
 
 ### 6.2 Log Categories
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/LogConfig.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/LogConfig.cs`
 
 | Category | Purpose | Example Events |
 |----------|---------|----------------|
@@ -516,7 +516,7 @@ Every log entry includes:
     "LogLevel": {
       "Default": "Information",
       "Microsoft.AspNetCore": "Warning",
-      "Zentra": "Debug"
+      "HCL.CS": "Debug"
     },
     "Console": {
       "FormatterName": "json",
@@ -547,11 +547,11 @@ When adding new log statements:
 
 ### 7.1 ActivitySource Integration
 
-Zentra uses `System.Diagnostics.Activity` for distributed tracing:
+HCL.CS uses `System.Diagnostics.Activity` for distributed tracing:
 
 ```csharp
 // Example activity creation
-using var activity = new Activity("Zentra.TokenEndpoint");
+using var activity = new Activity("HCL.CS.TokenEndpoint");
 activity.SetTag("client_id", clientId);
 activity.SetTag("grant_type", grantType);
 activity.Start();
@@ -570,7 +570,7 @@ builder.Services.AddOpenTelemetry()
         tracing.AddAspNetCoreInstrumentation()
                .AddHttpClientInstrumentation()
                .AddEntityFrameworkCoreInstrumentation()
-               .AddSource("Zentra.Identity")
+               .AddSource("HCL.CS.Identity")
                .AddOtlpExporter();
     });
 ```
@@ -593,10 +593,10 @@ builder.Services.AddOpenTelemetry()
 
 | Panel | Query | Visualization |
 |-------|-------|---------------|
-| Request Rate | `rate(zentra_http_server_requests[1m])` | Line graph |
-| Error Rate | `rate(zentra_http_server_requests{status_code=~"5.."}[1m])` | Line graph |
-| Latency p95 | `histogram_quantile(0.95, zentra_http_server_duration_ms)` | Line graph |
-| Health Status | `up{job="zentra-identity"}` | Status panel |
+| Request Rate | `rate(hclCs_http_server_requests[1m])` | Line graph |
+| Error Rate | `rate(hclCs_http_server_requests{status_code=~"5.."}[1m])` | Line graph |
+| Latency p95 | `histogram_quantile(0.95, hclCs_http_server_duration_ms)` | Line graph |
+| Health Status | `up{job="hcl-cs-identity"}` | Status panel |
 
 ---
 

@@ -3,6 +3,6 @@ set -euo pipefail
 
 # Applies EF Core migrations for the persistence project.
 dotnet ef database update \
-  --project src/Identity/Zentra.Identity.Persistence/Zentra.Infrastructure.Data.csproj \
-  --startup-project demos/Zentra.Demo.Server/Zentra.DemoServerApp.csproj \
+  --project src/Identity/HCL.CS.Identity.Persistence/HCL.CS.Infrastructure.Data.csproj \
+  --startup-project demos/HCL.CS.Demo.Server/HCL.CS.DemoServerApp.csproj \
   "$@"

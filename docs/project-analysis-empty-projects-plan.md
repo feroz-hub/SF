@@ -10,22 +10,22 @@ This document summarizes a file-by-file style analysis of the repository: soluti
 
 | Solution | Path | Projects referenced |
 |----------|------|---------------------|
-| **Zentra.sln** (main) | repo root | 19 projects (see below) |
-| Zentra.Demo.Server.sln | demos/Zentra.Demo.Server/ | 1 project (**path broken**) |
-| Zentra.Demo.Client.Mvc.sln | demos/Zentra.Demo.Client.Mvc/ | 1 project (**path + name wrong**) |
-| Zentra.Demo.Client.Wpf.sln | demos/Zentra.Demo.Client.Wpf/ | 1 project (**path broken**) |
+| **HCL.CS.sln** (main) | repo root | 19 projects (see below) |
+| HCL.CS.Demo.Server.sln | demos/HCL.CS.Demo.Server/ | 1 project (**path broken**) |
+| HCL.CS.Demo.Client.Mvc.sln | demos/HCL.CS.Demo.Client.Mvc/ | 1 project (**path + name wrong**) |
+| HCL.CS.Demo.Client.Wpf.sln | demos/HCL.CS.Demo.Client.Wpf/ | 1 project (**path broken**) |
 
-### 1.2 Main solution (Zentra.sln) – 19 projects
+### 1.2 Main solution (HCL.CS.sln) – 19 projects
 
-- **src/Contracts:** Zentra.Contracts  
+- **src/Contracts:** HCL.CS.Contracts  
 - **src/SharedKernel:** DomainValidation  
-- **src/Identity:** Zentra.Domain, Zentra.DomainServices, Zentra.Service.Interfaces, Zentra.Service, Zentra.Infrastructure.Data, Zentra.Infrastructure.Resources, Zentra.Infrastructure.Services, Zentra.Hosting  
-- **src/Gateway:** Zentra.ProxyService  
-- **tests:** TestApp.Helper, IntegrationTests, Zentra.UnitTests, Zentra.ArchitectureTests  
-- **demos:** Zentra.DemoClientMvc, Zentra.DemoServerApp, Zentra.DemoClientWpfApp  
-- **installer:** ZentraInstallerMVC  
+- **src/Identity:** HCL.CS.Domain, HCL.CS.DomainServices, HCL.CS.Service.Interfaces, HCL.CS.Service, HCL.CS.Infrastructure.Data, HCL.CS.Infrastructure.Resources, HCL.CS.Infrastructure.Services, HCL.CS.Hosting  
+- **src/Gateway:** HCL.CS.ProxyService  
+- **tests:** TestApp.Helper, IntegrationTests, HCL.CS.UnitTests, HCL.CS.ArchitectureTests  
+- **demos:** HCL.CS.DemoClientMvc, HCL.CS.DemoServerApp, HCL.CS.DemoClientWpfApp  
+- **installer:** HclCsInstallerMVC  
 
-**Not in main solution:** None of the remaining `.csproj` projects are outside `Zentra.sln`.
+**Not in main solution:** None of the remaining `.csproj` projects are outside `HCL.CS.sln`.
 
 ---
 
@@ -34,26 +34,26 @@ This document summarizes a file-by-file style analysis of the repository: soluti
 | Project | Path | .cs files (excl. obj/bin) | Note |
 |---------|------|---------------------------|------|
 | DomainValidation | src/SharedKernel/DomainValidation | 7 | Not empty |
-| Zentra.Domain | src/Identity/Zentra.Identity.Domain | 110 | Not empty |
-| Zentra.DomainServices | src/Identity/Zentra.Identity.DomainServices | 30 | Not empty |
-| Zentra.Service.Interfaces | src/Identity/Zentra.Identity.Contracts | 36 | Not empty |
-| Zentra.Service | src/Identity/Zentra.Identity.Application | 132 | Not empty |
-| Zentra.Infrastructure.Data | src/Identity/Zentra.Identity.Persistence | 46 | Not empty |
-| Zentra.Infrastructure.Resources | src/Identity/Zentra.Identity.Infrastructure.Resources | 5 | Not empty (config/resources) |
-| Zentra.Infrastructure.Services | src/Identity/Zentra.Identity.Infrastructure | 10 | Not empty |
-| Zentra.ProxyService | src/Gateway/Zentra.Gateway | 30 | Not empty |
-| Zentra.Hosting | src/Identity/Zentra.Identity.API | 5 | Not empty |
-| TestApp.Helper | tests/Zentra.TestApp.Helper | 8 | Not empty |
-| IntegrationTests | tests/Zentra.IntegrationTests | 51 | Not empty |
-| Zentra.ArchitectureTests | tests/Zentra.ArchitectureTests | **1** | Minimal but valid (layer tests) |
-| **Zentra.UnitTests** | tests/Zentra.UnitTests | **1** | Minimal but valid |
-| Zentra.Contracts | src/Contracts | 3 | Not empty |
-| Zentra.DemoClientMvc | demos/Zentra.Demo.Client.Mvc | 51 | Not empty |
-| Zentra.DemoServerApp | demos/Zentra.Demo.Server | 18 | Not empty |
-| Zentra.DemoClientWpfApp | demos/Zentra.Demo.Client.Wpf | 66 | Not empty |
-| ZentraInstallerMVC | installer/Zentra.Installer.Mvc | 68 | Not empty |
+| HCL.CS.Domain | src/Identity/HCL.CS.Identity.Domain | 110 | Not empty |
+| HCL.CS.DomainServices | src/Identity/HCL.CS.Identity.DomainServices | 30 | Not empty |
+| HCL.CS.Service.Interfaces | src/Identity/HCL.CS.Identity.Contracts | 36 | Not empty |
+| HCL.CS.Service | src/Identity/HCL.CS.Identity.Application | 132 | Not empty |
+| HCL.CS.Infrastructure.Data | src/Identity/HCL.CS.Identity.Persistence | 46 | Not empty |
+| HCL.CS.Infrastructure.Resources | src/Identity/HCL.CS.Identity.Infrastructure.Resources | 5 | Not empty (config/resources) |
+| HCL.CS.Infrastructure.Services | src/Identity/HCL.CS.Identity.Infrastructure | 10 | Not empty |
+| HCL.CS.ProxyService | src/Gateway/HCL.CS.Gateway | 30 | Not empty |
+| HCL.CS.Hosting | src/Identity/HCL.CS.Identity.API | 5 | Not empty |
+| TestApp.Helper | tests/HCL.CS.TestApp.Helper | 8 | Not empty |
+| IntegrationTests | tests/HCL.CS.IntegrationTests | 51 | Not empty |
+| HCL.CS.ArchitectureTests | tests/HCL.CS.ArchitectureTests | **1** | Minimal but valid (layer tests) |
+| **HCL.CS.UnitTests** | tests/HCL.CS.UnitTests | **1** | Minimal but valid |
+| HCL.CS.Contracts | src/Contracts | 3 | Not empty |
+| HCL.CS.DemoClientMvc | demos/HCL.CS.Demo.Client.Mvc | 51 | Not empty |
+| HCL.CS.DemoServerApp | demos/HCL.CS.Demo.Server | 18 | Not empty |
+| HCL.CS.DemoClientWpfApp | demos/HCL.CS.Demo.Client.Wpf | 66 | Not empty |
+| HclCsInstallerMVC | installer/HCL.CS.Installer.Mvc | 68 | Not empty |
 
-**Conclusion:** No project is completely empty (0 .cs files). The only “minimal” projects are **Zentra.ArchitectureTests** (1 test file) and **Zentra.UnitTests** (1 test file). Both contain real tests and are included in the main solution.
+**Conclusion:** No project is completely empty (0 .cs files). The only “minimal” projects are **HCL.CS.ArchitectureTests** (1 test file) and **HCL.CS.UnitTests** (1 test file). Both contain real tests and are included in the main solution.
 
 ---
 
@@ -61,14 +61,14 @@ This document summarizes a file-by-file style analysis of the repository: soluti
 
 ### 3.1 Minimal projects
 
-- **Zentra.UnitTests**  
-  - **Location:** tests/Zentra.UnitTests/  
+- **HCL.CS.UnitTests**  
+  - **Location:** tests/HCL.CS.UnitTests/  
   - **Content:** Single file `GoogleExternalAuthProviderTests.cs` (real unit tests).  
-  - **Status:** Included in `Zentra.sln`; minimal but valid.  
+  - **Status:** Included in `HCL.CS.sln`; minimal but valid.  
   - **Recommendation:** Expand coverage if you want more unit-level validation, but no structural fix is required.
 
-- **Zentra.ArchitectureTests**  
-  - **Location:** tests/Zentra.ArchitectureTests/  
+- **HCL.CS.ArchitectureTests**  
+  - **Location:** tests/HCL.CS.ArchitectureTests/  
   - **Content:** Single file `LayerDependencyTests.cs` (architecture/layer dependency tests).  
   - **Status:** In main solution; minimal but valid. No change required unless you want to add more architecture tests.
 
@@ -76,11 +76,11 @@ This document summarizes a file-by-file style analysis of the repository: soluti
 
 - **src/Contracts**  
   - **Location:** src/Contracts/  
-  - **Content:** Three .cs files plus `Zentra.Contracts.csproj`:
+  - **Content:** Three .cs files plus `HCL.CS.Contracts.csproj`:
     - `Events/UserProvisionedEvent.cs`
     - `Requests/AuthTokenRequest.cs`
     - `Responses/AuthTokenResponse.cs`
-  - **Status:** The folder is now compiled through `src/Contracts/Zentra.Contracts.csproj` and included in `Zentra.sln`.  
+  - **Status:** The folder is now compiled through `src/Contracts/HCL.CS.Contracts.csproj` and included in `HCL.CS.sln`.  
   - **Recommendation:** None for project structure; only keep it if the contracts remain part of the product surface.
 
 ### 3.3 Broken standalone solution paths
@@ -89,18 +89,18 @@ These solutions reference a **subfolder** for the project (e.g. `ProjectName\Pro
 
 | Solution | Current project path in .sln | Actual .csproj location |
 |----------|-----------------------------|--------------------------|
-| Zentra.Demo.Server.sln | `Zentra.DemoServerApp\Zentra.DemoServerApp.csproj` | `Zentra.DemoServerApp.csproj` (same folder as .sln) |
-| Zentra.Demo.Client.Wpf.sln | `Zentra.DemoClientWpfApp\Zentra.DemoClientWpfApp.csproj` | `Zentra.DemoClientWpfApp.csproj` (same folder as .sln) |
+| HCL.CS.Demo.Server.sln | `HCL.CS.DemoServerApp\HCL.CS.DemoServerApp.csproj` | `HCL.CS.DemoServerApp.csproj` (same folder as .sln) |
+| HCL.CS.Demo.Client.Wpf.sln | `HCL.CS.DemoClientWpfApp\HCL.CS.DemoClientWpfApp.csproj` | `HCL.CS.DemoClientWpfApp.csproj` (same folder as .sln) |
 
-**Zentra.Demo.Client.Mvc.sln** is worse: it references `Zentra.DemoClientCoreMvcApp\Zentra.DemoClientCoreMvcApp.csproj`, but the real project in that folder is **Zentra.DemoClientMvc.csproj** (different name and no subfolder). So the standalone MVC solution points to a non-existent project.
+**HCL.CS.Demo.Client.Mvc.sln** is worse: it references `HCL.CS.DemoClientCoreMvcApp\HCL.CS.DemoClientCoreMvcApp.csproj`, but the real project in that folder is **HCL.CS.DemoClientMvc.csproj** (different name and no subfolder). So the standalone MVC solution points to a non-existent project.
 
-**Recommendation:** In each standalone demo .sln, set the project path to the actual .csproj in the same directory (e.g. `Zentra.DemoServerApp.csproj`). For MVC, also fix the project name to match `Zentra.DemoClientMvc.csproj`.
+**Recommendation:** In each standalone demo .sln, set the project path to the actual .csproj in the same directory (e.g. `HCL.CS.DemoServerApp.csproj`). For MVC, also fix the project name to match `HCL.CS.DemoClientMvc.csproj`.
 
 ---
 
 ## 4. Projects not in main solution
 
-At the time of this update, all remaining `.csproj` projects in the repository are included in `Zentra.sln`.
+At the time of this update, all remaining `.csproj` projects in the repository are included in `HCL.CS.sln`.
 
 ---
 
@@ -109,36 +109,36 @@ At the time of this update, all remaining `.csproj` projects in the repository a
 | Item | Type | Empty? | Action |
 |------|------|--------|--------|
 | All 19 .csproj projects | Project | No (all have ≥1 .cs) | None for “empty” |
-| Zentra.UnitTests | Project | Minimal (1 file) | Optional: add more unit tests |
-| Zentra.ArchitectureTests | Project | Minimal (1 file) | Optional: add more tests |
-| src/Contracts | Project folder | No | Already added as `Zentra.Contracts` |
-| Zentra.Demo.Server.sln | Solution | N/A | Fix project path |
-| Zentra.Demo.Client.Mvc.sln | Solution | N/A | Fix project path and name |
-| Zentra.Demo.Client.Wpf.sln | Solution | N/A | Fix project path |
+| HCL.CS.UnitTests | Project | Minimal (1 file) | Optional: add more unit tests |
+| HCL.CS.ArchitectureTests | Project | Minimal (1 file) | Optional: add more tests |
+| src/Contracts | Project folder | No | Already added as `HCL.CS.Contracts` |
+| HCL.CS.Demo.Server.sln | Solution | N/A | Fix project path |
+| HCL.CS.Demo.Client.Mvc.sln | Solution | N/A | Fix project path and name |
+| HCL.CS.Demo.Client.Wpf.sln | Solution | N/A | Fix project path |
 
 ---
 
 ## 6. File reference – all .csproj
 
 - src/SharedKernel/DomainValidation/DomainValidation.csproj  
-- src/Identity/Zentra.Identity.Domain/Zentra.Domain.csproj  
-- src/Identity/Zentra.Identity.DomainServices/Zentra.DomainServices.csproj  
-- src/Identity/Zentra.Identity.Contracts/Zentra.Service.Interfaces.csproj  
-- src/Identity/Zentra.Identity.Application/Zentra.Service.csproj  
-- src/Identity/Zentra.Identity.Persistence/Zentra.Infrastructure.Data.csproj  
-- src/Identity/Zentra.Identity.Infrastructure.Resources/Zentra.Infrastructure.Resources.csproj  
-- src/Identity/Zentra.Identity.Infrastructure/Zentra.Infrastructure.Services.csproj  
-- src/Identity/Zentra.Identity.API/Zentra.Hosting.csproj  
-- src/Gateway/Zentra.Gateway/Zentra.ProxyService.csproj  
-- tests/Zentra.TestApp.Helper/TestApp.Helper.csproj  
-- tests/Zentra.IntegrationTests/IntegrationTests.csproj  
-- tests/Zentra.ArchitectureTests/Zentra.ArchitectureTests.csproj  
-- tests/Zentra.UnitTests/Zentra.UnitTests.csproj  
-- demos/Zentra.Demo.Client.Mvc/Zentra.DemoClientMvc.csproj  
-- demos/Zentra.Demo.Server/Zentra.DemoServerApp.csproj  
-- demos/Zentra.Demo.Client.Wpf/Zentra.DemoClientWpfApp.csproj  
-- installer/Zentra.Installer.Mvc/ZentraInstallerMVC.csproj  
-- src/Contracts/Zentra.Contracts.csproj  
+- src/Identity/HCL.CS.Identity.Domain/HCL.CS.Domain.csproj  
+- src/Identity/HCL.CS.Identity.DomainServices/HCL.CS.DomainServices.csproj  
+- src/Identity/HCL.CS.Identity.Contracts/HCL.CS.Service.Interfaces.csproj  
+- src/Identity/HCL.CS.Identity.Application/HCL.CS.Service.csproj  
+- src/Identity/HCL.CS.Identity.Persistence/HCL.CS.Infrastructure.Data.csproj  
+- src/Identity/HCL.CS.Identity.Infrastructure.Resources/HCL.CS.Infrastructure.Resources.csproj  
+- src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj  
+- src/Identity/HCL.CS.Identity.API/HCL.CS.Hosting.csproj  
+- src/Gateway/HCL.CS.Gateway/HCL.CS.ProxyService.csproj  
+- tests/HCL.CS.TestApp.Helper/TestApp.Helper.csproj  
+- tests/HCL.CS.IntegrationTests/IntegrationTests.csproj  
+- tests/HCL.CS.ArchitectureTests/HCL.CS.ArchitectureTests.csproj  
+- tests/HCL.CS.UnitTests/HCL.CS.UnitTests.csproj  
+- demos/HCL.CS.Demo.Client.Mvc/HCL.CS.DemoClientMvc.csproj  
+- demos/HCL.CS.Demo.Server/HCL.CS.DemoServerApp.csproj  
+- demos/HCL.CS.Demo.Client.Wpf/HCL.CS.DemoClientWpfApp.csproj  
+- installer/HCL.CS.Installer.Mvc/HclCsInstallerMVC.csproj  
+- src/Contracts/HCL.CS.Contracts.csproj  
 
 No project is an empty project (zero source files). The only “empty-like” findings are: one minimal unit test project, one minimal architecture test project, and three standalone demo solutions with broken project paths.
 
@@ -148,10 +148,10 @@ No project is an empty project (zero source files). The only “empty-like” fi
 
 The following changes were applied without breaking existing code:
 
-- **Zentra.UnitTests** added to `Zentra.sln` under the tests folder (builds and runs with main solution).
-- **Zentra.DemoClientWpfApp** added to `Zentra.sln` under demos.
-- **Zentra.Contracts** project created at `src/Contracts/Zentra.Contracts.csproj` (net8.0, includes existing Events, Requests, Responses .cs files) and added to `Zentra.sln` under a new "Contracts" solution folder in src.
+- **HCL.CS.UnitTests** added to `HCL.CS.sln` under the tests folder (builds and runs with main solution).
+- **HCL.CS.DemoClientWpfApp** added to `HCL.CS.sln` under demos.
+- **HCL.CS.Contracts** project created at `src/Contracts/HCL.CS.Contracts.csproj` (net8.0, includes existing Events, Requests, Responses .cs files) and added to `HCL.CS.sln` under a new "Contracts" solution folder in src.
 - **Standalone solution paths fixed:**
-  - `demos/Zentra.Demo.Server/Zentra.Demo.Server.sln`: project path set to `Zentra.DemoServerApp.csproj`.
-  - `demos/Zentra.Demo.Client.Mvc/Zentra.Demo.Client.Mvc.sln`: project path set to `Zentra.DemoClientMvc.csproj`, project name set to `Zentra.DemoClientMvc`.
-  - `demos/Zentra.Demo.Client.Wpf/Zentra.Demo.Client.Wpf.sln`: project path set to `Zentra.DemoClientWpfApp.csproj`.
+  - `demos/HCL.CS.Demo.Server/HCL.CS.Demo.Server.sln`: project path set to `HCL.CS.DemoServerApp.csproj`.
+  - `demos/HCL.CS.Demo.Client.Mvc/HCL.CS.Demo.Client.Mvc.sln`: project path set to `HCL.CS.DemoClientMvc.csproj`, project name set to `HCL.CS.DemoClientMvc`.
+  - `demos/HCL.CS.Demo.Client.Wpf/HCL.CS.Demo.Client.Wpf.sln`: project path set to `HCL.CS.DemoClientWpfApp.csproj`.

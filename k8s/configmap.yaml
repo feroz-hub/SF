@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zentra-config
+  name: hcl-cs-config
 data:
   ASPNETCORE_ENVIRONMENT: "Production"
-  ZENTRA__LOG_LEVEL: "Information"
+  HCL_CS__LOG_LEVEL: "Information"

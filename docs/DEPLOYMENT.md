@@ -3,11 +3,11 @@
 ## Local
 
 1. Build the solution:
-   - `dotnet build Zentra.sln`
+   - `dotnet build HCL.CS.sln`
 2. Run identity runtime:
-   - `dotnet run --project demos/Zentra.Demo.Server/Zentra.DemoServerApp.csproj`
+   - `dotnet run --project demos/HCL.CS.Demo.Server/HCL.CS.DemoServerApp.csproj`
 3. Run installer:
-   - `dotnet run --project installer/Zentra.Installer.Mvc/ZentraInstallerMVC.csproj`
+   - `dotnet run --project installer/HCL.CS.Installer.Mvc/HclCsInstallerMVC.csproj`
 
 ## Containers
 

@@ -2,8 +2,8 @@
   "OAuth": {
     "Authority": "https://identity.example.com",
     "MetadataAddress": "https://identity.example.com/.well-known/openid-configuration",
-    "ClientId": "${ZENTRA_OAUTH_CLIENT_ID}",
-    "ClientSecret": "${ZENTRA_OAUTH_CLIENT_SECRET}",
+    "ClientId": "${HCL_CS_OAUTH_CLIENT_ID}",
+    "ClientSecret": "${HCL_CS_OAUTH_CLIENT_SECRET}",
     "CallbackPath": "/signin-oidc",
     "SignedOutCallbackPath": "/signout-callback-oidc",
     "RequireHttpsMetadata": true,
@@ -17,7 +17,7 @@
       "profile",
       "email",
       "offline_access",
-      "zentra.apiresource"
+      "hcl-cs.apiresource"
     ]
   },
   "Security": {
@@ -30,12 +30,12 @@
   "SystemSettings": {
     "DBConfig": {
       "Database": 3,
-      "DBConnectionString": "${ZENTRA_DB_CONNECTION_STRING}"
+      "DBConnectionString": "${HCL_CS_DB_CONNECTION_STRING}"
     },
     "LogConfig": {
       "WriteLogTo": "File",
       "LogFileConfig": {
-        "FilePath": "/var/log/zentra/identity.log",
+        "FilePath": "/var/log/hcl-cs/identity.log",
         "RestrictedToMinimumLevel": "Information",
         "MinimumConfiguration": "Information"
       }

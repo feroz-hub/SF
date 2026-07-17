@@ -12,12 +12,12 @@ So: **`aud` should identify who the token is for**, not who issued it (that’s 
 
 ## Two common patterns
 
-### 1. Single shared audience (e.g. `zentra.api`)
+### 1. Single shared audience (e.g. `hcl-cs.api`)
 
 - **Idea:** One `aud` value for all access tokens (e.g. the identity/API gateway identifier).
 - **Pros:** Simple; one config; all your resource servers validate the same `aud`.
 - **Use when:** All APIs are part of one “platform” and trust the same audience, or you don’t need to distinguish “this token is for API A vs API B”.
-- **Example:** Every token has `"aud": "zentra.api"`. Zentra Admin, RentFlow, and any other app all validate `aud == "zentra.api"`.
+- **Example:** Every token has `"aud": "hcl-cs.api"`. HCL.CS Admin, RentFlow, and any other app all validate `aud == "hcl-cs.api"`.
 
 ### 2. Per-resource / per-API audience (e.g. `rentflow.api`)
 
@@ -26,7 +26,7 @@ So: **`aud` should identify who the token is for**, not who issued it (that’s 
 - **Use when:** Multiple distinct APIs (e.g. RentFlow, another product) each want to ensure tokens are only valid for them.
 - **Example:** Token with scope `rentflow` → `"aud": "rentflow.api"`. RentFlow’s backend validates `aud` contains `"rentflow.api"`.
 
-You can also combine: **multiple audiences** in one token, e.g. `"aud": ["zentra.api", "rentflow.api"]`, when the token is valid for more than one API. Each recipient checks that its identifier is in the array.
+You can also combine: **multiple audiences** in one token, e.g. `"aud": ["hcl-cs.api", "rentflow.api"]`, when the token is valid for more than one API. Each recipient checks that its identifier is in the array.
 
 ---
 
@@ -45,21 +45,21 @@ Common theme: **when a token is issued for a specific API/resource, `aud` is set
 
 ## What is “correct” for you?
 
-- **Using the same `aud` for all clients (e.g. `zentra.api`) is valid and standard** if all your apps are part of one trust domain and accept that single audience.
+- **Using the same `aud` for all clients (e.g. `hcl-cs.api`) is valid and standard** if all your apps are part of one trust domain and accept that single audience.
 - **If a client (e.g. RentFlow) wants its own `aud` (e.g. `rentflow.api`)** so their resource server can strictly validate “this token was issued for RentFlow”, the **standard approach** is:
   - When the token is issued **for that API** (e.g. requested scope includes the RentFlow API resource), set **`aud`** to that API’s identifier (e.g. `rentflow.api`), **or**
-  - Include that identifier in an **array** of audiences (e.g. `["zentra.api", "rentflow.api"]`) if the token is valid for multiple APIs.
+  - Include that identifier in an **array** of audiences (e.g. `["hcl-cs.api", "rentflow.api"]`) if the token is valid for multiple APIs.
 
 So: **same `aud` for everyone is correct when you want one shared audience; per-API or multi-audience `aud` is correct when different APIs need to see their own identifier in `aud`.**
 
 ---
 
-## How Zentra behaves
+## How HCL.CS behaves
 
-- **Default:** A global **API identifier** is configured (e.g. `TokenConfig.ApiIdentifier` = `"zentra.api"`). It is used as `aud` when the token is **not** issued for any specific API resource (e.g. only identity scopes like `openid profile email`).
+- **Default:** A global **API identifier** is configured (e.g. `TokenConfig.ApiIdentifier` = `"hcl-cs.api"`). It is used as `aud` when the token is **not** issued for any specific API resource (e.g. only identity scopes like `openid profile email`).
 - **Per-resource audience:** When the token is issued for at least one **API resource** (e.g. scope includes `rentflow`), the access token’s **`aud`** is set from the **API resource name** (the first one in the list). So:
   - If the API resource is named **`rentflow`**, tokens for that scope get `"aud": "rentflow"`.
-  - If you want **`"aud": "rentflow.api"`**, create (or rename) the API resource in Zentra so its **Name** is **`rentflow.api`** (the resource name is used as the audience).
+  - If you want **`"aud": "rentflow.api"`**, create (or rename) the API resource in HCL.CS so its **Name** is **`rentflow.api`** (the resource name is used as the audience).
 - **Multiple API scopes:** If the token is for more than one API resource, `aud` is set to the **first** API resource name in the list. Future versions could support multiple audiences in `aud` (array).
 
-**Summary:** Same `aud` for all when only the global identifier applies; per-API `aud` (e.g. `rentflow.api`) when the token is for an API resource — set the API resource **Name** in Zentra to the desired audience value.
+**Summary:** Same `aud` for all when only the global identifier applies; per-API `aud` (e.g. `rentflow.api`) when the token is for an API resource — set the API resource **Name** in HCL.CS to the desired audience value.

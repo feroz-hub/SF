@@ -1,6 +1,6 @@
-# Zentra Enterprise Documentation Index
+# HCL.CS Enterprise Documentation Index
 
-**Document ID:** ZENTRA-DOC-00-INDEX  
+**Document ID:** HCL.CS-DOC-00-INDEX  
 **Version:** 1.0.0  
 **Classification:** Internal Use  
 **Last Updated:** 2026-03-01  
@@ -9,12 +9,12 @@
 
 ## 1. Documentation Map
 
-This repository contains enterprise-grade documentation for the Zentra Identity Platform (Legacy Implementation). The documentation is organized as a numbered series for easy navigation and reference.
+This repository contains enterprise-grade documentation for the HCL.CS Identity Platform (Legacy Implementation). The documentation is organized as a numbered series for easy navigation and reference.
 
 | Doc ID | Document | Purpose | Primary Audience |
 |--------|----------|---------|------------------|
 | 00 | **INDEX** (this doc) | Documentation navigation and versioning | All readers |
-| 01 | [SYSTEM-OVERVIEW](./01-SYSTEM-OVERVIEW.md) | What Zentra is, system boundaries, supported flows | Architects, Stakeholders |
+| 01 | [SYSTEM-OVERVIEW](./01-SYSTEM-OVERVIEW.md) | What HCL.CS is, system boundaries, supported flows | Architects, Stakeholders |
 | 02 | [ARCHITECTURE](./02-ARCHITECTURE.md) | C4 diagrams, component architecture, deployment shapes | Architects, Developers |
 | 03 | [SECURITY-ARCHITECTURE](./03-SECURITY-ARCHITECTURE.md) | Auth flows, JWT lifecycle, OWASP mapping, threat model | Security Engineers, Auditors |
 | 04 | [API-REFERENCE](./04-API-REFERENCE.md) | Endpoint specifications, request/response contracts | API Consumers, Integrators |
@@ -62,7 +62,7 @@ Key sections:
 - Section 10: Example curl Requests
 
 Supporting documents:
-- [ZENTRA_USAGE_INTEGRATION_MANUAL.md](./ZENTRA_USAGE_INTEGRATION_MANUAL.md) - Integration patterns
+- [HCL.CS_USAGE_INTEGRATION_MANUAL.md](./HCL.CS_USAGE_INTEGRATION_MANUAL.md) - Integration patterns
 - [API_COLLECTION.json](./API_COLLECTION.json) - Postman/HTTP client collection
 
 ### 2.4 DevOps / Platform Engineers
@@ -114,11 +114,11 @@ Each document follows semantic versioning (MAJOR.MINOR.PATCH):
 | Document | Primary Source Files |
 |----------|---------------------|
 | 01-SYSTEM-OVERVIEW | `/src/Identity/*`, `/src/Gateway/*`, `/installer/*` |
-| 02-ARCHITECTURE | `/src/Identity/*/`, `/src/Gateway/Zentra.Gateway/` |
-| 03-SECURITY-ARCHITECTURE | `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/` |
-| 04-API-REFERENCE | `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/*Endpoint.cs` |
-| 05-DATABASE | `/src/Identity/Zentra.Identity.Domain/Entities/`, `/src/Identity/Zentra.Identity.Persistence/Mapper/` |
-| 06-OBSERVABILITY | `/src/Gateway/Zentra.Gateway/Hosting/`, `/src/Identity/Zentra.Identity.API/Health/` |
+| 02-ARCHITECTURE | `/src/Identity/*/`, `/src/Gateway/HCL.CS.Gateway/` |
+| 03-SECURITY-ARCHITECTURE | `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/` |
+| 04-API-REFERENCE | `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/*Endpoint.cs` |
+| 05-DATABASE | `/src/Identity/HCL.CS.Identity.Domain/Entities/`, `/src/Identity/HCL.CS.Identity.Persistence/Mapper/` |
+| 06-OBSERVABILITY | `/src/Gateway/HCL.CS.Gateway/Hosting/`, `/src/Identity/HCL.CS.Identity.API/Health/` |
 | 07-DEPLOYMENT | `/docker/`, `/k8s/`, `/scripts/` |
 | 08-RUNBOOKS | `/RUNBOOK.md`, `/scripts/` |
 
@@ -186,11 +186,11 @@ GETTING_STARTED.md (tutorial)
 
 | Term | Definition | Source |
 |------|------------|--------|
-| **Identity Service** | The core OAuth/OIDC token issuance and user management service | `/src/Identity/Zentra.Identity.API/` |
-| **Gateway** | Reverse proxy with routing, middleware, observability | `/src/Gateway/Zentra.Gateway/` |
-| **Installer** | MVC application for database provisioning and seeding | `/installer/Zentra.Installer.Mvc/` |
+| **Identity Service** | The core OAuth/OIDC token issuance and user management service | `/src/Identity/HCL.CS.Identity.API/` |
+| **Gateway** | Reverse proxy with routing, middleware, observability | `/src/Gateway/HCL.CS.Gateway/` |
+| **Installer** | MVC application for database provisioning and seeding | `/installer/HCL.CS.Installer.Mvc/` |
 | **Demo Clients** | Sample applications demonstrating integration | `/demos/` |
-| **Endpoint** | OAuth/OIDC protocol endpoint (authorize, token, etc.) | `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/` |
+| **Endpoint** | OAuth/OIDC protocol endpoint (authorize, token, etc.) | `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/` |
 
 ### 5.2 Diagram Notation
 
@@ -204,7 +204,7 @@ All diagrams use **Mermaid** syntax for version control compatibility:
 
 Code snippets reference actual file paths in the repository:
 ```
-Source: /src/Identity/Zentra.Identity.Domain/Entities/Api/Users.cs
+Source: /src/Identity/HCL.CS.Identity.Domain/Entities/Api/Users.cs
 ```
 
 ---

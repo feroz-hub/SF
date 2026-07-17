@@ -5,13 +5,13 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOG_DIR="${ROOT_DIR}/.run-logs"
 
-DEFAULT_DB_CONNECTION="Data Source=${ROOT_DIR}/.data/zentra_identity.db;Mode=ReadWriteCreate;Cache=Shared;"
+DEFAULT_DB_CONNECTION="Data Source=${ROOT_DIR}/.data/hclCs_identity.db;Mode=ReadWriteCreate;Cache=Shared;"
 DEFAULT_AUTHORITY="https://localhost:5001"
 DEFAULT_CLIENT_URL="https://localhost:5003"
 
-CLIENT_ID="${ZENTRA_OAUTH_CLIENT_ID:-}"
-CLIENT_SECRET="${ZENTRA_OAUTH_CLIENT_SECRET:-}"
-DB_CONNECTION="${ZENTRA_DB_CONNECTION_STRING:-${DEFAULT_DB_CONNECTION}}"
+CLIENT_ID="${HCL_CS_OAUTH_CLIENT_ID:-}"
+CLIENT_SECRET="${HCL_CS_OAUTH_CLIENT_SECRET:-}"
+DB_CONNECTION="${HCL_CS_DB_CONNECTION_STRING:-${DEFAULT_DB_CONNECTION}}"
 START_INSTALLER=0
 
 SERVER_PID=""
@@ -24,20 +24,20 @@ Usage:
   $(basename "$0") [options]
 
 Options:
-  --client-id <value>         OAuth client id (required if ZENTRA_OAUTH_CLIENT_ID is not set)
-  --client-secret <value>     OAuth client secret (required if ZENTRA_OAUTH_CLIENT_SECRET is not set)
-  --db-connection <value>     DB connection string (default: SQLite in .data/zentra_identity.db)
+  --client-id <value>         OAuth client id (required if HCL_CS_OAUTH_CLIENT_ID is not set)
+  --client-secret <value>     OAuth client secret (required if HCL_CS_OAUTH_CLIENT_SECRET is not set)
+  --db-connection <value>     DB connection string (default: SQLite in .data/hclCs_identity.db)
   --start-installer           Also start installer UI at https://localhost:7039
   -h, --help                  Show this help
 
 Environment alternatives:
-  ZENTRA_OAUTH_CLIENT_ID
-  ZENTRA_OAUTH_CLIENT_SECRET
-  ZENTRA_DB_CONNECTION_STRING
+  HCL_CS_OAUTH_CLIENT_ID
+  HCL_CS_OAUTH_CLIENT_SECRET
+  HCL_CS_DB_CONNECTION_STRING
 
 Examples:
   $(basename "$0") --client-id "..." --client-secret "..."
-  ZENTRA_OAUTH_CLIENT_ID="..." ZENTRA_OAUTH_CLIENT_SECRET="..." $(basename "$0")
+  HCL_CS_OAUTH_CLIENT_ID="..." HCL_CS_OAUTH_CLIENT_SECRET="..." $(basename "$0")
 EOF
 }
 
@@ -73,7 +73,7 @@ done
 
 if [[ -z "${CLIENT_ID}" || -z "${CLIENT_SECRET}" ]]; then
   echo "Error: client id/secret are required." >&2
-  echo "Set --client-id/--client-secret or export ZENTRA_OAUTH_CLIENT_ID/ZENTRA_OAUTH_CLIENT_SECRET." >&2
+  echo "Set --client-id/--client-secret or export HCL_CS_OAUTH_CLIENT_ID/HCL_CS_OAUTH_CLIENT_SECRET." >&2
   exit 1
 fi
 
@@ -89,9 +89,9 @@ fi
 
 mkdir -p "${ROOT_DIR}/.data" "${LOG_DIR}"
 
-export ZENTRA_DB_CONNECTION_STRING="${DB_CONNECTION}"
-export ZENTRA_OAUTH_CLIENT_ID="${CLIENT_ID}"
-export ZENTRA_OAUTH_CLIENT_SECRET="${CLIENT_SECRET}"
+export HCL_CS_DB_CONNECTION_STRING="${DB_CONNECTION}"
+export HCL_CS_OAUTH_CLIENT_ID="${CLIENT_ID}"
+export HCL_CS_OAUTH_CLIENT_SECRET="${CLIENT_SECRET}"
 
 # Needed by the ASP.NET Core options binding path in Demo MVC client.
 export OAuth__ClientId="${CLIENT_ID}"
@@ -159,16 +159,16 @@ INSTALLER_LOG="${LOG_DIR}/installer.log"
 
 SERVER_PID="$(start_service \
   "Demo Server (Identity/Auth)" \
-  "${ROOT_DIR}/demos/Zentra.Demo.Server/Zentra.DemoServerApp.csproj" \
-  "Zentra.DemoServerApp" \
+  "${ROOT_DIR}/demos/HCL.CS.Demo.Server/HCL.CS.DemoServerApp.csproj" \
+  "HCL.CS.DemoServerApp" \
   "${SERVER_LOG}")"
 
 wait_for_url "${DEFAULT_AUTHORITY}/.well-known/openid-configuration" "Demo Server"
 
 CLIENT_PID="$(start_service \
   "Demo MVC Client" \
-  "${ROOT_DIR}/demos/Zentra.Demo.Client.Mvc/Zentra.DemoClientMvc.csproj" \
-  "Zentra.DemoClientCoreMvcApp" \
+  "${ROOT_DIR}/demos/HCL.CS.Demo.Client.Mvc/HCL.CS.DemoClientMvc.csproj" \
+  "HCL.CS.DemoClientCoreMvcApp" \
   "${CLIENT_LOG}")"
 
 wait_for_url "${DEFAULT_CLIENT_URL}" "Demo MVC Client"
@@ -176,7 +176,7 @@ wait_for_url "${DEFAULT_CLIENT_URL}" "Demo MVC Client"
 if [[ "${START_INSTALLER}" -eq 1 ]]; then
   INSTALLER_PID="$(start_service \
     "Installer MVC" \
-    "${ROOT_DIR}/installer/Zentra.Installer.Mvc/ZentraInstallerMVC.csproj" \
+    "${ROOT_DIR}/installer/HCL.CS.Installer.Mvc/HclCsInstallerMVC.csproj" \
     "https" \
     "${INSTALLER_LOG}")"
   wait_for_url "https://localhost:7039/health" "Installer MVC"

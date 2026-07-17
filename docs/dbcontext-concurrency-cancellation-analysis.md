@@ -15,8 +15,8 @@
 
 | DbContext | Location | Role |
 |-----------|----------|------|
-| `ApplicationDbContext` | `src/Identity/Zentra.Identity.Persistence/ApplicationDbContext.cs` | Main runtime context, implements `IApplicationDbContext` |
-| `IApplicationDbContext` | `src/Identity/Zentra.Identity.DomainServices/IApplicationDbContext.cs` | Abstraction for DI and testing |
+| `ApplicationDbContext` | `src/Identity/HCL.CS.Identity.Persistence/ApplicationDbContext.cs` | Main runtime context, implements `IApplicationDbContext` |
+| `IApplicationDbContext` | `src/Identity/HCL.CS.Identity.DomainServices/IApplicationDbContext.cs` | Abstraction for DI and testing |
 | `SqlServerApplicationDbContext` | `installer/.../Data/SqlServerApplicationDbContext.cs` | Migrations (SQL Server) |
 | `MySqlApplicationDbContext` | `installer/.../Data/MySqlApplicationDbContext.cs` | Migrations (MySQL) |
 | `PostgreSqlApplicationDbcontext` | `installer/.../Data/PostgreSqlApplicationDbcontext.cs` | Migrations (PostgreSQL) |

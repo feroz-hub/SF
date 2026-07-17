@@ -1,8 +1,8 @@
-# Zentra Identity Server - Full Runtime Execution Manual
+# HCL.CS Identity Server - Full Runtime Execution Manual
 
 **Document Version:** 2.0  
 **Generated:** 2026-02-26  
-**Project:** Zentra Identity Server (OAuth 2.0 / OpenID Connect)  
+**Project:** HCL.CS Identity Server (OAuth 2.0 / OpenID Connect)  
 
 ---
 
@@ -26,43 +26,43 @@
 
 Before any runtime execution, initialize user secrets for all projects:
 
-## Identity Server (Zentra.Hosting)
+## Identity Server (HCL.CS.Hosting)
 
 ```bash
-cd src/Identity/Zentra.Identity.API
+cd src/Identity/HCL.CS.Identity.API
 dotnet user-secrets init
-dotnet user-secrets set "ZENTRA_DB_CONNECTION_STRING" "Host=localhost;Port=5432;Database=zentra_identity;Username=zentra_user;Password=<PROD_PASSWORD>"
-dotnet user-secrets set "ZENTRA_SIGNING_CERT_PASSWORD" "<CERT_PASSWORD>"
-dotnet user-secrets set "ZENTRA_SMTP_USERNAME" "<SMTP_USER>"
-dotnet user-secrets set "ZENTRA_SMTP_PASSWORD" "<SMTP_PASSWORD>"
-dotnet user-secrets set "ZENTRA_SMS_ACCOUNT_ID" "<SMS_ACCOUNT_ID>"
-dotnet user-secrets set "ZENTRA_SMS_ACCOUNT_PASSWORD" "<SMS_PASSWORD>"
-dotnet user-secrets set "ZENTRA_SMS_ACCOUNT_FROM" "<SMS_FROM_NUMBER>"
+dotnet user-secrets set "HCL_CS_DB_CONNECTION_STRING" "Host=localhost;Port=5432;Database=hclCs_identity;Username=hclCs_user;Password=<PROD_PASSWORD>"
+dotnet user-secrets set "HCL_CS_SIGNING_CERT_PASSWORD" "<CERT_PASSWORD>"
+dotnet user-secrets set "HCL_CS_SMTP_USERNAME" "<SMTP_USER>"
+dotnet user-secrets set "HCL_CS_SMTP_PASSWORD" "<SMTP_PASSWORD>"
+dotnet user-secrets set "HCL_CS_SMS_ACCOUNT_ID" "<SMS_ACCOUNT_ID>"
+dotnet user-secrets set "HCL_CS_SMS_ACCOUNT_PASSWORD" "<SMS_PASSWORD>"
+dotnet user-secrets set "HCL_CS_SMS_ACCOUNT_FROM" "<SMS_FROM_NUMBER>"
 ```
 
-## Gateway Service (Zentra.ProxyService)
+## Gateway Service (HCL.CS.ProxyService)
 
 ```bash
-cd src/Gateway/Zentra.Gateway
+cd src/Gateway/HCL.CS.Gateway
 dotnet user-secrets init
-dotnet user-secrets set "ZENTRA_DB_CONNECTION_STRING" "Host=localhost;Port=5432;Database=zentra_identity;Username=zentra_user;Password=<PROD_PASSWORD>"
+dotnet user-secrets set "HCL_CS_DB_CONNECTION_STRING" "Host=localhost;Port=5432;Database=hclCs_identity;Username=hclCs_user;Password=<PROD_PASSWORD>"
 ```
 
 ## Demo Server (if applicable)
 
 ```bash
-cd demos/Zentra.Demo.Server
+cd demos/HCL.CS.Demo.Server
 dotnet user-secrets init
-dotnet user-secrets set "ZENTRA_DB_CONNECTION_STRING" "Data Source=zentra.db"
-dotnet user-secrets set "ZENTRA_RSA_SIGNING_CERT_PATH" "./certificates/zentra_rsa.pfx"
-dotnet user-secrets set "ZENTRA_ECDSA_SIGNING_CERT_PATH" "./certificates/zentra_ecdsa.pfx"
-dotnet user-secrets set "ZENTRA_SIGNING_CERT_PASSWORD" "<CERT_PASSWORD>"
+dotnet user-secrets set "HCL_CS_DB_CONNECTION_STRING" "Data Source=hcl-cs.db"
+dotnet user-secrets set "HCL_CS_RSA_SIGNING_CERT_PATH" "./certificates/hclCs_rsa.pfx"
+dotnet user-secrets set "HCL_CS_ECDSA_SIGNING_CERT_PATH" "./certificates/hclCs_ecdsa.pfx"
+dotnet user-secrets set "HCL_CS_SIGNING_CERT_PASSWORD" "<CERT_PASSWORD>"
 ```
 
 ## Demo Client MVC (if applicable)
 
 ```bash
-cd demos/Zentra.Demo.Client.Mvc
+cd demos/HCL.CS.Demo.Client.Mvc
 dotnet user-secrets init
 dotnet user-secrets set "OAuth__ClientSecret" "<CLIENT_SECRET>"
 dotnet user-secrets set "OAuth__ClientId" "<CLIENT_ID>"
@@ -93,33 +93,33 @@ dotnet user-secrets list
 
 | File/Directory | Purpose | Status |
 |----------------|---------|--------|
-| `src/Identity/Zentra.Identity.API/Program.cs` | Application entry point | **CRITICAL** |
-| `src/Identity/Zentra.Identity.Infrastructure.Resources/Settings/SystemSettings.json` | System configuration | **CRITICAL** |
-| `src/Identity/Zentra.Identity.Infrastructure.Resources/Settings/TokenSettings.json` | OAuth/OIDC endpoint settings | **CRITICAL** |
-| `src/Identity/Zentra.Identity.Infrastructure.Resources/Settings/NotificationTemplateSettings.json` | Email/SMS templates | **CRITICAL** |
-| `demos/Zentra.Demo.Server/Program.cs` | Demo host entry point | **CRITICAL** |
-| `demos/Zentra.Demo.Server/appsettings.json` | ASP.NET Core configuration | **CRITICAL** |
+| `src/Identity/HCL.CS.Identity.API/Program.cs` | Application entry point | **CRITICAL** |
+| `src/Identity/HCL.CS.Identity.Infrastructure.Resources/Settings/SystemSettings.json` | System configuration | **CRITICAL** |
+| `src/Identity/HCL.CS.Identity.Infrastructure.Resources/Settings/TokenSettings.json` | OAuth/OIDC endpoint settings | **CRITICAL** |
+| `src/Identity/HCL.CS.Identity.Infrastructure.Resources/Settings/NotificationTemplateSettings.json` | Email/SMS templates | **CRITICAL** |
+| `demos/HCL.CS.Demo.Server/Program.cs` | Demo host entry point | **CRITICAL** |
+| `demos/HCL.CS.Demo.Server/appsettings.json` | ASP.NET Core configuration | **CRITICAL** |
 | Certificates (RSA/ECDSA .pfx files) | Token signing keys | **CRITICAL** |
 
 ### Client Components (Demo MVC Client)
 
 | File/Directory | Purpose | Status |
 |----------------|---------|--------|
-| `demos/Zentra.Demo.Client.Mvc/Program.cs` | Client application entry | **CRITICAL** |
-| `demos/Zentra.Demo.Client.Mvc/appsettings.json` | OAuth client configuration | **CRITICAL** |
+| `demos/HCL.CS.Demo.Client.Mvc/Program.cs` | Client application entry | **CRITICAL** |
+| `demos/HCL.CS.Demo.Client.Mvc/appsettings.json` | OAuth client configuration | **CRITICAL** |
 
 ### Library Components (Source)
 
 | File | Purpose |
 |------|---------|
-| `src/Identity/Zentra.Identity.API/Extensions/ZentraExtension.cs` | Main DI registration |
-| `src/Identity/Zentra.Identity.API/Extensions/ZentraBuilder.cs` | Middleware registration |
-| `src/Identity/Zentra.Identity.Application/Extension/ServiceExtension.cs` | Core services registration |
-| `src/Identity/Zentra.Identity.Persistence/Extension/InfrastructureDataExtension.cs` | EF Core & Identity registration |
-| `src/Identity/Zentra.Identity.Infrastructure.Resources/Extension/InfrastructureResourceExtension.cs` | Keystore & resources |
-| `src/Gateway/Zentra.Gateway/Extension/ServiceExtension.cs` | Proxy services registration |
-| `src/Gateway/Zentra.Gateway/Hosting/ZentraEndpointMiddleware.cs` | OAuth endpoint middleware |
-| `src/Gateway/Zentra.Gateway/Hosting/ZentraApiMiddleware.cs` | API proxy middleware |
+| `src/Identity/HCL.CS.Identity.API/Extensions/HclCsExtension.cs` | Main DI registration |
+| `src/Identity/HCL.CS.Identity.API/Extensions/HclCsBuilder.cs` | Middleware registration |
+| `src/Identity/HCL.CS.Identity.Application/Extension/ServiceExtension.cs` | Core services registration |
+| `src/Identity/HCL.CS.Identity.Persistence/Extension/InfrastructureDataExtension.cs` | EF Core & Identity registration |
+| `src/Identity/HCL.CS.Identity.Infrastructure.Resources/Extension/InfrastructureResourceExtension.cs` | Keystore & resources |
+| `src/Gateway/HCL.CS.Gateway/Extension/ServiceExtension.cs` | Proxy services registration |
+| `src/Gateway/HCL.CS.Gateway/Hosting/HclCsEndpointMiddleware.cs` | OAuth endpoint middleware |
+| `src/Gateway/HCL.CS.Gateway/Hosting/HclCsApiMiddleware.cs` | API proxy middleware |
 
 ---
 
@@ -129,34 +129,34 @@ dotnet user-secrets list
 
 | Variable | Purpose | Read Location |
 |----------|---------|---------------|
-| `ZENTRA_DB_CONNECTION_STRING` | Database connection string | `SystemSettings.json` `${ZENTRA_DB_CONNECTION_STRING}` |
+| `HCL_CS_DB_CONNECTION_STRING` | Database connection string | `SystemSettings.json` `${HCL_CS_DB_CONNECTION_STRING}` |
 
 ### Certificate Configuration
 
 | Variable | Purpose | Read Location |
 |----------|---------|---------------|
-| `ZENTRA_RSA_SIGNING_CERT_BASE64` | RSA certificate (Base64) | `Program.cs` `LoadCertificateFromEnvironment()` |
-| `ZENTRA_RSA_SIGNING_CERT_PATH` | RSA certificate file path | `Program.cs` `LoadCertificateFromEnvironment()` |
-| `ZENTRA_ECDSA_SIGNING_CERT_BASE64` | ECDSA certificate (Base64) | `Program.cs` `LoadCertificateFromEnvironment()` |
-| `ZENTRA_ECDSA_SIGNING_CERT_PATH` | ECDSA certificate file path | `Program.cs` `LoadCertificateFromEnvironment()` |
-| `ZENTRA_SIGNING_CERT_PASSWORD` | Certificate password | `Program.cs` `LoadAsymmetricCertificate()` |
-| `ZENTRA_RSA_SIGNING_KID` | RSA Key ID | `Program.cs` (optional, defaults to "zentra-rsa-current") |
-| `ZENTRA_ECDSA_SIGNING_KID` | ECDSA Key ID | `Program.cs` (optional, defaults to "zentra-ecdsa-current") |
+| `HCL_CS_RSA_SIGNING_CERT_BASE64` | RSA certificate (Base64) | `Program.cs` `LoadCertificateFromEnvironment()` |
+| `HCL_CS_RSA_SIGNING_CERT_PATH` | RSA certificate file path | `Program.cs` `LoadCertificateFromEnvironment()` |
+| `HCL_CS_ECDSA_SIGNING_CERT_BASE64` | ECDSA certificate (Base64) | `Program.cs` `LoadCertificateFromEnvironment()` |
+| `HCL_CS_ECDSA_SIGNING_CERT_PATH` | ECDSA certificate file path | `Program.cs` `LoadCertificateFromEnvironment()` |
+| `HCL_CS_SIGNING_CERT_PASSWORD` | Certificate password | `Program.cs` `LoadAsymmetricCertificate()` |
+| `HCL_CS_RSA_SIGNING_KID` | RSA Key ID | `Program.cs` (optional, defaults to "hcl-cs-rsa-current") |
+| `HCL_CS_ECDSA_SIGNING_KID` | ECDSA Key ID | `Program.cs` (optional, defaults to "hcl-cs-ecdsa-current") |
 
 ### Email Configuration
 
 | Variable | Purpose | Read Location |
 |----------|---------|---------------|
-| `ZENTRA_SMTP_USERNAME` | SMTP username | `SystemSettings.json` `${ZENTRA_SMTP_USERNAME}` |
-| `ZENTRA_SMTP_PASSWORD` | SMTP password | `SystemSettings.json` `${ZENTRA_SMTP_PASSWORD}` |
+| `HCL_CS_SMTP_USERNAME` | SMTP username | `SystemSettings.json` `${HCL_CS_SMTP_USERNAME}` |
+| `HCL_CS_SMTP_PASSWORD` | SMTP password | `SystemSettings.json` `${HCL_CS_SMTP_PASSWORD}` |
 
 ### SMS Configuration
 
 | Variable | Purpose | Read Location |
 |----------|---------|---------------|
-| `ZENTRA_SMS_ACCOUNT_ID` | SMS provider account ID | `SystemSettings.json` `${ZENTRA_SMS_ACCOUNT_ID}` |
-| `ZENTRA_SMS_ACCOUNT_PASSWORD` | SMS provider password | `SystemSettings.json` `${ZENTRA_SMS_ACCOUNT_PASSWORD}` |
-| `ZENTRA_SMS_ACCOUNT_FROM` | SMS sender number | `SystemSettings.json` `${ZENTRA_SMS_ACCOUNT_FROM}` |
+| `HCL_CS_SMS_ACCOUNT_ID` | SMS provider account ID | `SystemSettings.json` `${HCL_CS_SMS_ACCOUNT_ID}` |
+| `HCL_CS_SMS_ACCOUNT_PASSWORD` | SMS provider password | `SystemSettings.json` `${HCL_CS_SMS_ACCOUNT_PASSWORD}` |
+| `HCL_CS_SMS_ACCOUNT_FROM` | SMS sender number | `SystemSettings.json` `${HCL_CS_SMS_ACCOUNT_FROM}` |
 
 ### ASP.NET Core Environment
 
@@ -193,36 +193,36 @@ dotnet user-secrets list
 #### OAuth/OIDC Tables
 | Table | Purpose | Entity Class |
 |-------|---------|--------------|
-| `Zentra_Clients` | OAuth client registrations | `Clients` |
-| `Zentra_ClientRedirectUris` | Allowed redirect URIs | `ClientRedirectUris` |
-| `Zentra_ClientPostLogoutRedirectUris` | Post-logout redirect URIs | `ClientPostLogoutRedirectUris` |
-| `Zentra_SecurityTokens` | Authorization codes, refresh tokens, access tokens | `SecurityTokens` |
+| `HclCs_Clients` | OAuth client registrations | `Clients` |
+| `HclCs_ClientRedirectUris` | Allowed redirect URIs | `ClientRedirectUris` |
+| `HclCs_ClientPostLogoutRedirectUris` | Post-logout redirect URIs | `ClientPostLogoutRedirectUris` |
+| `HclCs_SecurityTokens` | Authorization codes, refresh tokens, access tokens | `SecurityTokens` |
 
 #### Resource Management Tables
 | Table | Purpose | Entity Class |
 |-------|---------|--------------|
-| `Zentra_ApiResources` | API resource definitions | `ApiResources` |
-| `Zentra_ApiResourceClaims` | API resource claims | `ApiResourceClaims` |
-| `Zentra_ApiScopes` | API scopes | `ApiScopes` |
-| `Zentra_ApiScopeClaims` | API scope claims | `ApiScopeClaims` |
-| `Zentra_IdentityResources` | Identity resources (openid, profile, email) | `IdentityResources` |
-| `Zentra_IdentityClaims` | Identity resource claims | `IdentityClaims` |
+| `HclCs_ApiResources` | API resource definitions | `ApiResources` |
+| `HclCs_ApiResourceClaims` | API resource claims | `ApiResourceClaims` |
+| `HclCs_ApiScopes` | API scopes | `ApiScopes` |
+| `HclCs_ApiScopeClaims` | API scope claims | `ApiScopeClaims` |
+| `HclCs_IdentityResources` | Identity resources (openid, profile, email) | `IdentityResources` |
+| `HclCs_IdentityClaims` | Identity resource claims | `IdentityClaims` |
 
 #### Additional Tables
 | Table | Purpose | Entity Class |
 |-------|---------|--------------|
-| `Zentra_AuditTrail` | Audit logging | `AuditTrail` |
-| `Zentra_Notification` | Notifications | `Notification` |
-| `Zentra_SecurityQuestions` | Security questions | `SecurityQuestions` |
-| `Zentra_UserSecurityQuestions` | User security answers | `UserSecurityQuestions` |
-| `Zentra_PasswordHistory` | Password history | `PasswordHistory` |
+| `HclCs_AuditTrail` | Audit logging | `AuditTrail` |
+| `HclCs_Notification` | Notifications | `Notification` |
+| `HclCs_SecurityQuestions` | Security questions | `SecurityQuestions` |
+| `HclCs_UserSecurityQuestions` | User security answers | `UserSecurityQuestions` |
+| `HclCs_PasswordHistory` | Password history | `PasswordHistory` |
 
 ### Migration Process
 
 1. **EF Core Migration Command:**
    ```bash
-   dotnet ef migrations add InitialCreate --project src/Identity/Zentra.Identity.Persistence
-   dotnet ef database update --project demos/Zentra.Demo.Server
+   dotnet ef migrations add InitialCreate --project src/Identity/HCL.CS.Identity.Persistence
+   dotnet ef database update --project demos/HCL.CS.Demo.Server
    ```
 
 2. **Database Initialization on Startup:**
@@ -234,8 +234,8 @@ dotnet user-secrets list
      - `4` = SQLite
 
 3. **What Happens if DB Missing:**
-   - Startup VALIDATION occurs in `ZentraExtension.ValidateDatabaseConfiguration()`
-   - Connection is tested during `AddZentra()` call
+   - Startup VALIDATION occurs in `HclCsExtension.ValidateDatabaseConfiguration()`
+   - Connection is tested during `AddHclCs()` call
    - **FAILURE:** `AggregateException` thrown with message "Database connection string is not configured" or connection error
    - Application will NOT start without valid database connection
 
@@ -262,7 +262,7 @@ Required fields for a functional OAuth client:
 
 # PHASE 2: SERVER STARTUP EXECUTION TRACE
 
-## Command: `dotnet run` (or `dotnet demos/Zentra.Demo.Server/bin/Debug/net8.0/Zentra.Demo.Server.dll`)
+## Command: `dotnet run` (or `dotnet demos/HCL.CS.Demo.Server/bin/Debug/net8.0/HCL.CS.Demo.Server.dll`)
 
 ### Step-by-Step Execution Trace
 
@@ -271,33 +271,33 @@ Required fields for a functional OAuth client:
 | 1 | `Program.cs` | `Main()` | Entry point invoked | OS runtime | Process termination |
 | 2 | `Program.cs` | `WebApplication.CreateBuilder()` | ASP.NET Core host initialization | `ASPNETCORE_ENVIRONMENT` | Environment variable missing |
 | 3 | `Program.cs` | `LoadConfiguration()` | Load SystemSettings.json, TokenSettings.json, NotificationTemplateSettings.json | Files must exist | `FileNotFoundException` |
-| 4 | `Program.cs` | `LoadAsymmetricCertificate()` | Load RSA/ECDSA certificates from env vars or files | `ZENTRA_RSA_SIGNING_CERT_PATH`, `ZENTRA_SIGNING_CERT_PASSWORD` | `CryptographicException` if cert invalid |
-| 5 | `ZentraExtension.cs` | `AddZentra()` | Main DI registration entry point | Configuration objects | Validation failures |
-| 6 | `ZentraExtension.cs` | `ValidateConfiguration()` | Validate DB, LDAP, Email, SMS, Token configs | All config sections | `AggregateException` with error list |
-| 7 | `ZentraExtension.cs` | `ValidateDatabaseConfiguration()` | Test database connection | `ZENTRA_DB_CONNECTION_STRING` | `SqlException`, `NpgsqlException`, etc. |
+| 4 | `Program.cs` | `LoadAsymmetricCertificate()` | Load RSA/ECDSA certificates from env vars or files | `HCL_CS_RSA_SIGNING_CERT_PATH`, `HCL_CS_SIGNING_CERT_PASSWORD` | `CryptographicException` if cert invalid |
+| 5 | `HclCsExtension.cs` | `AddHclCs()` | Main DI registration entry point | Configuration objects | Validation failures |
+| 6 | `HclCsExtension.cs` | `ValidateConfiguration()` | Validate DB, LDAP, Email, SMS, Token configs | All config sections | `AggregateException` with error list |
+| 7 | `HclCsExtension.cs` | `ValidateDatabaseConfiguration()` | Test database connection | `HCL_CS_DB_CONNECTION_STRING` | `SqlException`, `NpgsqlException`, etc. |
 | 8 | `InfrastructureDataExtension.cs` | `AddIdentityConfiguration()` | Register EF Core DbContext | Database provider | Provider not supported |
 | 9 | `InfrastructureDataExtension.cs` | `AddIdentityServices()` | Configure ASP.NET Core Identity | DbContext | Identity options invalid |
 | 10 | `ServiceExtension.cs` | `AddCoreServices()` | Register OAuth endpoint services | TokenSettings | Endpoint config missing |
 | 11 | `ServiceExtension.cs` | `AddDefaultEndpoints()` | Register OAuth endpoints (Authorize, Token, etc.) | Core services | Endpoint path conflicts |
-| 12 | `ZentraExtension.cs` | `AddAsymmetricKeystore()` | Register signing certificates | Certificate loaded in step 4 | Keystore null or empty |
+| 12 | `HclCsExtension.cs` | `AddAsymmetricKeystore()` | Register signing certificates | Certificate loaded in step 4 | Keystore null or empty |
 | 13 | `Program.cs` | `Build()` | Build ServiceProvider | All DI registrations | Circular dependency |
-| 14 | `Program.cs` | `UseZentraSecurityHeaders()` | Add security headers middleware | `ZentraBuilder.cs` | None |
+| 14 | `Program.cs` | `UseHclCsSecurityHeaders()` | Add security headers middleware | `HclCsBuilder.cs` | None |
 | 15 | `Program.cs` | `UseAuthentication()` | Add authentication middleware | Identity services | None |
-| 16 | `Program.cs` | `UseZentraEndpoint()` | Add OAuth endpoint middleware | `ZentraEndpointMiddleware` | Endpoint service missing |
-| 17 | `Program.cs` | `UseZentraApi()` | Add API proxy middleware | `ZentraApiMiddleware` | API gateway service missing |
+| 16 | `Program.cs` | `UseHclCsEndpoint()` | Add OAuth endpoint middleware | `HclCsEndpointMiddleware` | Endpoint service missing |
+| 17 | `Program.cs` | `UseHclCsApi()` | Add API proxy middleware | `HclCsApiMiddleware` | API gateway service missing |
 | 18 | `Program.cs` | `Run()` | Start Kestrel, bind to ports | `ASPNETCORE_URLS` | Port already in use |
 
 ### Certificate Loading Process
 
 ```
 Program.cs LoadAsymmetricCertificate()
-├── Check ZENTRA_RSA_SIGNING_CERT_BASE64 env var
+├── Check HCL_CS_RSA_SIGNING_CERT_BASE64 env var
 │   └── If set: Decode Base64 → Load PFX → Validate private key
-├── Check ZENTRA_RSA_SIGNING_CERT_PATH env var
+├── Check HCL_CS_RSA_SIGNING_CERT_PATH env var
 │   └── If set: Load from path → Validate password → Validate private key
-├── Check ZENTRA_ECDSA_SIGNING_CERT_BASE64 env var
+├── Check HCL_CS_ECDSA_SIGNING_CERT_BASE64 env var
 │   └── If set: Decode Base64 → Load PFX → Validate private key
-├── Check ZENTRA_ECDSA_SIGNING_CERT_PATH env var
+├── Check HCL_CS_ECDSA_SIGNING_CERT_PATH env var
 │   └── If set: Load from path → Validate password → Validate private key
 └── Return List<AsymmetricKeyInfoModel>
     └── KeyStore.cs validates algorithm compatibility
@@ -307,14 +307,14 @@ Program.cs LoadAsymmetricCertificate()
 
 ```
 HTTP Request
-├── UseZentraSecurityHeaders()          [FIRST - adds HSTS, X-Frame-Options, CSP]
+├── UseHclCsSecurityHeaders()          [FIRST - adds HSTS, X-Frame-Options, CSP]
 ├── UseAuthentication()                  [Validates JWT/cookies]
-├── UseZentraEndpoint()                  [OAuth/OIDC endpoints - Authorize, Token, etc.]
-│   ├── ZentraEndpointMiddleware.InvokeAsync()
+├── UseHclCsEndpoint()                  [OAuth/OIDC endpoints - Authorize, Token, etc.]
+│   ├── HclCsEndpointMiddleware.InvokeAsync()
 │   ├── Find matching endpoint by path
 │   └── Call IEndpoint.ProcessAsync()
-├── UseZentraApi()                       [Management API endpoints]
-│   └── ZentraApiMiddleware.InvokeAsync()
+├── UseHclCsApi()                       [Management API endpoints]
+│   └── HclCsApiMiddleware.InvokeAsync()
 └── 404 if no endpoint matched
 ```
 
@@ -412,13 +412,13 @@ options.SaveTokens = true;                                  // Store tokens in c
 | **Generates** | `state` (CSRF protection) |
 | **Generates** | `nonce` (replay protection) |
 
-### Step 3: Redirect to Zentra Authorize Endpoint
+### Step 3: Redirect to HCL.CS Authorize Endpoint
 
 | Aspect | Detail |
 |--------|--------|
 | **URL** | `GET /security/authorize` |
 | **Query Params** | `client_id`, `redirect_uri`, `response_type=code`, `scope`, `code_challenge`, `code_challenge_method=S256`, `state`, `nonce` |
-| **File** | `ZentraEndpointMiddleware.cs` |
+| **File** | `HclCsEndpointMiddleware.cs` |
 | **Method** | `InvokeAsync()` → `Find()` → `AuthorizeEndpoint` |
 
 ### Step 4: Authorize Endpoint Processing
@@ -579,7 +579,7 @@ Program.cs
 ├── SystemSettings.json [CRITICAL]
 │   ├── DBConfig [CRITICAL]
 │   │   ├── Database (SqlServer/MySql/PostgreSQL/SQLite)
-│   │   └── DBConnectionString → ZENTRA_DB_CONNECTION_STRING
+│   │   └── DBConnectionString → HCL_CS_DB_CONNECTION_STRING
 │   ├── UserConfig [CRITICAL]
 │   │   ├── MinUserNameLength, MaxUserNameLength
 │   │   ├── RequireUniqueEmail
@@ -592,12 +592,12 @@ Program.cs
 │   │   └── MaxLimitPasswordReuse
 │   ├── EmailConfig [OPTIONAL]
 │   │   ├── SmtpServer, Port
-│   │   ├── UserName → ZENTRA_SMTP_USERNAME
-│   │   └── Password → ZENTRA_SMTP_PASSWORD
+│   │   ├── UserName → HCL_CS_SMTP_USERNAME
+│   │   └── Password → HCL_CS_SMTP_PASSWORD
 │   ├── SMSConfig [OPTIONAL]
-│   │   ├── SMSAccountIdentification → ZENTRA_SMS_ACCOUNT_ID
-│   │   ├── SMSAccountPassword → ZENTRA_SMS_ACCOUNT_PASSWORD
-│   │   └── SMSAccountFrom → ZENTRA_SMS_ACCOUNT_FROM
+│   │   ├── SMSAccountIdentification → HCL_CS_SMS_ACCOUNT_ID
+│   │   ├── SMSAccountPassword → HCL_CS_SMS_ACCOUNT_PASSWORD
+│   │   └── SMSAccountFrom → HCL_CS_SMS_ACCOUNT_FROM
 │   ├── LDAPConfig [OPTIONAL]
 │   │   ├── LdapHostName, LDAPPort
 │   │   └── LdapDomainName
@@ -628,9 +628,9 @@ Program.cs
 │       └── RedirectUri, CodeChallenge, CodeVerifier
 │
 ├── Certificates [CRITICAL for Production]
-│   ├── RSA .pfx file → ZENTRA_RSA_SIGNING_CERT_PATH
-│   ├── ECDSA .pfx file → ZENTRA_ECDSA_SIGNING_CERT_PATH
-│   └── Password → ZENTRA_SIGNING_CERT_PASSWORD
+│   ├── RSA .pfx file → HCL_CS_RSA_SIGNING_CERT_PATH
+│   ├── ECDSA .pfx file → HCL_CS_ECDSA_SIGNING_CERT_PATH
+│   └── Password → HCL_CS_SIGNING_CERT_PASSWORD
 │
 └── NotificationTemplateSettings.json [CRITICAL]
     ├── EmailTemplateCollection
@@ -661,7 +661,7 @@ Program.cs
 | Token reuse detected | `invalid_grant` | `TokenGenerationService.ValidateRefreshTokenAsync()` | Token was already used, force full re-authentication |
 | Invalid scope | `invalid_scope` | `ResourceScopeValidator.ValidateAsync()` | Add scope to `Clients.AllowedScopes` |
 | Unsupported grant type | `unsupported_grant_type` | `TokenRequestValidator.ValidateTokenRequestAsync()` | Add grant type to `Clients.SupportedGrantTypes` |
-| Invalid certificate password | `CryptographicException` | `X509Certificate2` constructor | Verify `ZENTRA_SIGNING_CERT_PASSWORD` secret |
+| Invalid certificate password | `CryptographicException` | `X509Certificate2` constructor | Verify `HCL_CS_SIGNING_CERT_PASSWORD` secret |
 | Expired certificate | `Certificate Expired` | `KeyStore.CheckCertificateValidity()` | Renew signing certificate |
 | Algorithm mismatch | `Certificate and Algorithm type mismatch` | `KeyStore.VerifyCertificate()` | Ensure certificate key type matches configured algorithm |
 | LDAP connection failed | `LdapException` | `ValidateLdapConfiguration()` | Check LDAP host, port, domain configuration |
@@ -750,7 +750,7 @@ Program.cs
 └─────────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
-│  STEP 2: IDENTITY SERVER (Zentra)                               │
+│  STEP 2: IDENTITY SERVER (HCL.CS)                               │
 │  ├── Certificates loaded from secure storage                    │
 │  ├── Keystore initialized with signing keys                     │
 │  ├── OAuth endpoints registered                                 │
@@ -786,7 +786,7 @@ Program.cs
 
 ```bash
 # 1. Verify database connectivity
-psql "${ZENTRA_DB_CONNECTION_STRING}" -c "SELECT 1;"
+psql "${HCL_CS_DB_CONNECTION_STRING}" -c "SELECT 1;"
 
 # 2. Verify Identity Server discovery
 curl -s https://localhost:5001/.well-known/openid-configuration | jq .
@@ -798,7 +798,7 @@ curl -s https://localhost:5001/.well-known/openid-configuration/jwks | jq .
 curl -I https://client.example.com/signin-oidc
 
 # 5. Verify certificate validity
-openssl pkcs12 -in certificates/zentra_rsa.pfx -nodes -passin pass:${ZENTRA_SIGNING_CERT_PASSWORD} | openssl x509 -noout -dates
+openssl pkcs12 -in certificates/hclCs_rsa.pfx -nodes -passin pass:${HCL_CS_SIGNING_CERT_PASSWORD} | openssl x509 -noout -dates
 ```
 
 ---
@@ -822,7 +822,7 @@ openssl pkcs12 -in certificates/zentra_rsa.pfx -nodes -passin pass:${ZENTRA_SIGN
 
 ```bash
 # Run configuration validation
-dotnet run --project src/Identity/Zentra.Identity.API -- validate-config
+dotnet run --project src/Identity/HCL.CS.Identity.API -- validate-config
 
 # Expected output: "Configuration validation passed" or detailed error list
 ```

@@ -1,4 +1,4 @@
-# Zentra
+# HCL.CS
 
 Enterprise-oriented repository structure for identity, gateway, admin, installer, demos, and tests.
 
@@ -17,12 +17,12 @@ Enterprise-oriented repository structure for identity, gateway, admin, installer
 ## Build
 
 ```bash
-dotnet build Zentra.sln
+dotnet build HCL.CS.sln
 ```
 
 ## Docker Quick Start
 
-Run the standalone Zentra identity server with PostgreSQL and Redis:
+Run the standalone HCL.CS identity server with PostgreSQL and Redis:
 
 ```bash
 docker compose -f docker/docker-compose.yml up --build -d
@@ -30,30 +30,30 @@ docker compose -f docker/docker-compose.yml up --build -d
 
 Default local endpoints:
 
-- Zentra: `https://localhost:5180`
+- HCL.CS: `https://localhost:5180`
 - PostgreSQL: `localhost:55433`
 - Redis: `localhost:56380`
 
 Default PostgreSQL credentials:
 
-- Database: `zentra`
-- User: `zentra`
-- Password: `zentra`
+- Database: `hcl-cs`
+- User: `hcl-cs`
+- Password: `hcl-cs`
 
 Startup behavior in Docker:
 
 - PostgreSQL starts first
 - Redis starts first
-- Zentra waits for PostgreSQL to become ready
-- Zentra applies the PostgreSQL bootstrap SQL from `scripts/seed/PostgreSql/ZentraPostgreSqlV1.sql`
-- Zentra applies every available PostgreSQL migration from `scripts/migrations/*_postgresql.sql`
-- Zentra generates a self-signed HTTPS certificate in Docker on first boot if none exists
-- Zentra then starts the identity server
+- HCL.CS waits for PostgreSQL to become ready
+- HCL.CS applies the PostgreSQL bootstrap SQL from `scripts/seed/PostgreSql/HclCsPostgreSqlV1.sql`
+- HCL.CS applies every available PostgreSQL migration from `scripts/migrations/*_postgresql.sql`
+- HCL.CS generates a self-signed HTTPS certificate in Docker on first boot if none exists
+- HCL.CS then starts the identity server
 
 Useful commands:
 
 ```bash
-docker compose -f docker/docker-compose.yml logs -f zentra
+docker compose -f docker/docker-compose.yml logs -f hcl-cs
 docker compose -f docker/docker-compose.yml ps
 docker compose -f docker/docker-compose.yml down
 docker compose -f docker/docker-compose.yml down -v
@@ -84,12 +84,12 @@ Installer endpoint with the `extras` profile:
 Installer PostgreSQL connection strings:
 
 - From the Dockerized installer to the bundled PostgreSQL service:
-  `Host=postgres;Port=5432;Database=zentra;Username=zentra;Password=zentra;`
+  `Host=postgres;Port=5432;Database=hcl-cs;Username=hcl-cs;Password=hcl-cs;`
 - From host tools such as Rider Database:
-  `Host=localhost;Port=55433;Database=zentra;Username=zentra;Password=zentra;`
+  `Host=localhost;Port=55433;Database=hcl-cs;Username=hcl-cs;Password=hcl-cs;`
 
 ## Run demo identity host
 
 ```bash
-dotnet run --project demos/Zentra.Demo.Server/Zentra.DemoServerApp.csproj
+dotnet run --project demos/HCL.CS.Demo.Server/HCL.CS.DemoServerApp.csproj
 ```

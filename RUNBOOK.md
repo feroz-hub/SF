@@ -3,7 +3,7 @@
 ## Request Tracing (Correlation ID)
 
 - Every request carries `X-Correlation-ID`.
-- If the caller does not provide one, Zentra generates one and returns it in the response header.
+- If the caller does not provide one, HCL.CS generates one and returns it in the response header.
 - Standard request completion logs include:
   - `correlationId`
   - `tenantId`
@@ -65,10 +65,10 @@ Health responses return status and check durations only, with no secrets or conn
 
 ## Metrics Suggestions (Vendor-Neutral)
 
-Zentra emits built-in .NET meter instruments when enabled (`Zentra:Observability:EnableMetrics=true`):
+HCL.CS emits built-in .NET meter instruments when enabled (`HCL.CS:Observability:EnableMetrics=true`):
 
-- Counter: `zentra.http.server.requests`
-- Histogram: `zentra.http.server.duration.ms`
+- Counter: `hcl-cs.http.server.requests`
+- Histogram: `hcl-cs.http.server.duration.ms`
 - Labels:
   - `method`
   - `route` (normalized low-cardinality route group)

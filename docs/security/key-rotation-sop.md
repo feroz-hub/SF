@@ -1,11 +1,11 @@
-# Zentra Key Rotation SOP
+# HCL.CS Key Rotation SOP
 
 ## Scope
 - Signing keys used by `/security/token` and published by `/.well-known/openid-configuration/jwks`.
 - Confidential client secrets stored outside source control.
 
 ## Preconditions
-- Vault/KMS is the source of truth for `ZENTRA_RSA_SIGNING_CERT_*`, `ZENTRA_ECDSA_SIGNING_CERT_*`, and `ZENTRA_SIGNING_CERT_PASSWORD`.
+- Vault/KMS is the source of truth for `HCL_CS_RSA_SIGNING_CERT_*`, `HCL_CS_ECDSA_SIGNING_CERT_*`, and `HCL_CS_SIGNING_CERT_PASSWORD`.
 - Monitoring is active for token validation failures and JWKS fetch errors.
 
 ## Rotation Window
@@ -20,11 +20,11 @@
 1. Create and escrow new key pair in vault.
 2. Publish vault version metadata and planned `kid`.
 3. Deploy identity service with new env vars:
-   - `ZENTRA_RSA_SIGNING_CERT_BASE64`
-   - `ZENTRA_ECDSA_SIGNING_CERT_BASE64`
-   - `ZENTRA_SIGNING_CERT_PASSWORD`
-   - `ZENTRA_RSA_SIGNING_KID`
-   - `ZENTRA_ECDSA_SIGNING_KID`
+   - `HCL_CS_RSA_SIGNING_CERT_BASE64`
+   - `HCL_CS_ECDSA_SIGNING_CERT_BASE64`
+   - `HCL_CS_SIGNING_CERT_PASSWORD`
+   - `HCL_CS_RSA_SIGNING_KID`
+   - `HCL_CS_ECDSA_SIGNING_KID`
 4. Validate:
    - Discovery endpoint reachable.
    - JWKS includes expected `kid`.

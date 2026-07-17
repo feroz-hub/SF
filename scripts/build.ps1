@@ -4,6 +4,6 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-dotnet restore ./Zentra.sln
-dotnet build ./Zentra.sln -c $Configuration --no-restore
-dotnet test ./tests/Zentra.IntegrationTests/IntegrationTests.csproj -c $Configuration --no-build
+dotnet restore ./HCL.CS.sln
+dotnet build ./HCL.CS.sln -c $Configuration --no-restore
+dotnet test ./tests/HCL.CS.IntegrationTests/IntegrationTests.csproj -c $Configuration --no-build

@@ -4,11 +4,11 @@ BEGIN
         SELECT 1
         FROM information_schema.columns
         WHERE table_schema = current_schema()
-          AND table_name = 'Zentra_Users'
+          AND table_name = 'HclCs_Users'
           AND column_name = 'CreatedOn'
           AND data_type = 'timestamp without time zone'
     ) THEN
-        ALTER TABLE "Zentra_Users"
+        ALTER TABLE "HclCs_Users"
             ALTER COLUMN "DateOfBirth" TYPE timestamp with time zone USING "DateOfBirth" AT TIME ZONE 'UTC',
             ALTER COLUMN "LastPasswordChangedDate" TYPE timestamp with time zone USING "LastPasswordChangedDate" AT TIME ZONE 'UTC',
             ALTER COLUMN "LastLoginDateTime" TYPE timestamp with time zone USING "LastLoginDateTime" AT TIME ZONE 'UTC',

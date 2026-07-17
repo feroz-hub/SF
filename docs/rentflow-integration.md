@@ -1,6 +1,6 @@
-# RentFlow integration with Zentra
+# RentFlow integration with HCL.CS
 
-Zentra is configured so the **RentFlow** app receives a **capabilities** claim in the access token based on the user’s role. Each RentFlow role has a fixed list of capabilities that are added to the token when the user requests the `rentflow` scope.
+HCL.CS is configured so the **RentFlow** app receives a **capabilities** claim in the access token based on the user’s role. Each RentFlow role has a fixed list of capabilities that are added to the token when the user requests the `rentflow` scope.
 
 ## Roles and capabilities
 
@@ -12,9 +12,9 @@ Zentra is configured so the **RentFlow** app receives a **capabilities** claim i
 | **rentflow_resident** | Limited tenant actions              | health:read, tenant:users:accept, meal:skip, roomchat:read, roomchat:send                                                                                                                                                                                                                                                                                                                    |
 
 
-## New installations (Zentra seed)
+## New installations (HCL.CS seed)
 
-If you run the **Zentra installer** and seed a **fresh** database, the following are created automatically:
+If you run the **HCL.CS installer** and seed a **fresh** database, the following are created automatically:
 
 1. **API resource** `rentflow` with:
   - Resource claim type **capabilities** and **role**
@@ -24,7 +24,7 @@ If you run the **Zentra installer** and seed a **fresh** database, the following
 
 No extra steps are required for a new install.
 
-## Existing installations (Zentra already seeded)
+## Existing installations (HCL.CS already seeded)
 
 If the database was seeded **before** RentFlow support was added, do one of the following.
 
@@ -34,7 +34,7 @@ Use your usual migration or SQL/script approach to:
 
 1. Insert the **rentflow** API resource and its **ApiResourceClaims** (Type = `capabilities`, Type = `role`) and **ApiScopes** (scope name `rentflow`) with **ApiScopeClaims** (Type = `capabilities`, Type = `role`), if not already present.
 2. Insert the three **Roles**: `rentflow_owner`, `rentflow_manager`, `rentflow_resident`.
-3. Insert **RoleClaims** for each role with `ClaimType = "capabilities"` and `ClaimValue` = each capability from the table above (see seed: `ZentraMasterDataSeed.CreateRoleClaims_RentFlowOwner()`, `CreateRoleClaims_RentFlowManager()`, `CreateRoleClaims_RentFlowResident()`).
+3. Insert **RoleClaims** for each role with `ClaimType = "capabilities"` and `ClaimValue` = each capability from the table above (see seed: `HclCsMasterDataSeed.CreateRoleClaims_RentFlowOwner()`, `CreateRoleClaims_RentFlowManager()`, `CreateRoleClaims_RentFlowResident()`).
 
 ### Option B – Admin UI
 
@@ -42,7 +42,7 @@ See **[Add RentFlow via Admin UI](#add-rentflow-via-admin-ui)** below for step-b
 
 ## Add RentFlow via Admin UI
 
-Follow these steps in **Zentra Admin** to add RentFlow (resource, scope, roles, capabilities, and client) without running the seed again.
+Follow these steps in **HCL.CS Admin** to add RentFlow (resource, scope, roles, capabilities, and client) without running the seed again.
 
 **Where to find it in the sidebar:** **Security** → **Resources & Scopes**; **Identity** → **Roles & Claims**, **Users**; **Security** → **Clients**.
 
@@ -159,13 +159,13 @@ roomchat:send
 
 ---
 
-## How to create a Zentra client for the RentFlow control-plane BFF
+## How to create a HCL.CS client for the RentFlow control-plane BFF
 
-Use this when integrating the **control-plane BFF** with Zentra. Register the following in Zentra (via Zentra Admin) and configure the control-plane env to match.
+Use this when integrating the **control-plane BFF** with HCL.CS. Register the following in HCL.CS (via HCL.CS Admin) and configure the control-plane env to match.
 
 ### 1. Redirect URI (login callback)
 
-Register this in Zentra as the OAuth/OIDC **redirect URI** for each environment:
+Register this in HCL.CS as the OAuth/OIDC **redirect URI** for each environment:
 
 
 | Environment     | Redirect URI                                      |
@@ -182,7 +182,7 @@ Use your app’s origin + `/auth/callback`, e.g.:
 
 ### 2. Post-logout redirect URI
 
-Register this in Zentra as the **post-logout redirect URI**:
+Register this in HCL.CS as the **post-logout redirect URI**:
 
 
 | Environment     | Post-logout URI                      |
@@ -191,24 +191,24 @@ Register this in Zentra as the **post-logout redirect URI**:
 | Custom          | `{NEXT_PUBLIC_RENTFLOW_APP_ORIGIN}/` |
 
 
-### 3. Client configuration summary (for Zentra)
+### 3. Client configuration summary (for HCL.CS)
 
-When creating or editing the OAuth client in Zentra Admin, use:
+When creating or editing the OAuth client in HCL.CS Admin, use:
 
 
 | Setting                         | Value                                                                                                                                                                                                                                                   |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Grant type**                  | **Authorization Code** + **PKCE** (S256). In Zentra Admin, select **authorization_code** (and **refresh_token** if the BFF uses refresh tokens). Ensure PKCE is required (Zentra Admin creates clients with **Require PKCE** by default for this flow). |
+| **Grant type**                  | **Authorization Code** + **PKCE** (S256). In HCL.CS Admin, select **authorization_code** (and **refresh_token** if the BFF uses refresh tokens). Ensure PKCE is required (HCL.CS Admin creates clients with **Require PKCE** by default for this flow). |
 | **Redirect URI(s)**             | `https://<your-app-origin>/auth/callback` — add one per environment (local, staging, prod).                                                                                                                                                             |
 | **Post-logout redirect URI(s)** | `https://<your-app-origin>/` — add one per environment.                                                                                                                                                                                                 |
 | **Client ID**                   | `rentflow.bff.local` (or the value you set in control-plane as `RENTFLOW_BFF_CLIENT_ID`)                                                                                                                                                                |
-| **Client secret**               | Set in control-plane as `RENTFLOW_BFF_CLIENT_SECRET` (generate or copy from Zentra after creating the client).                                                                                                                                          |
+| **Client secret**               | Set in control-plane as `RENTFLOW_BFF_CLIENT_SECRET` (generate or copy from HCL.CS after creating the client).                                                                                                                                          |
 | **Scopes**                      | `openid profile email rentflow.api` (or set `RENTFLOW_BFF_SCOPE` in control-plane). For RentFlow capabilities, include `**rentflow`** so the token includes **sub**, **capabilities**, and optionally **tenant_id**.                                    |
 
 
 The token must include at least **sub** and **capabilities** (and optionally **tenant_id**).
 
-### 4. Creating the client in Zentra Admin
+### 4. Creating the client in HCL.CS Admin
 
 1. In the sidebar, go to **Security** → **Clients** (or **Clients**).
 2. Click **Create client** (or **Register client**).
@@ -229,19 +229,19 @@ The token must include at least **sub** and **capabilities** (and optionally **t
 4. Save the client. Copy the client secret if newly generated and set it in control-plane.
 5. Ensure the **rentflow** API resource and scope exist (see [Step 1: Create the RentFlow API resource and scope](#step-1-create-the-rentflow-api-resource-and-scope)) so that the **rentflow** scope and **capabilities** claim are issued.
 
-### 5. Control-plane env (to match Zentra)
+### 5. Control-plane env (to match HCL.CS)
 
 In `apps/control-plane/.env.local` (or your environment), either rely on defaults or set:
 
 ```bash
 # Redirect URI — only if different from {APP_ORIGIN}/auth/callback
-# AUTH_ZENTRA_REDIRECT_URI=https://localhost:3000/auth/callback
+# AUTH_HCL_CS_REDIRECT_URI=https://localhost:3000/auth/callback
 
 # Post-logout — only if different from {APP_ORIGIN}/
-# AUTH_ZENTRA_POST_LOGOUT_REDIRECT_URI=https://localhost:3000/
+# AUTH_HCL_CS_POST_LOGOUT_REDIRECT_URI=https://localhost:3000/
 ```
 
-Rule: **client redirect URI in Zentra** = `<APP_ORIGIN>/auth/callback`, and **post-logout URI in Zentra** = `<APP_ORIGIN>/`. Register those exact URLs in Zentra for each environment you use.
+Rule: **client redirect URI in HCL.CS** = `<APP_ORIGIN>/auth/callback`, and **post-logout URI in HCL.CS** = `<APP_ORIGIN>/`. Register those exact URLs in HCL.CS for each environment you use.
 
 ---
 
@@ -262,25 +262,25 @@ Rule: **client redirect URI in Zentra** = `<APP_ORIGIN>/auth/callback`, and **po
 
 ## Authorization code flow – required request parameters (for RentFlow frontend)
 
-Use this section when implementing the **authorization code + PKCE** flow in the RentFlow frontend. Base URL is your Zentra authority (e.g. `https://your-zentra-host`). Paths are relative to that base.
+Use this section when implementing the **authorization code + PKCE** flow in the RentFlow frontend. Base URL is your HCL.CS authority (e.g. `https://your-hcl-cs-host`). Paths are relative to that base.
 
 ### Step 1: Authorize request (redirect the user to login)
 
 **Method:** `GET`  
 **URL:** `{authority}/security/authorize`
 
-**Query parameters (sent in the URL when redirecting the user to Zentra):**
+**Query parameters (sent in the URL when redirecting the user to HCL.CS):**
 
 | Parameter               | Required | Description |
 | ----------------------- | -------- | ----------- |
 | `client_id`             | **Yes**  | OAuth client ID (e.g. `rentflow.bff.local`). |
-| `redirect_uri`          | **Yes**  | Callback URL where Zentra will send the user after login. Must **exactly** match a redirect URI registered for the client (e.g. `https://your-app/auth/callback`). |
+| `redirect_uri`          | **Yes**  | Callback URL where HCL.CS will send the user after login. Must **exactly** match a redirect URI registered for the client (e.g. `https://your-app/auth/callback`). |
 | `response_type`         | **Yes**  | Use `code` for authorization code flow. |
 | `scope`                 | **Yes**  | Space-separated scopes. Must include `openid` for OIDC; include `rentflow` for capabilities in the token. Example: `openid profile email rentflow`. Add `offline_access` if you need refresh tokens. |
-| `state`                 | **Yes**  | Opaque value you generate and store (e.g. in session). Zentra returns it in the callback so you can prevent CSRF. |
+| `state`                 | **Yes**  | Opaque value you generate and store (e.g. in session). HCL.CS returns it in the callback so you can prevent CSRF. |
 | `nonce`                 | **Yes**  | Required when `scope` includes `openid`. Random string you generate; it is echoed in the id_token. Generate per request (e.g. random string or UUID). |
-| `code_challenge`        | **Yes**  | PKCE challenge. Must be **base64url**(**SHA256**(`code_verifier`)). No `+`, `/`, or `=` padding. Zentra requires PKCE for authorization_code (S256 only). |
-| `code_challenge_method` | **Yes**  | Use `S256` (Zentra only supports S256). |
+| `code_challenge`        | **Yes**  | PKCE challenge. Must be **base64url**(**SHA256**(`code_verifier`)). No `+`, `/`, or `=` padding. HCL.CS requires PKCE for authorization_code (S256 only). |
+| `code_challenge_method` | **Yes**  | Use `S256` (HCL.CS only supports S256). |
 
 **Example authorize URL (split for readability):**
 
@@ -298,7 +298,7 @@ GET {authority}/security/authorize?client_id=rentflow.bff.local
 - Generate a random **code_verifier** (43–128 chars, charset `[A-Za-z0-9\-._~]`). Store it (e.g. in session or secure cookie) for the token step.
 - Compute **code_challenge** = base64url(SHA256(code_verifier)). Do **not** use standard base64 (use `-` and `_`, no padding).
 
-After the user logs in and consents, Zentra redirects to your `redirect_uri` with query parameters: `code` (the authorization code) and `state` (your state). Extract the `code` and use it in Step 2.
+After the user logs in and consents, HCL.CS redirects to your `redirect_uri` with query parameters: `code` (the authorization code) and `state` (your state). Extract the `code` and use it in Step 2.
 
 ---
 
@@ -343,7 +343,7 @@ grant_type=authorization_code
 
 ### Summary checklist for frontend
 
-1. **Before redirecting to Zentra:** Generate and store `state`, `nonce` (if using openid), and `code_verifier`; compute `code_challenge` = base64url(SHA256(code_verifier)).
+1. **Before redirecting to HCL.CS:** Generate and store `state`, `nonce` (if using openid), and `code_verifier`; compute `code_challenge` = base64url(SHA256(code_verifier)).
 2. **Authorize request:** GET with `client_id`, `redirect_uri`, `response_type=code`, `scope` (include `openid` and `rentflow`), `state`, `nonce` (if openid), `code_challenge`, `code_challenge_method=S256`.
 3. **Callback:** Read `code` and `state` from the URL; validate `state`; exchange `code` with the same `redirect_uri` and `code_verifier`.
 4. **Token request:** POST with `grant_type=authorization_code`, `code`, `redirect_uri`, `code_verifier`, and client credentials (Basic or body).
@@ -357,12 +357,12 @@ To test RentFlow token generation locally with the **client_credentials** grant 
 ### 1. Ensure the RentFlow scope exists
 
 - **API resource** `rentflow` with **scope** `rentflow` must exist.
-- **New installs:** created by seed (see [New installations](#new-installations-zentra-seed)).
+- **New installs:** created by seed (see [New installations](#new-installations-hcl-cs-seed)).
 - **Existing installs:** add via [Step 1: Create the RentFlow API resource and scope](#step-1-create-the-rentflow-api-resource-and-scope) in the Admin UI, or run your migration/script.
 
 ### 2. Create or edit a client for client_credentials
 
-In **Zentra Admin** → **Security** → **Clients**:
+In **HCL.CS Admin** → **Security** → **Clients**:
 
 1. Create a new client (or pick an existing one for testing).
 2. Set:
@@ -374,7 +374,7 @@ In **Zentra Admin** → **Security** → **Clients**:
 
 ### 3. Request a token locally
 
-Use your Zentra **token endpoint** (e.g. `https://localhost:<port>/security/token` or the URL from your discovery document). Replace `<TOKEN_ENDPOINT>`, `<CLIENT_ID>`, and `<CLIENT_SECRET>`.
+Use your HCL.CS **token endpoint** (e.g. `https://localhost:<port>/security/token` or the URL from your discovery document). Replace `<TOKEN_ENDPOINT>`, `<CLIENT_ID>`, and `<CLIENT_SECRET>`.
 
 **Using curl:**
 
@@ -399,9 +399,9 @@ A successful response includes `access_token`, `expires_in`, and `token_type` (e
 
 **Note:** With **client_credentials** there is no user, so the token does **not** include user-based **role** or **capabilities** claims. Those are added only for user-involved flows (e.g. authorization code, password) when the user has a RentFlow role and requests the `rentflow` scope. For machine-to-machine testing you are only verifying that the **rentflow** scope is issued and the token is valid.
 
-### 4. Optional: use Zentra Admin Operations
+### 4. Optional: use HCL.CS Admin Operations
 
-If **Operations** → **Endpoints** (or similar) in Zentra Admin exposes a token tester:
+If **Operations** → **Endpoints** (or similar) in HCL.CS Admin exposes a token tester:
 
 1. Choose **Client credentials** flow.
 2. Enter the same client ID and secret.
@@ -418,15 +418,15 @@ RentFlow can authorize API calls by checking the **capabilities** claim in the a
 
 ## Assigning users to RentFlow roles
 
-In Zentra Admin:
+In HCL.CS Admin:
 
 1. Go to **Users**, open the user, and assign the appropriate role: **rentflow_owner**, **rentflow_manager**, or **rentflow_resident**.
 2. That user’s next token request with scope **rentflow** will include the **capabilities** list for that role.
 
 ## Seed reference (code)
 
-- **API resource**: `installer/Zentra.Installer.Mvc/Infrastructure/Seeding/ZentraMasterDataSeed.cs` (RentFlow entry in `GetApiResourceEntityMaster()`).
+- **API resource**: `installer/HCL.CS.Installer.Mvc/Infrastructure/Seeding/HclCsMasterDataSeed.cs` (RentFlow entry in `GetApiResourceEntityMaster()`).
 - **Roles**: same file, `CreateRolesMaster()` (rentflow_owner, rentflow_manager, rentflow_resident).
 - **Role claims**: same file, `CreateRoleClaims_RentFlowOwner()`, `CreateRoleClaims_RentFlowManager()`, `CreateRoleClaims_RentFlowResident()`.
-- **Wiring in seed**: `installer/Zentra.Installer.Mvc/Infrastructure/Services/SeedDataService.cs` (RentFlow role claims added after ZentraUser claims).
+- **Wiring in seed**: `installer/HCL.CS.Installer.Mvc/Infrastructure/Services/SeedDataService.cs` (RentFlow role claims added after HclCsUser claims).
 

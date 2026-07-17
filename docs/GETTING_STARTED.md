@@ -1,8 +1,8 @@
-# Zentra - Developer Getting Started Guide
+# HCL.CS - Developer Getting Started Guide
 
 ## 🚀 Quick Start
 
-This guide will help you understand and work with the Zentra framework.
+This guide will help you understand and work with the HCL.CS framework.
 
 ---
 
@@ -21,7 +21,7 @@ This guide will help you understand and work with the Zentra framework.
 
 ### What Problem Does It Solve?
 
-Zentra solves the complex problem of **authentication and authorization** in modern applications by providing:
+HCL.CS solves the complex problem of **authentication and authorization** in modern applications by providing:
 
 1. **Centralized Authentication**: Single place to manage all users
 2. **Token-Based Security**: Secure API access without sharing passwords
@@ -36,14 +36,14 @@ Imagine you have:
 - A mobile app (Customer App)
 - Several microservices (Order Service, Payment Service, etc.)
 
-**Without Zentra:**
+**Without HCL.CS:**
 - Each app manages its own users and passwords
 - Passwords stored in multiple places
 - No single logout
 - Hard to implement MFA
 - Difficult to audit access
 
-**With Zentra:**
+**With HCL.CS:**
 - Centralized user management
 - Users log in once (SSO)
 - Apps get tokens to access APIs
@@ -59,11 +59,11 @@ Imagine you have:
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                     Zentra Ecosystem                       │
+│                     HCL.CS Ecosystem                       │
 └──────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────┐         ┌──────────────────────────────────┐
-│   Web Client    │────────▶│   Zentra Server           │
+│   Web Client    │────────▶│   HCL.CS Server           │
 │  (MVC/Blazor)   │         │   (Authorization Server)         │
 └─────────────────┘         │                                  │
                             │  ┌────────────────────────────┐  │
@@ -315,7 +315,7 @@ Flow of Dependencies: UI → Services → Domain ← Infrastructure
 - `Users.cs`: User entity with profile data
 - `Roles.cs`: Role definitions
 - `Clients.cs`: OAuth client applications
-- `ZentraConfig.cs`: Configuration model
+- `HclCsConfig.cs`: Configuration model
 
 **Example**:
 ```csharp
@@ -380,7 +380,7 @@ public interface IUserManagementUnitOfWork
 
 **Structure**:
 ```csharp
-ZentraConfig
+HclCsConfig
     └── SystemSettings
         ├── DbConfig (database settings)
         ├── UserConfig (user policies)
@@ -407,13 +407,13 @@ ZentraConfig
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd Zentra
+   cd HCL.CS
    ```
 
 2. **Open the solution**
    ```bash
    # Visual Studio
-   start Zentra.sln
+   start HCL.CS.sln
    
    # VS Code
    code .
@@ -435,7 +435,7 @@ ZentraConfig
    ```json
    {
      "ConnectionStrings": {
-       "DefaultConnection": "Server=localhost;Database=Zentra;..."
+       "DefaultConnection": "Server=localhost;Database=HCL.CS;..."
      }
    }
    ```

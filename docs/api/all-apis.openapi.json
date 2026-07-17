@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Zentra API Inventory",
+    "title": "HCL.CS API Inventory",
     "version": "1.0.0",
     "description": "Generated from docs/api/all-apis.md"
   },

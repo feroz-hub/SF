@@ -13,9 +13,9 @@ Access tokens are produced in the **Identity** project by `TokenGenerationServic
 
 **Files:**
 
-- `src/Identity/Zentra.Identity.Application/Implementation/Endpoint/Services/TokenGenerationService.cs`
-- `src/Identity/Zentra.Identity.Domain/Models/Endpoint/ResultClaimsModel.cs`
-- Claim type constants: `src/Identity/Zentra.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs` (`ClaimTypes`)
+- `src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/Services/TokenGenerationService.cs`
+- `src/Identity/HCL.CS.Identity.Domain/Models/Endpoint/ResultClaimsModel.cs`
+- Claim type constants: `src/Identity/HCL.CS.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs` (`ClaimTypes`)
 
 ---
 
@@ -94,7 +94,7 @@ Option B is implemented. When you add claim type **capabilities** to an API Reso
 
 ## Configuring the capabilities claim via Admin UI
 
-To get a dedicated **capabilities** claim in the access token (e.g. `"capabilities": ["read:users", "write:orders"]`), do the following in the Zentra Admin UI.
+To get a dedicated **capabilities** claim in the access token (e.g. `"capabilities": ["read:users", "write:orders"]`), do the following in the HCL.CS Admin UI.
 
 ### 1. Add the claim type "capabilities" to an API Resource or API Scope
 

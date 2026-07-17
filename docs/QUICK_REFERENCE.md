@@ -1,8 +1,8 @@
-# Zentra - Quick Reference Guide
+# HCL.CS - Quick Reference Guide
 
-## 🎯 What is Zentra?
+## 🎯 What is HCL.CS?
 
-**Zentra** is an **OAuth 2.0/OpenID Connect authentication framework** for .NET 8.0 that provides enterprise-grade identity and access management.
+**HCL.CS** is an **OAuth 2.0/OpenID Connect authentication framework** for .NET 8.0 that provides enterprise-grade identity and access management.
 
 ---
 
@@ -10,7 +10,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Zentra FRAMEWORK                   │
+│                    HCL.CS FRAMEWORK                   │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  ┌────────────┐   ┌────────────┐   ┌──────────────────┐   │
@@ -38,7 +38,7 @@
 ## 📦 Project Structure (Simplified)
 
 ```
-Zentra/
+HCL.CS/
 │
 ├── Source/                    # Core Framework
 │   ├── Domain/               # Business entities & models
@@ -114,7 +114,7 @@ Zentra/
 ## ⚙️ Configuration Overview
 
 ```csharp
-ZentraConfig
+HclCsConfig
 ├── SystemSettings
 │   ├── DbConfig              // Database connection
 │   ├── LoginConfig           // Login behavior
@@ -199,7 +199,7 @@ Allow external apps to authenticate users
 
 ```
 Configuration Models:
-└── Source/Domain/ZentraConfig.cs
+└── Source/Domain/HclCsConfig.cs
 
 User Entity:
 └── Source/Domain/Entities/Api/Users.cs

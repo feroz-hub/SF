@@ -1,6 +1,6 @@
-# Zentra Operational Runbooks
+# HCL.CS Operational Runbooks
 
-**Document ID:** ZENTRA-DOC-08-RUNBOOKS  
+**Document ID:** HCL.CS-DOC-08-RUNBOOKS  
 **Version:** 1.0.0  
 **Classification:** Internal Use  
 **Last Updated:** 2026-03-01  
@@ -32,7 +32,7 @@ openssl genrsa -out new-signing-key.pem 2048
 openssl rsa -in new-signing-key.pem -pubout -out new-signing-key.pub
 
 # 3. Add new key to JWKS with unique kid
-# Edit: /src/Identity/Zentra.Identity.Application/Implementation/Endpoint/Services/JWKSService.cs
+# Edit: /src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/Services/JWKSService.cs
 
 # 4. Deploy with new key active
 # New tokens will use new key
@@ -44,7 +44,7 @@ openssl rsa -in new-signing-key.pem -pubout -out new-signing-key.pub
 **Verification:**
 ```bash
 # Verify JWKS endpoint shows new key
-curl https://identity.zentra.example/.well-known/openid-configuration/jwks | jq '.keys[].kid'
+curl https://identity.hcl-cs.example/.well-known/openid-configuration/jwks | jq '.keys[].kid'
 
 # Verify tokens use new key (check JWT header)
 echo "<access_token>" | cut -d. -f1 | base64 -d | jq '.kid'
@@ -66,27 +66,27 @@ echo "<access_token>" | cut -d. -f1 | base64 -d | jq '.kid'
 ```bash
 # 1. Create backup
 # PostgreSQL
-pg_dump -U zentra -F c ZentraIdentity > backup-$(date +%Y%m%d).dump
+pg_dump -U hcl-cs -F c HclCsIdentity > backup-$(date +%Y%m%d).dump
 
 # SQL Server
-sqlcmd -S localhost -Q "BACKUP DATABASE [ZentraIdentity] TO DISK = 'backup.bak'"
+sqlcmd -S localhost -Q "BACKUP DATABASE [HclCsIdentity] TO DISK = 'backup.bak'"
 
 # 2. Review pending migrations
 dotnet ef migrations list \
-  --project src/Identity/Zentra.Identity.Persistence \
-  --startup-project src/Identity/Zentra.Identity.API
+  --project src/Identity/HCL.CS.Identity.Persistence \
+  --startup-project src/Identity/HCL.CS.Identity.API
 
 # 3. Generate SQL script (optional)
 dotnet ef migrations script \
-  --project src/Identity/Zentra.Identity.Persistence \
-  --startup-project src/Identity/Zentra.Identity.API \
+  --project src/Identity/HCL.CS.Identity.Persistence \
+  --startup-project src/Identity/HCL.CS.Identity.API \
   --idempotent \
   -o migration-script.sql
 
 # 4. Apply migrations
 dotnet ef database update \
-  --project src/Identity/Zentra.Identity.Persistence \
-  --startup-project src/Identity/Zentra.Identity.API
+  --project src/Identity/HCL.CS.Identity.Persistence \
+  --startup-project src/Identity/HCL.CS.Identity.API
 
 # 5. Verify migration
 # Check __EFMigrationsHistory table for latest entry
@@ -105,11 +105,11 @@ LIMIT 1;
 ```bash
 # If migration fails, revert to previous
 dotnet ef database update <PreviousMigrationName> \
-  --project src/Identity/Zentra.Identity.Persistence \
-  --startup-project src/Identity/Zentra.Identity.API
+  --project src/Identity/HCL.CS.Identity.Persistence \
+  --startup-project src/Identity/HCL.CS.Identity.API
 
 # Restore from backup if needed
-pg_restore -U zentra -d ZentraIdentity --clean backup.dump
+pg_restore -U hcl-cs -d HclCsIdentity --clean backup.dump
 ```
 
 ### 1.3 Seed Initial Data
@@ -120,7 +120,7 @@ pg_restore -U zentra -d ZentraIdentity --clean backup.dump
 
 ```bash
 # 1. Run installer for initial seed
-dotnet run --project installer/Zentra.Installer.Mvc \
+dotnet run --project installer/HCL.CS.Installer.Mvc \
   --launch-profile "https"
 
 # 2. Navigate to installer UI
@@ -174,13 +174,13 @@ WHERE "UserName" = 'admin';
 1. **Identify correlation ID**
    ```bash
    # Get correlation ID from client or logs
-   grep "invalid_client" /var/log/zentra/*.log | grep "correlationId"
+   grep "invalid_client" /var/log/hcl-cs/*.log | grep "correlationId"
    ```
 
 2. **Trace request flow**
    ```bash
    # Search logs for correlation ID
-   grep "<correlation-id>" /var/log/zentra/*.log
+   grep "<correlation-id>" /var/log/hcl-cs/*.log
    ```
 
 3. **Check specific error codes**
@@ -245,7 +245,7 @@ WHERE "ConsumedAt" IS NOT NULL
 
 ```
 □ 1. Check JWKS endpoint availability
-   curl https://identity.zentra.example/.well-known/openid-configuration/jwks
+   curl https://identity.hcl-cs.example/.well-known/openid-configuration/jwks
 
 □ 2. Verify signing key configuration
    - Check key files exist and are readable
@@ -256,7 +256,7 @@ WHERE "ConsumedAt" IS NOT NULL
    - Check server clock synchronization
 
 □ 4. Review token validation errors in logs
-   grep "invalid_token" /var/log/zentra/*.log | tail -100
+   grep "invalid_token" /var/log/hcl-cs/*.log | tail -100
 
 □ 5. If key compromise suspected:
    - Rotate signing keys immediately
@@ -276,7 +276,7 @@ WHERE "ConsumedAt" IS NOT NULL
 
 ```
 □ 1. Check JWKS endpoint response
-   curl -v https://identity.zentra.example/.well-known/openid-configuration/jwks
+   curl -v https://identity.hcl-cs.example/.well-known/openid-configuration/jwks
 
 □ 2. Verify ShowKeySet configuration
    - If false, JWKS disabled intentionally
@@ -330,7 +330,7 @@ WHERE "ConsumedAt" IS NOT NULL
    - Apply transaction logs if available
 
 □ 7. Verify application recovers
-   curl https://identity.zentra.example/health/ready
+   curl https://identity.hcl-cs.example/health/ready
 ```
 
 ### 2.4 Gateway 5xx Errors
@@ -343,10 +343,10 @@ WHERE "ConsumedAt" IS NOT NULL
 
 ```
 □ 1. Check gateway health
-   curl https://gateway.zentra.example/health/live
+   curl https://gateway.hcl-cs.example/health/live
 
 □ 2. Check upstream (Identity) health
-   curl https://identity.zentra.example/health/ready
+   curl https://identity.hcl-cs.example/health/ready
 
 □ 3. Check resource utilization
    - CPU: top, htop
@@ -358,7 +358,7 @@ WHERE "ConsumedAt" IS NOT NULL
    - Restart pods if memory pressure
 
 □ 5. Scale horizontally if needed
-   kubectl scale deployment zentra-identity --replicas=5
+   kubectl scale deployment hcl-cs-identity --replicas=5
 
 □ 6. Check for deadlock/thread pool exhaustion
    - Review thread dump if available
@@ -433,7 +433,7 @@ WHERE "ConsumedAt" IS NOT NULL
 
 ### 3.3 Redaction Helpers
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/LogRedactionHelper.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/LogRedactionHelper.cs`
 
 ```csharp
 // Always use these helpers for user-facing values
@@ -480,15 +480,15 @@ When reviewing logs for security:
 openssl genrsa -out /app/keys/emergency-key.pem 2048
 
 # 2. Update configuration to use emergency key
-kubectl set env deployment/zentra-identity \
+kubectl set env deployment/hcl-cs-identity \
   TokenSettings__TokenConfig__SigningKeyPath=/app/keys/emergency-key.pem \
-  -n zentra
+  -n hcl-cs
 
 # 3. Restart deployment
-kubectl rollout restart deployment/zentra-identity -n zentra
+kubectl rollout restart deployment/hcl-cs-identity -n hcl-cs
 
 # 4. Verify new key in JWKS
-curl https://identity.zentra.example/.well-known/openid-configuration/jwks | jq
+curl https://identity.hcl-cs.example/.well-known/openid-configuration/jwks | jq
 
 # 5. Notify clients to refresh keys
 # (JWKS has 24h cache by default)
@@ -501,25 +501,25 @@ curl https://identity.zentra.example/.well-known/openid-configuration/jwks | jq
 # emergency-db-restore.sh
 
 # 1. Stop application
-kubectl scale deployment zentra-identity --replicas=0 -n zentra
+kubectl scale deployment hcl-cs-identity --replicas=0 -n hcl-cs
 
 # 2. Drop and recreate database (PostgreSQL)
-psql -U postgres -c "DROP DATABASE IF EXISTS ZentraIdentity;"
-psql -U postgres -c "CREATE DATABASE ZentraIdentity;"
+psql -U postgres -c "DROP DATABASE IF EXISTS HclCsIdentity;"
+psql -U postgres -c "CREATE DATABASE HclCsIdentity;"
 
 # 3. Restore from backup
-pg_restore -U zentra -d ZentraIdentity latest-backup.dump
+pg_restore -U hcl-cs -d HclCsIdentity latest-backup.dump
 
 # 4. Verify restore
-psql -U zentra -d ZentraIdentity -c "SELECT COUNT(*) FROM \"Users\";"
+psql -U hcl-cs -d HclCsIdentity -c "SELECT COUNT(*) FROM \"Users\";"
 
 # 5. Run any pending migrations
 dotnet ef database update \
-  --project src/Identity/Zentra.Identity.Persistence \
-  --startup-project src/Identity/Zentra.Identity.API
+  --project src/Identity/HCL.CS.Identity.Persistence \
+  --startup-project src/Identity/HCL.CS.Identity.API
 
 # 6. Restart application
-kubectl scale deployment zentra-identity --replicas=3 -n zentra
+kubectl scale deployment hcl-cs-identity --replicas=3 -n hcl-cs
 ```
 
 ### 4.3 Service Degradation Mode
@@ -553,33 +553,33 @@ When partial functionality is acceptable:
 
 ```bash
 # Kubernetes
-kubectl scale deployment zentra-identity --replicas=0 -n zentra
-kubectl scale deployment zentra-gateway --replicas=0 -n zentra
+kubectl scale deployment hcl-cs-identity --replicas=0 -n hcl-cs
+kubectl scale deployment hcl-cs-gateway --replicas=0 -n hcl-cs
 
 # Docker Compose
 docker-compose down
 
 # Verify shutdown
-kubectl get pods -n zentra
+kubectl get pods -n hcl-cs
 # Should show: No resources found
 ```
 
 **Recovery:**
 ```bash
 # After incident resolved
-kubectl scale deployment zentra-identity --replicas=3 -n zentra
-kubectl rollout status deployment/zentra-identity -n zentra
+kubectl scale deployment hcl-cs-identity --replicas=3 -n hcl-cs
+kubectl rollout status deployment/hcl-cs-identity -n hcl-cs
 ```
 
 ### 4.5 Communication Templates
 
 **Internal Incident Notification:**
 ```
-Subject: [INCIDENT] Zentra Identity Service - <Brief Description>
+Subject: [INCIDENT] HCL.CS Identity Service - <Brief Description>
 
 Severity: [P1/P2/P3]
 Start Time: <ISO timestamp>
-Affected Service: Zentra Identity Provider
+Affected Service: HCL.CS Identity Provider
 Impact: <Description of user impact>
 
 Current Status: <Investigating/Identified/Monitoring/Resolved>
@@ -594,7 +594,7 @@ Incident Commander: <Name>
 
 **External Customer Notification (if required):**
 ```
-Subject: Service Notification - Zentra Identity
+Subject: Service Notification - HCL.CS Identity
 
 We are investigating issues with our identity service that may affect 
 authentication for some users.

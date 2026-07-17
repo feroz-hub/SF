@@ -1,6 +1,6 @@
-# Zentra Security Architecture
+# HCL.CS Security Architecture
 
-**Document ID:** ZENTRA-DOC-03-SECURITY-ARCHITECTURE  
+**Document ID:** HCL.CS-DOC-03-SECURITY-ARCHITECTURE  
 **Version:** 1.0.0  
 **Classification:** Internal Use - Security Sensitive  
 **Last Updated:** 2026-03-01  
@@ -186,7 +186,7 @@ flowchart TB
     subgraph "JWT Token Structure"
         HEADER["Header<br/>{<br/>  'alg': 'RS256',<br/>  'typ': 'JWT',<br/>  'kid': '2026-signing-key'<br/>}"]
         
-        PAYLOAD["Payload<br/>{<br/>  'iss': 'https://identity.zentra.example',<br/>  'sub': 'user-guid',<br/>  'aud': 'client-id',<br/>  'exp': 1704067200,<br/>  'iat': 1704066600,<br/>  'scope': 'openid profile',<br/>  ...<br/>}"]
+        PAYLOAD["Payload<br/>{<br/>  'iss': 'https://identity.hcl-cs.example',<br/>  'sub': 'user-guid',<br/>  'aud': 'client-id',<br/>  'exp': 1704067200,<br/>  'iat': 1704066600,<br/>  'scope': 'openid profile',<br/>  ...<br/>}"]
         
         SIGNATURE["Signature<br/>RSASHA256(<br/>  base64Url(header) + '.' +<br/>  base64Url(payload),<br/>  private_key<br/>)"]
     end
@@ -209,7 +209,7 @@ flowchart TB
 
 ### 2.3 Token Generation Service
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/Services/TokenGenerationService.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/Services/TokenGenerationService.cs`
 
 ```csharp
 // Token generation flow
@@ -225,7 +225,7 @@ public async Task<TokenResponseModel> ProcessTokenAsync(ValidatedTokenRequestMod
 
 ### 2.4 Signing Algorithms
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs`
 
 | Algorithm | Constant | Status | Key Type |
 |-----------|----------|--------|----------|
@@ -240,7 +240,7 @@ public async Task<TokenResponseModel> ProcessTokenAsync(ValidatedTokenRequestMod
 
 ### 2.5 Token Validation
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/Extensions/TokenExtension.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/Extensions/TokenExtension.cs`
 
 ```csharp
 // Token validation parameters
@@ -286,7 +286,7 @@ stateDiagram-v2
 
 ### 3.2 Refresh Token Rotation
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/Services/TokenGenerationService.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/Services/TokenGenerationService.cs`
 
 ```csharp
 // Refresh token rotation logic
@@ -311,7 +311,7 @@ var nextRefreshTokenHandle = cryptoConfig.RandomStringLength.RandomString();
 
 ### 3.3 Security Tokens Entity
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Entities/Endpoint/SecurityTokens.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Entities/Endpoint/SecurityTokens.cs`
 
 ```csharp
 public class SecurityTokens : BaseEntity
@@ -368,13 +368,13 @@ flowchart TB
 
 ### 4.2 Key Configuration
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/Extensions/DataProtectionExtension.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/Extensions/DataProtectionExtension.cs`
 
 ```csharp
 // Data protection configuration
 services.AddDataProtection()
     .PersistKeysToFileSystem(keyDirectory)
-    .SetApplicationName("Zentra")
+    .SetApplicationName("HCL.CS")
     .SetDefaultKeyLifetime(TimeSpan.FromDays(90));
 ```
 
@@ -399,7 +399,7 @@ services.AddDataProtection()
 
 ### 5.1 Headers Applied
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/SecurityHeadersMiddleware.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/SecurityHeadersMiddleware.cs`
 
 | Header | Value | Security Purpose | RFC/Standard |
 |--------|-------|------------------|--------------|
@@ -444,7 +444,7 @@ flowchart LR
 
 ### 6.1 Sensitive Fields
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/LogRedactionHelper.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/LogRedactionHelper.cs`
 
 ```csharp
 private static readonly HashSet<string> SensitiveFields = new(StringComparer.OrdinalIgnoreCase)
@@ -491,7 +491,7 @@ internal static string GetSafeUserId(string? userId)
 
 ### 6.4 Log Redaction in Observability
 
-**Source:** `/src/Gateway/Zentra.Gateway/Hosting/RequestObservabilityMiddleware.cs`
+**Source:** `/src/Gateway/HCL.CS.Gateway/Hosting/RequestObservabilityMiddleware.cs`
 
 ```csharp
 // Redacted logging in request processing
@@ -518,7 +518,7 @@ logger.LogInformation(
 
 ### 7.2 JWT Signing Keys
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/Services/JWKSService.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/Services/JWKSService.cs`
 
 ```csharp
 // JWKS endpoint - exposes public keys
@@ -551,7 +551,7 @@ Test certificates are used for integration testing only and must never be used i
 
 ### 8.1 OWASP Top 10 2021 Mitigations
 
-| OWASP Risk | Zentra Control | Implementation |
+| OWASP Risk | HCL.CS Control | Implementation |
 |------------|----------------|----------------|
 | **A01: Broken Access Control** | Strict scope validation, client binding | `ResourceScopeValidator.cs` |
 | **A02: Cryptographic Failures** | Argon2 password hashing, RSA-256 signing | `Argon2PasswordHasherWrapper.cs`, `TokenGenerationService.cs` |
@@ -559,7 +559,7 @@ Test certificates are used for integration testing only and must never be used i
 | **A04: Insecure Design** | PKCE enforcement, token rotation | `ProofKeyParametersSpecification.cs` |
 | **A05: Security Misconfiguration** | Secure defaults, security headers | `SecurityHeadersMiddleware.cs` |
 | **A06: Vulnerable Components** | Dependency management via Directory.Packages.props | `Directory.Packages.props` |
-| **A07: Auth Failures** | MFA, brute force protection, account lockout | User config in `ZentraConfig` |
+| **A07: Auth Failures** | MFA, brute force protection, account lockout | User config in `HclCsConfig` |
 | **A08: Data Integrity Failures** | JWS signatures, at_hash validation | `TokenGenerationService.cs` |
 | **A09: Logging Failures** | Structured logging, audit trails, redaction | `LogRedactionHelper.cs`, `AuditTrailService.cs` |
 | **A10: SSRF** | URL validation in redirect URIs | `ClientRedirectUriComparer.cs` |
@@ -642,7 +642,7 @@ flowchart TB
         COMPROMISED[Compromised Client]
     end
     
-    subgraph "Zentra Assets"
+    subgraph "HCL.CS Assets"
         USERS[User Credentials]
         TOKENS[Access/Refresh Tokens]
         CODES[Authorization Codes]
@@ -674,7 +674,7 @@ flowchart TB
 
 ### 9.5 Compliance Mapping
 
-| Framework | Requirement | Zentra Implementation |
+| Framework | Requirement | HCL.CS Implementation |
 |-----------|-------------|----------------------|
 | **SOC 2 CC6.1** | Logical access controls | Role-based access, client authentication |
 | **SOC 2 CC6.2** | Authentication mechanisms | MFA, password policies, session management |

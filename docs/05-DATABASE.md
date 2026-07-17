@@ -1,6 +1,6 @@
-# Zentra Database Documentation
+# HCL.CS Database Documentation
 
-**Document ID:** ZENTRA-DOC-05-DATABASE  
+**Document ID:** HCL.CS-DOC-05-DATABASE  
 **Version:** 1.0.0  
 **Classification:** Internal Use  
 **Last Updated:** 2026-03-01  
@@ -23,7 +23,7 @@
 
 ### 1.1 Database Provider Matrix
 
-**Source:** `/installer/Zentra.Installer.Mvc/Application/DTOs/DatabaseProviderType.cs`
+**Source:** `/installer/HCL.CS.Installer.Mvc/Application/DTOs/DatabaseProviderType.cs`
 
 | Provider | Enum Value | EF Core Provider | Status | Provider Class |
 |----------|------------|------------------|--------|----------------|
@@ -34,7 +34,7 @@
 
 ### 1.2 Provider-Specific Implementations
 
-**Source:** `/installer/Zentra.Installer.Mvc/Infrastructure/Persistence/Data/`
+**Source:** `/installer/HCL.CS.Installer.Mvc/Infrastructure/Persistence/Data/`
 
 | Provider | DbContext Class | Migration Path |
 |----------|-----------------|----------------|
@@ -59,10 +59,10 @@
 ```json
 {
   "ConnectionStrings": {
-    "SqlServer": "Server=localhost;Database=ZentraIdentity;User Id=zentra;Password=***;Encrypt=True;TrustServerCertificate=False;",
-    "MySql": "Server=localhost;Database=ZentraIdentity;Uid=zentra;Pwd=***;SslMode=Required;",
-    "PostgreSql": "Host=localhost;Database=ZentraIdentity;Username=zentra;Password=***;SslMode=Require;",
-    "Sqlite": "Data Source=/var/lib/zentra/identity.db;Mode=ReadWriteCreate;Cache=Shared;"
+    "SqlServer": "Server=localhost;Database=HclCsIdentity;User Id=hcl-cs;Password=***;Encrypt=True;TrustServerCertificate=False;",
+    "MySql": "Server=localhost;Database=HclCsIdentity;Uid=hcl-cs;Pwd=***;SslMode=Required;",
+    "PostgreSql": "Host=localhost;Database=HclCsIdentity;Username=hcl-cs;Password=***;SslMode=Require;",
+    "Sqlite": "Data Source=/var/lib/hcl-cs/identity.db;Mode=ReadWriteCreate;Cache=Shared;"
   }
 }
 ```
@@ -112,7 +112,7 @@ flowchart TB
 
 ### 2.3 DbContext Configuration
 
-**Source:** `/src/Identity/Zentra.Identity.Persistence/ApplicationDbContext.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Persistence/ApplicationDbContext.cs`
 
 ```csharp
 public class ApplicationDbContext : IdentityDbContext<Users, Roles, Guid>
@@ -140,7 +140,7 @@ public class ApplicationDbContext : IdentityDbContext<Users, Roles, Guid>
 
 ### 2.4 Entity Mappings
 
-**Source:** `/src/Identity/Zentra.Identity.Persistence/Mapper/`
+**Source:** `/src/Identity/HCL.CS.Identity.Persistence/Mapper/`
 
 | Entity | Mapping File |
 |--------|--------------|
@@ -440,7 +440,7 @@ erDiagram
 
 **Purpose:** Core user identity storage (extends ASP.NET Core Identity).
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Entities/Api/Users.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Entities/Api/Users.cs`
 
 | Column | Type | Nullable | Description |
 |--------|------|----------|-------------|
@@ -477,7 +477,7 @@ erDiagram
 
 **Purpose:** OAuth 2.0 client application registration.
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Entities/Endpoint/Clients.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Entities/Endpoint/Clients.cs`
 
 | Column | Type | Nullable | Description |
 |--------|------|----------|-------------|
@@ -503,7 +503,7 @@ erDiagram
 
 **Purpose:** Storage for authorization codes, refresh tokens, and reference tokens.
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Entities/Endpoint/SecurityTokens.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Entities/Endpoint/SecurityTokens.cs`
 
 | Column | Type | Nullable | Description |
 |--------|------|----------|-------------|
@@ -524,7 +524,7 @@ erDiagram
 
 **Purpose:** Comprehensive audit logging.
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Entities/Api/AuditTrail.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Entities/Api/AuditTrail.cs`
 
 | Column | Type | Nullable | Description |
 |--------|------|----------|-------------|
@@ -547,7 +547,7 @@ erDiagram
 
 ### 5.1 Identity Indexes
 
-**Source:** `/src/Identity/Zentra.Identity.Persistence/Mapper/Api/`
+**Source:** `/src/Identity/HCL.CS.Identity.Persistence/Mapper/Api/`
 
 | Table | Index | Columns | Purpose |
 |-------|-------|---------|---------|
@@ -560,7 +560,7 @@ erDiagram
 
 ### 5.2 OAuth Indexes
 
-**Source:** `/src/Identity/Zentra.Identity.Persistence/Mapper/Endpoint/`
+**Source:** `/src/Identity/HCL.CS.Identity.Persistence/Mapper/Endpoint/`
 
 | Table | Index | Columns | Purpose |
 |-------|-------|---------|---------|
@@ -585,7 +585,7 @@ erDiagram
 
 ### 6.1 EF Core Migrations
 
-**Source:** `/installer/Zentra.Installer.Mvc/Infrastructure/Persistence/Migrations/`
+**Source:** `/installer/HCL.CS.Installer.Mvc/Infrastructure/Persistence/Migrations/`
 
 | Provider | Migration Directory | Snapshot |
 |----------|---------------------|----------|
@@ -611,8 +611,8 @@ flowchart LR
 ```bash
 # SQL Server
 dotnet ef migrations add MigrationName \
-  --project src/Identity/Zentra.Identity.Persistence \
-  --startup-project src/Identity/Zentra.Identity.API \
+  --project src/Identity/HCL.CS.Identity.Persistence \
+  --startup-project src/Identity/HCL.CS.Identity.API \
   --context SqlServerApplicationDbContext \
   --output-dir Migrations/Sql
 
@@ -637,15 +637,15 @@ dotnet ef migrations add MigrationName \
 **Via Installer:**
 ```bash
 # Run installer which executes migrations
-dotnet run --project installer/Zentra.Installer.Mvc
+dotnet run --project installer/HCL.CS.Installer.Mvc
 ```
 
 **Via Script:**
 ```bash
 # Generate SQL script
 dotnet ef migrations script \
-  --project src/Identity/Zentra.Identity.Persistence \
-  --startup-project src/Identity/Zentra.Identity.API \
+  --project src/Identity/HCL.CS.Identity.Persistence \
+  --startup-project src/Identity/HCL.CS.Identity.API \
   --context SqlServerApplicationDbContext \
   --idempotent \
   -o migrations.sql
@@ -670,9 +670,9 @@ dotnet ef migrations script \
 
 | Database | Tool | Command |
 |----------|------|---------|
-| **SQL Server** | sqlcmd / SSMS | `BACKUP DATABASE [ZentraIdentity] TO DISK = '...'` |
-| **MySQL** | mysqldump | `mysqldump -u zentra -p ZentraIdentity > backup.sql` |
-| **PostgreSQL** | pg_dump | `pg_dump -U zentra -F c ZentraIdentity > backup.dump` |
+| **SQL Server** | sqlcmd / SSMS | `BACKUP DATABASE [HclCsIdentity] TO DISK = '...'` |
+| **MySQL** | mysqldump | `mysqldump -u hcl-cs -p HclCsIdentity > backup.sql` |
+| **PostgreSQL** | pg_dump | `pg_dump -U hcl-cs -F c HclCsIdentity > backup.dump` |
 | **SQLite** | File copy | `cp identity.db identity.db.backup` |
 
 ### 7.2 Recommended Backup Schedule
@@ -700,30 +700,30 @@ dotnet ef migrations script \
 #### SQL Server
 ```sql
 -- Restore database
-RESTORE DATABASE [ZentraIdentity] 
+RESTORE DATABASE [HclCsIdentity] 
 FROM DISK = 'path_to_backup.bak'
 WITH REPLACE, RECOVERY;
 
 -- Verify integrity
-DBCC CHECKDB('ZentraIdentity');
+DBCC CHECKDB('HclCsIdentity');
 ```
 
 #### PostgreSQL
 ```bash
 # Restore from custom format
-pg_restore -U zentra -d ZentraIdentity backup.dump
+pg_restore -U hcl-cs -d HclCsIdentity backup.dump
 
 # Verify connection
-psql -U zentra -d ZentraIdentity -c "SELECT COUNT(*) FROM \"Users\";"
+psql -U hcl-cs -d HclCsIdentity -c "SELECT COUNT(*) FROM \"Users\";"
 ```
 
 #### MySQL
 ```bash
 # Restore from SQL dump
-mysql -u zentra -p ZentraIdentity < backup.sql
+mysql -u hcl-cs -p HclCsIdentity < backup.sql
 
 # Verify
-mysql -u zentra -p -e "SELECT COUNT(*) FROM Users;" ZentraIdentity
+mysql -u hcl-cs -p -e "SELECT COUNT(*) FROM Users;" HclCsIdentity
 ```
 
 ### 7.5 Disaster Recovery Checklist

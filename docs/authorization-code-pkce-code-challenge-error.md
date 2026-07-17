@@ -5,11 +5,11 @@ When exchanging an **authorization code** for tokens (token endpoint), you may g
 - **Error (OAuth):** `invalid_request` or `invalid_grant`
 - **Error message:** `Authorize Code Challenge is invalid.`
 
-This comes from Zentra’s **PKCE** (Proof Key for Code Exchange) validation for the authorization_code flow.
+This comes from HCL.CS’s **PKCE** (Proof Key for Code Exchange) validation for the authorization_code flow.
 
 ## What the server checks
 
-At the **token** request, Zentra:
+At the **token** request, HCL.CS:
 
 1. Loads the authorization code (created at the **authorize** step) and its stored `code_challenge` and `code_challenge_method`.
 2. Runs PKCE validation (see `ProofKeyParametersSpecification` and `AuthorizeRequestSpecification`), which includes:
@@ -42,14 +42,14 @@ The message **"Authorize Code Challenge is invalid"** is returned when the **cod
 
 ### 3. **Missing or wrong parameters**
 
-- **Authorize request:** Must include `code_challenge` and `code_challenge_method=S256` when the client uses PKCE (or when Zentra requires PKCE for the client).
+- **Authorize request:** Must include `code_challenge` and `code_challenge_method=S256` when the client uses PKCE (or when HCL.CS requires PKCE for the client).
 - **Token request:** Must include `code_verifier` (and `grant_type=authorization_code`, `code`, `redirect_uri` as required).
 - **Fix:** Ensure both requests include the correct parameters; use `code_challenge_method=S256` and a base64url `code_challenge`.
 
 ### 4. **Length and character set**
 
 - **code_verifier:** Length 43–128 characters; only `[A-Za-z0-9\-._~]` (see RFC 7636).
-- **code_challenge:** After base64url encoding, length must be within Zentra’s limits (e.g. 43–128).
+- **code_challenge:** After base64url encoding, length must be within HCL.CS’s limits (e.g. 43–128).
 - **Fix:** Generate a 43–128 character verifier from the allowed set; then compute `code_challenge = BASE64URL(SHA256(code_verifier))`.
 
 ### 5. **Stale or corrupted authorization code**

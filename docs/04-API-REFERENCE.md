@@ -1,6 +1,6 @@
-# Zentra API Reference
+# HCL.CS API Reference
 
-**Document ID:** ZENTRA-DOC-04-API-REFERENCE  
+**Document ID:** HCL.CS-DOC-04-API-REFERENCE  
 **Version:** 1.0.0  
 **Classification:** Internal Use  
 **Last Updated:** 2026-03-01  
@@ -35,7 +35,7 @@ Returns OpenID Connect Discovery 1.0 compliant metadata.
 | **Authentication** | None (public) |
 | **Idempotency** | Yes (safe, read-only) |
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/DiscoveryEndpoint.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/DiscoveryEndpoint.cs`
 
 ### 1.2 Request Parameters
 
@@ -45,14 +45,14 @@ None required. Optional `BaseUrl` derived from request context.
 
 ```json
 {
-  "issuer": "https://identity.zentra.example",
-  "authorization_endpoint": "https://identity.zentra.example/security/authorize",
-  "token_endpoint": "https://identity.zentra.example/security/token",
-  "userinfo_endpoint": "https://identity.zentra.example/security/userinfo",
-  "jwks_uri": "https://identity.zentra.example/.well-known/openid-configuration/jwks",
-  "end_session_endpoint": "https://identity.zentra.example/security/endsession",
-  "introspection_endpoint": "https://identity.zentra.example/security/introspect",
-  "revocation_endpoint": "https://identity.zentra.example/security/revocation",
+  "issuer": "https://identity.hcl-cs.example",
+  "authorization_endpoint": "https://identity.hcl-cs.example/security/authorize",
+  "token_endpoint": "https://identity.hcl-cs.example/security/token",
+  "userinfo_endpoint": "https://identity.hcl-cs.example/security/userinfo",
+  "jwks_uri": "https://identity.hcl-cs.example/.well-known/openid-configuration/jwks",
+  "end_session_endpoint": "https://identity.hcl-cs.example/security/endsession",
+  "introspection_endpoint": "https://identity.hcl-cs.example/security/introspect",
+  "revocation_endpoint": "https://identity.hcl-cs.example/security/revocation",
   "scopes_supported": ["openid", "profile", "email", "offline_access"],
   "response_types_supported": ["code"],
   "response_modes_supported": ["query", "form_post"],
@@ -66,7 +66,7 @@ None required. Optional `BaseUrl` derived from request context.
 
 ### 1.4 Response Model
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Models/Endpoint/Response/DiscoveryResult.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Models/Endpoint/Response/DiscoveryResult.cs`
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -107,7 +107,7 @@ Initiates the OAuth 2.0 Authorization Code flow with PKCE.
 | **Content-Type** | `application/x-www-form-urlencoded` (POST) |
 | **Idempotency** | No (creates authorization code) |
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/AuthorizeEndpoint.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/AuthorizeEndpoint.cs`
 
 ### 2.2 Request Parameters
 
@@ -126,7 +126,7 @@ Initiates the OAuth 2.0 Authorization Code flow with PKCE.
 
 ### 2.3 Parameter Validation
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/Specifications/AuthorizeRequestSpecification.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/Specifications/AuthorizeRequestSpecification.cs`
 
 | Validation Rule | Error Code | HTTP Status |
 |-----------------|------------|-------------|
@@ -183,7 +183,7 @@ Exchanges authorization codes or refresh tokens for access tokens.
 | **Content-Type** | `application/x-www-form-urlencoded` |
 | **Idempotency** | No (creates new tokens) |
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/TokenEndpoint.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/TokenEndpoint.cs`
 
 ### 3.2 Request Headers
 
@@ -245,7 +245,7 @@ Exchanges authorization codes or refresh tokens for access tokens.
 | `id_token` | string | OIDC ID token (if `openid` scope) |
 | `scope` | string | Granted scopes |
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Models/Endpoint/Response/TokenResponseModel.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Models/Endpoint/Response/TokenResponseModel.cs`
 
 ### 3.5 Error Response
 
@@ -296,7 +296,7 @@ Returns JSON Web Key Set for token signature verification.
 | **Authentication** | None (public, if enabled) |
 | **Idempotency** | Yes |
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/JwksEndpoint.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/JwksEndpoint.cs`
 
 ### 4.2 Response Payload
 
@@ -327,7 +327,7 @@ Returns JSON Web Key Set for token signature verification.
 
 ### 4.3 Response Model
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Models/Endpoint/Response/JsonWebKeyResponseModel.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Models/Endpoint/Response/JsonWebKeyResponseModel.cs`
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -370,7 +370,7 @@ Validates tokens and returns token metadata.
 | **Content-Type** | `application/x-www-form-urlencoded` |
 | **Idempotency** | Yes (read-only) |
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/IntrospectionEndpoint.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/IntrospectionEndpoint.cs`
 
 ### 5.2 Request Parameters
 
@@ -401,7 +401,7 @@ Validates tokens and returns token metadata.
   "iat": 1704063600,
   "sub": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "aud": "my-client-id",
-  "iss": "https://identity.zentra.example"
+  "iss": "https://identity.hcl-cs.example"
 }
 ```
 
@@ -417,7 +417,7 @@ Validates tokens and returns token metadata.
 
 ### 5.6 Response Model
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Models/Endpoint/Response/IntrospectionResponseModel.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Models/Endpoint/Response/IntrospectionResponseModel.cs`
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -447,7 +447,7 @@ Revokes access or refresh tokens.
 | **Content-Type** | `application/x-www-form-urlencoded` |
 | **Idempotency** | Yes (idempotent operation) |
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/TokenRevocationEndpoint.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/TokenRevocationEndpoint.cs`
 
 ### 6.2 Request Parameters
 
@@ -496,7 +496,7 @@ Returns claims about the authenticated user.
 | **Content-Type** | N/A (GET) or `application/x-www-form-urlencoded` (POST) |
 | **Idempotency** | Yes |
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/UserInfoEndpoint.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/UserInfoEndpoint.cs`
 
 ### 7.2 Request Headers
 
@@ -554,7 +554,7 @@ Initiates logout and ends the user session.
 | **Authentication** | None (user session based) |
 | **Idempotency** | No (modifies session state) |
 
-**Source:** `/src/Identity/Zentra.Identity.Application/Implementation/Endpoint/EndSessionEndpoint.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Application/Implementation/Endpoint/EndSessionEndpoint.cs`
 
 ### 8.2 Request Parameters
 
@@ -585,7 +585,7 @@ If `post_logout_redirect_uri` is invalid, error displayed on logout page (not re
 
 ### 9.1 Standard Error Format
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Models/Endpoint/Response/ErrorResponseModel.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Models/Endpoint/Response/ErrorResponseModel.cs`
 
 ```json
 {
@@ -603,7 +603,7 @@ If `post_logout_redirect_uri` is invalid, error displayed on logout page (not re
 
 ### 9.2 Error Codes Reference
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs`
 
 | Error Code | Description | Typical HTTP Status |
 |------------|-------------|---------------------|
@@ -622,7 +622,7 @@ If `post_logout_redirect_uri` is invalid, error displayed on logout page (not re
 
 ### 9.3 HTTP Status Code Mapping
 
-**Source:** `/src/Identity/Zentra.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs` - `HTTPStatusCodes`
+**Source:** `/src/Identity/HCL.CS.Identity.Domain/Constants/Endpoint/OpenIdConstants.cs` - `HTTPStatusCodes`
 
 ```csharp
 var errorStatusCode = openIdErrorCode switch
@@ -651,7 +651,7 @@ var errorStatusCode = openIdErrorCode switch
 
 ```bash
 curl -X GET \
-  https://identity.zentra.example/.well-known/openid-configuration
+  https://identity.hcl-cs.example/.well-known/openid-configuration
 ```
 
 ### 10.2 Authorization Request
@@ -665,7 +665,7 @@ NONCE=$(openssl rand -hex 16)
 
 # Step 2: Redirect user to authorize endpoint
 # (Browser redirect)
-https://identity.zentra.example/security/authorize?\
+https://identity.hcl-cs.example/security/authorize?\
   client_id=my-client-id&\
   response_type=code&\
   redirect_uri=https%3A%2F%2Fclient.example.com%2Fcallback&\
@@ -680,7 +680,7 @@ https://identity.zentra.example/security/authorize?\
 
 ```bash
 curl -X POST \
-  https://identity.zentra.example/security/token \
+  https://identity.hcl-cs.example/security/token \
   -H "Authorization: Basic $(echo -n 'my-client-id:my-client-secret' | base64)" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=authorization_code" \
@@ -693,7 +693,7 @@ curl -X POST \
 
 ```bash
 curl -X POST \
-  https://identity.zentra.example/security/token \
+  https://identity.hcl-cs.example/security/token \
   -H "Authorization: Basic $(echo -n 'my-client-id:my-client-secret' | base64)" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=refresh_token" \
@@ -705,7 +705,7 @@ curl -X POST \
 
 ```bash
 curl -X POST \
-  https://identity.zentra.example/security/token \
+  https://identity.hcl-cs.example/security/token \
   -H "Authorization: Basic $(echo -n 'my-client-id:my-client-secret' | base64)" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=client_credentials" \
@@ -716,7 +716,7 @@ curl -X POST \
 
 ```bash
 curl -X POST \
-  https://identity.zentra.example/security/introspect \
+  https://identity.hcl-cs.example/security/introspect \
   -H "Authorization: Basic $(echo -n 'my-client-id:my-client-secret' | base64)" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..." \
@@ -727,7 +727,7 @@ curl -X POST \
 
 ```bash
 curl -X POST \
-  https://identity.zentra.example/security/revocation \
+  https://identity.hcl-cs.example/security/revocation \
   -H "Authorization: Basic $(echo -n 'my-client-id:my-client-secret' | base64)" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "token=def50200a8c5e3b4..." \
@@ -738,7 +738,7 @@ curl -X POST \
 
 ```bash
 curl -X GET \
-  https://identity.zentra.example/security/userinfo \
+  https://identity.hcl-cs.example/security/userinfo \
   -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -746,7 +746,7 @@ curl -X GET \
 
 ```bash
 curl -X GET \
-  https://identity.zentra.example/.well-known/openid-configuration/jwks
+  https://identity.hcl-cs.example/.well-known/openid-configuration/jwks
 ```
 
 ### 10.10 End Session Request
@@ -754,7 +754,7 @@ curl -X GET \
 ```bash
 # Browser redirect
 curl -X GET \
-  "https://identity.zentra.example/security/endsession?id_token_hint=ID_TOKEN&post_logout_redirect_uri=https%3A%2F%2Fclient.example.com%2Flogged-out"
+  "https://identity.hcl-cs.example/security/endsession?id_token_hint=ID_TOKEN&post_logout_redirect_uri=https%3A%2F%2Fclient.example.com%2Flogged-out"
 ```
 
 ---
