@@ -183,7 +183,8 @@ public class ClientService(
             {
                 clientModel = mapper.Map<Clients, ClientsModel>(clientsEntity);
                 loggerService.WriteTo(Log.Debug, "Entered into Get client by id : " + clientModel.ClientName);
-                if (DateTime.Compare(clientModel.ClientSecretExpiresAt, DateTime.UtcNow) < 0)
+                if (clientModel.RequireClientSecret
+                    && DateTime.Compare(clientModel.ClientSecretExpiresAt, DateTime.UtcNow) < 0)
                     frameworkResult.Throw(EndpointErrorCodes.ClientSecretExpired);
 
                 return clientModel;

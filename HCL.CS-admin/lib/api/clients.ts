@@ -38,15 +38,9 @@ export async function listDetailedClients(): Promise<ClientsModel[]> {
   const pairs = await hclCsPost<ClientNameLookup>(ApiRoutes.client.getAllClient, "", accessToken);
   const clientIds = Object.keys(pairs);
 
-  const details = await Promise.all(
-    clientIds.map(async (clientId) => {
-      try {
-        return await hclCsPost<ClientsModel, string>(ApiRoutes.client.getClient, clientId, accessToken);
-      } catch {
-        return null;
-      }
-    })
+  return Promise.all(
+    clientIds.map((clientId) =>
+      hclCsPost<ClientsModel, string>(ApiRoutes.client.getClient, clientId, accessToken)
+    )
   );
-
-  return details.filter((client): client is ClientsModel => client !== null);
 }
