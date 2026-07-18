@@ -69,6 +69,6 @@ public class ClientsModel : BaseModel
 
     public List<ClientPostLogoutRedirectUrisModel> PostLogoutRedirectUris { get; set; }
 
-    /// <summary>Optional. When set, access tokens for this client use this value as the aud claim (e.g. rentflow.api, hcl-cs.api).</summary>
+    /// <summary>Optional. When set, access tokens for this client use this value as the aud claim (e.g. orders.api, hcl-cs.api).</summary>
     public string PreferredAudience { get; set; }
 }

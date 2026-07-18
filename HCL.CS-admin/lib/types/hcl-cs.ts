@@ -70,7 +70,7 @@ export interface ClientsModel extends BaseModel {
   AllowedScopes: string[];
   RedirectUris: ClientRedirectUrisModel[];
   PostLogoutRedirectUris: ClientPostLogoutRedirectUrisModel[];
-  /** Optional. When set, access tokens for this client use this value as the aud claim (e.g. rentflow.api, hcl-cs.api). */
+  /** Optional. When set, access tokens for this client use this value as the aud claim (e.g. orders.api, hcl-cs.api). */
   PreferredAudience?: string;
 }
 

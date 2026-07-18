@@ -577,53 +577,6 @@ public static class HclCsMasterDataSeed
                         }
                     }
                 }
-            },
-
-            // RentFlow app API resource – access tokens include "capabilities" claim from user role
-            new()
-            {
-                Name = "rentflow-api",
-                DisplayName = "RentFlow Api",
-                Description = "RentFlow app – capabilities in access token by role",
-                Enabled = true,
-                IsDeleted = false,
-                CreatedOn = DateTime.UtcNow,
-                CreatedBy = "HclCsUser",
-                ApiResourceClaims = new List<ApiResourceClaims>
-                {
-                    new()
-                    {
-                        Type = "capabilities", CreatedBy = "HclCsUser", CreatedOn = DateTime.UtcNow, IsDeleted = false
-                    },
-                    new()
-                    {
-                        Type = "role", CreatedBy = "HclCsUser", CreatedOn = DateTime.UtcNow, IsDeleted = false
-                    }
-                },
-                ApiScopes = new List<ApiScopes>
-                {
-                    new()
-                    {
-                        Name = "rentflow-api",
-                        DisplayName = "RentFlow Api",
-                        Description = "RentFlow API access with capabilities claim",
-                        CreatedBy = "HclCsUser",
-                        CreatedOn = DateTime.UtcNow,
-                        IsDeleted = false,
-                        ApiScopeClaims = new List<ApiScopeClaims>
-                        {
-                            new()
-                            {
-                                Type = "capabilities", CreatedBy = "HclCsUser", CreatedOn = DateTime.UtcNow,
-                                IsDeleted = false
-                            },
-                            new()
-                            {
-                                Type = "role", CreatedBy = "HclCsUser", CreatedOn = DateTime.UtcNow, IsDeleted = false
-                            }
-                        }
-                    }
-                }
             }
         ];
     }
@@ -777,34 +730,6 @@ public static class HclCsMasterDataSeed
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
                 CreatedBy = "HclCsUser",
                 CreatedOn = DateTime.UtcNow
-            },
-
-            new()
-            {
-                Description = "RentFlow owner – full tenant and property management",
-                Name = "rentflow_owner",
-                NormalizedName = "RENTFLOW_OWNER",
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-                CreatedBy = "HclCsUser",
-                CreatedOn = DateTime.UtcNow
-            },
-            new()
-            {
-                Description = "RentFlow manager – property and occupancy management",
-                Name = "rentflow_manager",
-                NormalizedName = "RENTFLOW_MANAGER",
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-                CreatedBy = "HclCsUser",
-                CreatedOn = DateTime.UtcNow
-            },
-            new()
-            {
-                Description = "RentFlow resident – limited tenant actions",
-                Name = "rentflow_resident",
-                NormalizedName = "RENTFLOW_RESIDENT",
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-                CreatedBy = "HclCsUser",
-                CreatedOn = DateTime.UtcNow
             }
         };
     }
@@ -888,58 +813,6 @@ public static class HclCsMasterDataSeed
             }
         };
         return RoleClaimsList;
-    }
-
-    /// <summary>Capabilities for RentFlow owner role – included in access token when scope includes rentflow.</summary>
-    public static List<RoleClaims> CreateRoleClaims_RentFlowOwner()
-    {
-        var capabilities = new[]
-        {
-            "health:read", "tenant:read", "tenant:write", "tenant:users:read", "tenant:users:invite",
-            "tenant:users:accept", "tenant:users:manage", "property:create", "property:read", "property:floor:add",
-            "property:room:add", "property:bed:add", "property:spaces:read", "property:spaces:manage",
-            "occupancy:read", "occupancy:bed:read", "occupancy:bed:assign", "occupancy:bed:unassign",
-            "resident:create", "resident:read", "meal:read"
-        };
-        return capabilities.Select(c => new RoleClaims
-        {
-            ClaimType = "capabilities",
-            ClaimValue = c,
-            CreatedBy = "HclCsUser",
-            CreatedOn = DateTime.UtcNow
-        }).ToList();
-    }
-
-    /// <summary>Capabilities for RentFlow manager role – included in access token when scope includes rentflow.</summary>
-    public static List<RoleClaims> CreateRoleClaims_RentFlowManager()
-    {
-        var capabilities = new[]
-        {
-            "health:read", "tenant:read", "tenant:users:read", "tenant:users:invite", "property:read",
-            "property:floor:add", "property:room:add", "property:bed:add", "property:spaces:read",
-            "property:spaces:manage", "occupancy:read", "occupancy:bed:read", "occupancy:bed:assign",
-            "occupancy:bed:unassign", "resident:create", "resident:read", "meal:read"
-        };
-        return capabilities.Select(c => new RoleClaims
-        {
-            ClaimType = "capabilities",
-            ClaimValue = c,
-            CreatedBy = "HclCsUser",
-            CreatedOn = DateTime.UtcNow
-        }).ToList();
-    }
-
-    /// <summary>Capabilities for RentFlow resident role – included in access token when scope includes rentflow.</summary>
-    public static List<RoleClaims> CreateRoleClaims_RentFlowResident()
-    {
-        var capabilities = new[] { "health:read", "tenant:users:accept", "meal:skip", "roomchat:read", "roomchat:send" };
-        return capabilities.Select(c => new RoleClaims
-        {
-            ClaimType = "capabilities",
-            ClaimValue = c,
-            CreatedBy = "HclCsUser",
-            CreatedOn = DateTime.UtcNow
-        }).ToList();
     }
 
     public static List<SecurityQuestions> CreateSecurityQuestionsModelMaster()

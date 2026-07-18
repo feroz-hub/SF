@@ -348,7 +348,7 @@ internal class TokenGenerationService(
     private JwtPayload CreateAccessTokenPayload(ValidatedTokenRequestModel tokenRequest, ResultClaimsModel resultClaims)
     {
         var accessTokenClaims = resultClaims.AccessTokenClaims;
-        // Per-client preferred audience (e.g. rentflow.api); else fall back to global ApiIdentifier.
+        // Per-client preferred audience (e.g. orders.api); else fall back to global ApiIdentifier.
         var audienceClaims = !string.IsNullOrWhiteSpace(tokenRequest.TokenDetails?.Client?.PreferredAudience)
             ? tokenRequest.TokenDetails.Client.PreferredAudience.Trim()
             : tokenSettings.TokenConfig.ApiIdentifier;

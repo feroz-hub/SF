@@ -71,21 +71,6 @@ public sealed class SeedDataService : ISeedDataService
 
             dbContext.RoleClaims.AddRange(sfUserClaims);
 
-            var rentflowOwnerRole = roles.First(r => r.Name == "rentflow_owner");
-            var rentflowOwnerClaims = HclCsMasterDataSeed.CreateRoleClaims_RentFlowOwner();
-            foreach (var claim in rentflowOwnerClaims) claim.RoleId = rentflowOwnerRole.Id;
-            dbContext.RoleClaims.AddRange(rentflowOwnerClaims);
-
-            var rentflowManagerRole = roles.First(r => r.Name == "rentflow_manager");
-            var rentflowManagerClaims = HclCsMasterDataSeed.CreateRoleClaims_RentFlowManager();
-            foreach (var claim in rentflowManagerClaims) claim.RoleId = rentflowManagerRole.Id;
-            dbContext.RoleClaims.AddRange(rentflowManagerClaims);
-
-            var rentflowResidentRole = roles.First(r => r.Name == "rentflow_resident");
-            var rentflowResidentClaims = HclCsMasterDataSeed.CreateRoleClaims_RentFlowResident();
-            foreach (var claim in rentflowResidentClaims) claim.RoleId = rentflowResidentRole.Id;
-            dbContext.RoleClaims.AddRange(rentflowResidentClaims);
-
             var adminUser = BuildUser(seedConfiguration.AdminUser);
             dbContext.Users.Add(adminUser);
 

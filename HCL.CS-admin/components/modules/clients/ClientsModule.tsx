@@ -965,7 +965,7 @@ function ClientForm({
           <label>Default / preferred audience (optional)</label>
           <Input
             value={form.preferredAudience}
-            placeholder="e.g. rentflow.api or hcl-cs.api"
+            placeholder="e.g. orders.api or hcl-cs.api"
             onChange={(event) => setForm((state) => ({ ...state, preferredAudience: event.target.value }))}
           />
           <p className="inline-message" style={{ marginTop: "0.25rem", fontSize: "0.8rem" }}>
