@@ -1,3 +1,11 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
 /**
 * @page SegregationOfSoftware Segregation of software
 * <p>The .NET HCL.CS follows &ldquo; <strong> Onion Architecture </strong> &rdquo; with <strong> SOLID </strong> principles, it is based on the&nbsp;inversion of control&nbsp;principle. Onion Architecture is comprised of multiple concentric layers interfacing each other towards the core that represents the domain. It applies the fundamental rule by moving all coupling towards the center of the domain model, which represents the business and behavior objects. Around the domain layer are other layers, with more behaviors.</p>

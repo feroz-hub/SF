@@ -1,3 +1,11 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
 /**
 * @page SoftwareSystemArchitecture Software System Architecture
 * <p>The software architecture definition serves as the basis for the detailed design and implementation of all software components. This document provides a comprehensive architectural overview of the HCL.CS and is intended to capture and convey key architectural decisions.</p>
