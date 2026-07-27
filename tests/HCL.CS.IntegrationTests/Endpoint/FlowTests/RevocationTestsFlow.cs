@@ -19,7 +19,7 @@ namespace IntegrationTests.Endpoint.FlowTests;
 public class RevocationTestsFlow : HclCsFakeSetup
 {
     private readonly string positiveCaseClientName = "HCL.CS Plain PKCE Client";
-    private readonly string redirectUri = "http://127.0.0.1:63562/";
+    private readonly string redirectUri = "https://127.0.0.1:63562/";
     private ClientsModel clientModel;
 
     [Fact]

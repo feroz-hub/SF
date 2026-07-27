@@ -21,7 +21,7 @@ public class IntrospecFlowTest : HclCsFakeSetup
 {
     private const string Category = "Introspection endpoint";
     private readonly string hCLCSEarlyTokenExpireClient = "HCL.CS Early Token Expire Client";
-    private readonly string redirectUri = "http://127.0.0.1:63562/";
+    private readonly string redirectUri = "https://127.0.0.1:63562/";
     private ClientsModel clientModel;
     private string positiveCaseClientName = "HCL.CS Plain PKCE Client";
 

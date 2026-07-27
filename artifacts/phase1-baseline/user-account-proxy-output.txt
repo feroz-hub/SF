@@ -1,0 +1,833 @@
+/private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj : warning NU1902: Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr
+  DomainValidation -> /private/tmp/hclcs-phase0-baseline/src/SharedKernel/DomainValidation/bin/Debug/net8.0/DomainValidation.dll
+  HCL.CS.Domain -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Domain/bin/Debug/net8.0/HCL.CS.Domain.dll
+  HCL.CS.DomainServices -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.DomainServices/bin/Debug/net8.0/HCL.CS.DomainServices.dll
+  HCL.CS.Service.Interfaces -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Contracts/bin/Debug/net8.0/HCL.CS.Service.Interfaces.dll
+  HCL.CS.Infrastructure.Data -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Persistence/bin/Debug/net8.0/HCL.CS.Infrastructure.Data.dll
+  HCL.CS.Service -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Application/bin/Debug/net8.0/HCL.CS.Service.dll
+  HCL.CS.ProxyService -> /private/tmp/hclcs-phase0-baseline/src/Gateway/HCL.CS.Gateway/bin/Debug/net8.0/HCL.CS.ProxyService.dll
+  HCL.CS.Infrastructure.Resources -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure.Resources/bin/Debug/net8.0/HCL.CS.Infrastructure.Resources.dll
+  HCL.CS.Infrastructure.Services -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure/bin/Debug/net8.0/HCL.CS.Infrastructure.Services.dll
+  TestApp.Helper -> /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.TestApp.Helper/bin/Debug/net8.0/TestApp.Helper.dll
+  HCL.CS.Hosting -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.API/bin/Debug/net8.0/HCL.CS.Hosting.dll
+  IntegrationTests -> /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll
+Test run for /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:15.00]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUserSecurityQuestionAsync_InvalidId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUserSecurityQuestionAsync_InvalidId_ReturnFail [12 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2584
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUserSecurityQuestionAsync_InvalidId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2933
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:17.13]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.IsUserExistById_ReturnSuccess [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.IsUserExistById_ReturnSuccess [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.IsUserExistById_ReturnSuccess() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 601
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:17.97]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserByEmailAsync_ReturnsSuccess [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserByEmailAsync_ReturnsSuccess [847 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserByEmailAsync_ReturnsSuccess() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 665
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:18.75]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserSecurityQuestionAsync_InvalidSecurityQuestionId_ReturnFail [FAIL]
+[xUnit.net 00:00:19.55]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserSecurityQuestionAsync_InvalidSecurityQuestionId_ReturnFail [777 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2584
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserSecurityQuestionAsync_InvalidSecurityQuestionId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2818
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_Success [792 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2584
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:20.28]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserSecurityQuestionAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserSecurityQuestionAsync_Success [735 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2584
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2862
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:22.63]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUsersInvalidROleName_ReturnNull [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUsersInvalidROleName_ReturnNull [771 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUsersInvalidROleName_ReturnNull() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2117
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:23.38]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_InvalidUsderId_ReturnsFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_InvalidUsderId_ReturnsFail [752 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_InvalidUsderId_ReturnsFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1023
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:25.60]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetClaimAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetClaimAsync_Success [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetClaimAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1606
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:26.35]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_InvalidUserId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_InvalidUserId_ReturnFail [750 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_InvalidUserId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2634
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:28.25]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserRolesByUser [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserRolesByUser [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_ModelInput_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1936
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserRolesByUser() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2078
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:29.46]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveUserRoleAsync_ModelInput_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveUserRoleAsync_ModelInput_Success [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveUserRoleAsync_ModelInput_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2160
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:31.24]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserByIdAsync_ReturnsSuccess [FAIL]
+[xUnit.net 00:00:31.70]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_InvalidUserId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserByIdAsync_ReturnsSuccess [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserByIdAsync_ReturnsSuccess() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 688
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_InvalidUserId_ReturnFail [455 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.CreateRole_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3428
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_InvalidUserId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1989
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:32.91]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimListAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimListAsync_Success [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimListAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1371
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:34.19]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_InvalidToken_ReturnsFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_InvalidToken_ReturnsFail [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_InvalidToken_ReturnsFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1113
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:35.74]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveClaimAsync_InvalidUserId_ReturnFail [FAIL]
+[xUnit.net 00:00:36.46]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_InvalidSecurityQuestion_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveClaimAsync_InvalidUserId_ReturnFail [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveClaimAsync_InvalidUserId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1460
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_InvalidSecurityQuestion_ReturnFail [722 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_InvalidSecurityQuestion_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2686
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:38.71]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.ReplaceClaimAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.ReplaceClaimAsync_Success [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.ReplaceClaimAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1550
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:39.15]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateSecurityQuestionAsync_Success [FAIL]
+[xUnit.net 00:00:39.64]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveUserRoleAsync_InvalidRoleId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateSecurityQuestionAsync_Success [444 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2278
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2386
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveUserRoleAsync_InvalidRoleId_ReturnFail [483 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveUserRoleAsync_InvalidRoleId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2245
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:40.49]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserSecurityQuestionAsync_InvalidUserId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserSecurityQuestionAsync_InvalidUserId_ReturnFail [823 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2584
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserSecurityQuestionAsync_InvalidUserId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2774
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:43.19]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_ClaimTypeLenthExceded_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_ClaimTypeLenthExceded_ReturnFail [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_ClaimTypeLenthExceded_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1333
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:43.83]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveAdminClaimAsync_InvalidUserId_ReteunFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveAdminClaimAsync_InvalidUserId_ReteunFail [644 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveAdminClaimAsync_InvalidUserId_ReteunFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1842
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:45.54]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_InvalidUserId_ReturnFail [FAIL]
+[xUnit.net 00:00:46.15]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.CreateRole_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_InvalidUserId_ReturnFail [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_InvalidUserId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1257
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.CreateRole_Success [604 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.CreateRole_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3428
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:46.76]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_PassingNullQuestion_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_PassingNullQuestion_ReturnFail [574 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_PassingNullQuestion_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2304
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:48.17]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RegisterUserAsync_CreatedByNULL_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RegisterUserAsync_CreatedByNULL_Success [1 s]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RegisterUserAsync_CreatedByNULL_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 462
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:51.11]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_InvalidClaimType_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_InvalidClaimType_ReturnFail [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_InvalidClaimType_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1295
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:51.98]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserSecurityQuestionAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserSecurityQuestionAsync_Success [862 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2584
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2732
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:54.11]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveCLaimListAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveCLaimListAsync_Success [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveCLaimListAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1498
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:56.26]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddAdminClaimAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddAdminClaimAsync_Success [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddAdminClaimAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1760
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:58.30]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_InvalidRoleId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_InvalidRoleId_ReturnFail [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_InvalidRoleId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2028
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:00.29]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveAdminCLaimListAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveAdminCLaimListAsync_Success [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveAdminCLaimListAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1872
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:00.97]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateSecurityQuestionAsync_QuestionLengthExceeded_ReturnError [FAIL]
+[xUnit.net 00:01:01.68]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserByNameAsync_ReturnsSuccess [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateSecurityQuestionAsync_QuestionLengthExceeded_ReturnError [676 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2278
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateSecurityQuestionAsync_QuestionLengthExceeded_ReturnError() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2421
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserByNameAsync_ReturnsSuccess [709 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserByNameAsync_ReturnsSuccess() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 646
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:02.38]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateSecurityQuestionAsync_CreatedByLengthExceeded_ReturnError [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateSecurityQuestionAsync_CreatedByLengthExceeded_ReturnError [705 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2278
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateSecurityQuestionAsync_CreatedByLengthExceeded_ReturnError() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2458
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:04.65]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUser_By_Id_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUser_By_Id_Success [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUser_By_Id_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 744
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:07.05]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserClaimsClaimAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserClaimsClaimAsync_Success [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserClaimsClaimAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1672
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:10.06]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.LockUserAsync_ById_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.LockUserAsync_ById_Success [3 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.LockUserAsync_ById_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 875
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:13.09]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveAdminClaimAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveAdminClaimAsync_Success [3 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveAdminClaimAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1797
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:14.05]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveUserRoleAsync_InvalidUserId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveUserRoleAsync_InvalidUserId_ReturnFail [949 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveUserRoleAsync_InvalidUserId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2219
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:15.22]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_Success [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2278
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:17.52]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.ChangePassword_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.ChangePassword_Success [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.ChangePassword_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 779
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:18.24]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUserSecurityQuestionAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUserSecurityQuestionAsync_Success [715 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.Add_User_SecurityQuestion_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2584
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUserSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2889
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:20.55]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddAdminClaimListAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddAdminClaimListAsync_Success [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddAdminClaimListAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1718
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:21.62]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserRolesByInvalidUser_ReturnNullResult [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserRolesByInvalidUser_ReturnNullResult [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUserRolesByInvalidUser_ReturnNullResult() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2098
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:23.77]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_ByUserSecurityQuestions_ReturnsSuccess [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_ByUserSecurityQuestions_ReturnsSuccess [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_ByUserSecurityQuestions_ReturnsSuccess() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1166
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:24.68]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_QuestiomnLengthExceded_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_QuestiomnLengthExceded_ReturnFail [907 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_QuestiomnLengthExceded_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2332
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:26.37]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.LockUser_ById_LockEndDateGiven_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.LockUser_ById_LockEndDateGiven_Success [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.LockUser_ById_LockEndDateGiven_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 937
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:29.62]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_Success [3 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddClaimAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1220
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:30.22]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAllSecurityQuestionAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAllSecurityQuestionAsync_Success [595 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2278
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAllSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2496
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:32.88]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_ReturnsSuccess [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_ReturnsSuccess [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UnlockUserAsync_ReturnsSuccess() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 982
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:35.02]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.LockUserAsync_InvalidUserId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.LockUserAsync_InvalidUserId_ReturnFail [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.LockUserAsync_InvalidUserId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 911
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:36.91]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUser_By_UserName_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUser_By_UserName_Success [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteUser_By_UserName_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 722
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:38.05]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUsersInRole_InvalidRoleName [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUsersInRole_InvalidRoleName [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetUsersInRole_InvalidRoleName() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2136
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:41.57]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_ModelInput_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_ModelInput_Success [3 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddUserRoleAsync_ModelInput_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1936
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:42.29]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_DuplicateQuestion_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_DuplicateQuestion_ReturnFail [718 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.AddSecurityQuestionAsync_DuplicateQuestion_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2359
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:43.24]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteSecurityQuestionAsync_Success [FAIL]
+[xUnit.net 00:01:44.11]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetClaimAsync_InvalidUserId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteSecurityQuestionAsync_Success [946 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteSecurityQuestionAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2524
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetClaimAsync_InvalidUserId_ReturnFail [865 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetClaimAsync_InvalidUserId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1650
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:44.90]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteSecurityQuestionAsyncInvalidQuestionId_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteSecurityQuestionAsyncInvalidQuestionId_ReturnFail [787 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.DeleteSecurityQuestionAsyncInvalidQuestionId_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 2557
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:47.04]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserAsync_Success [2 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.UpdateUserAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 563
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:50.05]     IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveClaimAsync_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveClaimAsync_Success [3 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.GetAccessToken() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 3481
+   at IntegrationTests.MiddlewareRoutes.UserAccountProxyTests.RemoveClaimAsync_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs:line 1413
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:    63, Passed:    11, Skipped:     0, Total:    74, Duration: 30 m - HCL.CS.IntegrationTests.dll (net8.0)

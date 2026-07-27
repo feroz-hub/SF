@@ -229,6 +229,15 @@ internal class CheckUserRoleMapped : ISpecification<ValidatedTokenRequestModel>
 
     public bool IsSatisfiedBy(ValidatedTokenRequestModel model)
     {
+        // SBOM authorization is intentionally owned by SBOM Analyzer. Requiring an
+        // HCL.CS role here would prevent a newly confirmed local identity from
+        // completing OIDC or would force an inappropriate HCL.CS role assignment.
+        if (string.Equals(
+                model.Client?.ClientId,
+                SbomIdentityContract.ClientId,
+                StringComparison.Ordinal))
+            return true;
+
         var id = model.AuthorizationCode.Subject.Identity as ClaimsIdentity;
         var claim = id.FindFirst(OpenIdConstants.ClaimTypes.Sub);
         if (claim != null && claim.Value.IsGuid())

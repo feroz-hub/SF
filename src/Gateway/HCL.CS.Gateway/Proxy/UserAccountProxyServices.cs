@@ -40,7 +40,10 @@ public sealed class UserAccountProxyServices(
     IRoleService roleService,
     IRepository<SecurityTokens> securityTokenRepository,
     IApiValidator apiValidator,
-    RoleManagerWrapper<Roles> roleManager)
+    RoleManagerWrapper<Roles> roleManager,
+    IAuthenticationModeResolver authenticationModeResolver,
+    IAllowedEmailDomainPolicy allowedEmailDomainPolicy,
+    ISecurityAuditService securityAuditService)
     : UserAccountService(userManager,
         instance,
         resourceStringHandler,
@@ -54,7 +57,10 @@ public sealed class UserAccountProxyServices(
         passwordHasher,
         roleService,
         securityTokenRepository,
-        roleManager), IUserAccountService
+        roleManager,
+        authenticationModeResolver,
+        allowedEmailDomainPolicy,
+        securityAuditService), IUserAccountService
 {
     private readonly IFrameworkResultService frameworkResult = frameworkResultService;
 

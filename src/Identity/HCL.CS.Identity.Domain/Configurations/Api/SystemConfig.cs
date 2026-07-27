@@ -154,17 +154,80 @@ public class SMSTemplate
 
 public class LdapConfig
 {
+    public bool? Enabled { get; set; }
+
     public string LdapHostName { get; set; }
 
     public string LdapDomainName { get; set; }
 
-    public int LdapPort { get; set; }
+    public int LdapPort { get; set; } = 636;
 
     public bool IsSecureConnection { get; set; }
+
+    public bool UseSsl { get; set; } = true;
+
+    public bool UseStartTls { get; set; }
+
+    public bool AllowUnencryptedForDevelopment { get; set; }
+
+    public string UserSearchBase { get; set; }
+
+    public string UserSearchFilter { get; set; } = "(userPrincipalName={0})";
+
+    public string BindDn { get; set; }
+
+    public string BindPassword { get; set; }
+
+    public int ConnectTimeoutSeconds { get; set; } = 10;
+
+    public int SearchTimeoutSeconds { get; set; } = 10;
+
+    public bool RequireEmployeeId { get; set; }
+
+    public bool RequireDepartment { get; set; }
+
+    public bool RequireUserPrincipalName { get; set; }
+
+    public LdapAttributeConfig Attributes { get; set; } = new();
 
     public bool IsTwoFactorAuthenticationRequired { get; set; } = false;
 
     public virtual TwoFactorType TwoFactorType { get; set; } = TwoFactorType.None;
+
+    public bool IsEnabled =>
+        Enabled ?? (!string.IsNullOrWhiteSpace(LdapHostName) && LdapPort > 0);
+
+    public bool IsSslEnabled => UseSsl || IsSecureConnection;
+}
+
+public class LdapAttributeConfig
+{
+    public string ImmutableId { get; set; } = "objectGUID";
+
+    public string EmployeeId { get; set; } = "employeeID";
+
+    public string UserPrincipalName { get; set; } = "userPrincipalName";
+
+    public string Email { get; set; } = "mail";
+
+    public string DisplayName { get; set; } = "displayName";
+
+    public string Department { get; set; } = "department";
+
+    public string AccountStatus { get; set; } = "userAccountControl";
+}
+
+public class LocalAuthenticationConfig
+{
+    public bool EnabledWhenLdapDisabledOrUnconfigured { get; set; } = true;
+
+    public List<string> AllowedEmailDomains { get; set; } = ["hcltech.com"];
+
+    public bool RequireEmailConfirmation { get; set; } = true;
+
+    public bool AllowSelfRegistration { get; set; } = true;
+
+    public bool AllowAdministratorCreation { get; set; } = true;
 }
 
 public class CryptoConfig

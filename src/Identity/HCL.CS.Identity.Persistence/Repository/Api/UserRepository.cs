@@ -69,6 +69,29 @@ internal class UserRepository : BaseDispose, IUserRepository
             .FirstOrDefaultAsync(x => x.UserName == userName, cancellationToken);
     }
 
+    public async Task<IList<Users>> FindByDirectoryImmutableIdAsync(
+        string directoryImmutableId,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(directoryImmutableId)) return Array.Empty<Users>();
+
+        return await context.Users
+            .Where(user => user.DirectoryImmutableId == directoryImmutableId)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IList<Users>> FindByNormalizedEmailAsync(
+        string normalizedEmail,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(normalizedEmail)) return Array.Empty<Users>();
+
+        return await context.Users
+            .IgnoreQueryFilters()
+            .Where(user => user.NormalizedEmail == normalizedEmail)
+            .ToListAsync(cancellationToken);
+    }
+
     public Task SetAddedStatusAsync<T>(T entity)
     {
         context.SetAddedStatus(entity);

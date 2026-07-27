@@ -7,15 +7,18 @@
  */
 
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Constants;
+using HCL.CS.Domain.Constants.Api;
 using HCL.CS.Domain.Constants.Endpoint;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Enums;
 using HCL.CS.Domain.ErrorCodes;
+using HCL.CS.Domain.Models.Api;
 using HCL.CS.Domain.Models.Api.Response;
 using HCL.CS.Domain.Models.Endpoint.Validation;
 using HCL.CS.DomainServices.Infra;
@@ -39,15 +42,28 @@ public class AuthenticationService(
     IFrameworkResultService frameworkResultService,
     HclCsConfig frameworkConfig,
     UrlEncoder urlEncoder,
+    ILdapAuthenticationService ldapAuthenticationService,
     IUserAccountService userAccountService,
     IAuthorizationService authorizationService,
     ITokenGenerationService tokenGenerationService,
     IUserRepository userRepository,
-    ISessionManagementService session)
+    ISessionManagementService session,
+    ISecurityAuditService securityAuditService,
+    IAuthenticationModeResolver authenticationModeResolver)
     : SecurityBase, IAuthenticationService
 {
     private readonly ILoggerService loggerService = instance.GetLoggerInstance(LoggerKeyConstants.DefaultLoggerKey);
     private readonly SystemSettings settings = frameworkConfig.SystemSettings;
+
+    public virtual Task<AuthenticationAvailabilityModel> GetAuthenticationAvailabilityAsync()
+    {
+        var mode = authenticationModeResolver.Resolve();
+        var localRegistrationAvailable = mode == AuthenticationMode.Local
+                                         && settings.LocalAuthenticationConfig
+                                             .EnabledWhenLdapDisabledOrUnconfigured
+                                         && settings.LocalAuthenticationConfig.AllowSelfRegistration;
+        return Task.FromResult(AuthenticationAvailabilityModel.Create(mode, localRegistrationAvailable));
+    }
 
     public virtual async Task<SignInResponseModel> PasswordSignInAsync(string username, string password)
     {
@@ -149,7 +165,15 @@ public class AuthenticationService(
                 await userRepository.UpdateAsync(userEntity, new[] { "LastLogoutDateTime" });
                 await userRepository.SaveChangesAsync();
 
-                return await tokenGenerationService.RemoveUserTokensAsync(subjectId);
+                var result = await tokenGenerationService.RemoveUserTokensAsync(subjectId);
+                await securityAuditService.WriteAsync(new SecurityAuditEventModel
+                {
+                    EventType = SecurityAuditEventTypes.SessionLogout,
+                    ActorUserId = subjectId,
+                    AuthenticationSource = userEntity.AuthenticationSource,
+                    Result = result.Status == ResultStatus.Succeeded ? "SUCCEEDED" : "FAILED"
+                });
+                return result;
             }
 
             return frameworkResultService.Succeeded();
@@ -471,40 +495,75 @@ public class AuthenticationService(
         if (string.IsNullOrWhiteSpace(username)) return ConstructError(ApiErrorCodes.InvalidUserOrPassword);
 
         var signInResponse = new SignInResponseModel();
+        var ldapAuthenticated = false;
+        var mode = authenticationModeResolver.Resolve();
+        await AuditAuthenticationModeAsync(mode);
         loggerService.WriteTo(Log.Debug, "Entered into validate user credentials for user: " + username);
         var user = await userManager.FindByNameAsync(username);
-        if (user == null)
+        if (mode == AuthenticationMode.Ldap)
         {
-            if (GlobalConfiguration.IsLdapConfigurationValid)
+            var ldapResult = await LdapLogin(username, password);
+            if (!ldapResult.IsAuthenticated)
             {
-                // User is not in local DB, check in Ldap server.
-                signInResponse = await LdapLogin(username, password);
-                if (!signInResponse.Succeeded) return signInResponse;
+                await AuditAuthenticationAsync(
+                    username,
+                    user,
+                    "LDAP",
+                    false,
+                    ldapResult.FailureCode);
+                await AuditLdapFallbackBlockedAsync(user, ldapResult.FailureCode);
+                return ConstructLdapFailure(ldapResult.FailureCode);
             }
-            else
+
+            var provisioningResult = await userAccountService.UpsertLdapUserAsync(username, ldapResult.User);
+            if (provisioningResult.Status == ResultStatus.Failed)
             {
+                await AuditAuthenticationAsync(
+                    username,
+                    user,
+                    "LDAP",
+                    false,
+                    "AUTH_IDENTITY_SOURCE_CONFLICT");
+                return ConstructError(ApiErrorCodes.InvalidUserOrPassword);
+            }
+
+            user = await userManager.FindByNameAsync(
+                string.IsNullOrWhiteSpace(ldapResult.User.UserPrincipalName)
+                    ? username
+                    : ldapResult.User.UserPrincipalName);
+            if (user is null) return ConstructError(ApiErrorCodes.InvalidUserOrPassword);
+            ldapAuthenticated = true;
+        }
+        else
+        {
+            if (user is null || user.IdentityProviderType != IdentityProvider.Local ||
+                !string.Equals(user.AuthenticationSource, "LOCAL", StringComparison.OrdinalIgnoreCase))
+            {
+                await AuditAuthenticationAsync(
+                    username,
+                    user,
+                    "LOCAL",
+                    false,
+                    user is null ? ApiErrorCodes.InvalidUserOrPassword : "AUTH_IDENTITY_SOURCE_CONFLICT");
+                return ConstructError(ApiErrorCodes.InvalidUserOrPassword);
+            }
+
+            if (!user.EmailConfirmed)
+            {
+                await AuditAuthenticationAsync(
+                    username,
+                    user,
+                    "LOCAL",
+                    false,
+                    "AUTH_LOCAL_EMAIL_CONFIRMATION_REQUIRED");
                 return new SignInResponseModel
                 {
                     Succeeded = false,
-                    ErrorCode = ApiErrorCodes.InvalidUserOrPassword,
-                    Message = "Login failed due to invalid credentials."
+                    ErrorCode = "AUTH_LOCAL_EMAIL_CONFIRMATION_REQUIRED",
+                    Message = "Unable to sign in. Please verify your credentials or contact support."
                 };
             }
-        }
-        else if (user.IdentityProviderType == IdentityProvider.Ldap)
-        {
-            if (GlobalConfiguration.IsLdapConfigurationValid)
-            {
-                signInResponse = await LdapLogin(username, password);
-                if (!signInResponse.Succeeded) return signInResponse;
-            }
-            else
-            {
-                return LdapLoginFailed();
-            }
-        }
-        else if (user.IdentityProviderType == IdentityProvider.Local)
-        {
+
             if (user.RequiresDefaultPasswordChange != null && (bool)user.RequiresDefaultPasswordChange)
                 return ConstructError(ApiErrorCodes.DefaultPasswordNeedsToChange);
 
@@ -528,11 +587,15 @@ public class AuthenticationService(
             loggerService.WriteTo(Log.Debug, "Entered into Login : " + username);
 
             await userRepository.EnableIdentityAutoSaveChanges();
-            var signInResult = await signInManager.PasswordSignInAsync(
-                username,
-                password,
-                settings.LoginConfig.IsPersistent,
-                settings.LoginConfig.LockoutOnFailure);
+            var signInResult = ldapAuthenticated
+                ? await signInManager.ExternalCredentialSignInAsync(
+                    user,
+                    settings.LoginConfig.IsPersistent)
+                : await signInManager.LocalCredentialSignInAsync(
+                    user,
+                    password,
+                    settings.LoginConfig.IsPersistent,
+                    settings.LoginConfig.LockoutOnFailure);
 
             // If not success, fetching user to get access failed count.
             if (!signInResult.Succeeded) user = await userManager.FindByNameAsync(username);
@@ -550,6 +613,20 @@ public class AuthenticationService(
                 loggerService.WriteTo(Log.Debug, signInResponseModel.Message);
             }
 
+            var authenticationSource = user.IdentityProviderType switch
+            {
+                IdentityProvider.Ldap => "LDAP",
+                IdentityProvider.Google => "GOOGLE",
+                _ => "LOCAL"
+            };
+            await AuditAuthenticationAsync(
+                username,
+                user,
+                authenticationSource,
+                signInResponseModel.Succeeded || signInResponseModel.RequiresTwoFactor,
+                signInResponseModel.Succeeded || signInResponseModel.RequiresTwoFactor
+                    ? null
+                    : signInResponseModel.ErrorCode);
             return signInResponseModel;
         }
         catch (Exception ex)
@@ -563,24 +640,12 @@ public class AuthenticationService(
         }
     }
 
-    private async Task<SignInResponseModel> LdapLogin(string username, string password)
+    private async Task<LdapAuthenticationResult> LdapLogin(string username, string password)
     {
-        if (string.IsNullOrWhiteSpace(password)) return ConstructError(ApiErrorCodes.InvalidUserOrPassword);
+        if (string.IsNullOrWhiteSpace(password))
+            return LdapAuthenticationResult.Failed(LdapFailureCodes.InvalidCredentials);
 
-        var signInResponseModel = new SignInResponseModel();
-        var ldaputil = new LdapUtil(loggerService, settings.LdapConfig, frameworkResultService, userAccountService);
-        var frameworkResult = await ldaputil.LdapLoginAsync(username, password);
-        signInResponseModel.Succeeded = true;
-        if (frameworkResult.Status == ResultStatus.Failed)
-        {
-            signInResponseModel.Succeeded = false;
-            signInResponseModel.ErrorCode = frameworkResult.Errors.ToList()[0].Code;
-            signInResponseModel.Message = frameworkResult.Errors.ToList()[0].Description;
-            if (signInResponseModel.ErrorCode == ApiErrorCodes.InvalidLDAPUserNameOrPassword)
-                return ConstructError(ApiErrorCodes.InvalidUserOrPassword);
-        }
-
-        return signInResponseModel;
+        return await ldapAuthenticationService.AuthenticateAsync(username, password);
     }
 
     private SignInResponseModel LdapLoginFailed()
@@ -588,9 +653,100 @@ public class AuthenticationService(
         return new SignInResponseModel
         {
             Succeeded = false,
-            ErrorCode = ApiErrorCodes.InvalidLDAPConfiguration,
-            Message = "Ldap configuration invalid."
+            ErrorCode = "AUTH_DIRECTORY_UNAVAILABLE",
+            Message = "Sign-in is temporarily unavailable. Please try again later."
         };
+    }
+
+    private SignInResponseModel ConstructLdapFailure(string failureCode)
+    {
+        return failureCode is LdapFailureCodes.Timeout
+            or LdapFailureCodes.Unavailable
+            or LdapFailureCodes.TlsValidationFailed
+            or LdapFailureCodes.ConfigurationInvalid
+            ? LdapLoginFailed()
+            : ConstructError(ApiErrorCodes.InvalidUserOrPassword);
+    }
+
+    private async Task AuditAuthenticationAsync(
+        string submittedUserName,
+        Users? user,
+        string authenticationSource,
+        bool succeeded,
+        string? reasonCode)
+    {
+        var sourceEvent = authenticationSource switch
+        {
+            "LDAP" => succeeded
+                ? SecurityAuditEventTypes.LdapAuthenticationSucceeded
+                : SecurityAuditEventTypes.LdapAuthenticationFailed,
+            "GOOGLE" => succeeded
+                ? SecurityAuditEventTypes.ExternalAuthenticationSucceeded
+                : SecurityAuditEventTypes.ExternalAuthenticationFailed,
+            _ => succeeded
+                ? SecurityAuditEventTypes.LocalAuthenticationSucceeded
+                : SecurityAuditEventTypes.LocalAuthenticationFailed
+        };
+        var result = succeeded ? "SUCCEEDED" : "FAILED";
+        var subjectHash = HashSubmittedIdentifier(submittedUserName);
+
+        await securityAuditService.WriteAsync(new SecurityAuditEventModel
+        {
+            EventType = sourceEvent,
+            ActorUserId = user?.Id.ToString(),
+            PseudonymousIdentifier = user is null ? subjectHash : null,
+            AuthenticationSource = authenticationSource,
+            Result = result,
+            ReasonCode = reasonCode
+        });
+        await securityAuditService.WriteAsync(new SecurityAuditEventModel
+        {
+            EventType = succeeded
+                ? SecurityAuditEventTypes.AuthenticationSucceeded
+                : SecurityAuditEventTypes.AuthenticationFailed,
+            ActorUserId = user?.Id.ToString(),
+            PseudonymousIdentifier = user is null ? subjectHash : null,
+            AuthenticationSource = authenticationSource,
+            Result = result,
+            ReasonCode = reasonCode
+        });
+    }
+
+    private Task AuditAuthenticationModeAsync(AuthenticationMode mode)
+    {
+        return securityAuditService.WriteAsync(new SecurityAuditEventModel
+        {
+            EventType = mode == AuthenticationMode.Ldap
+                ? SecurityAuditEventTypes.AuthenticationModeResolvedLdap
+                : SecurityAuditEventTypes.AuthenticationModeResolvedLocal,
+            AuthenticationSource = mode == AuthenticationMode.Ldap ? "LDAP" : "LOCAL",
+            Result = "RESOLVED"
+        });
+    }
+
+    private Task AuditLdapFallbackBlockedAsync(Users? user, string? reasonCode)
+    {
+        if (reasonCode is not (LdapFailureCodes.Timeout
+            or LdapFailureCodes.Unavailable
+            or LdapFailureCodes.TlsValidationFailed
+            or LdapFailureCodes.ConfigurationInvalid))
+            return Task.CompletedTask;
+
+        return securityAuditService.WriteAsync(new SecurityAuditEventModel
+        {
+            EventType = SecurityAuditEventTypes.LdapLocalFallbackBlocked,
+            ActorUserId = user?.Id.ToString(),
+            AuthenticationSource = "LDAP",
+            Result = "BLOCKED",
+            ReasonCode = reasonCode
+        });
+    }
+
+    private static string HashSubmittedIdentifier(string? identifier)
+    {
+        var normalized = identifier?.Trim().ToLowerInvariant() ?? string.Empty;
+        var digest = SHA256.HashData(Encoding.UTF8.GetBytes(normalized));
+        return Convert.ToHexString(digest.AsSpan(0, 12));
     }
 
     private async Task<SignInResponseModel> TwoFactorSignInAsync(

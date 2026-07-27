@@ -36,6 +36,8 @@ public class SystemSettings
 
     public LdapConfig LdapConfig { get; set; } = new();
 
+    public LocalAuthenticationConfig LocalAuthenticationConfig { get; set; } = new();
+
     public CryptoConfig CryptoConfig { get; set; } = new();
 
     public LogConfig LogConfig { get; set; } = new();

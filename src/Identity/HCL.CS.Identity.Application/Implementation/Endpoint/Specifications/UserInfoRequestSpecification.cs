@@ -167,7 +167,10 @@ internal class ValidateToken : ISpecification<ValidatedUserInfoRequestModel>
             {
                 try
                 {
-                    var expectedAudience = model.TokenConfigOptions.TokenConfig.ApiIdentifier;
+                    var expectedAudience =
+                        !string.IsNullOrWhiteSpace(signinKeys.Client.PreferredAudience)
+                            ? signinKeys.Client.PreferredAudience
+                            : model.TokenConfigOptions.TokenConfig.ApiIdentifier;
                     if (string.IsNullOrWhiteSpace(expectedAudience)) return false;
 
                     model.Client = signinKeys.Client;
@@ -287,7 +290,6 @@ internal class ValidateClient : ISpecification<ValidatedUserInfoRequestModel>
 
     public bool IsSatisfiedBy(ValidatedUserInfoRequestModel model)
     {
-        ClientsModel client = null;
         var accessTokenClaims = model.DecodedToken.Claims.ToList();
         var clientId = accessTokenClaims.FirstOrDefault(c => c.Type == OpenIdConstants.ClaimTypes.ClientId);
         if (clientId != null)
@@ -309,8 +311,6 @@ internal class ValidateClient : ISpecification<ValidatedUserInfoRequestModel>
                 }
 
         model.Claims = claims;
-        model.Client = client;
-
         return true;
     }
 }

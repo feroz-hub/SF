@@ -37,7 +37,7 @@ public class JwksFlowTest : HclCsFakeSetup
     private readonly string issuer = "security.hcl-cs.com";
     private readonly JwksTestHelper JwksTestHelper = new();
 
-    private readonly string redirectUri = "http://127.0.0.1:63562/";
+    private readonly string redirectUri = "https://127.0.0.1:63562/";
     private ClientsModel clientModel;
     private string positiveCaseClientName = "HCL.CS Plain PKCE Client";
 

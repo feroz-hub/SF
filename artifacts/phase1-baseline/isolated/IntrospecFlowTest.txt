@@ -1,0 +1,185 @@
+/private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj : warning NU1902: Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr
+  DomainValidation -> /private/tmp/hclcs-phase0-baseline/src/SharedKernel/DomainValidation/bin/Debug/net8.0/DomainValidation.dll
+  HCL.CS.Domain -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Domain/bin/Debug/net8.0/HCL.CS.Domain.dll
+  HCL.CS.DomainServices -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.DomainServices/bin/Debug/net8.0/HCL.CS.DomainServices.dll
+  HCL.CS.Service.Interfaces -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Contracts/bin/Debug/net8.0/HCL.CS.Service.Interfaces.dll
+  HCL.CS.Infrastructure.Data -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Persistence/bin/Debug/net8.0/HCL.CS.Infrastructure.Data.dll
+  HCL.CS.Service -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Application/bin/Debug/net8.0/HCL.CS.Service.dll
+  HCL.CS.ProxyService -> /private/tmp/hclcs-phase0-baseline/src/Gateway/HCL.CS.Gateway/bin/Debug/net8.0/HCL.CS.ProxyService.dll
+  HCL.CS.Infrastructure.Resources -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure.Resources/bin/Debug/net8.0/HCL.CS.Infrastructure.Resources.dll
+  HCL.CS.Infrastructure.Services -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure/bin/Debug/net8.0/HCL.CS.Infrastructure.Services.dll
+  TestApp.Helper -> /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.TestApp.Helper/bin/Debug/net8.0/TestApp.Helper.dll
+  HCL.CS.Hosting -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.API/bin/Debug/net8.0/HCL.CS.Hosting.dll
+  IntegrationTests -> /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll
+Test run for /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:08.11]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_PassingRefreshToken_Success [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_PassingRefreshToken_Success [7 s]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 49
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_PassingRefreshToken_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 250
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:08.58]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_ReturnClientDoesNotExist [FAIL]
+[xUnit.net 00:00:08.97]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_PassingAccesstoken_Success [FAIL]
+[xUnit.net 00:00:09.37]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Intorspec_HintTypeAccesstoken_ReturnSuccess [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_ReturnClientDoesNotExist [471 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 49
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_ReturnClientDoesNotExist() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 334
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_PassingAccesstoken_Success [390 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 49
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_PassingAccesstoken_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 226
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Intorspec_HintTypeAccesstoken_ReturnSuccess [392 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeExpireFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 92
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Intorspec_HintTypeAccesstoken_ReturnSuccess() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 117
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:09.81]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_MissingClientSecret_ReturnInvalidCleint [FAIL]
+[xUnit.net 00:00:10.20]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_Missingaccesstoken_RetrunTokenMissingError [FAIL]
+[xUnit.net 00:00:10.56]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Intorspec_HintTypeRefreshtoken_Success [FAIL]
+[xUnit.net 00:00:10.98]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidHintype_ReturnInvalidTokenHintType [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_MissingClientSecret_ReturnInvalidCleint [442 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 49
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_MissingClientSecret_ReturnInvalidCleint() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 374
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_Missingaccesstoken_RetrunTokenMissingError [386 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 49
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_Missingaccesstoken_RetrunTokenMissingError() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 271
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Intorspec_HintTypeRefreshtoken_Success [366 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeExpireFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 92
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Intorspec_HintTypeRefreshtoken_Success() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 178
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidHintype_ReturnInvalidTokenHintType [412 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 49
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidHintype_ReturnInvalidTokenHintType() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 313
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:11.35]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidClientID_returnErrorInvalidClientID [FAIL]
+[xUnit.net 00:00:11.71]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidToken_InvalidTokenInIntrospection [FAIL]
+[xUnit.net 00:00:12.07]     IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidClientSecret_ReturnFail [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidClientID_returnErrorInvalidClientID [376 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 49
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidClientID_returnErrorInvalidClientID() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 353
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidToken_InvalidTokenInIntrospection [358 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 49
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidToken_InvalidTokenInIntrospection() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 292
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidClientSecret_ReturnFail [360 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.TokenGeneration_AuthCodeFlow() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 49
+   at IntegrationTests.Endpoint.FlowTests.IntrospecFlowTest.Introspec_accesstoken_InvalidClientSecret_ReturnFail() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/IntrospecFlowTest.cs:line 394
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:    11, Passed:     0, Skipped:     0, Total:    11, Duration: 3 s - HCL.CS.IntegrationTests.dll (net8.0)

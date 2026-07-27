@@ -16,6 +16,8 @@ public partial interface IUserAccountService
 {
     Task<FrameworkResult> RegisterUserAsync(UserModel user);
 
+    Task<FrameworkResult> UpsertLdapUserAsync(string loginUserName, LdapUserProfile profile);
+
     Task<FrameworkResult> UpdateUserAsync(UserModel userModel);
 
     Task<FrameworkResult> DeleteUserAsync(string username);

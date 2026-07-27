@@ -28,6 +28,9 @@ public static class ApiRoutePathConstants
 
     public const string AuthenticationAPi = BasePath + "/Authentication";
 
+    public const string GetAuthenticationAvailability =
+        AuthenticationAPi + "/GetAuthenticationAvailability";
+
     public const string SecurityTokenApi = BasePath + "/SecurityToken";
 
     public const string NotificationApi = BasePath + "/Notification";
@@ -968,6 +971,11 @@ public static class ApiRoutePathConstants
         },
 
         // Authentication Service
+        new ApiRouteModel
+        {
+            Name = "GetAuthenticationAvailabilityAsync", Path = GetAuthenticationAvailability,
+            Permissions = new List<string> { ApiPermissionConstants.Anonymous }
+        },
         new ApiRouteModel
         {
             Name = "GenerateRecoveryCodesAsync", Path = GenerateRecoveryCodes,

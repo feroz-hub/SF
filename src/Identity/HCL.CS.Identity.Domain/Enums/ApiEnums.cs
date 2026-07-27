@@ -79,6 +79,13 @@ public enum IdentityProvider
     Google = 3
 }
 
+public enum AuthenticationMode
+{
+    Local = 1,
+
+    Ldap = 2
+}
+
 public enum AuditType
 {
     None = 0,

@@ -21,7 +21,7 @@ namespace IntegrationTests.Endpoint.FlowTests;
 public class AuthorizeCodeFlowTests : HclCsFakeSetup
 {
     private readonly string hCLCSS256ClientName = "HCL.CS S256 Client";
-    private readonly string redirectUri = "http://127.0.0.1:63562/";
+    private readonly string redirectUri = "https://127.0.0.1:63562/";
     private ClientsModel clientModel;
     private string positiveCaseClientName = "HCL.CS S256 Client";
 
@@ -646,7 +646,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             codeChallenge: codeChallengeString, // Codeverifier
             codeChallengeMethod: "S256", // Plain
             maxAge: "60",
-            redirectUri: "http://127.0.0.1:63562/",
+            redirectUri: "https://127.0.0.1:63562/",
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseQueryString();
@@ -654,7 +654,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             clientModel.ClientId,
             clientModel.ClientSecret,
             response.Code,
-            "http://127.0.0.1:63562/",
+            "https://127.0.0.1:63562/",
             OpenIdConstants.GrantTypes.AuthorizationCode,
             codeVerifier); // Code Challenge
         var tokenClient = BackChannelClient;

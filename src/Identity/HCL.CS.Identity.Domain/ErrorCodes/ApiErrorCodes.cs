@@ -102,6 +102,14 @@ public static class ApiErrorCodes
     public const string ConnectionStringInvalid = "CONNECTION_STRING_INVALID";
     public const string LDAPConnectionFailed = "LDAP_CONNECTION_FAILED";
     public const string RestrictedApiForLdapUser = "RESTRICTED_API_FOR_LDAP_USER";
+    public const string AuthModeLocalRegistrationDisabled = "AUTH_MODE_LOCAL_REGISTRATION_DISABLED";
+    public const string AuthLocalEmailInvalid = "AUTH_LOCAL_EMAIL_INVALID";
+    public const string AuthLocalEmailDomainNotAllowed = "AUTH_LOCAL_EMAIL_DOMAIN_NOT_ALLOWED";
+    public const string AuthLocalUserAlreadyExists = "AUTH_LOCAL_USER_ALREADY_EXISTS";
+    public const string AuthIdentitySourceConflict = "AUTH_IDENTITY_SOURCE_CONFLICT";
+    public const string AuthLocalEmailConfirmationRequired = "AUTH_LOCAL_EMAIL_CONFIRMATION_REQUIRED";
+    public const string AuthLocalEmailConfirmationInvalid = "AUTH_LOCAL_EMAIL_CONFIRMATION_INVALID";
+    public const string AuthDirectoryUnavailable = "AUTH_DIRECTORY_UNAVAILABLE";
 
     // Audit
     public const string AuditModelIsNull = "AUDIT_MODEL_IS_NULL";

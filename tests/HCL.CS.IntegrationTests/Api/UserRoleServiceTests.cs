@@ -470,7 +470,7 @@ namespace HCL.CS.IntegrationTests.Api
             userModelInput.UserName = userModelInput.UserName + random.Next();
             userModelInput.FirstName = userModelInput.UserName.ToUpper();
             userModelInput.LastName = userModelInput.UserName.ToLower();
-            userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+            userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
             userModelInput.CreatedBy = "Suresh";
             // Getting Security Questions
             var securityQuestionResult = await userAccountService.GetAllSecurityQuestionsAsync();
@@ -495,6 +495,5 @@ namespace HCL.CS.IntegrationTests.Api
         }
     }
 }
-
 
 

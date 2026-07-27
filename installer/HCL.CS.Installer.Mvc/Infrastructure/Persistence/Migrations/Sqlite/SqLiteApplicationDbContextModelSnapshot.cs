@@ -1189,6 +1189,11 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.Sqlite
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AuthenticationSource")
+                        .HasMaxLength(32)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("AuthenticationSource");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasMaxLength(255)
@@ -1208,6 +1213,25 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.Sqlite
                         .HasColumnType("TEXT")
                         .HasColumnName("DateOfBirth");
 
+                    b.Property<string>("Department")
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Department");
+
+                    b.Property<string>("DirectoryImmutableId")
+                        .HasMaxLength(512)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("DirectoryImmutableId");
+
+                    b.Property<DateTimeOffset?>("DirectoryLastValidatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("DirectoryLastValidatedAt");
+
+                    b.Property<string>("DisplayName")
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("DisplayName");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -1216,6 +1240,11 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.Sqlite
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER")
                         .HasColumnName("EmailConfirmed");
+
+                    b.Property<string>("EmployeeId")
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("EmployeeId");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -1303,14 +1332,31 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.Sqlite
                         .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserPrincipalName")
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("UserPrincipalName");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("DirectoryImmutableId")
+                        .IsUnique()
+                        .HasDatabaseName("UX_USERS_DIRECTORY_IMMUTABLE_ID");
+
+                    b.HasIndex("EmployeeId")
+                        .HasDatabaseName("IX_USERS_EMPLOYEE_ID");
+
                     b.HasIndex("NormalizedEmail")
+                        .IsUnique()
                         .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("UserPrincipalName")
+                        .IsUnique()
+                        .HasDatabaseName("UX_USERS_USER_PRINCIPAL_NAME");
 
                     b.ToTable("HclCs_Users", (string)null);
                 });
@@ -1586,6 +1632,4 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.Sqlite
         }
     }
 }
-
-
 

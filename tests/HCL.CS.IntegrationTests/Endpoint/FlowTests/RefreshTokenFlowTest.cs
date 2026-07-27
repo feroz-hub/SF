@@ -20,7 +20,7 @@ namespace IntegrationTests.Endpoint.FlowTests;
 public class RefreshTokenFlowTest : HclCsFakeSetup
 {
     private readonly string positiveCaseClientName = "HCL.CS Plain PKCE Client";
-    private readonly string redirectUri = "http://127.0.0.1:63562/";
+    private readonly string redirectUri = "https://127.0.0.1:63562/";
     private ClientsModel clientModel;
 
     [Fact]
@@ -41,7 +41,7 @@ public class RefreshTokenFlowTest : HclCsFakeSetup
             codeChallenge: codeVerifier,
             codeChallengeMethod: "S256",
             maxAge: "60",
-            redirectUri: "http://127.0.0.1:63562/",
+            redirectUri: "https://127.0.0.1:63562/",
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseFragmentString();

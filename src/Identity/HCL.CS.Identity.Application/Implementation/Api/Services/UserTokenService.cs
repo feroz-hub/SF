@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Constants;
+using HCL.CS.Domain.Constants.Api;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Enums;
 using HCL.CS.Domain.ErrorCodes;
+using HCL.CS.Domain.Models.Api;
 using HCL.CS.Service.Implementation.Api.Extension;
 using HCL.CS.Service.Implementation.Api.Utils;
 using HCL.CS.Service.Interfaces.Interfaces.Api;
@@ -28,6 +30,9 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
         {
             var (token, error, user) = await GenerateEmailConfirmationToken(username);
             if (!string.IsNullOrWhiteSpace(error)) return frameworkResultService.Failed<FrameworkResult>(error);
+            if (user.IdentityProviderType != IdentityProvider.Local
+                || !string.Equals(user.AuthenticationSource, "LOCAL", StringComparison.OrdinalIgnoreCase))
+                return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.RestrictedApiForLdapUser);
 
             if (securityConfig.SystemSettings.EmailConfig.EmailNotificationType == EmailNotificationType.Link)
                 token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
@@ -55,6 +60,19 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
             var user = await userManager.FindByNameAsync(username);
             if (user != null)
             {
+                if (user.IdentityProviderType != IdentityProvider.Local
+                    || !string.Equals(user.AuthenticationSource, "LOCAL", StringComparison.OrdinalIgnoreCase)
+                    || user.EmailConfirmed)
+                {
+                    await AuditLocalEmailConfirmationAsync(
+                        user,
+                        SecurityAuditEventTypes.LocalEmailConfirmationRejected,
+                        "REJECTED",
+                        ApiErrorCodes.AuthLocalEmailConfirmationInvalid);
+                    return frameworkResultService.Failed<FrameworkResult>(
+                        ApiErrorCodes.AuthLocalEmailConfirmationInvalid);
+                }
+
                 if (securityConfig.SystemSettings.EmailConfig.EmailNotificationType == EmailNotificationType.Link)
                     emailToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(emailToken));
 
@@ -65,9 +83,20 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
                 if (result.Succeeded)
                 {
                     await userManagementUnitOfWork.SetModifiedStatusAsync(user, concurrencyStamp);
-                    return await userManagementUnitOfWork.SaveChangesAsync();
+                    var saveResult = await userManagementUnitOfWork.SaveChangesAsync();
+                    if (saveResult.Status == ResultStatus.Succeeded)
+                        await AuditLocalEmailConfirmationAsync(
+                            user,
+                            SecurityAuditEventTypes.LocalEmailConfirmed,
+                            "SUCCEEDED");
+                    return saveResult;
                 }
 
+                await AuditLocalEmailConfirmationAsync(
+                    user,
+                    SecurityAuditEventTypes.LocalEmailConfirmationRejected,
+                    "REJECTED",
+                    ApiErrorCodes.AuthLocalEmailConfirmationInvalid);
                 return frameworkResultService.Failed(result.ConstructIdentityErrorAsList());
             }
 
@@ -420,5 +449,21 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
             return await notificationUtils.SendSmsAsync(user, purpose, token);
 
         return frameworkResult;
+    }
+
+    private Task AuditLocalEmailConfirmationAsync(
+        Users user,
+        string eventType,
+        string result,
+        string? reasonCode = null)
+    {
+        return securityAuditService.WriteAsync(new SecurityAuditEventModel
+        {
+            EventType = eventType,
+            ActorUserId = user.Id.ToString(),
+            AuthenticationSource = "LOCAL",
+            Result = result,
+            ReasonCode = reasonCode
+        });
     }
 }

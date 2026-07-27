@@ -54,7 +54,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         userModelInput.UserName = string.Concat(UserNameForUpdateAndGet, "_", randomString);
         userModelInput.FirstName = userModelInput.UserName.ToUpper();
         userModelInput.LastName = userModelInput.UserName.ToLower();
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
         userModelInput.CreatedBy = "Rosh";
 
         // Getting Security Questions
@@ -194,7 +194,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var randomString = random.Next().ToString();
         userModelInput.UserName = random.Next().ToString();
         userModelInput.PhoneNumber = "+9186OPds9119";
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
 
         // Getting Security Questions
         var securityQuestionResult_url = BaseUrl + ApiRoutePathConstants.GetAllSecurityQuestions;
@@ -240,7 +240,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var randomString = random.Next().ToString();
         userModelInput.UserName =
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
 
         // Getting Security Questions
         var securityQuestionResult_url = BaseUrl + ApiRoutePathConstants.GetAllSecurityQuestions;
@@ -286,7 +286,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var randomString = random.Next().ToString();
         userModelInput.UserName = random.Next().ToString();
         userModelInput.FirstName = null;
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
 
         // Getting Security Questions
         var securityQuestionResult_url = BaseUrl + ApiRoutePathConstants.GetAllSecurityQuestions;
@@ -333,7 +333,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         userModelInput.UserName = random.Next().ToString();
         userModelInput.FirstName =
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
 
         // Getting Security Questions
         var securityQuestionResult_url = BaseUrl + ApiRoutePathConstants.GetAllSecurityQuestions;
@@ -380,7 +380,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         userModelInput.UserName = random.Next().ToString();
         userModelInput.CreatedBy =
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
 
         // Getting Security Questions
         var securityQuestionResult_url = BaseUrl + ApiRoutePathConstants.GetAllSecurityQuestions;
@@ -426,7 +426,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var randomString = random.Next().ToString();
         userModelInput.UserName = random.Next().ToString();
         userModelInput.CreatedBy = null;
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
 
         // Getting Security Questions
         var securityQuestionResult_url = BaseUrl + ApiRoutePathConstants.GetAllSecurityQuestions;
@@ -471,7 +471,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var randomString = random.Next().ToString();
         userModelInput.UserName = random.Next().ToString();
         userModelInput.UserClaims[0].ClaimType = null;
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
 
         // Getting Security Questions
         var securityQuestionResult_url = BaseUrl + ApiRoutePathConstants.GetAllSecurityQuestions;
@@ -517,7 +517,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var randomString = random.Next().ToString();
         userModelInput.UserName = random.Next().ToString();
         userModelInput.UserClaims[0].ClaimValue = null;
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcl-cs.com");
+        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
 
         // Getting Security Questions
         var securityQuestionResult_url = BaseUrl + ApiRoutePathConstants.GetAllSecurityQuestions;
@@ -3462,7 +3462,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
             codeChallenge: codeChallengeString, // Codeverifier
             codeChallengeMethod: "S256", // Plain
             maxAge: "60",
-            redirectUri: "http://127.0.0.1:63562/",
+            redirectUri: "https://127.0.0.1:63562/",
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(url);
 
@@ -3472,7 +3472,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
             clientModel.ClientId,
             clientModel.ClientSecret,
             response.Code,
-            "http://127.0.0.1:63562/",
+            "https://127.0.0.1:63562/",
             OpenIdConstants.GrantTypes.AuthorizationCode,
             codeVerifier); // Code Challenge
         var tokenClient = BackChannelClient;
@@ -3499,7 +3499,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var userRequestModel = new UserModel
         {
             UserName = "PeterParker",
-            Email = "roshan.bashyam@hcl-cs.com",
+            Email = "roshan.bashyam@hcltech.com",
             PhoneNumber = "+919820958196",
             TwoFactorEnabled = true,
             TwoFactorType = TwoFactorType.Email,

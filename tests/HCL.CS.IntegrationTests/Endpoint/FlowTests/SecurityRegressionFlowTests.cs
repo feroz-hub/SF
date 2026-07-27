@@ -22,7 +22,7 @@ namespace IntegrationTests.Endpoint.FlowTests;
 public class SecurityRegressionFlowTests : HclCsFakeSetup
 {
     private const string Category = "SecurityRegression";
-    private const string RedirectUri = "http://127.0.0.1:63562/";
+    private const string RedirectUri = "https://127.0.0.1:63562/";
     private const string StrictPkceClient = "HCL.CS S256 Client";
 
     [Fact]

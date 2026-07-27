@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Entities.Api;
+using HCL.CS.Domain.Models.Api;
 using HCL.CS.Domain.Models.Api.Response;
 using HCL.CS.Domain.Models.Endpoint.Validation;
 using HCL.CS.DomainServices.Infra;
@@ -35,11 +36,14 @@ public sealed class AuthenticationProxyService : AuthenticationService, IAuthent
         IFrameworkResultService frameworkResultService,
         HclCsConfig frameworkConfig,
         UrlEncoder urlEncoder,
+        ILdapAuthenticationService ldapAuthenticationService,
         IUserAccountService userAccountService,
         IAuthorizationService authorizationService,
         ITokenGenerationService tokenGenerationService,
         IUserRepository userRepository,
         ISessionManagementService session,
+        ISecurityAuditService securityAuditService,
+        IAuthenticationModeResolver authenticationModeResolver,
         IApiValidator apiValidator)
         : base(
             userManager,
@@ -49,14 +53,22 @@ public sealed class AuthenticationProxyService : AuthenticationService, IAuthent
             frameworkResultService,
             frameworkConfig,
             urlEncoder,
+            ldapAuthenticationService,
             userAccountService,
             authorizationService,
             tokenGenerationService,
             userRepository,
-            session)
+            session,
+            securityAuditService,
+            authenticationModeResolver)
     {
         this.apiValidator = apiValidator;
         frameworkResult = frameworkResultService;
+    }
+
+    public override async Task<AuthenticationAvailabilityModel> GetAuthenticationAvailabilityAsync()
+    {
+        return await base.GetAuthenticationAvailabilityAsync();
     }
 
     public override async Task<IEnumerable<string>> GenerateRecoveryCodesAsync(Guid userId)

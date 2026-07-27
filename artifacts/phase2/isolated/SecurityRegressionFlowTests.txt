@@ -1,0 +1,99 @@
+Test run for /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:13.34]     IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.RefreshTokenReuse_MustBeDetectedAndRejected [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.RefreshTokenReuse_MustBeDetectedAndRejected [12 s]
+  Error Message:
+   Expected payload.Code not to be <null> or whitespace, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrWhiteSpace(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.GetAuthorizationCodeAsync() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 236
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.GetAuthorizationCodeTokenAsync() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 243
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.RefreshTokenReuse_MustBeDetectedAndRejected() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 171
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:14.26]     IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.AudienceMismatch_MustFailTokenValidation [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.AudienceMismatch_MustFailTokenValidation [916 ms]
+  Error Message:
+   Expected payload.Code not to be <null> or whitespace, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrWhiteSpace(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.GetAuthorizationCodeAsync() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 236
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.GetAuthorizationCodeTokenAsync() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 243
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.AudienceMismatch_MustFailTokenValidation() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 206
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:15.13]     IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.PkcePlainDowngradeAttempt_MustBeRejected [FAIL]
+[xUnit.net 00:00:16.07]     IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.AuthorizationCode_MustBeSingleUse [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.PkcePlainDowngradeAttempt_MustBeRejected [868 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.PkcePlainDowngradeAttempt_MustBeRejected() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 53
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.AuthorizationCode_MustBeSingleUse [936 ms]
+  Error Message:
+   Expected payload.Code not to be <null> or whitespace, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrWhiteSpace(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.GetAuthorizationCodeAsync() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 236
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.AuthorizationCode_MustBeSingleUse() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 105
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:16.98]     IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.RevokedRefreshToken_IntrospectionMustReturnActiveFalse [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.RevokedRefreshToken_IntrospectionMustReturnActiveFalse [909 ms]
+  Error Message:
+   Expected payload.Code not to be <null> or whitespace, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrWhiteSpace(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.GetAuthorizationCodeAsync() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 236
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.GetAuthorizationCodeTokenAsync() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 243
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.RevokedRefreshToken_IntrospectionMustReturnActiveFalse() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 154
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:17.99]     IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.MissingClientSecret_MustReturnInvalidClient [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.MissingClientSecret_MustReturnInvalidClient [925 ms]
+  Error Message:
+   Expected payload.Code not to be <null> or whitespace, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrWhiteSpace(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.GetAuthorizationCodeAsync() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 236
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.MissingClientSecret_MustReturnInvalidClient() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 61
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:     6, Passed:     2, Skipped:     0, Total:     8, Duration: 4 s - HCL.CS.IntegrationTests.dll (net8.0)

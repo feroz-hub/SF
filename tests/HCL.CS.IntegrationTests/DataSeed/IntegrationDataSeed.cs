@@ -39,7 +39,7 @@ public static class IntegrationDataSeed
             new()
             {
                 UserName = "BobUser",
-                Email = "BobUser@gmail.com",
+                Email = "BobUser@hcltech.com",
                 PhoneNumber = "+91234928347",
                 TwoFactorEnabled = false,
                 Password = "Test@123456789",
@@ -59,7 +59,7 @@ public static class IntegrationDataSeed
             new()
             {
                 UserName = "JacobIsmail",
-                Email = "JacobIsmail@gmail.com",
+                Email = "JacobIsmail@hcltech.com",
                 PhoneNumber = "+91234928347",
                 TwoFactorEnabled = false,
                 Password = "Test@123456789",
@@ -79,7 +79,7 @@ public static class IntegrationDataSeed
             new()
             {
                 UserName = "BobAlice",
-                Email = "BobAlice@gmail.com",
+                Email = "BobAlice@hcltech.com",
                 PhoneNumber = "+919912312345",
                 TwoFactorEnabled = false,
                 Password = "Test@123",

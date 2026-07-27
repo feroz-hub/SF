@@ -416,6 +416,7 @@ internal partial class ApiGateway : BaseApiServiceInstance, IApiGateway
             { ApiRoutePathConstants.GetRoleClaim, GetRoleClaim },
 
             // Authentication Services
+            { ApiRoutePathConstants.GetAuthenticationAvailability, GetAuthenticationAvailability },
             { ApiRoutePathConstants.GenerateRecoveryCodes, GenerateRecoveryCodes },
             { ApiRoutePathConstants.IsUserSignedIn, IsUserSignedIn },
             { ApiRoutePathConstants.PasswordSignIn, PasswordSignIn },

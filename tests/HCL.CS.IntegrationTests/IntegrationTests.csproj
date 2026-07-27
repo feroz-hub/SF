@@ -54,5 +54,10 @@ HCL is obtained. This is proprietary and confidential to HCL.
     <ProjectReference Include="..\..\src\Identity\HCL.CS.Identity.API\HCL.CS.Hosting.csproj"/>
   </ItemGroup>
 
-</Project>
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
+</Project>

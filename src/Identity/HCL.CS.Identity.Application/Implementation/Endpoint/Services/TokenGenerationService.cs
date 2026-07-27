@@ -12,12 +12,14 @@ using AutoMapper;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Configurations.Api;
 using HCL.CS.Domain.Constants;
+using HCL.CS.Domain.Constants.Api;
 using HCL.CS.Domain.Constants.Endpoint;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Entities.Endpoint;
 using HCL.CS.Domain.Enums;
 using HCL.CS.Domain.ErrorCodes;
 using HCL.CS.Domain.Models;
+using HCL.CS.Domain.Models.Api;
 using HCL.CS.Domain.Models.Endpoint;
 using HCL.CS.Domain.Models.Endpoint.Request;
 using HCL.CS.Domain.Models.Endpoint.Response;
@@ -28,6 +30,7 @@ using HCL.CS.DomainServices.Repository.Api;
 using HCL.CS.DomainServices.Wrappers;
 using HCL.CS.Service.Implementation.Endpoint.Comparers;
 using HCL.CS.Service.Implementation.Endpoint.Extensions;
+using HCL.CS.Service.Interfaces.Interfaces.Api;
 using HCL.CS.Service.Interfaces.Interfaces.Endpoint;
 using static HCL.CS.Domain.Constants.Endpoint.OpenIdConstants;
 using ClaimTypes = HCL.CS.Domain.Constants.Endpoint.OpenIdConstants.ClaimTypes;
@@ -43,6 +46,8 @@ internal class TokenGenerationService(
     IRepository<SecurityTokens> securityTokenRepository,
     ISecurityTokenCommandRepository securityTokenCommandRepository,
     ITenantContext tenantContext,
+    ILdapAccountValidationService ldapAccountValidationService,
+    ISecurityAuditService securityAuditService,
     Dictionary<string, AsymmetricKeyInfoModel> keyStore)
     : SecurityBase, ITokenGenerationService
 {
@@ -99,6 +104,18 @@ internal class TokenGenerationService(
                     tokenResponse.IdentityToken = await GenerateIdentityTokenAsync(tokenRequest, resultClaims);
 
                 tokenResponse.TokenType = TokenResponseType.BearerTokenType;
+                if (!string.IsNullOrWhiteSpace(tokenResponse.AccessToken) ||
+                    !string.IsNullOrWhiteSpace(tokenResponse.IdentityToken))
+                    await securityAuditService.WriteAsync(new SecurityAuditEventModel
+                    {
+                        EventType = SecurityAuditEventTypes.TokenIssued,
+                        ActorUserId = tokenRequest.TokenDetails?.User?.Id.ToString(),
+                        AuthenticationSource = tokenRequest.TokenDetails?.User?.AuthenticationSource,
+                        ClientId = tokenRequest.ClientId,
+                        GrantType = tokenRequest.GrantType,
+                        Result = "SUCCEEDED",
+                        SessionId = tokenRequest.SessionId
+                    });
             }
             else
             {
@@ -159,6 +176,72 @@ internal class TokenGenerationService(
         {
             loggerService.WriteTo(Log.Error, "Subject is not active.");
             return error;
+        }
+
+        if (user.IdentityProviderType == IdentityProvider.Ldap)
+        {
+            var validation = await ldapAccountValidationService.ValidateAccountAsync(
+                user.DirectoryImmutableId);
+            if (!validation.IsActive)
+            {
+                await RevokeRefreshSessionAsync(
+                    refreshTokenEntity.SubjectId,
+                    refreshTokenEntity.ClientId,
+                    refreshTokenEntity.SessionId);
+                await securityAuditService.WriteAsync(new SecurityAuditEventModel
+                {
+                    EventType = SecurityAuditEventTypes.LdapAccountRevalidationFailed,
+                    ActorUserId = user.Id.ToString(),
+                    AuthenticationSource = "LDAP",
+                    ClientId = client.ClientId,
+                    GrantType = GrantTypes.RefreshToken,
+                    Result = "REJECTED",
+                    ReasonCode = validation.FailureCode,
+                    SessionId = refreshTokenEntity.SessionId
+                });
+                await securityAuditService.WriteAsync(new SecurityAuditEventModel
+                {
+                    EventType = SecurityAuditEventTypes.TokenRefreshRejected,
+                    ActorUserId = user.Id.ToString(),
+                    AuthenticationSource = "LDAP",
+                    ClientId = client.ClientId,
+                    GrantType = GrantTypes.RefreshToken,
+                    Result = "REJECTED",
+                    ReasonCode = validation.FailureCode,
+                    SessionId = refreshTokenEntity.SessionId
+                });
+                return error;
+            }
+
+            user.DirectoryLastValidatedAt = DateTimeOffset.UtcNow;
+            await userManager.UpdateAsync(user);
+        }
+        else if (user.IdentityProviderType == IdentityProvider.Local)
+        {
+            var localAccountInvalid =
+                !string.Equals(user.AuthenticationSource, "LOCAL", StringComparison.OrdinalIgnoreCase)
+                || !user.EmailConfirmed
+                || user.IsDeleted
+                || user.LockoutEnd is not null && user.LockoutEnd > DateTimeOffset.UtcNow;
+            if (localAccountInvalid)
+            {
+                await RevokeRefreshSessionAsync(
+                    refreshTokenEntity.SubjectId,
+                    refreshTokenEntity.ClientId,
+                    refreshTokenEntity.SessionId);
+                await securityAuditService.WriteAsync(new SecurityAuditEventModel
+                {
+                    EventType = SecurityAuditEventTypes.TokenRefreshRejected,
+                    ActorUserId = user.Id.ToString(),
+                    AuthenticationSource = "LOCAL",
+                    ClientId = client.ClientId,
+                    GrantType = GrantTypes.RefreshToken,
+                    Result = "REJECTED",
+                    ReasonCode = "AUTH_LOCAL_ACCOUNT_INELIGIBLE",
+                    SessionId = refreshTokenEntity.SessionId
+                });
+                return error;
+            }
         }
 
         return new TokenValidationModel
@@ -235,7 +318,17 @@ internal class TokenGenerationService(
                 frameworkResultService.Failed<FrameworkResult>(EndpointErrorCodes.InvalidRevocationRequest);
             }
 
-            return await securityTokenRepository.SaveChangesWithHardDeleteAsync();
+            var result = await securityTokenRepository.SaveChangesWithHardDeleteAsync();
+            if (result.Status == ResultStatus.Succeeded)
+                await securityAuditService.WriteAsync(new SecurityAuditEventModel
+                {
+                    EventType = SecurityAuditEventTypes.TokenRevoked,
+                    ActorUserId = refreshTokenList.FirstOrDefault()?.SubjectId,
+                    ClientId = refreshTokenList.FirstOrDefault()?.ClientId,
+                    Result = "SUCCEEDED",
+                    SessionId = refreshTokenList.FirstOrDefault()?.SessionId
+                });
+            return result;
         }
         catch (Exception ex)
         {
@@ -587,6 +680,15 @@ internal class TokenGenerationService(
                 tokenResponse.AccessToken = encodedAccessToken;
                 tokenResponse.RefreshToken = nextRefreshTokenHandle;
                 tokenResponse.AccessTokenExpiresIn = GetEffectiveAccessTokenLifetime(tokenRequest.Client);
+                await securityAuditService.WriteAsync(new SecurityAuditEventModel
+                {
+                    EventType = SecurityAuditEventTypes.TokenRefreshSucceeded,
+                    ActorUserId = refreshTokenEntity.SubjectId,
+                    ClientId = refreshTokenEntity.ClientId,
+                    GrantType = GrantTypes.RefreshToken,
+                    Result = "SUCCEEDED",
+                    SessionId = refreshTokenEntity.SessionId
+                });
             }
             else
             {
@@ -738,9 +840,77 @@ internal class TokenGenerationService(
         resultClaims.AccessTokenScopeClaims.AddRange(apiScopeClaims);
         resultClaims.RoleClaims.AddRange(apiRoleClaims);
         resultClaims.PermissionClaims.AddRange(apiPermissionClaims);
+        AddSbomIdentityClaims(tokenRequest, tokenDetails.User, resultClaims);
         return await Task.FromResult(resultClaims);
     }
 
+    private void AddSbomIdentityClaims(
+        ValidatedTokenRequestModel tokenRequest,
+        UserModel user,
+        ResultClaimsModel resultClaims)
+    {
+        if (user is null ||
+            !string.Equals(tokenRequest.Client.ClientId, SbomIdentityContract.ClientId, StringComparison.Ordinal) ||
+            !string.Equals(
+                tokenRequest.Client.PreferredAudience,
+                SbomIdentityContract.ApiAudience,
+                StringComparison.Ordinal))
+            return;
+
+        var displayName = string.IsNullOrWhiteSpace(user.DisplayName)
+            ? string.Join(
+                " ",
+                new[] { user.FirstName, user.LastName }
+                    .Where(value => !string.IsNullOrWhiteSpace(value)))
+            : user.DisplayName.Trim();
+        var preferredUserName = string.IsNullOrWhiteSpace(user.UserPrincipalName)
+            ? user.UserName
+            : user.UserPrincipalName.Trim().ToLowerInvariant();
+
+        if (string.IsNullOrWhiteSpace(user.Email) ||
+            string.IsNullOrWhiteSpace(displayName) ||
+            string.IsNullOrWhiteSpace(preferredUserName) ||
+            (settings.SystemSettings.LdapConfig.RequireEmployeeId &&
+             user.IdentityProviderType == IdentityProvider.Ldap &&
+             string.IsNullOrWhiteSpace(user.EmployeeId)))
+            frameworkResultService.Throw(EndpointErrorCodes.InvalidRequest);
+
+        AddAccessTokenClaimIfMissing(
+            resultClaims,
+            SbomIdentityContract.ClaimNames.Email,
+            user.Email.Trim().ToLowerInvariant());
+        AddAccessTokenClaimIfMissing(
+            resultClaims,
+            SbomIdentityContract.ClaimNames.Name,
+            displayName);
+        AddAccessTokenClaimIfMissing(
+            resultClaims,
+            SbomIdentityContract.ClaimNames.PreferredUserName,
+            preferredUserName);
+
+        if (!string.IsNullOrWhiteSpace(user.EmployeeId))
+            AddAccessTokenClaimIfMissing(
+                resultClaims,
+                SbomIdentityContract.ClaimNames.EmployeeId,
+                user.EmployeeId.Trim());
+        if (!string.IsNullOrWhiteSpace(user.Department))
+            AddAccessTokenClaimIfMissing(
+                resultClaims,
+                SbomIdentityContract.ClaimNames.Department,
+                user.Department.Trim());
+    }
+
+    private static void AddAccessTokenClaimIfMissing(
+        ResultClaimsModel resultClaims,
+        string claimType,
+        string claimValue)
+    {
+        if (resultClaims.IdentityClaims.Any(claim =>
+                string.Equals(claim.Type, claimType, StringComparison.Ordinal)))
+            return;
+
+        resultClaims.CustomAccessTokenClaims.Add(new Claim(claimType, claimValue));
+    }
 
     private async Task<ResultClaimsModel> GetClientCredentialScopes(TokenDetailsModel tokenDetails,
         ResultClaimsModel resultClaims)
@@ -862,6 +1032,36 @@ internal class TokenGenerationService(
         }
 
         await securityTokenRepository.SaveChangesAsync();
+        await securityAuditService.WriteAsync(new SecurityAuditEventModel
+        {
+            EventType = SecurityAuditEventTypes.RefreshTokenReuseDetected,
+            ActorUserId = refreshTokenEntity.SubjectId,
+            ClientId = refreshTokenEntity.ClientId,
+            GrantType = GrantTypes.RefreshToken,
+            Result = "REJECTED",
+            ReasonCode = "REFRESH_TOKEN_REUSE",
+            SessionId = refreshTokenEntity.SessionId
+        });
+    }
+
+    private async Task RevokeRefreshSessionAsync(string subjectId, string clientId, string sessionId)
+    {
+        var relatedTokens = await securityTokenRepository.GetAsync(entity =>
+            entity.TokenType == TokenType.RefreshToken
+            && entity.SubjectId == subjectId
+            && entity.ClientId == clientId
+            && (string.IsNullOrWhiteSpace(sessionId) || entity.SessionId == sessionId));
+        if (!relatedTokens.ContainsAny()) return;
+
+        foreach (var token in relatedTokens)
+        {
+            token.TokenReuseDetected = true;
+            token.ConsumedAt ??= DateTime.UtcNow;
+            token.ConsumedTime ??= token.ConsumedAt;
+            await securityTokenRepository.UpdateAsync(token);
+        }
+
+        await securityTokenRepository.SaveChangesAsync();
     }
 
     private void ThrowIfPersistenceFailed(FrameworkResult result, string fallbackErrorCode)
@@ -880,7 +1080,13 @@ internal class TokenGenerationService(
 
     private static int GetEffectiveAccessTokenLifetime(ClientsModel client)
     {
-        return ClampLifetime(client.AccessTokenExpiration, 900);
+        var maximumLifetime = string.Equals(
+            client.ClientId,
+            SbomIdentityContract.ClientId,
+            StringComparison.Ordinal)
+            ? 3600
+            : 900;
+        return ClampLifetime(client.AccessTokenExpiration, maximumLifetime);
     }
 
     private static int GetEffectiveIdentityTokenLifetime(ClientsModel client)
@@ -940,7 +1146,12 @@ internal class TokenGenerationService(
         // create Jwt header.
         var headerIdentity = await CreateJwtHeader(tokenRequest.TokenDetails.Client.ClientSecret, algorithm);
         var claimslist = GetNormalizedClaimsList(tokenRequest, true);
-        claimslist.AddRange(resultClaims.IdentityClaims);
+        claimslist.AddRange(string.Equals(
+            tokenRequest.TokenDetails.Client.ClientId,
+            SbomIdentityContract.ClientId,
+            StringComparison.Ordinal)
+            ? resultClaims.IdentityClaims.NormalizeSbomProtocolClaims()
+            : resultClaims.IdentityClaims);
         // create Jwt payload.
         var identityPayLoad = new JwtPayload(
             tokenRequest.Issuer,
@@ -954,4 +1165,5 @@ internal class TokenGenerationService(
         var encodedIdentityToken = headerIdentity.GenerateToken(identityPayLoad);
         return encodedIdentityToken;
     }
+
 }

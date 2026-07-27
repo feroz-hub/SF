@@ -1,0 +1,689 @@
+/Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj : warning NU1902: Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr
+  DomainValidation -> /Users/ferozebasha/SF/src/SharedKernel/DomainValidation/bin/Debug/net8.0/DomainValidation.dll
+  HCL.CS.Domain -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Domain/bin/Debug/net8.0/HCL.CS.Domain.dll
+  HCL.CS.DomainServices -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.DomainServices/bin/Debug/net8.0/HCL.CS.DomainServices.dll
+  HCL.CS.Service.Interfaces -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Contracts/bin/Debug/net8.0/HCL.CS.Service.Interfaces.dll
+  HCL.CS.Infrastructure.Data -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Persistence/bin/Debug/net8.0/HCL.CS.Infrastructure.Data.dll
+  HCL.CS.Service -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Application/bin/Debug/net8.0/HCL.CS.Service.dll
+  HCL.CS.ProxyService -> /Users/ferozebasha/SF/src/Gateway/HCL.CS.Gateway/bin/Debug/net8.0/HCL.CS.ProxyService.dll
+  HCL.CS.Infrastructure.Resources -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure.Resources/bin/Debug/net8.0/HCL.CS.Infrastructure.Resources.dll
+  HCL.CS.Infrastructure.Services -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/bin/Debug/net8.0/HCL.CS.Infrastructure.Services.dll
+  TestApp.Helper -> /Users/ferozebasha/SF/tests/HCL.CS.TestApp.Helper/bin/Debug/net8.0/TestApp.Helper.dll
+  HCL.CS.Hosting -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.API/bin/Debug/net8.0/HCL.CS.Hosting.dll
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/ApiDomainModel/DomainResourceModel.cs(358,19): warning CS0108: 'AuditSearchRequestModel.CreatedBy' hides inherited member 'BaseTrailModel.CreatedBy'. Use the new keyword if hiding was intended. [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/ApiDomainModel/DomainResourceModel.cs(366,22): warning CS0114: 'AuditSearchRequestModel.CreatedOn' hides inherited member 'BaseTrailModel.CreatedOn'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword. [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs(3443,50): warning CS0108: 'UserAccountProxyTests.GetAccessToken()' hides inherited member 'HclCsFakeSetup.GetAccessToken()'. Use the new keyword if hiding was intended. [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/HclCsFakeSetup.cs(63,19): warning CS0649: Field 'UserInfoDictonary.Password' is never assigned to, and will always have its default value null [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/ClientCredentialFlowTests.cs(21,20): warning CS0414: The field 'ClientCredentialFlowTests.userName' is assigned but its value is never used [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Services/AuthorizationServiceTests.cs(116,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Services/AuthorizationServiceTests.cs(137,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ApiResourceProxyServiceTests.cs(623,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ApiResourceProxyServiceTests.cs(1060,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ApiResourceProxyServiceTests.cs(1088,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+  IntegrationTests -> /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll
+Test run for /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.4.3+1b45f5407b (64-bit .NET 8.0.24)
+[xUnit.net 00:00:01.43]   Discovering: HCL.CS.IntegrationTests
+[xUnit.net 00:00:01.49]   Discovered:  HCL.CS.IntegrationTests
+[xUnit.net 00:00:01.49]   Starting:    HCL.CS.IntegrationTests
+[xUnit.net 00:00:12.66]     IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.PkcePlainDowngradeAttempt_MustBeRejected [FAIL]
+[xUnit.net 00:00:12.66]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:12.66]       Stack Trace:
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:12.66]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs(53,0): at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.PkcePlainDowngradeAttempt_MustBeRejected()
+[xUnit.net 00:00:12.66]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:12.66]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidScope_ReturnRequestedScopeNotAllowedForClient [FAIL]
+[xUnit.net 00:00:12.66]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:12.66]       Stack Trace:
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:12.66]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:12.66]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(395,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidScope_ReturnRequestedScopeNotAllowedForClient()
+[xUnit.net 00:00:12.66]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.PkcePlainDowngradeAttempt_MustBeRejected [11 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.SecurityRegressionFlowTests.PkcePlainDowngradeAttempt_MustBeRejected() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/SecurityRegressionFlowTests.cs:line 53
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidScope_ReturnRequestedScopeNotAllowedForClient [11 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidScope_ReturnRequestedScopeNotAllowedForClient() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 395
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:13.84]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_MissingCodeChallenge_ReturnInvalidRequest [FAIL]
+[xUnit.net 00:00:13.84]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:13.84]       Stack Trace:
+[xUnit.net 00:00:13.84]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:13.84]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:13.84]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:13.84]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:13.84]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:13.84]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:13.84]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:13.84]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(616,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_MissingCodeChallenge_ReturnInvalidRequest()
+[xUnit.net 00:00:13.84]         --- End of stack trace from previous location ---
+  Passed IntegrationTests.Endpoint.FlowTests.Phase1LdapDisabledCompatibilityTests.LdapDisabled_AuthorizationCodeWithS256Pkce_IssuesTokens [11 s]
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_MissingCodeChallenge_ReturnInvalidRequest [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_MissingCodeChallenge_ReturnInvalidRequest() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 616
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:14.79]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_codeid_tokentoken_ReturnErrorUnsupportedResponseType [FAIL]
+[xUnit.net 00:00:14.79]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:14.79]       Stack Trace:
+[xUnit.net 00:00:14.79]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:14.79]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:14.79]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:14.79]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:14.79]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:14.79]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:14.79]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:14.79]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(327,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_codeid_tokentoken_ReturnErrorUnsupportedResponseType()
+[xUnit.net 00:00:14.79]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_codeid_tokentoken_ReturnErrorUnsupportedResponseType [955 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_codeid_tokentoken_ReturnErrorUnsupportedResponseType() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 327
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:15.78]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_CodeChallengeMethodS256_ReturnSuccess [FAIL]
+[xUnit.net 00:00:15.78]       Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+[xUnit.net 00:00:15.78]       Stack Trace:
+[xUnit.net 00:00:15.78]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:15.78]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:15.78]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:15.78]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:15.78]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:15.78]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:15.78]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:15.78]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(663,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_CodeChallengeMethodS256_ReturnSuccess()
+[xUnit.net 00:00:15.78]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:16.71]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingCodeChallengeTocodeVerifier_ReturnUnsupportedCodeChallengeMethod [FAIL]
+[xUnit.net 00:00:16.71]       Expected tokenResult.Result.ErrorDescription to be "Code challenge method is not supported." with a length of 39, but "Authorization code is missing in the request." has a length of 45, differs near "Aut" (index 0).
+[xUnit.net 00:00:16.71]       Stack Trace:
+[xUnit.net 00:00:16.71]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:16.71]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:16.71]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:16.71]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:16.71]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:16.71]            at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
+[xUnit.net 00:00:16.71]            at FluentAssertions.Primitives.StringValidator.Validate()
+[xUnit.net 00:00:16.71]            at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:16.71]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(709,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingCodeChallengeTocodeVerifier_ReturnUnsupportedCodeChallengeMethod()
+[xUnit.net 00:00:16.71]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_CodeChallengeMethodS256_ReturnSuccess [987 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.BadRequest {value: 400}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_CodeChallengeMethodS256_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 663
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingCodeChallengeTocodeVerifier_ReturnUnsupportedCodeChallengeMethod [928 ms]
+  Error Message:
+   Expected tokenResult.Result.ErrorDescription to be "Code challenge method is not supported." with a length of 39, but "Authorization code is missing in the request." has a length of 45, differs near "Aut" (index 0).
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
+   at FluentAssertions.Primitives.StringValidator.Validate()
+   at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingCodeChallengeTocodeVerifier_ReturnUnsupportedCodeChallengeMethod() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 709
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:17.60]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_from_postResponseMode_ReturnInvalidResponseMode [FAIL]
+[xUnit.net 00:00:17.60]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:17.60]       Stack Trace:
+[xUnit.net 00:00:17.60]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:17.60]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:17.60]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:17.60]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:17.60]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:17.60]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:17.60]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:17.60]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(463,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_from_postResponseMode_ReturnInvalidResponseMode()
+[xUnit.net 00:00:17.60]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:18.52]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_codetoken_ReturnErrorUnsupportedResponseType [FAIL]
+[xUnit.net 00:00:18.52]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:18.52]       Stack Trace:
+[xUnit.net 00:00:18.52]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:18.52]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:18.52]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:18.52]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:18.52]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:18.52]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:18.52]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:18.52]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(292,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_codetoken_ReturnErrorUnsupportedResponseType()
+[xUnit.net 00:00:18.52]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_from_postResponseMode_ReturnInvalidResponseMode [890 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_from_postResponseMode_ReturnInvalidResponseMode() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 463
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_codetoken_ReturnErrorUnsupportedResponseType [914 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_codetoken_ReturnErrorUnsupportedResponseType() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 292
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:19.48]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingCodeChallengeToTokenRequest_ReturnUnsupportedCodeChallengeMethod [FAIL]
+[xUnit.net 00:00:19.48]       Expected tokenResult.Result.ErrorDescription to be "Code challenge method is not supported." with a length of 39, but "Authorization code is missing in the request." has a length of 45, differs near "Aut" (index 0).
+[xUnit.net 00:00:19.48]       Stack Trace:
+[xUnit.net 00:00:19.48]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:19.48]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:19.48]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:19.48]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:19.48]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:19.48]            at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
+[xUnit.net 00:00:19.48]            at FluentAssertions.Primitives.StringValidator.Validate()
+[xUnit.net 00:00:19.48]            at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:19.48]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(751,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingCodeChallengeToTokenRequest_ReturnUnsupportedCodeChallengeMethod()
+[xUnit.net 00:00:19.48]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingCodeChallengeToTokenRequest_ReturnUnsupportedCodeChallengeMethod [962 ms]
+  Error Message:
+   Expected tokenResult.Result.ErrorDescription to be "Code challenge method is not supported." with a length of 39, but "Authorization code is missing in the request." has a length of 45, differs near "Aut" (index 0).
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
+   at FluentAssertions.Primitives.StringValidator.Validate()
+   at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingCodeChallengeToTokenRequest_ReturnUnsupportedCodeChallengeMethod() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 751
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:20.39]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_MissingClientId_ReturnErrorClientIdMissingInRequest [FAIL]
+[xUnit.net 00:00:20.39]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:20.39]       Stack Trace:
+[xUnit.net 00:00:20.39]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:20.39]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:20.39]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:20.39]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:20.39]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:20.39]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:20.39]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:20.39]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(84,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_MissingClientId_ReturnErrorClientIdMissingInRequest()
+[xUnit.net 00:00:20.39]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:21.32]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_responseType_Token_ReturnErrorUnsupportedResponseType [FAIL]
+[xUnit.net 00:00:21.32]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:21.32]       Stack Trace:
+[xUnit.net 00:00:21.32]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:21.32]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:21.32]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:21.32]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:21.32]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:21.32]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:21.32]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:21.32]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(187,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_responseType_Token_ReturnErrorUnsupportedResponseType()
+[xUnit.net 00:00:21.32]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_MissingClientId_ReturnErrorClientIdMissingInRequest [907 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_MissingClientId_ReturnErrorClientIdMissingInRequest() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 84
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_responseType_Token_ReturnErrorUnsupportedResponseType [931 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_responseType_Token_ReturnErrorUnsupportedResponseType() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 187
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:22.14]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_InvalidClientId_ReturnErrorClientDoesNotExist [FAIL]
+[xUnit.net 00:00:22.14]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:22.14]       Stack Trace:
+[xUnit.net 00:00:22.14]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:22.14]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:22.14]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:22.14]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:22.14]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:22.14]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:22.14]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:22.14]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(118,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_InvalidClientId_ReturnErrorClientDoesNotExist()
+[xUnit.net 00:00:22.14]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:23.00]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.TokenGeneration_AuthCodeFlow_valid_Data [FAIL]
+[xUnit.net 00:00:23.00]       Expected response.Code not to be <null> or empty, but found <null>.
+[xUnit.net 00:00:23.00]       Stack Trace:
+[xUnit.net 00:00:23.00]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:23.00]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:23.00]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:23.00]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:23.00]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:23.00]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:23.00]            at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrEmpty(String because, Object[] becauseArgs)
+[xUnit.net 00:00:23.00]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(891,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.TokenGeneration_AuthCodeFlow_valid_Data()
+[xUnit.net 00:00:23.00]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_InvalidClientId_ReturnErrorClientDoesNotExist [816 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_InvalidClientId_ReturnErrorClientDoesNotExist() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 118
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.TokenGeneration_AuthCodeFlow_valid_Data [859 ms]
+  Error Message:
+   Expected response.Code not to be <null> or empty, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrEmpty(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.TokenGeneration_AuthCodeFlow_valid_Data() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 891
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:23.88]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_ValidInput_Success [FAIL]
+[xUnit.net 00:00:23.88]       Expected response.Code not to be <null> or empty, but found <null>.
+[xUnit.net 00:00:23.88]       Stack Trace:
+[xUnit.net 00:00:23.88]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:23.88]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:23.88]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:23.88]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:23.88]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:23.88]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:23.88]            at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrEmpty(String because, Object[] becauseArgs)
+[xUnit.net 00:00:23.88]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(52,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_ValidInput_Success()
+[xUnit.net 00:00:23.88]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_ValidInput_Success [879 ms]
+  Error Message:
+   Expected response.Code not to be <null> or empty, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrEmpty(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_ValidInput_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 52
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:24.73]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidResponseMode_ReturnInvalidResponseMode [FAIL]
+[xUnit.net 00:00:24.73]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:24.73]       Stack Trace:
+[xUnit.net 00:00:24.73]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:24.73]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:24.73]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:24.73]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:24.73]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:24.73]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:24.73]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:24.73]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(497,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidResponseMode_ReturnInvalidResponseMode()
+[xUnit.net 00:00:24.73]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:25.54]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_FragmentResponseMode_ReturnInvalidResponseMode [FAIL]
+[xUnit.net 00:00:25.54]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:25.54]       Stack Trace:
+[xUnit.net 00:00:25.54]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:25.54]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:25.54]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:25.54]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:25.54]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:25.54]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:25.54]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:25.54]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(429,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_FragmentResponseMode_ReturnInvalidResponseMode()
+[xUnit.net 00:00:25.54]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidResponseMode_ReturnInvalidResponseMode [852 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidResponseMode_ReturnInvalidResponseMode() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 497
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_FragmentResponseMode_ReturnInvalidResponseMode [807 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_FragmentResponseMode_ReturnInvalidResponseMode() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 429
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:26.34]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_consentPrompt_ReturInvalidPrompt [FAIL]
+[xUnit.net 00:00:26.34]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:26.34]       Stack Trace:
+[xUnit.net 00:00:26.34]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:26.34]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:26.34]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:26.34]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:26.34]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:26.34]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:26.34]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:26.34]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(557,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_consentPrompt_ReturInvalidPrompt()
+[xUnit.net 00:00:26.34]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:27.17]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_ResponseType_codeid_token_ReturnErrorUnsupportedResponseType [FAIL]
+[xUnit.net 00:00:27.17]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:27.17]       Stack Trace:
+[xUnit.net 00:00:27.17]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:27.17]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:27.17]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:27.17]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:27.17]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:27.17]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:27.17]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:27.17]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(222,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_ResponseType_codeid_token_ReturnErrorUnsupportedResponseType()
+[xUnit.net 00:00:27.17]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_consentPrompt_ReturInvalidPrompt [797 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_consentPrompt_ReturInvalidPrompt() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 557
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_ResponseType_codeid_token_ReturnErrorUnsupportedResponseType [829 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_ResponseType_codeid_token_ReturnErrorUnsupportedResponseType() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 222
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:28.00]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_id_token_ReturnErrorUnsupportedResponseType [FAIL]
+[xUnit.net 00:00:28.00]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:28.00]       Stack Trace:
+[xUnit.net 00:00:28.00]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:28.00]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:28.00]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:28.00]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:28.00]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:28.00]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:28.00]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:28.00]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(257,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_id_token_ReturnErrorUnsupportedResponseType()
+[xUnit.net 00:00:28.00]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:28.90]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_MissingResponceType_ReturnErrorUnsupportedResponseType [FAIL]
+[xUnit.net 00:00:28.91]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:28.91]       Stack Trace:
+[xUnit.net 00:00:28.91]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:28.91]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:28.91]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:28.91]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:28.91]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:28.91]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:28.91]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:28.91]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(152,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_MissingResponceType_ReturnErrorUnsupportedResponseType()
+[xUnit.net 00:00:28.91]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_id_token_ReturnErrorUnsupportedResponseType [831 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ResponseType_id_token_ReturnErrorUnsupportedResponseType() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 257
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_MissingResponceType_ReturnErrorUnsupportedResponseType [903 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthorizeCodeFlow_MissingResponceType_ReturnErrorUnsupportedResponseType() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 152
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:29.71]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_MissingredirectUri_InvalidRedirectUri [FAIL]
+[xUnit.net 00:00:29.71]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:29.71]       Stack Trace:
+[xUnit.net 00:00:29.71]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:29.71]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:29.71]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:29.71]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:29.71]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:29.71]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:29.71]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:29.71]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(817,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_MissingredirectUri_InvalidRedirectUri()
+[xUnit.net 00:00:29.71]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:30.55]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ignoreScope__ReturnSuccess [FAIL]
+[xUnit.net 00:00:30.55]       Expected response.Code not to be <null> or empty, but found <null>.
+[xUnit.net 00:00:30.55]       Stack Trace:
+[xUnit.net 00:00:30.55]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:30.55]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:30.55]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:30.55]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:30.55]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:30.55]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:30.55]            at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrEmpty(String because, Object[] becauseArgs)
+[xUnit.net 00:00:30.55]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(362,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ignoreScope__ReturnSuccess()
+[xUnit.net 00:00:30.55]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_MissingredirectUri_InvalidRedirectUri [807 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_MissingredirectUri_InvalidRedirectUri() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 817
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ignoreScope__ReturnSuccess [832 ms]
+  Error Message:
+   Expected response.Code not to be <null> or empty, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrEmpty(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_ignoreScope__ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 362
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:31.34]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_select_accountPrompt_Returnauthorizecallback [FAIL]
+[xUnit.net 00:00:31.34]       Expected response to be True, but found False.
+[xUnit.net 00:00:31.34]       Stack Trace:
+[xUnit.net 00:00:31.34]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:31.34]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:31.34]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:31.34]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:31.34]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:31.34]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:31.34]            at FluentAssertions.Primitives.BooleanAssertions`1.Be(Boolean expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:31.34]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(593,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_select_accountPrompt_Returnauthorizecallback()
+[xUnit.net 00:00:31.34]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:32.18]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_loginPrompt_ReturnauthorizecallbackUrl [FAIL]
+[xUnit.net 00:00:32.18]       Expected response to be True, but found False.
+[xUnit.net 00:00:32.18]       Stack Trace:
+[xUnit.net 00:00:32.18]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:32.18]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:32.18]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:32.18]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:32.18]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:32.18]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:32.18]            at FluentAssertions.Primitives.BooleanAssertions`1.Be(Boolean expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:32.18]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(532,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_loginPrompt_ReturnauthorizecallbackUrl()
+[xUnit.net 00:00:32.18]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_select_accountPrompt_Returnauthorizecallback [792 ms]
+  Error Message:
+   Expected response to be True, but found False.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.BooleanAssertions`1.Be(Boolean expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_select_accountPrompt_Returnauthorizecallback() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 593
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_loginPrompt_ReturnauthorizecallbackUrl [842 ms]
+  Error Message:
+   Expected response to be True, but found False.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.BooleanAssertions`1.Be(Boolean expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_loginPrompt_ReturnauthorizecallbackUrl() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 532
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:33.16]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingValidCodeChallengeToTokenRequestButPassingInvalidCodeChallengetoAuthCode_ReturnUnsupportedCodeChallengeMethod [FAIL]
+[xUnit.net 00:00:33.16]       Expected tokenResult.Result.ErrorDescription to be "Code challenge method is not supported." with a length of 39, but "Authorization code is missing in the request." has a length of 45, differs near "Aut" (index 0).
+[xUnit.net 00:00:33.16]       Stack Trace:
+[xUnit.net 00:00:33.16]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:33.16]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:33.16]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:33.16]            at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
+[xUnit.net 00:00:33.16]            at FluentAssertions.Primitives.StringValidator.Validate()
+[xUnit.net 00:00:33.16]            at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:33.16]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(792,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingValidCodeChallengeToTokenRequestButPassingInvalidCodeChallengetoAuthCode_ReturnUnsupportedCodeChallengeMethod()
+[xUnit.net 00:00:33.16]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingValidCodeChallengeToTokenRequestButPassingInvalidCodeChallengetoAuthCode_ReturnUnsupportedCodeChallengeMethod [978 ms]
+  Error Message:
+   Expected tokenResult.Result.ErrorDescription to be "Code challenge method is not supported." with a length of 39, but "Authorization code is missing in the request." has a length of 45, differs near "Aut" (index 0).
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
+   at FluentAssertions.Primitives.StringValidator.Validate()
+   at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidCodeChallengeMethodS256PassingValidCodeChallengeToTokenRequestButPassingInvalidCodeChallengetoAuthCode_ReturnUnsupportedCodeChallengeMethod() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 792
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:34.01]     IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidredirectUri_RedirectUriNotRegistered [FAIL]
+[xUnit.net 00:00:34.01]       Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+[xUnit.net 00:00:34.01]       Stack Trace:
+[xUnit.net 00:00:34.01]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:34.01]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:34.01]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:34.01]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:34.01]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:34.01]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs(851,0): at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidredirectUri_RedirectUriNotRegistered()
+[xUnit.net 00:00:34.01]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:34.01]   Finished:    HCL.CS.IntegrationTests
+  Failed IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidredirectUri_RedirectUriNotRegistered [843 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.AuthorizeCodeFlowTests.AuthCodeFlow_InvalidredirectUri_RedirectUriNotRegistered() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/AuthorizeCodeFlowTests.cs:line 851
+--- End of stack trace from previous location ---
+Results File: /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/TestResults/phase1-authorize-pkce-after-fixture.trx
+
+Test Run Failed.
+Total tests: 27
+     Passed: 1
+     Failed: 26
+ Total time: 34.9312 Seconds

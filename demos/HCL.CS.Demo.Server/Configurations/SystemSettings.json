@@ -23,7 +23,7 @@
       "AccessFailedCount": 3,
       "RequiredRecoveryCodes": 2,
       "RequireUniqueEmail": true,
-      "RequireConfirmedEmail": false,
+      "RequireConfirmedEmail": true,
       "RequireConfirmedPhoneNumber": false,
       "LockOutAllowedForNewUsers": true,
       "DefaultLockoutTimeSpanMin": 10,
@@ -65,12 +65,43 @@
       "SMSStatusCallbackURL": "${HCL_CS_SMS_STATUS_CALLBACK_URL}"
     },
     "LDAPConfig": {
-      "LdapHostName": "localhost",
-      "LdapDomainName": "dc=example,dc=com",
-      "LDAPPort": 0,
+      "Enabled": false,
+      "LdapHostName": "",
+      "LdapDomainName": "",
+      "LDAPPort": 636,
       "IsSecureConnection": false,
+      "UseSsl": true,
+      "UseStartTls": false,
+      "AllowUnencryptedForDevelopment": false,
+      "UserSearchBase": "",
+      "UserSearchFilter": "(userPrincipalName={0})",
+      "BindDn": "",
+      "BindPassword": "${HCL_CS_LDAP__BINDPASSWORD}",
+      "ConnectTimeoutSeconds": 10,
+      "SearchTimeoutSeconds": 10,
+      "RequireEmployeeId": false,
+      "RequireDepartment": false,
+      "RequireUserPrincipalName": false,
+      "Attributes": {
+        "ImmutableId": "objectGUID",
+        "EmployeeId": "employeeID",
+        "UserPrincipalName": "userPrincipalName",
+        "Email": "mail",
+        "DisplayName": "displayName",
+        "Department": "department",
+        "AccountStatus": "userAccountControl"
+      },
       "IsTwoFactorAuthenticationRequired": false,
       "TwoFactorType": "Email"
+    },
+    "LocalAuthenticationConfig": {
+      "EnabledWhenLdapDisabledOrUnconfigured": true,
+      "AllowedEmailDomains": [
+        "hcltech.com"
+      ],
+      "RequireEmailConfirmation": true,
+      "AllowSelfRegistration": true,
+      "AllowAdministratorCreation": true
     },
     "CryptoConfig": {
       "RandomStringLength": 32

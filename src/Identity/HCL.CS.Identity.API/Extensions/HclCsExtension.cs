@@ -6,7 +6,6 @@
 - HCL is obtained. This is proprietary and confidential to HCL.
  */
 
-using System.DirectoryServices.Protocols;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
@@ -24,6 +23,8 @@ using HCL.CS.Infrastructure.Resources.Extension;
 using HCL.CS.Infrastructure.Services.Extension;
 using HCL.CS.ProxyService.Extension;
 using HCL.CS.Service.Extension;
+using HCL.CS.Service.Implementation.Api.Ldap;
+using HCL.CS.Service.Implementation.Api.Services;
 
 namespace HCL.CS.Hosting.Extensions;
 
@@ -177,6 +178,7 @@ public static class HclCsExtension
         var dbConnectionValidator = new DbConnectionValidator();
         ValidateDatabaseConfiguration(HclCsConfig, dbConnectionValidator);
         ValidateLdapConfiguration(HclCsConfig);
+        ValidateLocalAuthenticationConfiguration(HclCsConfig);
         ValidateEmailConfiguration(HclCsConfig);
         ValidateSmsConfiguration(HclCsConfig);
         ValidateTokenConfiguration(HclCsConfig);
@@ -203,38 +205,24 @@ public static class HclCsExtension
 
     private static void ValidateLdapConfiguration(HclCsConfig HclCsConfig)
     {
-        if (!string.IsNullOrWhiteSpace(HclCsConfig.SystemSettings.LdapConfig.LdapHostName) &&
-            HclCsConfig.SystemSettings.LdapConfig.LdapPort > 0)
-            try
-            {
-                if (string.IsNullOrWhiteSpace(HclCsConfig.SystemSettings.LdapConfig.LdapDomainName))
-                    ErrorList.Add(new Exception("Ldap domain name is not configured"));
+        var ldapConfiguration = HclCsConfig.SystemSettings.LdapConfig;
+        var modeResolver = new AuthenticationModeResolver(HclCsConfig);
+        if (modeResolver.Resolve() != HCL.CS.Domain.Enums.AuthenticationMode.Ldap)
+        {
+            GlobalConfiguration.IsLdapConfigurationValid = false;
+            return;
+        }
 
-                var serverId = new LdapDirectoryIdentifier(
-                    HclCsConfig.SystemSettings.LdapConfig.LdapHostName,
-                    HclCsConfig.SystemSettings.LdapConfig.LdapPort);
-                using var ldapConnection = new LdapConnection(serverId);
-                ldapConnection.SessionOptions.ProtocolVersion = 3;
-                if (HclCsConfig.SystemSettings.LdapConfig.IsSecureConnection)
-                {
-                    ldapConnection.AuthType = AuthType.External;
-                    ldapConnection.SessionOptions.SecureSocketLayer = true;
-                }
-                else
-                {
-                    ldapConnection.AuthType = AuthType.Basic;
-                    ldapConnection.SessionOptions.SecureSocketLayer = false;
-                }
+        var errors = new LdapConfigurationValidator().Validate(ldapConfiguration);
+        GlobalConfiguration.IsLdapConfigurationValid = errors.Count == 0;
+        foreach (var error in errors) ErrorList.Add(new Exception(error));
+    }
 
-                ldapConnection.Bind();
-
-                GlobalConfiguration.IsLdapConfigurationValid = true;
-                if (ldapConnection != null) ldapConnection.Dispose();
-            }
-            catch (Exception ex)
-            {
-                ErrorList.Add(ex);
-            }
+    private static void ValidateLocalAuthenticationConfiguration(HclCsConfig HclCsConfig)
+    {
+        var errors = new LocalAuthenticationConfigurationValidator()
+            .Validate(HclCsConfig.SystemSettings.LocalAuthenticationConfig);
+        foreach (var error in errors) ErrorList.Add(new Exception(error));
     }
 
     private static void ValidateEmailConfiguration(HclCsConfig HclCsConfig)

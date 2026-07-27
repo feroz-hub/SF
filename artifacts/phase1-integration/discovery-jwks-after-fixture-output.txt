@@ -1,0 +1,762 @@
+/Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj : warning NU1902: Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr
+  DomainValidation -> /Users/ferozebasha/SF/src/SharedKernel/DomainValidation/bin/Debug/net8.0/DomainValidation.dll
+  HCL.CS.Domain -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Domain/bin/Debug/net8.0/HCL.CS.Domain.dll
+  HCL.CS.DomainServices -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.DomainServices/bin/Debug/net8.0/HCL.CS.DomainServices.dll
+  HCL.CS.Service.Interfaces -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Contracts/bin/Debug/net8.0/HCL.CS.Service.Interfaces.dll
+  HCL.CS.Infrastructure.Data -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Persistence/bin/Debug/net8.0/HCL.CS.Infrastructure.Data.dll
+  HCL.CS.Service -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Application/bin/Debug/net8.0/HCL.CS.Service.dll
+  HCL.CS.ProxyService -> /Users/ferozebasha/SF/src/Gateway/HCL.CS.Gateway/bin/Debug/net8.0/HCL.CS.ProxyService.dll
+  HCL.CS.Infrastructure.Resources -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure.Resources/bin/Debug/net8.0/HCL.CS.Infrastructure.Resources.dll
+  HCL.CS.Infrastructure.Services -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/bin/Debug/net8.0/HCL.CS.Infrastructure.Services.dll
+  TestApp.Helper -> /Users/ferozebasha/SF/tests/HCL.CS.TestApp.Helper/bin/Debug/net8.0/TestApp.Helper.dll
+  HCL.CS.Hosting -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.API/bin/Debug/net8.0/HCL.CS.Hosting.dll
+  IntegrationTests -> /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll
+Test run for /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.4.3+1b45f5407b (64-bit .NET 8.0.24)
+[xUnit.net 00:00:02.27]   Discovering: HCL.CS.IntegrationTests
+[xUnit.net 00:00:02.35]   Discovered:  HCL.CS.IntegrationTests
+[xUnit.net 00:00:02.35]   Starting:    HCL.CS.IntegrationTests
+  Passed IntegrationTests.Endpoint.Discovery.DiscoveryEndpointTests.Issuer_uri_should_be_lowercase [9 s]
+  Passed IntegrationTests.Endpoint.FlowTests.Phase1LdapDisabledCompatibilityTests.LdapDisabled_Discovery_RemainsAvailable [9 s]
+[xUnit.net 00:00:12.23]     IntegrationTests.Endpoint.Discovery.DiscoveryEndpointTests.Jwks_entries_should_contain_crv [FAIL]
+[xUnit.net 00:00:12.23]       Expected crv not to be <null> or empty, but found <null>.
+[xUnit.net 00:00:12.24]       Stack Trace:
+[xUnit.net 00:00:12.24]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:12.24]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:12.24]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:12.24]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.24]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.24]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:12.24]            at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrEmpty(String because, Object[] becauseArgs)
+[xUnit.net 00:00:12.24]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Discovery/DiscoveryEndpointTests.cs(74,0): at IntegrationTests.Endpoint.Discovery.DiscoveryEndpointTests.Jwks_entries_should_contain_crv()
+[xUnit.net 00:00:12.24]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:12.32]     IntegrationTests.Endpoint.Discovery.DiscoveryEndpointTests.GetDiscoveryMetaData [FAIL]
+[xUnit.net 00:00:12.32]       Expected algor "[
+[xUnit.net 00:00:12.33]         "ES256",
+[xUnit.net 00:00:12.33]         "ES384",
+[xUnit.net 00:00:12.33]         "ES512",
+[xUnit.net 00:00:12.33]         "RS256",
+[xUnit.net 00:00:12.33]         "RS384",
+[xUnit.net 00:00:12.33]         "RS512",
+[xUnit.net 00:00:12.33]         "PS256",
+[xUnit.net 00:00:12.33]         "PS384",
+[xUnit.net 00:00:12.33]         "PS512"
+[xUnit.net 00:00:12.33]       ]" to contain "HS256".
+[xUnit.net 00:00:12.33]       Stack Trace:
+[xUnit.net 00:00:12.33]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:12.33]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:12.33]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:12.33]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.33]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.33]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:12.33]            at FluentAssertions.Primitives.StringAssertions`1.Contain(String expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:12.33]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Discovery/DiscoveryEndpointTests.cs(51,0): at IntegrationTests.Endpoint.Discovery.DiscoveryEndpointTests.GetDiscoveryMetaData()
+[xUnit.net 00:00:12.33]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:12.98]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS512_PassingValidIdentityToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:12.98]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:12.98]       Stack Trace:
+[xUnit.net 00:00:12.98]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:12.98]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:12.98]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:12.98]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.98]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:12.98]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:12.98]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:12.98]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:12.98]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(294,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS512_PassingValidIdentityToken_ReturnSuccess()
+[xUnit.net 00:00:12.98]         --- End of stack trace from previous location ---
+  Passed IntegrationTests.Endpoint.FlowTests.Phase1LdapDisabledCompatibilityTests.LdapDisabled_Jwks_ExposesValidAsymmetricKeys [109 ms]
+  Failed IntegrationTests.Endpoint.Discovery.DiscoveryEndpointTests.Jwks_entries_should_contain_crv [320 ms]
+  Error Message:
+   Expected crv not to be <null> or empty, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrEmpty(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.Discovery.DiscoveryEndpointTests.Jwks_entries_should_contain_crv() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Discovery/DiscoveryEndpointTests.cs:line 74
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.Discovery.DiscoveryEndpointTests.GetDiscoveryMetaData [93 ms]
+  Error Message:
+   Expected algor "[
+  "ES256",
+  "ES384",
+  "ES512",
+  "RS256",
+  "RS384",
+  "RS512",
+  "PS256",
+  "PS384",
+  "PS512"
+]" to contain "HS256".
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.Contain(String expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.Discovery.DiscoveryEndpointTests.GetDiscoveryMetaData() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Discovery/DiscoveryEndpointTests.cs:line 51
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS512_PassingValidIdentityToken_ReturnSuccess [10 s]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS512_PassingValidIdentityToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 294
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:13.82]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS256_PassingValidAccessToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:13.82]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:13.82]       Stack Trace:
+[xUnit.net 00:00:13.82]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:13.82]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:13.82]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:13.82]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:13.82]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:13.82]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:13.82]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:13.82]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:13.82]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(128,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS256_PassingValidAccessToken_ReturnSuccess()
+[xUnit.net 00:00:13.82]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:14.87]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetric_PassingInvalidIssueandAudienceIdentity_ReturnNull [FAIL]
+[xUnit.net 00:00:14.87]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:14.87]       Stack Trace:
+[xUnit.net 00:00:14.87]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:14.87]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:14.87]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:14.87]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:14.87]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:14.87]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:14.87]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:14.87]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:14.87]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(426,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetric_PassingInvalidIssueandAudienceIdentity_ReturnNull()
+[xUnit.net 00:00:14.87]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS256_PassingValidAccessToken_ReturnSuccess [833 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS256_PassingValidAccessToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 128
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetric_PassingInvalidIssueandAudienceIdentity_ReturnNull [1 s]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetric_PassingInvalidIssueandAudienceIdentity_ReturnNull() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 426
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:15.92]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetric_PassingInvalidIssueandAudienceToken_ReturnNull [FAIL]
+[xUnit.net 00:00:15.92]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:15.92]       Stack Trace:
+[xUnit.net 00:00:15.92]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:15.92]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:15.92]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:15.92]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:15.92]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:15.92]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:15.92]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:15.92]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:15.92]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(389,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetric_PassingInvalidIssueandAudienceToken_ReturnNull()
+[xUnit.net 00:00:15.92]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetric_PassingInvalidIssueandAudienceToken_ReturnNull [1 s]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetric_PassingInvalidIssueandAudienceToken_ReturnNull() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 389
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:16.88]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS_PassingValidIdentity_token_ReturnSuccess [FAIL]
+[xUnit.net 00:00:16.88]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:16.88]       Stack Trace:
+[xUnit.net 00:00:16.88]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:16.88]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:16.88]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:16.88]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:16.88]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:16.88]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:16.88]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:16.88]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:16.88]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(312,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS_PassingValidIdentity_token_ReturnSuccess()
+[xUnit.net 00:00:16.88]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:17.87]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS512_PassingValidIssueandAudienceAccessToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:17.87]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:17.87]       Stack Trace:
+[xUnit.net 00:00:17.87]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:17.87]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:17.87]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:17.87]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:17.87]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:17.87]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:17.87]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:17.87]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:17.87]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(81,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS512_PassingValidIssueandAudienceAccessToken_ReturnSuccess()
+[xUnit.net 00:00:17.87]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS_PassingValidIdentity_token_ReturnSuccess [958 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS_PassingValidIdentity_token_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 312
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS512_PassingValidIssueandAudienceAccessToken_ReturnSuccess [980 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS512_PassingValidIssueandAudienceAccessToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 81
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:18.80]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidEarlyExipreIdentityToken_ReturnNull [FAIL]
+[xUnit.net 00:00:18.80]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:18.80]       Stack Trace:
+[xUnit.net 00:00:18.80]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:18.80]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:18.80]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:18.80]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:18.80]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:18.80]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:18.80]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:18.80]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(453,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow_EarlyExpirationFlow()
+[xUnit.net 00:00:18.80]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(399,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidEarlyExipreIdentityToken_ReturnNull()
+[xUnit.net 00:00:18.80]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidEarlyExipreIdentityToken_ReturnNull [929 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow_EarlyExpirationFlow() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 453
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidEarlyExipreIdentityToken_ReturnNull() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 399
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:19.80]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalid_Id_token_ReturnResultNull [FAIL]
+[xUnit.net 00:00:19.80]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:19.80]       Stack Trace:
+[xUnit.net 00:00:19.80]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:19.80]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:19.80]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:19.80]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:19.80]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:19.80]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:19.80]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:19.80]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:19.80]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(413,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalid_Id_token_ReturnResultNull()
+[xUnit.net 00:00:19.80]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:20.76]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIdentityToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:20.76]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:20.76]       Stack Trace:
+[xUnit.net 00:00:20.76]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:20.76]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:20.76]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:20.76]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:20.76]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:20.76]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:20.76]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:20.76]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:20.76]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(195,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIdentityToken_ReturnSuccess()
+[xUnit.net 00:00:20.76]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalid_Id_token_ReturnResultNull [1 s]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalid_Id_token_ReturnResultNull() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 413
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIdentityToken_ReturnSuccess [956 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIdentityToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 195
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:21.67]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES256_PassingValidIssueandAudienceAccessToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:21.67]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:21.67]       Stack Trace:
+[xUnit.net 00:00:21.67]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:21.67]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:21.67]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:21.67]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:21.67]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:21.67]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:21.67]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:21.67]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:21.67]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(96,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES256_PassingValidIssueandAudienceAccessToken_ReturnSuccess()
+[xUnit.net 00:00:21.67]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES256_PassingValidIssueandAudienceAccessToken_ReturnSuccess [917 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES256_PassingValidIssueandAudienceAccessToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 96
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:22.59]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS512_PassingValidIdentity_token_ReturnSuccess [FAIL]
+[xUnit.net 00:00:22.59]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:22.59]       Stack Trace:
+[xUnit.net 00:00:22.59]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:22.59]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:22.59]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:22.59]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:22.59]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:22.59]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:22.59]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:22.59]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:22.59]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(329,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS512_PassingValidIdentity_token_ReturnSuccess()
+[xUnit.net 00:00:22.59]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:23.48]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES512_PassingValidIssueandAudienceAccessToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:23.48]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:23.48]       Stack Trace:
+[xUnit.net 00:00:23.48]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:23.48]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:23.48]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:23.48]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:23.48]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:23.48]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:23.48]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:23.48]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:23.48]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(112,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES512_PassingValidIssueandAudienceAccessToken_ReturnSuccess()
+[xUnit.net 00:00:23.48]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS512_PassingValidIdentity_token_ReturnSuccess [913 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS512_PassingValidIdentity_token_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 329
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES512_PassingValidIssueandAudienceAccessToken_ReturnSuccess [892 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES512_PassingValidIssueandAudienceAccessToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 112
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:24.33]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES256_PassingValidIssueandAudienceIdentityToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:24.34]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:24.34]       Stack Trace:
+[xUnit.net 00:00:24.34]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:24.34]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:24.34]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:24.34]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:24.34]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:24.34]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:24.34]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:24.34]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:24.34]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(243,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES256_PassingValidIssueandAudienceIdentityToken_ReturnSuccess()
+[xUnit.net 00:00:24.34]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:25.16]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS512_PassingValidAccessToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:25.16]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:25.16]       Stack Trace:
+[xUnit.net 00:00:25.16]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:25.16]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:25.16]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:25.16]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:25.16]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:25.16]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:25.16]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:25.16]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:25.16]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(144,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS512_PassingValidAccessToken_ReturnSuccess()
+[xUnit.net 00:00:25.16]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES256_PassingValidIssueandAudienceIdentityToken_ReturnSuccess [852 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES256_PassingValidIssueandAudienceIdentityToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 243
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS512_PassingValidAccessToken_ReturnSuccess [826 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS512_PassingValidAccessToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 144
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:26.01]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalidAccessToken_ReturnsResultNull [FAIL]
+[xUnit.net 00:00:26.01]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:26.01]       Stack Trace:
+[xUnit.net 00:00:26.01]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:26.01]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:26.01]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:26.01]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:26.01]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:26.01]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:26.01]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:26.01]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:26.01]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(346,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalidAccessToken_ReturnsResultNull()
+[xUnit.net 00:00:26.01]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalidAccessToken_ReturnsResultNull [847 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalidAccessToken_ReturnsResultNull() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 346
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:27.05]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetric_PassingValidAccess_token_ReturnSuccess [FAIL]
+[xUnit.net 00:00:27.05]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:27.05]       Stack Trace:
+[xUnit.net 00:00:27.05]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:27.05]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:27.05]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:27.05]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:27.05]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:27.05]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:27.05]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:27.05]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:27.05]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(161,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetric_PassingValidAccess_token_ReturnSuccess()
+[xUnit.net 00:00:27.05]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:27.93]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIssueandAudienceAccessToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:27.93]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:27.93]       Stack Trace:
+[xUnit.net 00:00:27.93]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:27.93]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:27.93]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:27.93]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:27.93]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:27.93]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:27.93]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:27.93]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:27.93]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(66,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIssueandAudienceAccessToken_ReturnSuccess()
+[xUnit.net 00:00:27.93]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetric_PassingValidAccess_token_ReturnSuccess [1 s]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetric_PassingValidAccess_token_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 161
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIssueandAudienceAccessToken_ReturnSuccess [875 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIssueandAudienceAccessToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 66
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:28.92]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES512_PassingValidIssueandAudienceIdentityToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:28.92]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:28.92]       Stack Trace:
+[xUnit.net 00:00:28.92]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:28.92]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:28.92]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:28.92]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:28.92]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:28.92]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:28.92]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:28.92]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:28.92]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(260,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES512_PassingValidIssueandAudienceIdentityToken_ReturnSuccess()
+[xUnit.net 00:00:28.92]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:29.74]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIssueandAudienceIdentityToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:29.74]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:29.74]       Stack Trace:
+[xUnit.net 00:00:29.74]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:29.74]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:29.74]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:29.74]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:29.74]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:29.74]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:29.74]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:29.74]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:29.74]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(211,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIssueandAudienceIdentityToken_ReturnSuccess()
+[xUnit.net 00:00:29.74]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES512_PassingValidIssueandAudienceIdentityToken_ReturnSuccess [992 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricES512_PassingValidIssueandAudienceIdentityToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 260
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIssueandAudienceIdentityToken_ReturnSuccess [820 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidIssueandAudienceIdentityToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 211
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:30.59]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidAccessToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:30.59]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:30.59]       Stack Trace:
+[xUnit.net 00:00:30.59]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:30.59]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:30.59]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:30.59]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:30.59]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:30.59]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:30.59]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:30.59]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:30.59]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(53,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidAccessToken_ReturnSuccess()
+[xUnit.net 00:00:30.59]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:31.47]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidEarlyExipreAccessToken_ReturnNull [FAIL]
+[xUnit.net 00:00:31.47]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:31.47]       Stack Trace:
+[xUnit.net 00:00:31.47]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:31.47]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:31.47]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:31.47]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:31.47]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:31.47]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:31.47]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:31.47]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(453,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow_EarlyExpirationFlow()
+[xUnit.net 00:00:31.47]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(375,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidEarlyExipreAccessToken_ReturnNull()
+[xUnit.net 00:00:31.47]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidAccessToken_ReturnSuccess [850 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidAccessToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 53
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidEarlyExipreAccessToken_ReturnNull [874 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow_EarlyExpirationFlow() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 453
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingValidEarlyExipreAccessToken_ReturnNull() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 375
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:32.30]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS512_PassingValidAccess_token_ReturnSuccess [FAIL]
+[xUnit.net 00:00:32.30]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:32.30]       Stack Trace:
+[xUnit.net 00:00:32.30]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:32.30]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:32.30]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:32.30]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:32.30]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:32.30]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:32.30]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(177,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS512_PassingValidAccess_token_ReturnSuccess()
+[xUnit.net 00:00:32.30]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS512_PassingValidAccess_token_ReturnSuccess [826 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksSymmetricHS512_PassingValidAccess_token_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 177
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:33.10]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS256_PassingValid_IdentityToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:33.10]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:33.10]       Stack Trace:
+[xUnit.net 00:00:33.10]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:33.10]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:33.10]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:33.10]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:33.10]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:33.10]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:33.10]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(277,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS256_PassingValid_IdentityToken_ReturnSuccess()
+[xUnit.net 00:00:33.10]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:33.94]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS512_PassingValidIssueandAudienceIdentityToken_ReturnSuccess [FAIL]
+[xUnit.net 00:00:33.94]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:33.94]       Stack Trace:
+[xUnit.net 00:00:33.94]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:33.94]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:33.94]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:33.94]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:33.94]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:33.94]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:33.94]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(227,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS512_PassingValidIssueandAudienceIdentityToken_ReturnSuccess()
+[xUnit.net 00:00:33.94]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS256_PassingValid_IdentityToken_ReturnSuccess [803 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricPS256_PassingValid_IdentityToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 277
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS512_PassingValidIssueandAudienceIdentityToken_ReturnSuccess [841 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS512_PassingValidIssueandAudienceIdentityToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 227
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:34.77]     IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalidAccessToken_ReturnNull [FAIL]
+[xUnit.net 00:00:34.77]       Expected response.Code not to be <null>.
+[xUnit.net 00:00:34.78]       Stack Trace:
+[xUnit.net 00:00:34.78]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:34.78]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:34.78]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:34.78]            at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+[xUnit.net 00:00:34.78]            at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+[xUnit.net 00:00:34.78]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(499,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod)
+[xUnit.net 00:00:34.78]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs(365,0): at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalidAccessToken_ReturnNull()
+[xUnit.net 00:00:34.78]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:34.78]   Finished:    HCL.CS.IntegrationTests
+  Failed IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalidAccessToken_ReturnNull [830 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.TokenGenerationFlow(String clientName, String responseType, String scopes, String codeChallengeMethod) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 499
+   at IntegrationTests.Endpoint.FlowTests.JwksFlowTest.JwksAsymmetricRS256_PassingInvalidAccessToken_ReturnNull() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JwksFlowTest.cs:line 365
+--- End of stack trace from previous location ---
+Results File: /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/TestResults/phase1-discovery-jwks-after-fixture.trx
+
+Test Run Failed.
+Total tests: 30
+     Passed: 3
+     Failed: 27
+ Total time: 35.9011 Seconds

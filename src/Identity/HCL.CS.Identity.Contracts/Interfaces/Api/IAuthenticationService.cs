@@ -8,6 +8,7 @@
 
 using System.Security.Claims;
 using HCL.CS.Domain;
+using HCL.CS.Domain.Models.Api;
 using HCL.CS.Domain.Models.Api.Response;
 using HCL.CS.Domain.Models.Endpoint.Validation;
 
@@ -15,6 +16,8 @@ namespace HCL.CS.Service.Interfaces.Interfaces.Api;
 
 public interface IAuthenticationService
 {
+    Task<AuthenticationAvailabilityModel> GetAuthenticationAvailabilityAsync();
+
     Task<SignInResponseModel> PasswordSignInAsync(string username, string password);
 
     Task<SignInResponseModel> PasswordSignInAsync(string username, string password, string twoFactorAuthenticatorToken);

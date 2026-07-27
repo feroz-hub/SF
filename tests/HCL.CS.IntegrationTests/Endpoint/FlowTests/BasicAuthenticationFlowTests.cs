@@ -23,7 +23,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
     private readonly string passWord = "Test@123456789";
     private readonly string positiveCaseClientName = "HCL.CS Plain PKCE Client";
 
-    private readonly string redirectUri = "http://127.0.0.1:63562/";
+    private readonly string redirectUri = "https://127.0.0.1:63562/";
 
     private readonly string userName = "checktest";
     private ClientsModel clientModel;

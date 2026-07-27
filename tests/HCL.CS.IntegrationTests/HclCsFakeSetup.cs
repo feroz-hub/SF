@@ -64,7 +64,7 @@ internal struct UserInfoDictonary
     public string UserName;
 }
 
-public abstract class HclCsFakeSetup
+public abstract class HclCsFakeSetup : IDisposable
 {
     public const string BaseUrl = "https://server";
 
@@ -100,6 +100,7 @@ public abstract class HclCsFakeSetup
     private static bool templateDatabaseReady;
     private static int runtimeDatabaseCounter;
     private static List<AsymmetricKeyInfoModel> cachedAsymmetricKeys;
+    private TestServer testServer;
 
     internal readonly Dictionary<string, ClientInfoDictonary> clientMasterData = new()
     {
@@ -545,8 +546,23 @@ public abstract class HclCsFakeSetup
                 {
                     new()
                     {
-                        Id = Guid.NewGuid(), Type = "name", AliasType = "username", CreatedBy = "Seed",
+                        Id = Guid.NewGuid(), Type = "name", AliasType = "displayname", CreatedBy = "Seed",
                         ModifiedBy = "Seed", CreatedOn = utcNow
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(), Type = "preferred_username", AliasType = "userprincipalname",
+                        CreatedBy = "Seed", ModifiedBy = "Seed", CreatedOn = utcNow
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(), Type = "employee_id", AliasType = "employeeid",
+                        CreatedBy = "Seed", ModifiedBy = "Seed", CreatedOn = utcNow
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid(), Type = "department", AliasType = "department",
+                        CreatedBy = "Seed", ModifiedBy = "Seed", CreatedOn = utcNow
                     },
                     new()
                     {
@@ -719,6 +735,44 @@ public abstract class HclCsFakeSetup
                     }
                 }
             });
+
+        dbContext.ApiResources.Add(new ApiResources
+        {
+            Id = Guid.Parse("53424f4d-0000-4000-8000-000000000001"),
+            Name = "sbom-analyser-api",
+            DisplayName = "SBOM Analyzer API",
+            Description = "OAuth resource and audience for the SBOM Analyzer API",
+            Enabled = true,
+            CreatedBy = "Seed",
+            ModifiedBy = "Seed",
+            CreatedOn = utcNow,
+            ApiResourceClaims = new[]
+            {
+                "sub", "email", "name", "preferred_username", "employee_id", "department"
+            }.Select(claimType => new ApiResourceClaims
+            {
+                Id = Guid.NewGuid(),
+                Type = claimType,
+                CreatedBy = "Seed",
+                ModifiedBy = "Seed",
+                CreatedOn = utcNow
+            }).ToList(),
+            ApiScopes = new List<ApiScopes>
+            {
+                new()
+                {
+                    Id = Guid.Parse("53424f4d-0000-4000-8000-000000000002"),
+                    Name = "sbom-analyser-api",
+                    DisplayName = "Access SBOM Analyzer",
+                    Description = "Access the SBOM Analyzer API as the signed-in user",
+                    Required = false,
+                    Emphasize = false,
+                    CreatedBy = "Seed",
+                    ModifiedBy = "Seed",
+                    CreatedOn = utcNow
+                }
+            }
+        });
     }
 
     private static void SeedSecurityQuestions(ApplicationDbContext dbContext)
@@ -846,6 +900,63 @@ public abstract class HclCsFakeSetup
                 PostLogoutRedirectUris = CreateClientPostLogoutRedirectUris(clientId, utcNow)
             });
         }
+
+        var sbomClientId = Guid.Parse("53424f4d-0000-4000-8000-000000000010");
+        dbContext.Clients.Add(new Clients
+        {
+            Id = sbomClientId,
+            ClientId = "sbom-analyser-web",
+            ClientSecret = null,
+            ClientName = "SBOM Analyzer Web",
+            ClientUri = "https://localhost:3000",
+            ClientIdIssuedAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            ClientSecretExpiresAt = 0,
+            RefreshTokenExpiration = 86400,
+            AccessTokenExpiration = 3600,
+            IdentityTokenExpiration = 3600,
+            LogoutTokenExpiration = 300,
+            AuthorizationCodeExpiration = 300,
+            AccessTokenType = AccessTokenType.JWT,
+            RequirePkce = true,
+            IsPkceTextPlain = false,
+            RequireClientSecret = false,
+            IsFirstPartyApp = true,
+            AllowOfflineAccess = true,
+            AllowedScopes = "openid profile email offline_access sbom-analyser-api",
+            AllowAccessTokensViaBrowser = false,
+            ApplicationType = ApplicationType.SinglePageApp,
+            AllowedSigningAlgorithm = OpenIdConstants.Algorithms.RsaSha256,
+            SupportedGrantTypes = "authorization_code refresh_token",
+            SupportedResponseTypes = "code",
+            CreatedBy = "Seed",
+            ModifiedBy = "Seed",
+            CreatedOn = utcNow,
+            PreferredAudience = "sbom-analyser-api",
+            RedirectUris = new List<ClientRedirectUris>
+            {
+                new()
+                {
+                    Id = Guid.Parse("53424f4d-0000-4000-8000-000000000011"),
+                    ClientId = sbomClientId,
+                    RedirectUri = "https://localhost:3000/auth/callback",
+                    CreatedBy = "Seed",
+                    ModifiedBy = "Seed",
+                    CreatedOn = utcNow
+                }
+            },
+            PostLogoutRedirectUris = new List<ClientPostLogoutRedirectUris>
+            {
+                new()
+                {
+                    Id = Guid.Parse("53424f4d-0000-4000-8000-000000000012"),
+                    ClientId = sbomClientId,
+                    PostLogoutRedirectUri = "https://localhost:3000",
+                    CreatedBy = "Seed",
+                    ModifiedBy = "Seed",
+                    CreatedOn = utcNow
+                }
+            }
+        });
     }
 
     private static List<ClientRedirectUris> CreateClientRedirectUris(Guid clientId, DateTime utcNow)
@@ -854,7 +965,7 @@ public abstract class HclCsFakeSetup
         {
             new()
             {
-                Id = Guid.NewGuid(), ClientId = clientId, RedirectUri = "http://127.0.0.1:63562/", CreatedBy = "Seed",
+                Id = Guid.NewGuid(), ClientId = clientId, RedirectUri = "https://127.0.0.1:63562/", CreatedBy = "Seed",
                 ModifiedBy = "Seed", CreatedOn = utcNow
             },
             new()
@@ -1041,12 +1152,17 @@ public abstract class HclCsFakeSetup
             {
                 Id = Guid.NewGuid(),
                 UserName = "checktest",
-                Email = "checktest@hcl-cs.local",
+                Email = "checktest@hcltech.com",
                 PhoneNumber = "+12055550001",
                 FirstName = "Check",
                 LastName = "Test",
                 DateOfBirth = new DateTime(1989, 5, 1),
                 IdentityProviderType = IdentityProvider.Local,
+                EmployeeId = "EMP-CHECKTEST",
+                UserPrincipalName = "checktest@hcltech.com",
+                DisplayName = "Check Test",
+                Department = "Engineering",
+                AuthenticationSource = "LOCAL",
                 TwoFactorEnabled = false,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
@@ -1069,12 +1185,13 @@ public abstract class HclCsFakeSetup
             {
                 Id = Guid.Parse(userMasterData["BobUser"].UserID),
                 UserName = "BobUser",
-                Email = "bobuser@hcl-cs.local",
+                Email = "bobuser@hcltech.com",
                 PhoneNumber = "+12055550002",
                 FirstName = "Bob",
                 LastName = "User",
                 DateOfBirth = new DateTime(1989, 5, 1),
                 IdentityProviderType = IdentityProvider.Local,
+                AuthenticationSource = "LOCAL",
                 TwoFactorEnabled = false,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
@@ -1097,12 +1214,13 @@ public abstract class HclCsFakeSetup
             {
                 Id = Guid.Parse(userMasterData["JacobIsmail"].UserID),
                 UserName = "JacobIsmail",
-                Email = "jacobismail@hcl-cs.local",
+                Email = "jacobismail@hcltech.com",
                 PhoneNumber = "+12055550003",
                 FirstName = "Jacob",
                 LastName = "Ismail",
                 DateOfBirth = new DateTime(1989, 5, 1),
                 IdentityProviderType = IdentityProvider.Local,
+                AuthenticationSource = "LOCAL",
                 TwoFactorEnabled = false,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
@@ -1125,12 +1243,13 @@ public abstract class HclCsFakeSetup
             {
                 Id = Guid.Parse("763C134B-B796-41F5-B22E-08D9C46BAFAF"),
                 UserName = "adminUser",
-                Email = "adminuser@hcl-cs.local",
+                Email = "adminuser@hcltech.com",
                 PhoneNumber = "+12055550004",
                 FirstName = "Admin",
                 LastName = "User",
                 DateOfBirth = new DateTime(1985, 1, 1),
                 IdentityProviderType = IdentityProvider.Local,
+                AuthenticationSource = "LOCAL",
                 TwoFactorEnabled = false,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
@@ -1268,6 +1387,7 @@ public abstract class HclCsFakeSetup
     {
         var tokenSettings = new TokenSettings();
         tokenSettings.TokenConfig.IssuerUri = "security.hcl-cs.com";
+        tokenSettings.TokenConfig.ApiIdentifier = "hcl-cs.api";
         tokenSettings.TokenConfig.CachingLifetime = 3600;
         tokenSettings.TokenConfig.ShowKeySet = true;
         tokenSettings.TokenConfig.TokenExpiration = 60;
@@ -1565,6 +1685,8 @@ public abstract class HclCsFakeSetup
 
     public void Initialize(string basePath = null)
     {
+        DisposeRuntimeResources();
+
         if (basePath != null)
             IssueUrl = BaseUrl + basePath;
         else
@@ -1573,11 +1695,29 @@ public abstract class HclCsFakeSetup
         var builder = new WebHostBuilder();
         builder.ConfigureServices(ConfigureServices);
         builder.Configure(app => { ConfigureApp(app); });
-        var server = new TestServer(builder);
-        var handler = server.CreateHandler();
+        testServer = new TestServer(builder);
+        var handler = testServer.CreateHandler();
 
         FrontChannelClient = new UserAgent(new UserAgentHandler(handler));
         BackChannelClient = new HttpClient(handler);
+    }
+
+    public void Dispose()
+    {
+        DisposeRuntimeResources();
+        GC.SuppressFinalize(this);
+    }
+
+    private void DisposeRuntimeResources()
+    {
+        FrontChannelClient?.Dispose();
+        FrontChannelClient = null;
+        BackChannelClient?.Dispose();
+        BackChannelClient = null;
+        testServer?.Dispose();
+        testServer = null;
+        ServiceProvider?.Dispose();
+        ServiceProvider = null;
     }
 
     public async Task LoginAsync(UserModel user)
@@ -1820,7 +1960,7 @@ public abstract class HclCsFakeSetup
         {
             // Authorize endpoint calls.
             var nonce = Guid.NewGuid().ToString();
-            var codeVerifier = 32.RandomString();
+            var codeVerifier = GeneratePkceCodeVerifier();
             var codeChallengeString = codeVerifier.GenerateCodeChallenge();
             FrontChannelClient.AllowAutoRedirect = false;
             var url = CreateAuthorizeRequestUrl(
@@ -1832,7 +1972,8 @@ public abstract class HclCsFakeSetup
                 codeChallenge: codeChallengeString, // Codeverifier
                 codeChallengeMethod: "S256", // Plain
                 maxAge: "60",
-                redirectUri: "http://127.0.0.1:63562/",
+                redirectUri: "https://127.0.0.1:63562/",
+                state: Guid.NewGuid().ToString("N"),
                 nonce: nonce);
             var returnQuery = await FrontChannelClient.GetAsync(url);
 
@@ -1843,7 +1984,7 @@ public abstract class HclCsFakeSetup
                 clientModel.ClientId,
                 clientModel.ClientSecret,
                 response.Code,
-                "http://127.0.0.1:63562/",
+                "https://127.0.0.1:63562/",
                 OpenIdConstants.GrantTypes.AuthorizationCode,
                 codeVerifier); // Code Challenge
             var tokenClient = BackChannelClient;
@@ -1862,6 +2003,14 @@ public abstract class HclCsFakeSetup
         }
 
         return tokenResponseResultModel;
+    }
+
+    private static string GeneratePkceCodeVerifier()
+    {
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32))
+            .TrimEnd('=')
+            .Replace('+', '-')
+            .Replace('/', '_');
     }
 
     private sealed class ClientSeedDefinition

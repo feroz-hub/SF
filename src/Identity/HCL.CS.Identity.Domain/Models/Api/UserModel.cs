@@ -50,6 +50,20 @@ public class UserModel : BaseModel
 
     public virtual IdentityProvider IdentityProviderType { get; set; } = IdentityProvider.Local;
 
+    public virtual string? DirectoryImmutableId { get; set; }
+
+    public virtual string? EmployeeId { get; set; }
+
+    public virtual string? UserPrincipalName { get; set; }
+
+    public virtual string? DisplayName { get; set; }
+
+    public virtual string? Department { get; set; }
+
+    public virtual string? AuthenticationSource { get; set; }
+
+    public virtual DateTimeOffset? DirectoryLastValidatedAt { get; set; }
+
     public virtual List<UserSecurityQuestionModel> UserSecurityQuestion { get; set; }
 
     public virtual List<UserClaimModel> UserClaims { get; set; }

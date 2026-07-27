@@ -34,10 +34,21 @@ public class UserClaimsPrincipalWrapper(
         var usernameClaim = identity.FindFirst(claim =>
             claim.Type == userManager.Options.ClaimsIdentity.UserNameClaimType && claim.Value == currentUser.UserName);
         if (usernameClaim != null)
-            identity.AddClaim(new Claim(OpenIdConstants.ClaimTypes.PreferredUserName, currentUser.UserName));
+            identity.AddClaim(new Claim(
+                OpenIdConstants.ClaimTypes.PreferredUserName,
+                string.IsNullOrWhiteSpace(currentUser.UserPrincipalName)
+                    ? currentUser.UserName
+                    : currentUser.UserPrincipalName));
 
         if (!identity.HasClaim(x => x.Type == OpenIdConstants.ClaimTypes.Name))
-            identity.AddClaim(new Claim(OpenIdConstants.ClaimTypes.Name, currentUser.UserName));
+            identity.AddClaim(new Claim(
+                OpenIdConstants.ClaimTypes.Name,
+                string.IsNullOrWhiteSpace(currentUser.DisplayName)
+                    ? string.Join(
+                        " ",
+                        new[] { currentUser.FirstName, currentUser.LastName }
+                            .Where(value => !string.IsNullOrWhiteSpace(value)))
+                    : currentUser.DisplayName));
 
         if (userManager.SupportsUserEmail && !string.IsNullOrWhiteSpace(currentUser.Email))
             identity.AddClaims(new[]

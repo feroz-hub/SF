@@ -74,7 +74,11 @@ internal class UserInfoServices : SecurityBase, IUserInfoServices
 
                     var rolesOfUser = await userManager.GetRolesAsync(mapper.Map<Users>(claimUser));
 
-                    if (rolesOfUser.ContainsAny())
+                    if (rolesOfUser.ContainsAny() &&
+                        !string.Equals(
+                            userInfoRequestValidation.Client?.ClientId,
+                            SbomIdentityContract.ClientId,
+                            StringComparison.Ordinal))
                         foreach (var role in rolesOfUser)
                             allowedClaims.Add(new Claim(ClaimTypes.Role, role));
 
@@ -85,7 +89,13 @@ internal class UserInfoServices : SecurityBase, IUserInfoServices
                     else if (subClaim.Value != claim.Value)
                         frameworkResultService.Throw(EndpointErrorCodes.SubjectClaimValueMismatch);
 
-                    return allowedClaims.Distinct().ToList().ConvertCollection();
+                    var responseClaims = string.Equals(
+                        userInfoRequestValidation.Client?.ClientId,
+                        SbomIdentityContract.ClientId,
+                        StringComparison.Ordinal)
+                        ? allowedClaims.NormalizeSbomProtocolClaims()
+                        : allowedClaims;
+                    return responseClaims.Distinct().ToList().ConvertCollection();
                 }
             }
 

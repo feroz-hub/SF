@@ -39,7 +39,7 @@ public static class UserHelper
         var userModel = new UserModel
         {
             UserName = "BobAlice",
-            Email = "jesuarockiana.aruln@hcl-cs.com",
+            Email = "jesuarockiana.aruln@hcltech.com",
             PhoneNumber = "+919940554097",
             TwoFactorEnabled = false,
             Password = "Test@123",
@@ -76,7 +76,7 @@ public static class UserHelper
             new()
             {
                 UserName = "JackRyan",
-                Email = "JackRyan@gmail.com",
+                Email = "JackRyan@hcltech.com",
                 EmailConfirmed = false,
                 PhoneNumber = "+91234928347",
                 PhoneNumberConfirmed = false,
@@ -97,7 +97,7 @@ public static class UserHelper
             new()
             {
                 UserName = "JacobIsmail",
-                Email = "JacobIsmail@gmail.com",
+                Email = "JacobIsmail@hcltech.com",
                 EmailConfirmed = false,
                 PhoneNumber = "+91234928347",
                 PhoneNumberConfirmed = false,
@@ -118,7 +118,7 @@ public static class UserHelper
             new()
             {
                 UserName = "BobAlice",
-                Email = "jesuarockiana.aruln@hcl-cs.com",
+                Email = "jesuarockiana.aruln@hcltech.com",
                 EmailConfirmed = false,
                 PhoneNumber = "+919940554097",
                 PhoneNumberConfirmed = false,
@@ -251,7 +251,7 @@ public static class UserHelper
         var userModel = new UserModel
         {
             UserName = "Authentication",
-            Email = "jesuarockiana.aruln@hcl-cs.com",
+            Email = "jesuarockiana.aruln@hcltech.com",
             EmailConfirmed = false,
             PhoneNumber = "+8680959119",
             PhoneNumberConfirmed = false,
@@ -290,8 +290,8 @@ public static class UserHelper
             Id = new Guid("d060686f-f66b-42b9-5952-08d9e5807a3e"),
             UserName = "PeterParker_698370305",
             NormalizedUserName = "PETERPARKER_698370305",
-            Email = "PeterParker_698370305@hcl-cs.com",
-            NormalizedEmail = "PETERPARKER_698370305@HCL.CS.COM",
+            Email = "PeterParker_698370305@hcltech.com",
+            NormalizedEmail = "PETERPARKER_698370305@HCLTECH.COM",
             EmailConfirmed = false,
             PasswordHash = "$argon2i$v=19$m=32768,t=10,p=5$pu4J1dCu7oXljn/LtPvOnA$OzC2FMGNRQJYvs/iV1Eig28Jwvw",
             SecurityStamp = "OMYUZMB4W2YQAPXAHMAIRLADC3HMLTTA",
@@ -336,7 +336,7 @@ public static class UserHelper
         var userRequestModel = new UserModel
         {
             UserName = "PeterParker",
-            Email = "roshan.bashyam@hcl-cs.com",
+            Email = "roshan.bashyam@hcltech.com",
             PhoneNumber = "+919820958196",
             TwoFactorEnabled = true,
             TwoFactorType = TwoFactorType.Email,
@@ -374,7 +374,7 @@ public static class UserHelper
             new()
             {
                 UserName = "JackRyan",
-                Email = "JackRyan@gmail.com",
+                Email = "JackRyan@hcltech.com",
                 PhoneNumber = "+91234928347",
                 TwoFactorEnabled = true,
                 Password = "Test@123",
@@ -393,7 +393,7 @@ public static class UserHelper
             new()
             {
                 UserName = "JacobIsmail",
-                Email = "JacobIsmail@gmail.com",
+                Email = "JacobIsmail@hcltech.com",
                 PhoneNumber = "+91234928347",
                 TwoFactorEnabled = true,
                 Password = "Test@123",
@@ -412,7 +412,7 @@ public static class UserHelper
             new()
             {
                 UserName = "BobAlice",
-                Email = "jesuarockiana.aruln@hcl-cs.com",
+                Email = "jesuarockiana.aruln@hcltech.com",
                 PhoneNumber = "+919940554097",
                 TwoFactorEnabled = true,
                 Password = "Test@123",
@@ -430,7 +430,7 @@ public static class UserHelper
             new()
             {
                 UserName = "BruceWayne",
-                Email = "dark.knight@JL.com",
+                Email = "dark.knight@hcltech.com",
                 PhoneNumber = "+919940554097",
                 TwoFactorEnabled = true,
                 Password = "Batman@123",
@@ -678,7 +678,7 @@ public static class UserHelper
         var userRequestModel = new UserModel
         {
             UserName = "PeterParker",
-            Email = "roshan.bashyam@hcl-cs.com",
+            Email = "roshan.bashyam@hcltech.com",
             PhoneNumber = "+919820958196",
             TwoFactorEnabled = true,
             TwoFactorType = TwoFactorType.Email,

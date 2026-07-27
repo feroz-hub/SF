@@ -890,6 +890,30 @@
     <data name="INVALID_USER_OR_PASSWORD" xml:space="preserve">
     <value>Username or Password is null or invalid.</value>
   </data>
+    <data name="AUTH_MODE_LOCAL_REGISTRATION_DISABLED" xml:space="preserve">
+    <value>Local registration is not available.</value>
+  </data>
+    <data name="AUTH_LOCAL_EMAIL_INVALID" xml:space="preserve">
+    <value>A valid corporate email address is required.</value>
+  </data>
+    <data name="AUTH_LOCAL_EMAIL_DOMAIN_NOT_ALLOWED" xml:space="preserve">
+    <value>This account cannot be registered. Sign in or contact support.</value>
+  </data>
+    <data name="AUTH_LOCAL_USER_ALREADY_EXISTS" xml:space="preserve">
+    <value>This account cannot be registered. Sign in or contact support.</value>
+  </data>
+    <data name="AUTH_IDENTITY_SOURCE_CONFLICT" xml:space="preserve">
+    <value>This account cannot be registered. Sign in or contact support.</value>
+  </data>
+    <data name="AUTH_LOCAL_EMAIL_CONFIRMATION_REQUIRED" xml:space="preserve">
+    <value>Unable to sign in. Please verify your credentials or contact support.</value>
+  </data>
+    <data name="AUTH_LOCAL_EMAIL_CONFIRMATION_INVALID" xml:space="preserve">
+    <value>The email confirmation request is invalid or expired.</value>
+  </data>
+    <data name="AUTH_DIRECTORY_UNAVAILABLE" xml:space="preserve">
+    <value>Sign-in is temporarily unavailable. Please try again later.</value>
+  </data>
     <data name="INVALID_LAST_NAME_LENGTH" xml:space="preserve">
     <value>Length of last name is invalid.</value>
   </data>

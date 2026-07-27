@@ -1,0 +1,189 @@
+Test run for /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:16.09]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingcodeJWTSecret_ReturnAuthorizationCodeMissingError [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingcodeJWTSecret_ReturnAuthorizationCodeMissingError [14 s]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingcodeJWTSecret_ReturnAuthorizationCodeMissingError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 129
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:17.10]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingCodeChallengeJWTSecret_ReturnInvalidCodeVerifierError [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingCodeChallengeJWTSecret_ReturnInvalidCodeVerifierError [1 s]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingCodeChallengeJWTSecret_ReturnInvalidCodeVerifierError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 378
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:17.97]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidCodeJWTSecret_ReturnInvalidAuthorizationCode [FAIL]
+[xUnit.net 00:00:18.90]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_JWTSecret_ValidInput_Success [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidCodeJWTSecret_ReturnInvalidAuthorizationCode [870 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidCodeJWTSecret_ReturnInvalidAuthorizationCode() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 170
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_JWTSecret_ValidInput_Success [929 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_JWTSecret_ValidInput_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 82
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:19.83]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingGrantTypeJWTSecret_ReturnGrantTypeIsMissingError [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingGrantTypeJWTSecret_ReturnGrantTypeIsMissingError [928 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingGrantTypeJWTSecret_ReturnGrantTypeIsMissingError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 295
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:20.77]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidCodeChallengeJWTSecret_ReturnUnsupportedCodeChallengeMethodError [FAIL]
+[xUnit.net 00:00:21.61]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidClientAssertionJWTSecret_ReturnInvalidClientidError [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidCodeChallengeJWTSecret_ReturnUnsupportedCodeChallengeMethodError [937 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidCodeChallengeJWTSecret_ReturnUnsupportedCodeChallengeMethodError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 420
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidClientAssertionJWTSecret_ReturnInvalidClientidError [838 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidClientAssertionJWTSecret_ReturnInvalidClientidError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 501
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:22.51]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingClientAssertionTypeJWTSecret_ReturnInvalidClientError [FAIL]
+[xUnit.net 00:00:23.35]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidRedirectUrIJWTSecret_ReturnInvalidRedirectUriError [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingClientAssertionTypeJWTSecret_ReturnInvalidClientError [901 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingClientAssertionTypeJWTSecret_ReturnInvalidClientError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 462
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidRedirectUrIJWTSecret_ReturnInvalidRedirectUriError [840 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidRedirectUrIJWTSecret_ReturnInvalidRedirectUriError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 253
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:24.25]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingRedirectUriJWTSecret_ReturnRedirectUriMissingError [FAIL]
+[xUnit.net 00:00:25.09]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_clientAssertionInvalidClientSecretJWTSecret_returnErrorInvalidClientSecretJWT [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingRedirectUriJWTSecret_ReturnRedirectUriMissingError [900 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_MissingRedirectUriJWTSecret_ReturnRedirectUriMissingError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 213
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_clientAssertionInvalidClientSecretJWTSecret_returnErrorInvalidClientSecretJWT [840 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_clientAssertionInvalidClientSecretJWTSecret_returnErrorInvalidClientSecretJWT() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 585
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:25.89]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_clientAssertionInvalidClientIDJWTSecret_returnInvalidClientIDError [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_clientAssertionInvalidClientIDJWTSecret_returnInvalidClientIDError [797 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_clientAssertionInvalidClientIDJWTSecret_returnInvalidClientIDError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 541
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:26.69]     IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidGrantTypwJWTSecret_ReturnGrantTypeIsMissingError [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidGrantTypwJWTSecret_ReturnGrantTypeIsMissingError [799 ms]
+  Error Message:
+   Expected response.Code not to be <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message)
+   at FluentAssertions.Primitives.ReferenceTypeAssertions`2.NotBeNull(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.JWTPostFlowTest.TokenGeneration_AuthCodeFlow_InvalidGrantTypwJWTSecret_ReturnGrantTypeIsMissingError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/JWTPostFlowTest.cs:line 336
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:    13, Passed:     0, Skipped:     0, Total:    13, Duration: 10 s - HCL.CS.IntegrationTests.dll (net8.0)

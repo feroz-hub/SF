@@ -43,6 +43,7 @@ public static class IdentityResourceExtension
                         BindingFlags.Instance)
                     ?.GetValue(userInfo, null);
 
+            infoValue ??= ResolveIdentityFallback(userInfo, claimType);
             if (infoValue != null)
             {
                 var stdClaim = AuthenticationConstants.StandardClaims.FirstOrDefault(x => x.Key == claimType);
@@ -54,5 +55,53 @@ public static class IdentityResourceExtension
         }
 
         return await Task.FromResult(resultClaims);
+    }
+
+    public static IEnumerable<Claim> NormalizeSbomProtocolClaims(this IEnumerable<Claim> claims)
+    {
+        ArgumentNullException.ThrowIfNull(claims);
+
+        return claims.Select(claim =>
+        {
+            var claimType = claim.Type switch
+            {
+                System.Security.Claims.ClaimTypes.Email => SbomIdentityContract.ClaimNames.Email,
+                "displayname" => SbomIdentityContract.ClaimNames.Name,
+                "userprincipalname" => SbomIdentityContract.ClaimNames.PreferredUserName,
+                "employeeid" => SbomIdentityContract.ClaimNames.EmployeeId,
+                "emailconfirmed" => SbomIdentityContract.ClaimNames.EmailVerified,
+                _ => claim.Type
+            };
+            var value = claimType == SbomIdentityContract.ClaimNames.EmailVerified
+                ? claim.Value.ToLowerInvariant()
+                : claim.Value;
+            var valueType = claimType == SbomIdentityContract.ClaimNames.EmailVerified
+                ? ClaimValueTypes.Boolean
+                : claim.ValueType;
+            return new Claim(claimType, value, valueType);
+        });
+    }
+
+    private static object? ResolveIdentityFallback(UserModel userInfo, string claimType)
+    {
+        if (string.Equals(
+                claimType,
+                nameof(UserModel.DisplayName),
+                StringComparison.OrdinalIgnoreCase))
+        {
+            var fullName = string.Join(
+                " ",
+                new[] { userInfo.FirstName, userInfo.LastName }
+                    .Where(value => !string.IsNullOrWhiteSpace(value)));
+            return string.IsNullOrWhiteSpace(fullName) ? userInfo.UserName : fullName;
+        }
+
+        if (string.Equals(
+                claimType,
+                nameof(UserModel.UserPrincipalName),
+                StringComparison.OrdinalIgnoreCase))
+            return userInfo.UserName;
+
+        return null;
     }
 }

@@ -24,6 +24,7 @@ using HCL.CS.DemoServerApp.Constants;
 using HCL.CS.DemoServerApp.Options;
 using HCL.CS.DemoServerApp.Services.ExternalAuth;
 using HCL.CS.Domain;
+using HCL.CS.Domain.Configurations.Api;
 using HCL.CS.Domain.Enums;
 using HCL.CS.Domain.Models.Endpoint;
 using HCL.CS.Hosting.Extensions;
@@ -72,7 +73,7 @@ var logConfig = new LogConfig
 logConfig.LogFileConfig.FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Authentication.txt");
 
 builder.Services.AddHclCs(systemSettings, tokenSettings, notificationSettings)
-    .AddAsymmetricKeystore(LoadAsymmetricCertificate())
+    .AddAsymmetricKeystore(LoadAsymmetricCertificate(builder.Environment))
     .AddLoggerInstance(logConfig);
 
 builder.Services.AddOptions<GoogleOidcOptions>()
@@ -380,6 +381,10 @@ static (SystemSettings SystemSettings, TokenSettings TokenSettings, Notification
     systemSettings.SMSConfig.SMSAccountFrom = ResolveSecretPlaceholders(systemSettings.SMSConfig.SMSAccountFrom);
     systemSettings.SMSConfig.SMSStatusCallbackURL =
         ResolveSecretPlaceholders(systemSettings.SMSConfig.SMSStatusCallbackURL);
+    ApplyLdapEnvironmentOverrides(systemSettings.LdapConfig);
+    ApplyLocalAuthenticationEnvironmentOverrides(systemSettings.LocalAuthenticationConfig);
+    systemSettings.LdapConfig.BindPassword =
+        ResolveSecretPlaceholders(systemSettings.LdapConfig.BindPassword);
     systemSettings.LogConfig.LogDbConfig.ConnectionString = ResolveSqliteConnectionString(
         systemSettings.LogConfig.LogDbConfig.Database,
         ResolveSecretPlaceholders(systemSettings.LogConfig.LogDbConfig.ConnectionString),
@@ -390,6 +395,105 @@ static (SystemSettings SystemSettings, TokenSettings TokenSettings, Notification
     tokenSettings.TokenConfig.ApiIdentifier = ResolveSecretPlaceholders(tokenSettings.TokenConfig.ApiIdentifier, true);
 
     return (systemSettings, tokenSettings, notificationSettings);
+}
+
+static void ApplyLdapEnvironmentOverrides(LdapConfig ldapConfig)
+{
+    OverrideString("HCL_CS_LDAP__HOST", value => ldapConfig.LdapHostName = value);
+    OverrideInt("HCL_CS_LDAP__PORT", value => ldapConfig.LdapPort = value);
+    OverrideBoolean("HCL_CS_LDAP__ENABLED", value => ldapConfig.Enabled = value);
+    OverrideBoolean("HCL_CS_LDAP__USESSL", value => ldapConfig.UseSsl = value);
+    OverrideBoolean("HCL_CS_LDAP__USESTARTTLS", value => ldapConfig.UseStartTls = value);
+    OverrideBoolean(
+        "HCL_CS_LDAP__ALLOWUNENCRYPTEDFORDEVELOPMENT",
+        value => ldapConfig.AllowUnencryptedForDevelopment = value);
+    OverrideString("HCL_CS_LDAP__BASEDN", value => ldapConfig.LdapDomainName = value);
+    OverrideString("HCL_CS_LDAP__USERSEARCHBASE", value => ldapConfig.UserSearchBase = value);
+    OverrideString("HCL_CS_LDAP__USERSEARCHFILTER", value => ldapConfig.UserSearchFilter = value);
+    OverrideString("HCL_CS_LDAP__BINDDN", value => ldapConfig.BindDn = value);
+    OverrideString("HCL_CS_LDAP__BINDPASSWORD", value => ldapConfig.BindPassword = value);
+    OverrideInt(
+        "HCL_CS_LDAP__CONNECTTIMEOUTSECONDS",
+        value => ldapConfig.ConnectTimeoutSeconds = value);
+    OverrideInt(
+        "HCL_CS_LDAP__SEARCHTIMEOUTSECONDS",
+        value => ldapConfig.SearchTimeoutSeconds = value);
+    OverrideBoolean(
+        "HCL_CS_LDAP__REQUIREEMPLOYEEID",
+        value => ldapConfig.RequireEmployeeId = value);
+    OverrideBoolean(
+        "HCL_CS_LDAP__REQUIREDEPARTMENT",
+        value => ldapConfig.RequireDepartment = value);
+    OverrideBoolean(
+        "HCL_CS_LDAP__REQUIREUSERPRINCIPALNAME",
+        value => ldapConfig.RequireUserPrincipalName = value);
+    OverrideString(
+        "HCL_CS_LDAP__ATTRIBUTES__IMMUTABLEID",
+        value => ldapConfig.Attributes.ImmutableId = value);
+    OverrideString(
+        "HCL_CS_LDAP__ATTRIBUTES__EMPLOYEEID",
+        value => ldapConfig.Attributes.EmployeeId = value);
+    OverrideString(
+        "HCL_CS_LDAP__ATTRIBUTES__USERPRINCIPALNAME",
+        value => ldapConfig.Attributes.UserPrincipalName = value);
+    OverrideString(
+        "HCL_CS_LDAP__ATTRIBUTES__EMAIL",
+        value => ldapConfig.Attributes.Email = value);
+    OverrideString(
+        "HCL_CS_LDAP__ATTRIBUTES__DISPLAYNAME",
+        value => ldapConfig.Attributes.DisplayName = value);
+    OverrideString(
+        "HCL_CS_LDAP__ATTRIBUTES__DEPARTMENT",
+        value => ldapConfig.Attributes.Department = value);
+    OverrideString(
+        "HCL_CS_LDAP__ATTRIBUTES__ACCOUNTSTATUS",
+        value => ldapConfig.Attributes.AccountStatus = value);
+}
+
+static void ApplyLocalAuthenticationEnvironmentOverrides(LocalAuthenticationConfig localAuthenticationConfig)
+{
+    OverrideBoolean(
+        "HCL_CS_LOCALAUTHENTICATION__ENABLEDWHENLDAPDISABLEDORUNCONFIGURED",
+        value => localAuthenticationConfig.EnabledWhenLdapDisabledOrUnconfigured = value);
+    OverrideBoolean(
+        "HCL_CS_LOCALAUTHENTICATION__REQUIREEMAILCONFIRMATION",
+        value => localAuthenticationConfig.RequireEmailConfirmation = value);
+    OverrideBoolean(
+        "HCL_CS_LOCALAUTHENTICATION__ALLOWSELFREGISTRATION",
+        value => localAuthenticationConfig.AllowSelfRegistration = value);
+    OverrideBoolean(
+        "HCL_CS_LOCALAUTHENTICATION__ALLOWADMINISTRATORCREATION",
+        value => localAuthenticationConfig.AllowAdministratorCreation = value);
+
+    var domains = Environment.GetEnvironmentVariable("HCL_CS_LOCALAUTHENTICATION__ALLOWEDEMAILDOMAINS");
+    if (domains is not null)
+        localAuthenticationConfig.AllowedEmailDomains = domains
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .ToList();
+}
+
+static void OverrideString(string environmentVariable, Action<string> apply)
+{
+    var value = Environment.GetEnvironmentVariable(environmentVariable);
+    if (value is not null) apply(value);
+}
+
+static void OverrideInt(string environmentVariable, Action<int> apply)
+{
+    var value = Environment.GetEnvironmentVariable(environmentVariable);
+    if (value is null) return;
+    if (!int.TryParse(value, out var parsed))
+        throw new InvalidOperationException($"{environmentVariable} must be an integer.");
+    apply(parsed);
+}
+
+static void OverrideBoolean(string environmentVariable, Action<bool> apply)
+{
+    var value = Environment.GetEnvironmentVariable(environmentVariable);
+    if (value is null) return;
+    if (!bool.TryParse(value, out var parsed))
+        throw new InvalidOperationException($"{environmentVariable} must be true or false.");
+    apply(parsed);
 }
 
 static string ResolveApplicationRoot()
@@ -572,9 +676,15 @@ static string ResolveSecretPlaceholders(string value, bool required = false)
     });
 }
 
-static List<AsymmetricKeyInfoModel> LoadAsymmetricCertificate()
+static List<AsymmetricKeyInfoModel> LoadAsymmetricCertificate(IHostEnvironment environment)
 {
     var certificatePassword = Environment.GetEnvironmentVariable("HCL_CS_SIGNING_CERT_PASSWORD");
+    var allowDevelopmentFallback = environment.IsDevelopment() &&
+                                   string.Equals(
+                                       Environment.GetEnvironmentVariable(
+                                           "HCL_CS_ALLOW_EPHEMERAL_SIGNING_KEYS"),
+                                       "true",
+                                       StringComparison.OrdinalIgnoreCase);
     var keyInfos = new List<AsymmetricKeyInfoModel>();
 
     var rsaCertificate = LoadCertificateFromEnvironment(
@@ -582,14 +692,16 @@ static List<AsymmetricKeyInfoModel> LoadAsymmetricCertificate()
         "HCL_CS_RSA_SIGNING_CERT_PATH",
         certificatePassword,
         SigningAlgorithm.RS256,
-        "CN=HCL.CS Demo RSA");
+        "CN=HCL.CS Demo RSA",
+        allowDevelopmentFallback);
 
     var ecdsaCertificate = LoadCertificateFromEnvironment(
         "HCL_CS_ECDSA_SIGNING_CERT_BASE64",
         "HCL_CS_ECDSA_SIGNING_CERT_PATH",
         certificatePassword,
         SigningAlgorithm.ES256,
-        "CN=HCL.CS Demo ECDSA");
+        "CN=HCL.CS Demo ECDSA",
+        allowDevelopmentFallback);
 
     keyInfos.Add(new AsymmetricKeyInfoModel
     {
@@ -613,7 +725,8 @@ static X509Certificate2 LoadCertificateFromEnvironment(
     string pathEnvKey,
     string? password,
     SigningAlgorithm algorithm,
-    string subjectName)
+    string subjectName,
+    bool allowDevelopmentFallback)
 {
     const X509KeyStorageFlags storageFlags = X509KeyStorageFlags.Exportable | X509KeyStorageFlags.EphemeralKeySet;
     var certificateBase64 = Environment.GetEnvironmentVariable(base64EnvKey);
@@ -632,8 +745,22 @@ static X509Certificate2 LoadCertificateFromEnvironment(
     }
 
     var certificatePath = Environment.GetEnvironmentVariable(pathEnvKey);
-    if (string.IsNullOrWhiteSpace(certificatePath) || !File.Exists(certificatePath))
+    if (string.IsNullOrWhiteSpace(certificatePath))
+    {
+        if (!allowDevelopmentFallback)
+            throw new InvalidOperationException(
+                $"A persistent {algorithm} signing certificate is required. Configure '{base64EnvKey}' or '{pathEnvKey}'.");
+
+        Console.Error.WriteLine(
+            $"WARNING: using an ephemeral development-only {algorithm} signing certificate. " +
+            "Outstanding tokens will not survive restart.");
         return CreateSelfSignedCertificate(algorithm, subjectName);
+    }
+
+    if (!File.Exists(certificatePath))
+        throw new InvalidOperationException(
+            $"Signing certificate configured by '{pathEnvKey}' does not exist.");
+
     {
         if (string.IsNullOrWhiteSpace(password))
             throw new InvalidOperationException(

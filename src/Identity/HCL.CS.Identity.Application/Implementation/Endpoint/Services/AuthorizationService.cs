@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Constants;
+using HCL.CS.Domain.Constants.Api;
 using HCL.CS.Domain.Constants.Endpoint;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Entities.Endpoint;
@@ -18,6 +19,7 @@ using HCL.CS.Domain.ErrorCodes;
 using HCL.CS.Domain.Models.Endpoint;
 using HCL.CS.Domain.Models.Endpoint.Request;
 using HCL.CS.Domain.Models.Endpoint.Response;
+using HCL.CS.Domain.Models.Api;
 using HCL.CS.DomainServices.Infra;
 using HCL.CS.DomainServices.Repository.Api;
 using HCL.CS.DomainServices.UnitOfWork.Endpoint;
@@ -25,6 +27,7 @@ using HCL.CS.DomainServices.Wrappers;
 using HCL.CS.Service.Extension;
 using HCL.CS.Service.Implementation.Endpoint.Extensions;
 using HCL.CS.Service.Interfaces.Interfaces.Endpoint;
+using HCL.CS.Service.Interfaces.Interfaces.Api;
 using static HCL.CS.Domain.Constants.Endpoint.OpenIdConstants;
 
 namespace HCL.CS.Service.Implementation.Endpoint.Services;
@@ -35,6 +38,7 @@ internal class AuthorizationService : SecurityBase, IAuthorizationService
     private readonly IFrameworkResultService frameworkResultService;
     private readonly ILoggerService loggerService;
     private readonly IResourceStringHandler resourceStringHandler;
+    private readonly ISecurityAuditService securityAuditService;
     private readonly ISecurityTokenCommandRepository securityTokenCommandRepository;
     private readonly ITokenGenerationService tokenGenerationService;
     private readonly IClientsUnitOfWork unitOfWork;
@@ -48,7 +52,8 @@ internal class AuthorizationService : SecurityBase, IAuthorizationService
         ISecurityTokenCommandRepository securityTokenCommandRepository,
         HclCsConfig tokenSettings,
         IFrameworkResultService frameworkResultService,
-        IResourceStringHandler resourceStringHandler)
+        IResourceStringHandler resourceStringHandler,
+        ISecurityAuditService securityAuditService)
     {
         this.frameworkResultService = frameworkResultService;
         this.userManager = userManager;
@@ -58,6 +63,7 @@ internal class AuthorizationService : SecurityBase, IAuthorizationService
         configSettings = tokenSettings.TokenSettings;
         loggerService = instance.GetLoggerInstance(LoggerKeyConstants.DefaultLoggerKey);
         this.resourceStringHandler = resourceStringHandler;
+        this.securityAuditService = securityAuditService;
     }
 
     public async Task<string> SaveAuthorizationCodeAsync(AuthorizationCodeModel authCodeRequest)
@@ -87,6 +93,14 @@ internal class AuthorizationService : SecurityBase, IAuthorizationService
             await unitOfWork.SecurityTokensRepository.InsertAsync(securityToken);
             var result = await unitOfWork.SecurityTokensRepository.SaveChangesAsync();
             if (result.Status == ResultStatus.Failed) return string.Empty;
+            await securityAuditService.WriteAsync(new SecurityAuditEventModel
+            {
+                EventType = SecurityAuditEventTypes.AuthorizationCodeIssued,
+                ClientId = authCodeRequest.ClientId,
+                GrantType = GrantTypes.AuthorizationCode,
+                Result = "SUCCEEDED",
+                SessionId = authCodeRequest.SessionId
+            });
         }
         catch (Exception ex)
         {

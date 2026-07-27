@@ -17,6 +17,13 @@ namespace HCL.CS.ProxyService.Routes;
 
 internal partial class ApiGateway : BaseApiServiceInstance, IApiGateway
 {
+    private async Task<bool> GetAuthenticationAvailability(string jsonContent)
+    {
+        var availability = await AuthenticationService.GetAuthenticationAvailabilityAsync();
+        await GenerateApiResults(availability);
+        return true;
+    }
+
     private async Task<bool> GenerateRecoveryCodes(string jsonContent)
     {
         var userId = jsonContent.JsonDeserialize<Guid>();

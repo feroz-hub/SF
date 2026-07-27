@@ -1279,6 +1279,11 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.PostgreSql
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("AuthenticationSource")
+                        .HasColumnName("AuthenticationSource")
+                        .HasColumnType("character varying(32)")
+                        .HasMaxLength(32);
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("character varying(255)")
@@ -1298,6 +1303,25 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.PostgreSql
                         .HasColumnName("DateOfBirth")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("Department")
+                        .HasColumnName("Department")
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("DirectoryImmutableId")
+                        .HasColumnName("DirectoryImmutableId")
+                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(512);
+
+                    b.Property<DateTimeOffset?>("DirectoryLastValidatedAt")
+                        .HasColumnName("DirectoryLastValidatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnName("DisplayName")
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("character varying(255)")
@@ -1306,6 +1330,11 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.PostgreSql
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnName("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnName("EmployeeId")
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -1393,14 +1422,31 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.PostgreSql
                         .HasColumnType("character varying(255)")
                         .HasMaxLength(255);
 
+                    b.Property<string>("UserPrincipalName")
+                        .HasColumnName("UserPrincipalName")
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
                     b.HasKey("Id");
 
+                    b.HasIndex("DirectoryImmutableId")
+                        .IsUnique()
+                        .HasName("UX_USERS_DIRECTORY_IMMUTABLE_ID");
+
+                    b.HasIndex("EmployeeId")
+                        .HasName("IX_USERS_EMPLOYEE_ID");
+
                     b.HasIndex("NormalizedEmail")
+                        .IsUnique()
                         .HasName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasName("UserNameIndex");
+
+                    b.HasIndex("UserPrincipalName")
+                        .IsUnique()
+                        .HasName("UX_USERS_USER_PRINCIPAL_NAME");
 
                     b.ToTable("HclCs_Users");
                 });
@@ -1546,6 +1592,4 @@ namespace HclCsInstallerMVC.Infrastructure.Persistence.Migrations.PostgreSql
         }
     }
 }
-
-
 

@@ -38,6 +38,23 @@ public class UsersMap
             entityBuilder.Property(t => t.PhoneNumber).HasMaxLength(15);
             entityBuilder.Property(t => t.ConcurrencyStamp).HasMaxLength(255);
             entityBuilder.Property(t => t.SecurityStamp).HasMaxLength(255);
+            entityBuilder.Property(t => t.DirectoryImmutableId).HasMaxLength(512);
+            entityBuilder.Property(t => t.EmployeeId).HasMaxLength(255);
+            entityBuilder.Property(t => t.UserPrincipalName).HasMaxLength(255);
+            entityBuilder.Property(t => t.DisplayName).HasMaxLength(255);
+            entityBuilder.Property(t => t.Department).HasMaxLength(255);
+            entityBuilder.Property(t => t.AuthenticationSource).HasMaxLength(32);
+            entityBuilder.HasIndex(t => t.NormalizedEmail)
+                .IsUnique()
+                .HasDatabaseName("EmailIndex");
+            entityBuilder.HasIndex(t => t.DirectoryImmutableId)
+                .IsUnique()
+                .HasDatabaseName("UX_USERS_DIRECTORY_IMMUTABLE_ID");
+            entityBuilder.HasIndex(t => t.UserPrincipalName)
+                .IsUnique()
+                .HasDatabaseName("UX_USERS_USER_PRINCIPAL_NAME");
+            entityBuilder.HasIndex(t => t.EmployeeId)
+                .HasDatabaseName("IX_USERS_EMPLOYEE_ID");
 
             // Table & Column Mappings
             entityBuilder.Property(t => t.Id).HasColumnName("Id");
@@ -50,6 +67,13 @@ public class UsersMap
             entityBuilder.Property(t => t.LastLoginDateTime).HasColumnName("LastLoginDateTime");
             entityBuilder.Property(t => t.LastLogoutDateTime).HasColumnName("LastLogoutDateTime");
             entityBuilder.Property(t => t.IdentityProviderType).HasColumnName("IdentityProviderType");
+            entityBuilder.Property(t => t.DirectoryImmutableId).HasColumnName("DirectoryImmutableId");
+            entityBuilder.Property(t => t.EmployeeId).HasColumnName("EmployeeId");
+            entityBuilder.Property(t => t.UserPrincipalName).HasColumnName("UserPrincipalName");
+            entityBuilder.Property(t => t.DisplayName).HasColumnName("DisplayName");
+            entityBuilder.Property(t => t.Department).HasColumnName("Department");
+            entityBuilder.Property(t => t.AuthenticationSource).HasColumnName("AuthenticationSource");
+            entityBuilder.Property(t => t.DirectoryLastValidatedAt).HasColumnName("DirectoryLastValidatedAt");
             entityBuilder.Property(t => t.IsDeleted).IsRequired().HasColumnName("IsDeleted");
             entityBuilder.Property(t => t.CreatedOn).IsRequired().HasColumnName("CreatedOn");
             entityBuilder.Property(t => t.CreatedBy).IsRequired().HasMaxLength(255).HasColumnName("CreatedBy");

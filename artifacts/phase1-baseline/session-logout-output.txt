@@ -1,0 +1,55 @@
+/private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj : warning NU1902: Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr
+  DomainValidation -> /private/tmp/hclcs-phase0-baseline/src/SharedKernel/DomainValidation/bin/Debug/net8.0/DomainValidation.dll
+  HCL.CS.Domain -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Domain/bin/Debug/net8.0/HCL.CS.Domain.dll
+  HCL.CS.DomainServices -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.DomainServices/bin/Debug/net8.0/HCL.CS.DomainServices.dll
+  HCL.CS.Service.Interfaces -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Contracts/bin/Debug/net8.0/HCL.CS.Service.Interfaces.dll
+  HCL.CS.Infrastructure.Data -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Persistence/bin/Debug/net8.0/HCL.CS.Infrastructure.Data.dll
+  HCL.CS.Service -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Application/bin/Debug/net8.0/HCL.CS.Service.dll
+  HCL.CS.ProxyService -> /private/tmp/hclcs-phase0-baseline/src/Gateway/HCL.CS.Gateway/bin/Debug/net8.0/HCL.CS.ProxyService.dll
+  HCL.CS.Infrastructure.Resources -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure.Resources/bin/Debug/net8.0/HCL.CS.Infrastructure.Resources.dll
+  HCL.CS.Infrastructure.Services -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure/bin/Debug/net8.0/HCL.CS.Infrastructure.Services.dll
+  TestApp.Helper -> /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.TestApp.Helper/bin/Debug/net8.0/TestApp.Helper.dll
+  HCL.CS.Hosting -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.API/bin/Debug/net8.0/HCL.CS.Hosting.dll
+  IntegrationTests -> /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll
+Test run for /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.4.3+1b45f5407b (64-bit .NET 8.0.24)
+[xUnit.net 00:00:02.45]   Discovering: HCL.CS.IntegrationTests
+[xUnit.net 00:00:02.53]   Discovered:  HCL.CS.IntegrationTests
+[xUnit.net 00:00:02.53]   Starting:    HCL.CS.IntegrationTests
+[xUnit.net 00:00:14.61]     IntegrationTests.Endpoint.Session.SessionEndpointTests.EndSessionEndPoint [FAIL]
+[xUnit.net 00:00:14.61]       System.NullReferenceException : Object reference not set to an instance of an object.
+[xUnit.net 00:00:14.61]       Stack Trace:
+[xUnit.net 00:00:14.61]         /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/Setup/IntegrationExtensions.cs(207,0): at IntegrationTests.Endpoint.Setup.IntegrationExtensions.ParseAuthorizeResponse(HttpResponseMessage authResponse)
+[xUnit.net 00:00:14.61]         /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/Session/SessionEndpointTests.cs(64,0): at IntegrationTests.Endpoint.Session.SessionEndpointTests.EndSessionEndPoint()
+[xUnit.net 00:00:14.61]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.Session.SessionEndpointTests.EndSessionEndPoint [12 s]
+  Error Message:
+   System.NullReferenceException : Object reference not set to an instance of an object.
+  Stack Trace:
+     at IntegrationTests.Endpoint.Setup.IntegrationExtensions.ParseAuthorizeResponse(HttpResponseMessage authResponse) in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/Setup/IntegrationExtensions.cs:line 207
+   at IntegrationTests.Endpoint.Session.SessionEndpointTests.EndSessionEndPoint() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/Session/SessionEndpointTests.cs:line 64
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:15.60]     IntegrationTests.Endpoint.Session.SessionEndpointTests.EndSessionEndPointCallback [FAIL]
+[xUnit.net 00:00:15.60]       System.NullReferenceException : Object reference not set to an instance of an object.
+[xUnit.net 00:00:15.60]       Stack Trace:
+[xUnit.net 00:00:15.60]         /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/Setup/IntegrationExtensions.cs(207,0): at IntegrationTests.Endpoint.Setup.IntegrationExtensions.ParseAuthorizeResponse(HttpResponseMessage authResponse)
+[xUnit.net 00:00:15.60]         /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/Session/SessionEndpointTests.cs(125,0): at IntegrationTests.Endpoint.Session.SessionEndpointTests.EndSessionEndPointCallback()
+[xUnit.net 00:00:15.60]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:15.61]   Finished:    HCL.CS.IntegrationTests
+  Failed IntegrationTests.Endpoint.Session.SessionEndpointTests.EndSessionEndPointCallback [986 ms]
+  Error Message:
+   System.NullReferenceException : Object reference not set to an instance of an object.
+  Stack Trace:
+     at IntegrationTests.Endpoint.Setup.IntegrationExtensions.ParseAuthorizeResponse(HttpResponseMessage authResponse) in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/Setup/IntegrationExtensions.cs:line 207
+   at IntegrationTests.Endpoint.Session.SessionEndpointTests.EndSessionEndPointCallback() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/Endpoint/Session/SessionEndpointTests.cs:line 125
+--- End of stack trace from previous location ---
+Results File: /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/TestResults/phase0-session-logout.trx
+
+Test Run Failed.
+Total tests: 2
+     Failed: 2
+ Total time: 16.8782 Seconds

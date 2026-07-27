@@ -7,12 +7,15 @@
  */
 
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Transactions;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Configurations.Api;
 using HCL.CS.Domain.Constants;
+using HCL.CS.Domain.Constants.Api;
 using HCL.CS.Domain.Constants.Endpoint;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Entities.Endpoint;
@@ -33,6 +36,7 @@ namespace HCL.CS.Service.Implementation.Api.Services;
 
 public partial class UserAccountService : SecurityBase, IUserAccountService
 {
+    private const string ExternalCredentialOnlyPasswordHash = "!LDAP_EXTERNAL_CREDENTIAL_ONLY!";
     private readonly IEmailService emailSender;
     private readonly IFrameworkResultService frameworkResultService;
     private readonly ILoggerService loggerService;
@@ -47,6 +51,9 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
     private readonly IUserManagementUnitOfWork userManagementUnitOfWork;
     private readonly UserManagerWrapper<Users> userManager;
     private readonly IRepository<UserSecurityQuestions> userSecurityQuestionsRepository;
+    private readonly IAuthenticationModeResolver authenticationModeResolver;
+    private readonly IAllowedEmailDomainPolicy allowedEmailDomainPolicy;
+    private readonly ISecurityAuditService securityAuditService;
 
     public UserAccountService(
         UserManagerWrapper<Users> userManager,
@@ -62,7 +69,10 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
         IPasswordHasher<Users> passwordHasher,
         IRoleService roleService,
         IRepository<SecurityTokens> securityTokenRepository,
-        RoleManagerWrapper<Roles> roleManager)
+        RoleManagerWrapper<Roles> roleManager,
+        IAuthenticationModeResolver authenticationModeResolver,
+        IAllowedEmailDomainPolicy allowedEmailDomainPolicy,
+        ISecurityAuditService securityAuditService)
     {
         this.userManager = userManager;
         this.userManagementUnitOfWork = userManagementUnitOfWork;
@@ -78,6 +88,9 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
         this.roleService = roleService;
         this.securityTokenRepository = securityTokenRepository;
         this.roleManager = roleManager;
+        this.authenticationModeResolver = authenticationModeResolver;
+        this.allowedEmailDomainPolicy = allowedEmailDomainPolicy;
+        this.securityAuditService = securityAuditService;
     }
 
     private async Task PrepareLockoutStateChangeAsync(Users user, DateTimeOffset? lockoutEnd, bool lockoutEnabled)
@@ -97,82 +110,272 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
     {
         if (user == null) return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.UserModelIsNull);
 
+        await AuditLocalRegistrationAsync(
+            SecurityAuditEventTypes.LocalRegistrationRequested,
+            user.Email,
+            "REQUESTED");
+
+        if (authenticationModeResolver.Resolve() != AuthenticationMode.Local
+            || !securityConfig.SystemSettings.LocalAuthenticationConfig
+                .EnabledWhenLdapDisabledOrUnconfigured
+            || !securityConfig.SystemSettings.LocalAuthenticationConfig.AllowSelfRegistration)
+            return await RejectLocalRegistrationAsync(
+                user.Email,
+                ApiErrorCodes.AuthModeLocalRegistrationDisabled);
+
+        var emailValidation = allowedEmailDomainPolicy.Validate(user.Email);
+        if (!emailValidation.IsValid)
+        {
+            await AuditLocalRegistrationAsync(
+                SecurityAuditEventTypes.LocalDomainRejected,
+                user.Email,
+                "REJECTED",
+                emailValidation.ReasonCode);
+            return frameworkResultService.Failed<FrameworkResult>(
+                emailValidation.ReasonCode ?? ApiErrorCodes.AuthLocalEmailInvalid);
+        }
+
+        user.Email = emailValidation.NormalizedEmail;
+        user.IdentityProviderType = IdentityProvider.Local;
+        user.AuthenticationSource = "LOCAL";
+        user.DirectoryImmutableId = null;
+        user.DirectoryLastValidatedAt = null;
+        user.EmployeeId = null;
+        user.Department = null;
+        user.UserPrincipalName = null;
+
         var frameworkResult = ValidateUser(user, securityConfig.SystemSettings.UserConfig, true);
-        if (frameworkResult.Status == ResultStatus.Failed) return frameworkResult;
+        if (frameworkResult.Status == ResultStatus.Failed)
+            return await RejectLocalRegistrationAsync(
+                user.Email,
+                frameworkResult.Errors.FirstOrDefault()?.Code);
 
         frameworkResult = ValidatePassword(user);
-        if (frameworkResult.Status == ResultStatus.Failed) return frameworkResult;
+        if (frameworkResult.Status == ResultStatus.Failed)
+            return await RejectLocalRegistrationAsync(
+                user.Email,
+                frameworkResult.Errors.FirstOrDefault()?.Code);
 
         frameworkResult = ValidateUserSecurityQuestion(user, securityConfig.SystemSettings.UserConfig, true);
-        if (frameworkResult.Status == ResultStatus.Failed) return frameworkResult;
+        if (frameworkResult.Status == ResultStatus.Failed)
+            return await RejectLocalRegistrationAsync(
+                user.Email,
+                frameworkResult.Errors.FirstOrDefault()?.Code);
 
         frameworkResult = ValidateUserClaims(user, true);
-        if (frameworkResult.Status == ResultStatus.Failed) return frameworkResult;
+        if (frameworkResult.Status == ResultStatus.Failed)
+            return await RejectLocalRegistrationAsync(
+                user.Email,
+                frameworkResult.Errors.FirstOrDefault()?.Code);
 
         loggerService.WriteTo(Log.Debug, "Entered in register new user: " + user.UserName + " by: " + user.CreatedBy);
         try
         {
             var existingUser = await FindUserByUserName(user.UserName);
-            if (!existingUser.Item1)
+            if (existingUser.Item1)
+                return await RejectLocalRegistrationAsync(
+                    user.Email,
+                    ApiErrorCodes.AuthLocalUserAlreadyExists);
+
+            var normalizedEmail = userManager.NormalizeEmail(user.Email);
+            var emailMatches = await userManagementUnitOfWork.UserRepository
+                .FindByNormalizedEmailAsync(normalizedEmail);
+            if (emailMatches.Count > 0)
             {
-                SetDefaultValuesForCreate(user);
-
-                var usersEntity = mapper.Map<UserModel, Users>(user);
-                var result = await userManager.CreateAsync(usersEntity, user.Password);
-                if (result.Succeeded)
-                {
-                    await userManagementUnitOfWork.SetAddedStatusAsync(usersEntity);
-
-                    await AddPasswordHistory(usersEntity);
-
-                    if (user.UserSecurityQuestion.ContainsAny())
-                        foreach (var userSecurityQuestion in user.UserSecurityQuestion)
-                        {
-                            userSecurityQuestion.UserId = usersEntity.Id;
-                            await AddUserQuestionAsync(userSecurityQuestion);
-                        }
-
-                    if (user.UserClaims.ContainsAny())
-                        foreach (var claims in user.UserClaims)
-                        {
-                            claims.UserId = usersEntity.Id;
-                            await AddUserClaimsAsync(claims);
-                        }
-
-                    // Assigning default HCL.CS role.
-                    var role = await roleManager.FindByNameAsync(securityConfig.SystemSettings.UserConfig
-                        .DefaultUserRole);
-                    if (role != null)
-                    {
-                        var userRole = new UserRoles
-                        {
-                            UserId = usersEntity.Id,
-                            RoleId = role.Id,
-                            ValidFrom = DateTime.UtcNow,
-                            ValidTo = DateTime.MaxValue,
-                            CreatedBy = usersEntity.CreatedBy,
-                            CreatedOn = usersEntity.CreatedOn
-                        };
-                        await userManagementUnitOfWork.UserRoleRepository.InsertAsync(userRole);
-                    }
-
-                    frameworkResult = await userManagementUnitOfWork.SaveChangesAsync();
-                    if (frameworkResult.Status == ResultStatus.Failed) return frameworkResult;
-
-                    loggerService.WriteTo(Log.Debug, "User account created successfully. for user: " + user.UserName);
-                    return frameworkResultService.Succeeded();
-                }
-
-                return frameworkResultService.Failed(result.ConstructIdentityErrorAsList());
+                var conflictCode = emailMatches.Any(match =>
+                    match.IdentityProviderType != IdentityProvider.Local
+                    || !string.Equals(match.AuthenticationSource, "LOCAL", StringComparison.OrdinalIgnoreCase))
+                    ? ApiErrorCodes.AuthIdentitySourceConflict
+                    : ApiErrorCodes.AuthLocalUserAlreadyExists;
+                return await RejectLocalRegistrationAsync(user.Email, conflictCode);
             }
 
-            return frameworkResultService.Failed<FrameworkResult>(existingUser.Item2);
+            SetDefaultValuesForCreate(user);
+
+            var usersEntity = mapper.Map<UserModel, Users>(user);
+            var result = await userManager.CreateAsync(usersEntity, user.Password);
+            if (result.Succeeded)
+            {
+                await userManagementUnitOfWork.SetAddedStatusAsync(usersEntity);
+
+                await AddPasswordHistory(usersEntity);
+
+                if (user.UserSecurityQuestion.ContainsAny())
+                    foreach (var userSecurityQuestion in user.UserSecurityQuestion)
+                    {
+                        userSecurityQuestion.UserId = usersEntity.Id;
+                        await AddUserQuestionAsync(userSecurityQuestion);
+                    }
+
+                if (user.UserClaims.ContainsAny())
+                    foreach (var claims in user.UserClaims)
+                    {
+                        claims.UserId = usersEntity.Id;
+                        await AddUserClaimsAsync(claims);
+                    }
+
+                frameworkResult = await userManagementUnitOfWork.SaveChangesAsync();
+                if (frameworkResult.Status == ResultStatus.Failed)
+                    return await RejectLocalRegistrationAsync(
+                        user.Email,
+                        frameworkResult.Errors.FirstOrDefault()?.Code);
+
+                loggerService.WriteTo(Log.Debug, "User account created successfully. for user: " + user.UserName);
+                await AuditLocalRegistrationAsync(
+                    SecurityAuditEventTypes.LocalRegistrationSucceeded,
+                    user.Email,
+                    "SUCCEEDED",
+                    actorUserId: usersEntity.Id.ToString());
+                return frameworkResultService.Succeeded();
+            }
+
+            return await RejectLocalRegistrationAsync(
+                user.Email,
+                result.Errors.Any(error => error.Code.Contains("Duplicate", StringComparison.OrdinalIgnoreCase))
+                    ? ApiErrorCodes.AuthLocalUserAlreadyExists
+                    : result.Errors.FirstOrDefault()?.Code);
         }
         catch (Exception ex)
         {
-            loggerService.WriteToWithCaller(Log.Error, ex, "Failed to create user: " + user.UserName);
+            if (ex.GetType().Name.Contains("DbUpdate", StringComparison.Ordinal))
+                return await RejectLocalRegistrationAsync(
+                    user.Email,
+                    ApiErrorCodes.AuthLocalUserAlreadyExists);
+
+            loggerService.WriteToWithCaller(Log.Error, ex, "Failed to create local user.");
             throw;
         }
+    }
+
+    public virtual async Task<FrameworkResult> UpsertLdapUserAsync(
+        string loginUserName,
+        LdapUserProfile profile)
+    {
+        if (string.IsNullOrWhiteSpace(loginUserName) || profile is null)
+            return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.InvalidUserOrPassword);
+
+        var canonicalUserName = string.IsNullOrWhiteSpace(profile.UserPrincipalName)
+            ? loginUserName.Trim()
+            : profile.UserPrincipalName.Trim();
+        var directoryMatches = await userManagementUnitOfWork.UserRepository
+            .FindByDirectoryImmutableIdAsync(profile.ImmutableId);
+        if (directoryMatches.Count > 1)
+            return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.InvalidUserOrPassword);
+
+        var existingUser = directoryMatches.SingleOrDefault();
+        if (existingUser is null)
+        {
+            existingUser = await userManager.FindByNameAsync(loginUserName.Trim());
+            if (existingUser is null &&
+                !canonicalUserName.Equals(loginUserName.Trim(), StringComparison.OrdinalIgnoreCase))
+                existingUser = await userManager.FindByNameAsync(canonicalUserName);
+        }
+
+        if (existingUser is null)
+        {
+            var normalizedEmail = userManager.NormalizeEmail(profile.Email);
+            var emailMatches = await userManagementUnitOfWork.UserRepository
+                .FindByNormalizedEmailAsync(normalizedEmail);
+            if (emailMatches.Count > 1)
+                return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.InvalidUserOrPassword);
+
+            var emailMatch = emailMatches.SingleOrDefault();
+            if (emailMatch?.IdentityProviderType == IdentityProvider.Ldap &&
+                string.IsNullOrWhiteSpace(emailMatch.DirectoryImmutableId))
+                existingUser = emailMatch;
+            else if (emailMatch is not null)
+                return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.InvalidUserOrPassword);
+        }
+
+        if (existingUser is not null && existingUser.IdentityProviderType != IdentityProvider.Ldap)
+            return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.InvalidUserOrPassword);
+        if (existingUser is not null &&
+            !string.IsNullOrWhiteSpace(existingUser.DirectoryImmutableId) &&
+            !string.Equals(
+                existingUser.DirectoryImmutableId,
+                profile.ImmutableId,
+                StringComparison.OrdinalIgnoreCase))
+            return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.InvalidUserOrPassword);
+
+        var (firstName, lastName) = SplitDisplayName(profile.DisplayName);
+        if (existingUser is null)
+        {
+            var ldapUser = new Users
+            {
+                Id = Guid.NewGuid(),
+                UserName = canonicalUserName,
+                Email = profile.Email,
+                EmailConfirmed = true,
+                FirstName = firstName,
+                LastName = lastName,
+                PhoneNumberConfirmed = true,
+                TwoFactorEnabled = securityConfig.SystemSettings.LdapConfig.IsTwoFactorAuthenticationRequired,
+                TwoFactorType = securityConfig.SystemSettings.LdapConfig.TwoFactorType,
+                LockoutEnabled = securityConfig.SystemSettings.UserConfig.LockOutAllowedForNewUsers,
+                IdentityProviderType = IdentityProvider.Ldap,
+                DirectoryImmutableId = profile.ImmutableId,
+                EmployeeId = profile.EmployeeId,
+                UserPrincipalName = canonicalUserName.ToLowerInvariant(),
+                DisplayName = profile.DisplayName.Trim(),
+                Department = profile.Department,
+                AuthenticationSource = "LDAP",
+                DirectoryLastValidatedAt = DateTimeOffset.UtcNow,
+                CreatedBy = "LDAP",
+                CreatedOn = DateTime.UtcNow,
+                PasswordHash = ExternalCredentialOnlyPasswordHash
+            };
+            var createResult = await userManager.CreateAsync(ldapUser);
+            if (!createResult.Succeeded)
+                return frameworkResultService.Failed(createResult.ConstructIdentityErrorAsList());
+
+            await userManagementUnitOfWork.SetAddedStatusAsync(ldapUser);
+            var defaultRole = await roleManager.FindByNameAsync(
+                securityConfig.SystemSettings.UserConfig.DefaultUserRole);
+            if (defaultRole is not null)
+            {
+                await userManagementUnitOfWork.UserRoleRepository.InsertAsync(new UserRoles
+                {
+                    UserId = ldapUser.Id,
+                    RoleId = defaultRole.Id,
+                    ValidFrom = DateTime.UtcNow,
+                    ValidTo = DateTime.MaxValue,
+                    CreatedBy = "LDAP",
+                    CreatedOn = DateTime.UtcNow
+                });
+            }
+
+            return await userManagementUnitOfWork.SaveChangesAsync();
+        }
+
+        var concurrencyStamp = existingUser.ConcurrencyStamp;
+        existingUser.Email = profile.Email;
+        existingUser.UserName = canonicalUserName;
+        existingUser.EmailConfirmed = true;
+        existingUser.PhoneNumberConfirmed = true;
+        existingUser.FirstName = firstName;
+        existingUser.LastName = lastName;
+        existingUser.DirectoryImmutableId = profile.ImmutableId;
+        existingUser.EmployeeId = profile.EmployeeId;
+        existingUser.UserPrincipalName = canonicalUserName.ToLowerInvariant();
+        existingUser.DisplayName = profile.DisplayName.Trim();
+        existingUser.Department = profile.Department;
+        existingUser.AuthenticationSource = "LDAP";
+        existingUser.DirectoryLastValidatedAt = DateTimeOffset.UtcNow;
+        existingUser.TwoFactorEnabled = securityConfig.SystemSettings.LdapConfig.IsTwoFactorAuthenticationRequired;
+        existingUser.TwoFactorType = securityConfig.SystemSettings.LdapConfig.TwoFactorType;
+        existingUser.ModifiedBy = "LDAP";
+        existingUser.ModifiedOn = DateTime.UtcNow;
+
+        // The existing schema requires a non-null PasswordHash. Replace any legacy hash of
+        // the directory password with a fixed, deliberately invalid marker. LDAP identities
+        // never enter the local password-verification branch.
+        existingUser.PasswordHash = ExternalCredentialOnlyPasswordHash;
+        var updateResult = await userManager.UpdateAsync(existingUser);
+        if (!updateResult.Succeeded)
+            return frameworkResultService.Failed(updateResult.ConstructIdentityErrorAsList());
+
+        await userManagementUnitOfWork.SetModifiedStatusAsync(existingUser, concurrencyStamp);
+        return await userManagementUnitOfWork.SaveChangesAsync();
     }
 
     public virtual async Task<FrameworkResult> UpdateUserAsync(UserModel userModel)
@@ -1101,16 +1304,51 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
     {
         if (user.IdentityProviderType == IdentityProvider.Local)
         {
-            user.EmailConfirmed = !securityConfig.SystemSettings.UserConfig.RequireConfirmedEmail;
+            user.AuthenticationSource = "LOCAL";
+            user.EmailConfirmed = !securityConfig.SystemSettings.LocalAuthenticationConfig.RequireEmailConfirmation;
             user.PhoneNumberConfirmed = !securityConfig.SystemSettings.UserConfig.RequireConfirmedPhoneNumber;
         }
 
         user.LockoutEnd = null;
-        user.LockoutEnabled = false;
+        user.LockoutEnabled = securityConfig.SystemSettings.UserConfig.LockOutAllowedForNewUsers;
         user.AccessFailedCount = 0;
         user.LastPasswordChangedDate = null;
         user.LastLoginDateTime = null;
         user.LastLogoutDateTime = null;
+    }
+
+    private async Task<FrameworkResult> RejectLocalRegistrationAsync(
+        string? email,
+        string? reasonCode)
+    {
+        var safeReason = string.IsNullOrWhiteSpace(reasonCode)
+            ? ApiErrorCodes.AuthLocalUserAlreadyExists
+            : reasonCode;
+        var eventType = safeReason == ApiErrorCodes.AuthIdentitySourceConflict
+            ? SecurityAuditEventTypes.LocalIdentityConflict
+            : SecurityAuditEventTypes.LocalRegistrationRejected;
+        await AuditLocalRegistrationAsync(eventType, email, "REJECTED", safeReason);
+        return frameworkResultService.Failed<FrameworkResult>(safeReason);
+    }
+
+    private Task AuditLocalRegistrationAsync(
+        string eventType,
+        string? email,
+        string result,
+        string? reasonCode = null,
+        string? actorUserId = null)
+    {
+        var normalized = email?.Trim().ToLowerInvariant() ?? string.Empty;
+        var digest = SHA256.HashData(Encoding.UTF8.GetBytes(normalized));
+        return securityAuditService.WriteAsync(new SecurityAuditEventModel
+        {
+            EventType = eventType,
+            ActorUserId = actorUserId,
+            PseudonymousIdentifier = Convert.ToHexString(digest.AsSpan(0, 12)),
+            AuthenticationSource = "LOCAL",
+            Result = result,
+            ReasonCode = reasonCode
+        });
     }
 
     private UserModel SetDefaultValuesForUpdate(UserModel userModel, Users user)
@@ -1133,5 +1371,16 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
         if (userModel.PhoneNumber != user.PhoneNumber) userModel.PhoneNumberConfirmed = false;
 
         return userModel;
+    }
+
+    private static (string FirstName, string LastName) SplitDisplayName(string displayName)
+    {
+        var normalized = displayName.Trim();
+        var separator = normalized.IndexOf(' ');
+        if (separator < 0) return (normalized, string.Empty);
+
+        return (
+            normalized[..separator].Trim(),
+            normalized[(separator + 1)..].Trim());
     }
 }

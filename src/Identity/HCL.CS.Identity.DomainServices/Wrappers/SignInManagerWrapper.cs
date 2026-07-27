@@ -28,4 +28,39 @@ public class SignInManagerWrapper<TUser> : SignInManager<TUser>
         : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
     {
     }
+
+    public async Task<SignInResult> ExternalCredentialSignInAsync(TUser user, bool isPersistent)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+
+        var preSignInResult = await PreSignInCheck(user);
+        if (preSignInResult is not null) return preSignInResult;
+
+        return await SignInOrTwoFactorAsync(user, isPersistent);
+    }
+
+    public async Task<SignInResult> LocalCredentialSignInAsync(
+        TUser user,
+        string password,
+        bool isPersistent,
+        bool lockoutOnFailure)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+
+        if (await UserManager.IsLockedOutAsync(user)) return SignInResult.LockedOut;
+
+        if (!await UserManager.CheckPasswordAsync(user, password))
+        {
+            if (lockoutOnFailure && UserManager.SupportsUserLockout)
+            {
+                await UserManager.AccessFailedAsync(user);
+                if (await UserManager.IsLockedOutAsync(user)) return SignInResult.LockedOut;
+            }
+
+            return SignInResult.Failed;
+        }
+
+        if (UserManager.SupportsUserLockout) await UserManager.ResetAccessFailedCountAsync(user);
+        return await SignInOrTwoFactorAsync(user, isPersistent);
+    }
 }

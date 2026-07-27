@@ -18,6 +18,12 @@ public interface IUserRepository
     Task UpdateAsync(Users entity, string[] affectedProperties);
     Task<IList<Users>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken = default);
     Task<Users?> FindByUserNameIncludingDeletedAsync(string userName, CancellationToken cancellationToken = default);
+    Task<IList<Users>> FindByDirectoryImmutableIdAsync(
+        string directoryImmutableId,
+        CancellationToken cancellationToken = default);
+    Task<IList<Users>> FindByNormalizedEmailAsync(
+        string normalizedEmail,
+        CancellationToken cancellationToken = default);
     Task SetAddedStatusAsync<T>(T entity);
     Task SetModifiedStatusAsync<T>(T entity, string concurrencyStamp);
     Task<FrameworkResult> SaveChangesAsync(CancellationToken cancellationToken = default);

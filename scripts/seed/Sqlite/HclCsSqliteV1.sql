@@ -37,6 +37,38 @@ CREATE TABLE "HclCs_AuditTrail" (
     "ActionName" TEXT NULL
 );
 
+CREATE TABLE "HclCs_ExternalAuthProviderConfig" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_HclCs_ExternalAuthProviderConfig" PRIMARY KEY,
+    "IsDeleted" INTEGER NOT NULL,
+    "CreatedOn" TEXT NOT NULL,
+    "ModifiedOn" TEXT NULL,
+    "CreatedBy" TEXT NOT NULL,
+    "ModifiedBy" TEXT NULL,
+    "ProviderName" TEXT NOT NULL,
+    "ProviderType" INTEGER NOT NULL,
+    "IsEnabled" INTEGER NOT NULL,
+    "ConfigJson" TEXT NOT NULL,
+    "AutoProvisionEnabled" INTEGER NOT NULL,
+    "AllowedDomains" TEXT NULL,
+    "LastTestedOn" TEXT NULL,
+    "LastTestSuccess" INTEGER NULL
+);
+
+CREATE TABLE "HclCs_NotificationProviderConfig" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_HclCs_NotificationProviderConfig" PRIMARY KEY,
+    "IsDeleted" INTEGER NOT NULL,
+    "CreatedOn" TEXT NOT NULL,
+    "ModifiedOn" TEXT NULL,
+    "CreatedBy" TEXT NOT NULL,
+    "ModifiedBy" TEXT NULL,
+    "ProviderName" TEXT NOT NULL,
+    "ChannelType" INTEGER NOT NULL,
+    "IsActive" INTEGER NOT NULL,
+    "ConfigJson" TEXT NOT NULL,
+    "LastTestedOn" TEXT NULL,
+    "LastTestSuccess" INTEGER NULL
+);
+
 CREATE TABLE "HclCs_Clients" (
     "Id" TEXT NOT NULL CONSTRAINT "PK_HclCs_Clients" PRIMARY KEY,
     "IsDeleted" INTEGER NOT NULL,
@@ -74,7 +106,8 @@ CREATE TABLE "HclCs_Clients" (
     "FrontChannelLogoutSessionRequired" INTEGER NOT NULL,
     "FrontChannelLogoutUri" TEXT NULL,
     "BackChannelLogoutSessionRequired" INTEGER NOT NULL,
-    "BackChannelLogoutUri" TEXT NULL
+    "BackChannelLogoutUri" TEXT NULL,
+    "PreferredAudience" TEXT NULL
 );
 
 CREATE TABLE "HclCs_IdentityResources" (
@@ -162,6 +195,13 @@ CREATE TABLE "HclCs_Users" (
     "LastLoginDateTime" TEXT NULL,
     "LastLogoutDateTime" TEXT NULL,
     "IdentityProviderType" INTEGER NOT NULL,
+    "DirectoryImmutableId" TEXT NULL,
+    "EmployeeId" TEXT NULL,
+    "UserPrincipalName" TEXT NULL,
+    "DisplayName" TEXT NULL,
+    "Department" TEXT NULL,
+    "AuthenticationSource" TEXT NULL,
+    "DirectoryLastValidatedAt" TEXT NULL,
     "IsDeleted" INTEGER NOT NULL,
     "CreatedOn" TEXT NOT NULL,
     "ModifiedOn" TEXT NULL,
@@ -400,6 +440,14 @@ CREATE INDEX "IX_AUD_CRON_ACTY" ON "HclCs_AuditTrail" ("CreatedOn", "ActionType"
 
 CREATE INDEX "IX_AUD_CRON_CBBY" ON "HclCs_AuditTrail" ("CreatedOn", "CreatedBy");
 
+CREATE UNIQUE INDEX "IX_EAPC_PROVIDER" ON "HclCs_ExternalAuthProviderConfig" ("ProviderName");
+
+CREATE INDEX "IX_EAPC_PROVIDER_ENABLED" ON "HclCs_ExternalAuthProviderConfig" ("ProviderName", "IsEnabled");
+
+CREATE INDEX "IX_NPC_CHANNEL_TYPE" ON "HclCs_NotificationProviderConfig" ("ChannelType");
+
+CREATE INDEX "IX_NPC_CHANNEL_ACTIVE" ON "HclCs_NotificationProviderConfig" ("ChannelType", "IsActive");
+
 CREATE UNIQUE INDEX "IX_HclCs_ClientPostLogoutRedirectUris_ClientId_PostLogoutRedirectUri" ON "HclCs_ClientPostLogoutRedirectUris" ("ClientId", "PostLogoutRedirectUri");
 
 CREATE UNIQUE INDEX "IX_HclCs_ClientRedirectUris_ClientId_RedirectUri" ON "HclCs_ClientRedirectUris" ("ClientId", "RedirectUri");
@@ -438,7 +486,13 @@ CREATE INDEX "IX_HclCs_UserRoles_RoleId" ON "HclCs_UserRoles" ("RoleId");
 
 CREATE INDEX "IX_HclCs_UserRoles_UserId" ON "HclCs_UserRoles" ("UserId");
 
-CREATE INDEX "EmailIndex" ON "HclCs_Users" ("NormalizedEmail");
+CREATE UNIQUE INDEX "EmailIndex" ON "HclCs_Users" ("NormalizedEmail");
+
+CREATE INDEX "IX_USERS_EMPLOYEE_ID" ON "HclCs_Users" ("EmployeeId");
+
+CREATE UNIQUE INDEX "UX_USERS_DIRECTORY_IMMUTABLE_ID" ON "HclCs_Users" ("DirectoryImmutableId");
+
+CREATE UNIQUE INDEX "UX_USERS_USER_PRINCIPAL_NAME" ON "HclCs_Users" ("UserPrincipalName");
 
 CREATE UNIQUE INDEX "UserNameIndex" ON "HclCs_Users" ("NormalizedUserName");
 
