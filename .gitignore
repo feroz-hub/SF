@@ -28,3 +28,10 @@ DbCreationLogs.txt
 
 # Generated native-Windows configuration, certificates, and secrets
 .windows/
+
+# Local HCL.CS signing secrets
+certificates/signing/*.key
+certificates/signing/*.pfx
+certificates/signing/*.base64
+certificates/signing/hcl-cs-es256-signing.crt
+certificates/signing/hcl-cs-rs256-signing.crt

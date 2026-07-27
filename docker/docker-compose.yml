@@ -54,6 +54,16 @@ services:
       ASPNETCORE_URLS: "https://+:8443"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/app/https/hcl-cs-devcert.pfx"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "${HCL_CS_HTTPS_CERT_PASSWORD:-hcl-cs-dev-cert}"
+
+      # OIDC/JWT RS256 signing certificate
+      HCL_CS_RSA_SIGNING_CERT_PATH: "/app/signing/hcl-cs-rs256-signing.pfx"
+      HCL_CS_SIGNING_CERT_PASSWORD: "${HCL_CS_SIGNING_CERT_PASSWORD}"
+      HCL_CS_RSA_SIGNING_KID: "${HCL_CS_RSA_SIGNING_KID:-hcl-cs-rsa-current}"
+
+        # ECDSA / ES256 token-signing certificate
+      HCL_CS_ECDSA_SIGNING_CERT_PATH: "/app/signing/hcl-cs-es256-signing.pfx"
+      HCL_CS_ECDSA_SIGNING_KID: "${HCL_CS_ECDSA_SIGNING_KID:-hcl-cs-ecdsa-current}"
+
       HCL_CS_DB_CONNECTION_STRING: "Host=postgres;Port=5432;Database=${HCL_CS_DB_NAME:-hcl-cs};Username=${HCL_CS_DB_USER:-hcl-cs};Password=${HCL_CS_DB_PASSWORD:-hcl-cs}"
       SystemSettings__DBConfig__Database: PostgreSQL
       TokenSettings__TokenConfig__IssuerUri: "${HCL_CS_ISSUER_URI:-https://localhost:5180}"
@@ -78,7 +88,8 @@ services:
       - hcl-cs-data:/app/.data
       - hcl-cs-keys:/app/DataProtection-Keys
       - hcl-cs-https:/app/https
-
+      - ../certificates/signing/hcl-cs-rs256-signing.pfx:/app/signing/hcl-cs-rs256-signing.pfx:ro
+      - ../certificates/signing/hcl-cs-es256-signing.pfx:/app/signing/hcl-cs-es256-signing.pfx:ro
   installer:
     profiles: ["extras"]
     build:
