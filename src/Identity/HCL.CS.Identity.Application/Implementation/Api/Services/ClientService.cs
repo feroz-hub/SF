@@ -376,4 +376,90 @@ public class ClientService(
 
         return frameworkResult.Succeeded();
     }
+
+    public virtual async Task<ClientsModel> ProvisionClientAsync(ClientsModel clientsModel)
+    {
+        if (clientsModel == null) frameworkResult.Throw(EndpointErrorCodes.ArgumentNullError);
+
+        // Security rule validation
+        if (!clientsModel.RequireClientSecret && !clientsModel.RequirePkce)
+        {
+            loggerService.WriteTo(Log.Warning, $"Client {clientsModel.ClientId} is public (no secret) but PKCE is disabled. Enforcing PKCE.");
+            clientsModel.RequirePkce = true;
+        }
+
+        if (string.IsNullOrWhiteSpace(clientsModel.ClientId))
+        {
+            clientsModel.ClientId = AuthenticationConstants.KeySize32.RandomString();
+        }
+
+        var existingList = await unitOfWork.ClientRepository.GetAsync(c => c.ClientId == clientsModel.ClientId);
+        var existingEntity = existingList?.FirstOrDefault();
+
+        if (existingEntity == null)
+        {
+            loggerService.WriteTo(Log.Information, $"Provisioning new client: {clientsModel.ClientId}");
+            string rawSecret = null;
+            if (clientsModel.RequireClientSecret)
+            {
+                rawSecret = string.IsNullOrWhiteSpace(clientsModel.ClientSecret)
+                    ? AuthenticationConstants.KeySize32.RandomString()
+                    : clientsModel.ClientSecret;
+                clientsModel.ClientSecret = rawSecret.Sha256();
+            }
+
+            clientsModel.ClientIdIssuedAt = DateTime.UtcNow;
+            clientsModel.ClientSecretExpiresAt = DateTime.UtcNow.AddDays(tokenConfig.ClientSecretExpirationInDays);
+
+            var clientEntity = mapper.Map<ClientsModel, Clients>(clientsModel);
+            await unitOfWork.ClientRepository.InsertAsync(clientEntity);
+            var saveResult = await unitOfWork.SaveChangesAsync();
+            if (saveResult.Status != ResultStatus.Succeeded)
+            {
+                frameworkResult.ThrowCustomMessage(saveResult.Errors.FirstOrDefault()?.Description ?? "Failed to save provisioned client.");
+            }
+
+            var registeredModel = mapper.Map<Clients, ClientsModel>(clientEntity);
+            if (rawSecret != null)
+            {
+                registeredModel.ClientSecret = rawSecret;
+            }
+            return registeredModel;
+        }
+        else
+        {
+            loggerService.WriteTo(Log.Information, $"Updating existing provisioned client: {clientsModel.ClientId}");
+            existingEntity.ClientName = clientsModel.ClientName ?? existingEntity.ClientName;
+            existingEntity.ClientUri = clientsModel.ClientUri ?? existingEntity.ClientUri;
+            existingEntity.RequirePkce = clientsModel.RequirePkce;
+            existingEntity.RequireClientSecret = clientsModel.RequireClientSecret;
+            existingEntity.AllowOfflineAccess = clientsModel.AllowOfflineAccess;
+            existingEntity.ApplicationType = clientsModel.ApplicationType;
+            if (!string.IsNullOrWhiteSpace(clientsModel.PreferredAudience))
+            {
+                existingEntity.PreferredAudience = clientsModel.PreferredAudience;
+            }
+            if (clientsModel.AllowedScopes != null && clientsModel.AllowedScopes.Count > 0)
+            {
+                existingEntity.AllowedScopes = string.Join(" ", clientsModel.AllowedScopes);
+            }
+            if (clientsModel.SupportedGrantTypes != null && clientsModel.SupportedGrantTypes.Count > 0)
+            {
+                existingEntity.SupportedGrantTypes = string.Join(" ", clientsModel.SupportedGrantTypes);
+            }
+            if (clientsModel.SupportedResponseTypes != null && clientsModel.SupportedResponseTypes.Count > 0)
+            {
+                existingEntity.SupportedResponseTypes = string.Join(" ", clientsModel.SupportedResponseTypes);
+            }
+
+            await unitOfWork.ClientRepository.UpdateAsync(existingEntity);
+            var updateResult = await unitOfWork.SaveChangesAsync();
+            if (updateResult.Status != ResultStatus.Succeeded)
+            {
+                frameworkResult.ThrowCustomMessage(updateResult.Errors.FirstOrDefault()?.Description ?? "Failed to update provisioned client.");
+            }
+
+            return mapper.Map<Clients, ClientsModel>(existingEntity);
+        }
+    }
 }

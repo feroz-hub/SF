@@ -34,19 +34,25 @@ public static class InfrastructureDataExtension
     {
         var configSettings = GetRegisteredConfiguration(services);
 
+        var migrationsAssembly = typeof(ApplicationDbContext).Assembly.FullName;
+
         if (configSettings.SystemSettings.DBConfig.Database == DbTypes.SqlServer)
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configSettings.SystemSettings.DBConfig.DBConnectionString));
+                options.UseSqlServer(configSettings.SystemSettings.DBConfig.DBConnectionString,
+                    b => b.MigrationsAssembly(migrationsAssembly)));
         else if (configSettings.SystemSettings.DBConfig.Database == DbTypes.MySql)
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(configSettings.SystemSettings.DBConfig.DBConnectionString,
-                    ServerVersion.AutoDetect(configSettings.SystemSettings.DBConfig.DBConnectionString)));
+                    ServerVersion.AutoDetect(configSettings.SystemSettings.DBConfig.DBConnectionString),
+                    b => b.MigrationsAssembly(migrationsAssembly)));
         else if (configSettings.SystemSettings.DBConfig.Database == DbTypes.PostgreSQL)
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(configSettings.SystemSettings.DBConfig.DBConnectionString));
+                options.UseNpgsql(configSettings.SystemSettings.DBConfig.DBConnectionString,
+                    b => b.MigrationsAssembly(migrationsAssembly)));
         else if (configSettings.SystemSettings.DBConfig.Database == DbTypes.SQLite)
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(configSettings.SystemSettings.DBConfig.DBConnectionString));
+                options.UseSqlite(configSettings.SystemSettings.DBConfig.DBConnectionString,
+                    b => b.MigrationsAssembly(migrationsAssembly)));
 
         AddIdentityServices(services, configSettings);
 

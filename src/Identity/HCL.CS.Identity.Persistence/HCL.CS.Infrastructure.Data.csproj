@@ -41,6 +41,10 @@ HCL is obtained. This is proprietary and confidential to HCL.
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11"/>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2"/>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

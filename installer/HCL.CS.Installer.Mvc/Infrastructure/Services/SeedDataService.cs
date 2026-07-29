@@ -14,9 +14,9 @@ using HCL.CS.Domain.Entities.Endpoint;
 using HCL.CS.Domain.Enums;
 using HCL.CS.Service.Implementation.Api.Wrappers;
 using HCL.CS.Service.Implementation.Endpoint.Extensions;
+using HCL.CS.Infrastructure.Data;
 using HclCsInstallerMVC.Application.Abstractions;
 using HclCsInstallerMVC.Application.DTOs;
-using HclCsInstallerMVC.Infrastructure.Persistence.Data;
 using HclCsInstallerMVC.Infrastructure.Seeding;
 
 namespace HclCsInstallerMVC.Infrastructure.Services;

@@ -1,0 +1,9 @@
+{
+  "provider": "MySQL",
+  "scriptFile": "20260728_hcl_cs_canonical_mysql.sql",
+  "migrationRange": "20220722123951_HclCsMySqlV1 -> 20260728140000_Phase2CCoreInfrastructureSchema",
+  "idempotent": true,
+  "sha256": "065d38ada10ba8c5393532ca5b6d493953b991a5dab21fdad7722e3d2f0ab9ac",
+  "efCoreVersion": "8.0.11",
+  "generationTimestamp": "2026-07-28T23:38:05Z"
+}

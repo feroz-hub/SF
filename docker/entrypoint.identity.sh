@@ -4,6 +4,7 @@ set -euo pipefail
 APP_DIR="/app"
 DB_CONNECTION_STRING="${HCL_CS_DB_CONNECTION_STRING:-}"
 PSQL_CONNECTION_STRING=""
+CANONICAL_SCRIPT="${APP_DIR}/scripts/generated-migrations/postgresql/20260728_hcl_cs_canonical_postgresql.sql"
 SEED_SCRIPT="${APP_DIR}/scripts/seed/PostgreSql/HclCsPostgreSqlV1.sql"
 MIGRATIONS_DIR="${APP_DIR}/scripts/migrations"
 HTTPS_DIR="${HCL_CS_HTTPS_DIR:-${APP_DIR}/https}"
@@ -123,13 +124,17 @@ apply_database_bootstrap() {
   fi
 
   wait_for_postgres
-  apply_sql_file "${SEED_SCRIPT}"
 
-  if [[ -d "${MIGRATIONS_DIR}" ]]; then
-    while IFS= read -r migration_file; do
-      [[ -n "${migration_file}" ]] || continue
-      apply_sql_file "${migration_file}"
-    done < <(find "${MIGRATIONS_DIR}" -maxdepth 1 -type f -name '*_postgresql.sql' | sort)
+  if [[ -f "${CANONICAL_SCRIPT}" ]]; then
+    apply_sql_file "${CANONICAL_SCRIPT}"
+  else
+    apply_sql_file "${SEED_SCRIPT}"
+    if [[ -d "${MIGRATIONS_DIR}" ]]; then
+      while IFS= read -r migration_file; do
+        [[ -n "${migration_file}" ]] || continue
+        apply_sql_file "${migration_file}"
+      done < <(find "${MIGRATIONS_DIR}" -maxdepth 1 -type f -name '*_postgresql.sql' | sort)
+    fi
   fi
 
   log "Database bootstrap and migrations completed."

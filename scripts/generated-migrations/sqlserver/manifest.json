@@ -1,0 +1,9 @@
+{
+  "provider": "SQLServer",
+  "scriptFile": "20260728_hcl_cs_canonical_sqlserver.sql",
+  "migrationRange": "20220722123632_HclCsSqlV1 -> 20260728140000_Phase2CCoreInfrastructureSchema",
+  "idempotent": true,
+  "sha256": "7011e1ddaf908cd44f58cfc3d6ccd39b04cb0a020badd41cb98e9a47ddd8799d",
+  "efCoreVersion": "8.0.11",
+  "generationTimestamp": "2026-07-28T23:38:05Z"
+}

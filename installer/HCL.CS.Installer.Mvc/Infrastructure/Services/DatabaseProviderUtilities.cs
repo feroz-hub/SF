@@ -7,8 +7,8 @@
  */
 
 using Microsoft.EntityFrameworkCore;
+using HCL.CS.Infrastructure.Data;
 using HclCsInstallerMVC.Application.DTOs;
-using HclCsInstallerMVC.Infrastructure.Persistence.Data;
 
 namespace HclCsInstallerMVC.Infrastructure.Services;
 

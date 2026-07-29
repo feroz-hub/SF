@@ -24,4 +24,6 @@ public interface IClientServices
     Task<ClientsModel> GetClientAsync(string clientId);
 
     Task<Dictionary<string, string>> GetAllClientAsync();
+
+    Task<ClientsModel> ProvisionClientAsync(ClientsModel clientsModel);
 }
