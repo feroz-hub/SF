@@ -7,6 +7,7 @@
  */
 
 using System.Security.Claims;
+using HCL.CS.Domain.Constants.Endpoint;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Models.Api;
 using HCL.CS.Domain.Models.Api.Response;
@@ -27,7 +28,9 @@ public static class RoleHelper
             {
                 new()
                 {
-                    ClaimType = "LockUser", ClaimValue = "hcl-cs.role.read", CreatedBy = "Test",
+                    ClaimType = OpenIdConstants.ClaimTypes.Capabilities,
+                    ClaimValue = "hcl-cs.role.admin",
+                    CreatedBy = "Test",
                     CreatedOn = DateTime.UtcNow
                 }
             }
@@ -62,20 +65,20 @@ public static class RoleHelper
                 {
                     new()
                     {
-                        ClaimType = "LockUser", ClaimValue = "LockUser", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
+                        ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "LockUser", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
                     },
                     new()
                     {
-                        ClaimType = "LockUser", ClaimValue = "LockUser", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
+                        ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "LockUser", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
                     },
                     new()
                     {
-                        ClaimType = "AddEditRole", ClaimValue = "AddEditRole", CreatedBy = "Test",
+                        ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "AddEditRole", CreatedBy = "Test",
                         CreatedOn = DateTime.UtcNow
                     },
                     new()
                     {
-                        ClaimType = "DeleteRole", ClaimValue = "DeleteRole", CreatedBy = "Test",
+                        ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "DeleteRole", CreatedBy = "Test",
                         CreatedOn = DateTime.UtcNow
                     }
                 }
@@ -90,21 +93,21 @@ public static class RoleHelper
                 {
                     new()
                     {
-                        ClaimType = "LockUser", ClaimValue = "LockUser", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
+                        ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "LockUser", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
                     },
                     new()
                     {
-                        ClaimType = "DeleteUserRole", ClaimValue = "DeleteUserRole", CreatedBy = "Test",
+                        ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "DeleteUserRole", CreatedBy = "Test",
                         CreatedOn = DateTime.UtcNow
                     },
                     new()
                     {
-                        ClaimType = "AddRoleClaim", ClaimValue = "AddRoleClaim", CreatedBy = "Test",
+                        ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "AddRoleClaim", CreatedBy = "Test",
                         CreatedOn = DateTime.UtcNow
                     },
                     new()
                     {
-                        ClaimType = "DeleteRoleClaim", ClaimValue = "DeleteRoleClaim", CreatedBy = "Test",
+                        ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "DeleteRoleClaim", CreatedBy = "Test",
                         CreatedOn = DateTime.UtcNow
                     }
                 }
@@ -116,18 +119,22 @@ public static class RoleHelper
     public static RoleClaimModel CreateRoleClaimModel()
     {
         var roleClaimModel = new RoleClaimModel();
-        roleClaimModel.ClaimType = "Permission";
+        roleClaimModel.ClaimType = OpenIdConstants.ClaimTypes.Capabilities;
         roleClaimModel.ClaimValue = "hcl-cs.role.read";
         roleClaimModel.RoleId = Guid.NewGuid();
+        roleClaimModel.CreatedBy = "Test";
+        roleClaimModel.CreatedOn = DateTime.UtcNow;
         return roleClaimModel;
     }
 
     public static RoleClaimModel CreateRoleClaimModelWithNullClaimValue()
     {
         var roleClaimModel = new RoleClaimModel();
-        roleClaimModel.ClaimType = "Permission";
+        roleClaimModel.ClaimType = OpenIdConstants.ClaimTypes.Capabilities;
         roleClaimModel.ClaimValue = null;
         roleClaimModel.RoleId = Guid.NewGuid();
+        roleClaimModel.CreatedBy = "Test";
+        roleClaimModel.CreatedOn = DateTime.UtcNow;
         return roleClaimModel;
     }
 
@@ -206,32 +213,32 @@ public static class RoleHelper
     {
         var roleClaimModelList = new List<RoleClaimModel>
         {
-            new() { ClaimType = "LockUser", ClaimValue = "LockUser", CreatedBy = "Test", CreatedOn = DateTime.UtcNow },
+            new() { ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "LockUser", CreatedBy = "Test", CreatedOn = DateTime.UtcNow },
             new()
             {
-                ClaimType = "AddEditRole", ClaimValue = "AddEditRole", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "AddEditRole", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "DeleteRole", ClaimValue = "DeleteRole", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "DeleteRole", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "AddEditUserRole", ClaimValue = "AddEditUserRole", CreatedBy = "Test",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "AddEditUserRole", CreatedBy = "Test",
                 CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "DeleteUserRole", ClaimValue = "DeleteUserRole", CreatedBy = "Test",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "DeleteUserRole", CreatedBy = "Test",
                 CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "AddRoleClaim", ClaimValue = "AddRoleClaim", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "AddRoleClaim", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "DeleteRoleClaim", ClaimValue = "DeleteRoleClaim", CreatedBy = "Test",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "DeleteRoleClaim", CreatedBy = "Test",
                 CreatedOn = DateTime.UtcNow
             }
         };
@@ -244,16 +251,16 @@ public static class RoleHelper
         {
             new()
             {
-                ClaimType = "AddUpdateClient", ClaimValue = "AddUpdateClient", CreatedBy = "Test",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "AddUpdateClient", CreatedBy = "Test",
                 CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "RevokeToken", ClaimValue = "RevokeToken", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "RevokeToken", CreatedBy = "Test", CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "AddEditNetworkParameters", ClaimValue = "AddEditNetworkParameters", CreatedBy = "Test",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "AddEditNetworkParameters", CreatedBy = "Test",
                 CreatedOn = DateTime.UtcNow
             }
         };
@@ -266,7 +273,7 @@ public static class RoleHelper
         {
             new()
             {
-                ClaimType = "CreateUpdateLabTest", ClaimValue = "CreateUpdateLabTest", CreatedBy = "Test",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "CreateUpdateLabTest", CreatedBy = "Test",
                 CreatedOn = DateTime.UtcNow
             }
         };
@@ -279,17 +286,17 @@ public static class RoleHelper
         {
             new()
             {
-                ClaimType = "CreateUpdateLabTest", ClaimValue = "hcl-cs.role.write", CreatedBy = "Test",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "hcl-cs.role.write", CreatedBy = "Test",
                 CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "DeleteLabTest", ClaimValue = "hcl-cs.role.delete", CreatedBy = "Test2",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "hcl-cs.role.delete", CreatedBy = "Test2",
                 CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "UpdateLabTest", ClaimValue = "hcl-cs.client.write", CreatedBy = "Test3",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities, ClaimValue = "hcl-cs.client.write", CreatedBy = "Test3",
                 CreatedOn = DateTime.UtcNow
             }
         };
@@ -347,7 +354,7 @@ public static class RoleHelper
     {
         return new RoleClaims
         {
-            ClaimType = "CreateUpdateLabTest",
+            ClaimType = OpenIdConstants.ClaimTypes.Capabilities,
             ClaimValue = "hcl-cs.role.read",
             CreatedBy = "Test",
             CreatedOn = DateTime.UtcNow
@@ -434,14 +441,14 @@ public static class RoleHelper
         {
             new()
             {
-                ClaimType = "CreateUpdateLabTest",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities,
                 ClaimValue = "CreateUpdateLabTest",
                 CreatedBy = "Test",
                 CreatedOn = DateTime.UtcNow
             },
             new()
             {
-                ClaimType = "DeleteUpdateSystem",
+                ClaimType = OpenIdConstants.ClaimTypes.Capabilities,
                 ClaimValue = "DeleteUpdateSystem",
                 CreatedBy = "Test",
                 CreatedOn = DateTime.UtcNow

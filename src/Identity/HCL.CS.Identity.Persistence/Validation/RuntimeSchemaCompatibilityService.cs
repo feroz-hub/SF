@@ -7,6 +7,8 @@
  */
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Entities.Endpoint;
@@ -51,7 +53,7 @@ public sealed class RuntimeSchemaCompatibilityService
         // 2. Check Migrations
         try
         {
-            var knownMigrations = _dbContext.Database.GetMigrations();
+            var knownMigrations = GetKnownMigrations(provider);
             var appliedMigrations = (await _dbContext.Database.GetAppliedMigrationsAsync(cancellationToken)).ToList();
             var pendingMigrations = (await _dbContext.Database.GetPendingMigrationsAsync(cancellationToken)).ToList();
             var unknownMigrations = appliedMigrations.Except(knownMigrations).ToList();
@@ -105,6 +107,40 @@ public sealed class RuntimeSchemaCompatibilityService
         }
 
         return report;
+    }
+
+    private static IReadOnlyList<string> GetKnownMigrations(string provider)
+    {
+        var contextType = provider switch
+        {
+            var value when value.Contains("Npgsql", StringComparison.OrdinalIgnoreCase) =>
+                typeof(PostgreSqlApplicationDbcontext),
+            var value when value.Contains("Sqlite", StringComparison.OrdinalIgnoreCase) =>
+                typeof(SqLiteApplicationDbContext),
+            var value when value.Contains("MySql", StringComparison.OrdinalIgnoreCase) =>
+                typeof(MySqlApplicationDbContext),
+            var value when value.Contains("SqlServer", StringComparison.OrdinalIgnoreCase) =>
+                typeof(SqlServerApplicationDbContext),
+            _ => throw new NotSupportedException(
+                $"Runtime compatibility validation does not support provider '{provider}'.")
+        };
+
+        return typeof(ApplicationDbContext).Assembly
+            .GetTypes()
+            .Where(type => typeof(Migration).IsAssignableFrom(type) && !type.IsAbstract)
+            .Select(type => new
+            {
+                Context = type.GetCustomAttributes(typeof(DbContextAttribute), false)
+                    .OfType<DbContextAttribute>()
+                    .SingleOrDefault()?.ContextType,
+                Migration = type.GetCustomAttributes(typeof(MigrationAttribute), false)
+                    .OfType<MigrationAttribute>()
+                    .SingleOrDefault()?.Id
+            })
+            .Where(item => item.Context == contextType && !string.IsNullOrWhiteSpace(item.Migration))
+            .Select(item => item.Migration!)
+            .OrderBy(id => id, StringComparer.Ordinal)
+            .ToArray();
     }
 }
 

@@ -76,7 +76,9 @@ public static class IntegrationExtensions
                 ? 0
                 : Convert.ToInt32(parameters["AccessTokenLifetime"]),
             SessionState = parameters["session_state"],
-            IsError = Convert.ToBoolean(parameters["IsError"])
+            IsError = Convert.ToBoolean(parameters["IsError"]),
+            ErrorCode = parameters["error"],
+            ErrorDescription = parameters["error_description"]
         };
         return response;
     }

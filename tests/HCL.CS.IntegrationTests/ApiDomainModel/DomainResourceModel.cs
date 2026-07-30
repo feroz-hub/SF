@@ -211,6 +211,8 @@ public class ClientsModel : BaseModel
     public List<ClientRedirectUrisModel> RedirectUris { get; set; }
 
     public List<ClientPostLogoutRedirectUrisModel> PostLogoutRedirectUris { get; set; }
+
+    public string PreferredAudience { get; set; }
 }
 
 public class UserClaimModel : BaseTrailModel

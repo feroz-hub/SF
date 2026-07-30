@@ -442,6 +442,7 @@ internal partial class ApiGateway : BaseApiServiceInstance, IApiGateway
             { ApiRoutePathConstants.GetClient, GetClient },
             { ApiRoutePathConstants.RegisterClient, RegisterClient },
             { ApiRoutePathConstants.UpdateClient, UpdateClient },
+            { ApiRoutePathConstants.ProvisionClient, ProvisionClient },
 
             // Autdit Service
             { ApiRoutePathConstants.AddAuditTrail, AddAuditTrail },

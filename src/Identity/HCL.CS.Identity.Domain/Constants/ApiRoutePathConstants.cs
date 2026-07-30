@@ -352,6 +352,8 @@ public static class ApiRoutePathConstants
 
     public const string UpdateClient = ClientApi + "/UpdateClient";
 
+    public const string ProvisionClient = ClientApi + "/ProvisionClient";
+
     public const string GetActiveSecurityTokensByClientIds = SecurityTokenApi + "/GetActiveSecurityTokensByClientIds";
 
     public const string GetActiveSecurityTokensByUserIds = SecurityTokenApi + "/GetActiveSecurityTokensByUserIds";
@@ -1102,6 +1104,11 @@ public static class ApiRoutePathConstants
         {
             Name = "UpdateClientAsync", Path = UpdateClient,
             Permissions = new List<string> { ApiPermissionConstants.ClientWrite, ApiPermissionConstants.ClientManage }
+        },
+        new ApiRouteModel
+        {
+            Name = "ProvisionClientAsync", Path = ProvisionClient,
+            Permissions = new List<string> { ApiPermissionConstants.ClientManage }
         },
 
         // Security Token

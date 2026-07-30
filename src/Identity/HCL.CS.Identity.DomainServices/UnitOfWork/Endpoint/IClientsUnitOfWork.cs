@@ -8,6 +8,7 @@
 
 using System.Threading;
 using HCL.CS.Domain;
+using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Entities.Endpoint;
 
 namespace HCL.CS.DomainServices.UnitOfWork.Endpoint;
@@ -18,6 +19,14 @@ public interface IClientsUnitOfWork
     IRepository<ClientPostLogoutRedirectUris> PostLogoutRedirectUrisRepository { get; }
     IRepository<ClientRedirectUris> RedirectUrisRepository { get; }
     IRepository<SecurityTokens> SecurityTokensRepository { get; }
+    IRepository<AuditTrail> AuditTrailRepository { get; }
+    Task<IUnitOfWorkTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
     Task<FrameworkResult> SaveChangesAsync(CancellationToken cancellationToken = default);
     Task<FrameworkResult> SaveChangesWithHardDeleteAsync(CancellationToken cancellationToken = default);
+}
+
+public interface IUnitOfWorkTransaction : IAsyncDisposable
+{
+    Task CommitAsync(CancellationToken cancellationToken = default);
+    Task RollbackAsync(CancellationToken cancellationToken = default);
 }

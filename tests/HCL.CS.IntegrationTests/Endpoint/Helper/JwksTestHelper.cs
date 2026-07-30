@@ -9,7 +9,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 
 namespace IntegrationTests.Endpoint.Helper;
 
@@ -18,7 +17,6 @@ public class JwksTestHelper : HclCsFakeSetup
     private Task<SecurityToken> ValidateSymmetricToken(string token, string issuer = null, string audience = null,
         string clientSecret = null)
     {
-        SecurityToken rawToken = null;
         var securityKey = Encoding.ASCII.GetBytes(clientSecret);
         var validationParameters = new TokenValidationParameters
         {
@@ -32,13 +30,7 @@ public class JwksTestHelper : HclCsFakeSetup
             LifetimeValidator = CustomLifetimeValidator,
             RequireExpirationTime = true
         };
-        try
-        {
-            var principal = new JwtSecurityTokenHandler().ValidateToken(token, validationParameters, out rawToken);
-        }
-        catch (Exception)
-        {
-        }
+        new JwtSecurityTokenHandler().ValidateToken(token, validationParameters, out var rawToken);
 
         return Task.FromResult(rawToken);
     }
@@ -54,85 +46,37 @@ public class JwksTestHelper : HclCsFakeSetup
     public async Task<SecurityToken> ValidateToken(string token, string issuer = null, string audience = null,
         string clientSecret = null)
     {
-        try
-        {
-            SecurityToken securityToken = null;
-            var jwt = new JwtSecurityToken(token);
-            var algorithm = jwt.SignatureAlgorithm;
-            if (algorithm.StartsWith("RS") || algorithm.StartsWith("ES") || algorithm.StartsWith("PS"))
-                securityToken = await ValidateAsymmetricToken(token, issuer, audience);
-            else if (algorithm.StartsWith("HS"))
-                securityToken = await ValidateSymmetricToken(token, issuer, audience, clientSecret);
+        var jwt = new JwtSecurityToken(token);
+        var algorithm = jwt.SignatureAlgorithm;
+        if (algorithm.StartsWith("RS") || algorithm.StartsWith("ES") || algorithm.StartsWith("PS"))
+            return await ValidateAsymmetricToken(token, issuer, audience);
+        if (algorithm.StartsWith("HS"))
+            return await ValidateSymmetricToken(token, issuer, audience, clientSecret);
 
-            return securityToken;
-        }
-        catch (Exception)
-        {
-        }
-
-        return null;
+        throw new SecurityTokenInvalidAlgorithmException(
+            $"The test token uses unsupported signing algorithm '{algorithm}'.");
     }
 
     private async Task<SecurityToken> ValidateAsymmetricToken(string token, string issuer = null,
         string audience = null)
     {
-        SecurityToken rawToken = null;
-        try
+        var result = await BackChannelClient.GetAsync(DiscoveryKeysEndpoint);
+        result.EnsureSuccessStatusCode();
+        var json = await result.Content.ReadAsStringAsync();
+        var keys = new JsonWebKeySet(json).Keys;
+        var validationParameters = new TokenValidationParameters
         {
-            var jwt = new JwtSecurityToken(token);
-            var algorithm = jwt.SignatureAlgorithm;
-            if (algorithm.StartsWith("RS") || algorithm.StartsWith("ES") || algorithm.StartsWith("PS"))
-            {
-                var result = await BackChannelClient.GetAsync(DiscoveryKeysEndpoint);
-                var json = await result.Content.ReadAsStringAsync();
-                var data = JObject.Parse(json);
-
-                var keys = new List<SecurityKey>();
-                foreach (var webKey in data["keys"])
-                {
-                    var key = new JsonWebKey
-                    {
-                        Kty = webKey["Kty"]?.ToString(),
-                        Alg = webKey["Alg"]?.ToString(),
-                        Kid = webKey["Kid"]?.ToString(),
-                        X = webKey["X"]?.ToString(),
-                        Y = webKey["Y"]?.ToString(),
-                        Crv = webKey["Crv"]?.ToString(),
-                        E = webKey["E"]?.ToString(),
-                        N = webKey["N"]?.ToString(),
-                        Use = webKey["sig"]?.ToString(),
-                        X5t = webKey["thumbprint"]?.ToString()
-                    };
-
-                    keys.Add(key);
-                }
-
-                var validationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = audience != null,
-                    ValidateIssuer = issuer != null,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKeys = keys,
-                    ValidateLifetime = true,
-                    ValidIssuer = issuer,
-                    ValidAudience = audience,
-                    LifetimeValidator = CustomLifetimeValidator,
-                    RequireExpirationTime = true
-                };
-                try
-                {
-                    var principal =
-                        new JwtSecurityTokenHandler().ValidateToken(token, validationParameters, out rawToken);
-                }
-                catch (Exception)
-                {
-                }
-            }
-        }
-        catch (Exception)
-        {
-        }
-
+            ValidateAudience = audience != null,
+            ValidateIssuer = issuer != null,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKeys = keys,
+            ValidateLifetime = true,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            LifetimeValidator = CustomLifetimeValidator,
+            RequireExpirationTime = true
+        };
+        new JwtSecurityTokenHandler().ValidateToken(token, validationParameters, out var rawToken);
         return rawToken;
     }
 }

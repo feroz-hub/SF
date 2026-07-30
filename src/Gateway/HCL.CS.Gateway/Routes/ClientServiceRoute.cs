@@ -59,4 +59,12 @@ internal partial class ApiGateway : BaseApiServiceInstance, IApiGateway
         await GenerateApiResults(frameworkResult);
         return true;
     }
+
+    private async Task<bool> ProvisionClient(string jsonContent)
+    {
+        var clientModel = jsonContent.JsonDeserialize<ClientsModel>();
+        var provisionedClient = await ClientServices.ProvisionClientAsync(clientModel);
+        await GenerateApiResults(provisionedClient);
+        return true;
+    }
 }

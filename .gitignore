@@ -17,6 +17,9 @@ TestResults/
 # Local runtime data
 .data/
 **/DataProtection-Keys/
+**/*migration_test*.db
+**/Certificates/*.pfx
+**/Certificates/*.p12
 
 # NuGet
 *.nupkg

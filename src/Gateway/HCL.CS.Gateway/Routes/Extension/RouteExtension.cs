@@ -34,7 +34,8 @@ internal static class RouteExtension
     {
         MaxDepth = 0,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-        IgnoreReadOnlyProperties = true
+        IgnoreReadOnlyProperties = true,
+        PropertyNameCaseInsensitive = true
     };
 
     internal static async Task WriteResponseJsonAsync(this HttpResponse response, object content,

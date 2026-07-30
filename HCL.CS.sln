@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -56,6 +56,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HclCsInstallerMVC", "installer\HCL.CS.Installer.Mvc\HclCsInstallerMVC.csproj", "{4A0D1028-0169-47E3-9A22-2F98A9F9C809}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCL.CS.ArchitectureTests", "tests\HCL.CS.ArchitectureTests\HCL.CS.ArchitectureTests.csproj", "{D1D291B0-5793-49F0-BD9D-3B7F7FFFC64C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{355C1003-7A2C-4289-9E27-782DB565E864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCL.CS.DatabaseAdmin", "tools\HCL.CS.DatabaseAdmin\HCL.CS.DatabaseAdmin.csproj", "{CED62E08-3DE8-4CEC-A4A9-39DFB4FDCDA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,6 +146,10 @@ Global
 		{C25D6E7F-8091-4A02-D3E4-F5A6B7C8D9E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C25D6E7F-8091-4A02-D3E4-F5A6B7C8D9E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C25D6E7F-8091-4A02-D3E4-F5A6B7C8D9E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CED62E08-3DE8-4CEC-A4A9-39DFB4FDCDA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CED62E08-3DE8-4CEC-A4A9-39DFB4FDCDA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CED62E08-3DE8-4CEC-A4A9-39DFB4FDCDA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CED62E08-3DE8-4CEC-A4A9-39DFB4FDCDA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B14C5D6E-7F80-4901-C2D3-E4F5A6B7C8D9} = {70017B45-375A-466B-9F5F-10DB375F7EB6}
@@ -167,5 +175,6 @@ Global
 		{F92A3B4C-5D6E-4F70-81B2-C3D4E5F6A7B8} = {4DAA44AA-F95E-4EE0-940C-D80C3F5FF42C}
 		{4A0D1028-0169-47E3-9A22-2F98A9F9C809} = {51EA52C3-BCD4-419B-9FEB-80BDD8E4C7A5}
 		{D1D291B0-5793-49F0-BD9D-3B7F7FFFC64C} = {D05447EB-23ED-4822-BFF3-FACA8CECC5B2}
+		{CED62E08-3DE8-4CEC-A4A9-39DFB4FDCDA8} = {355C1003-7A2C-4289-9E27-782DB565E864}
 	EndGlobalSection
 EndGlobal

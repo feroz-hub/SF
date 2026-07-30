@@ -127,6 +127,12 @@ public sealed class SeedDataService : ISeedDataService
         user.FirstName = userConfiguration.FirstName.Trim();
         user.LastName = userConfiguration.LastName?.Trim() ?? string.Empty;
         user.IdentityProviderType = userConfiguration.IdentityProvider;
+        user.AuthenticationSource = userConfiguration.IdentityProvider switch
+        {
+            IdentityProvider.Ldap => "LDAP",
+            IdentityProvider.Google => "GOOGLE",
+            _ => "LOCAL"
+        };
 
         var hasher = new Argon2PasswordHasherWrapper<Users>();
         user.PasswordHash = hasher.HashPassword(user, userConfiguration.Password);

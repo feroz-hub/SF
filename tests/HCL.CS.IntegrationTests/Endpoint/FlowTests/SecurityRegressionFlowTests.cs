@@ -50,7 +50,9 @@ public class SecurityRegressionFlowTests : HclCsFakeSetup
         var response = await FrontChannelClient.GetAsync(requestUrl);
         var error = response.Headers.Location.ToString().ParseErrorQueryStringAsync();
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.Should().Be(
+            HttpStatusCode.Found,
+            "OIDC authorization errors with a validated redirect URI are returned to that redirect URI");
         error.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
     }
 
@@ -231,9 +233,17 @@ public class SecurityRegressionFlowTests : HclCsFakeSetup
             nonce: Guid.NewGuid().ToString("N"));
 
         var authorizeResponse = await FrontChannelClient.GetAsync(authorizeRequest);
-        var payload = authorizeResponse.Headers.Location.ToString().ParseQueryString();
+        var location = authorizeResponse.Headers.Location;
+        var payload = location.ToString().ParseQueryString();
+        var queryKeys = System.Web.HttpUtility.ParseQueryString(location.Query)
+            .AllKeys
+            .Where(key => key != null);
         authorizeResponse.StatusCode.Should().Be(HttpStatusCode.Found);
-        payload.Code.Should().NotBeNullOrWhiteSpace();
+        payload.Code.Should().NotBeNullOrWhiteSpace(
+            "the authorization request should succeed; redirect path was {0}, query keys were {1}, and error code was {2}",
+            location.AbsolutePath,
+            string.Join(",", queryKeys),
+            payload.ErrorCode ?? "<none>");
 
         return (client, payload.Code, codeVerifier);
     }

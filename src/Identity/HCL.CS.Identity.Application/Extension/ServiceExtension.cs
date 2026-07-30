@@ -32,6 +32,9 @@ public static class ServiceExtension
 {
     public static IServiceCollection AddCoreServices(this IServiceCollection services)
     {
+        services.AddTransient<
+            HCL.CS.Service.Interfaces.Interfaces.Api.IClientProvisioningTransactionHook,
+            ClientProvisioningTransactionHook>();
         services.AddTransient<IAuthorizationService, AuthorizationService>();
         services.AddTransient<ITokenGenerationService, TokenGenerationService>();
         services.AddTransient<IDiscoveryService, DiscoveryService>();

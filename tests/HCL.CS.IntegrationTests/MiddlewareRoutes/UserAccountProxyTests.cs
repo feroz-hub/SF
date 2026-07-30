@@ -3450,7 +3450,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
 
         // Authorize endpoint calls.
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         var codeChallengeString = codeVerifier.GenerateCodeChallenge();
         FrontChannelClient.AllowAutoRedirect = false;
         var url = CreateAuthorizeRequestUrl(

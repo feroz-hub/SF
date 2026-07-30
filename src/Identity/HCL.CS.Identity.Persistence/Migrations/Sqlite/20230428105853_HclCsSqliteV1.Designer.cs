@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using HCL.CS.Infrastructure.Data;
-using HCL.CS.Infrastructure.Data;
 
 #nullable disable
 
@@ -13,7 +12,7 @@ namespace HCL.CS.Infrastructure.Data.Migrations.Sqlite
 {
     [DbContext(typeof(SqLiteApplicationDbContext))]
     [Migration("20230428105853_HclCsSqliteV1")]
-    partial class HclCsSqliteV2
+    partial class HclCsSqliteV1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1588,6 +1587,5 @@ namespace HCL.CS.Infrastructure.Data.Migrations.Sqlite
         }
     }
 }
-
 
 

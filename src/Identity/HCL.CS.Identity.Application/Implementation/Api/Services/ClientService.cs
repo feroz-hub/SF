@@ -7,6 +7,7 @@
  */
 
 using System.Transactions;
+using System.Text.Json;
 using AutoMapper;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Configurations.Endpoint;
@@ -14,6 +15,7 @@ using HCL.CS.Domain.Constants;
 using HCL.CS.Domain.Constants.Endpoint;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Entities.Endpoint;
+using HCL.CS.Domain.Enums;
 using HCL.CS.Domain.ErrorCodes;
 using HCL.CS.Domain.Models.Endpoint;
 using HCL.CS.DomainServices;
@@ -35,7 +37,8 @@ public class ClientService(
     HclCsConfig securityConfig,
     IApiResourceRepository apiResourceRepository,
     IRepository<ApiScopes> apiScopeRepository,
-    IIdentityResourceRepository identityResourceRepository)
+    IIdentityResourceRepository identityResourceRepository,
+    IClientProvisioningTransactionHook provisioningTransactionHook)
     : SecurityBase, IClientServices
 {
     private readonly ILoggerService loggerService = instance.GetLoggerInstance(LoggerKeyConstants.DefaultLoggerKey);
@@ -381,85 +384,314 @@ public class ClientService(
     {
         if (clientsModel == null) frameworkResult.Throw(EndpointErrorCodes.ArgumentNullError);
 
-        // Security rule validation
-        if (!clientsModel.RequireClientSecret && !clientsModel.RequirePkce)
-        {
-            loggerService.WriteTo(Log.Warning, $"Client {clientsModel.ClientId} is public (no secret) but PKCE is disabled. Enforcing PKCE.");
-            clientsModel.RequirePkce = true;
-        }
+        NormalizeProvisioningRequest(clientsModel);
+        await ValidateProvisioningRequestAsync(clientsModel);
 
-        if (string.IsNullOrWhiteSpace(clientsModel.ClientId))
-        {
-            clientsModel.ClientId = AuthenticationConstants.KeySize32.RandomString();
-        }
-
-        var existingList = await unitOfWork.ClientRepository.GetAsync(c => c.ClientId == clientsModel.ClientId);
-        var existingEntity = existingList?.FirstOrDefault();
-
-        if (existingEntity == null)
-        {
-            loggerService.WriteTo(Log.Information, $"Provisioning new client: {clientsModel.ClientId}");
-            string rawSecret = null;
-            if (clientsModel.RequireClientSecret)
+        var existingList = await unitOfWork.ClientRepository.GetAsync(
+            client => client.ClientId == clientsModel.ClientId,
+            new System.Linq.Expressions.Expression<Func<Clients, object>>[]
             {
-                rawSecret = string.IsNullOrWhiteSpace(clientsModel.ClientSecret)
-                    ? AuthenticationConstants.KeySize32.RandomString()
-                    : clientsModel.ClientSecret;
-                clientsModel.ClientSecret = rawSecret.Sha256();
-            }
+                client => client.RedirectUris,
+                client => client.PostLogoutRedirectUris
+            });
+        var existingEntity = existingList?.FirstOrDefault();
+        if (existingEntity is not null)
+        {
+            EnsureIdempotentDefinition(existingEntity, clientsModel);
+            var existingModel = mapper.Map<Clients, ClientsModel>(existingEntity);
+            existingModel.ClientSecret = null;
+            loggerService.WriteTo(
+                Log.Information,
+                $"Client provisioning request was idempotent for client: {clientsModel.ClientId}");
+            return existingModel;
+        }
 
-            clientsModel.ClientIdIssuedAt = DateTime.UtcNow;
-            clientsModel.ClientSecretExpiresAt = DateTime.UtcNow.AddDays(tokenConfig.ClientSecretExpirationInDays);
+        var rawSecret = clientsModel.RequireClientSecret
+            ? string.IsNullOrWhiteSpace(clientsModel.ClientSecret)
+                ? AuthenticationConstants.KeySize32.RandomString()
+                : clientsModel.ClientSecret
+            : null;
+        clientsModel.ClientSecret = rawSecret?.Sha256();
+        clientsModel.ClientIdIssuedAt = DateTime.UtcNow;
+        clientsModel.ClientSecretExpiresAt = clientsModel.RequireClientSecret
+            ? DateTime.UtcNow.AddDays(tokenConfig.ClientSecretExpirationInDays)
+            : DateTime.UnixEpoch;
 
+        await using var transaction = await unitOfWork.BeginTransactionAsync();
+        try
+        {
             var clientEntity = mapper.Map<ClientsModel, Clients>(clientsModel);
             await unitOfWork.ClientRepository.InsertAsync(clientEntity);
+            await unitOfWork.AuditTrailRepository.InsertAsync(new AuditTrail
+            {
+                Id = Guid.NewGuid(),
+                ActionType = AuditType.Create,
+                TableName = "HclCs_Clients",
+                ActionName = "ProvisionClient",
+                NewValue = JsonSerializer.Serialize(new
+                {
+                    clientsModel.ClientId,
+                    clientsModel.ClientName,
+                    ClientType = clientsModel.ApplicationType.ToString(),
+                    clientsModel.RequirePkce,
+                    clientsModel.RequireClientSecret,
+                    clientsModel.PreferredAudience
+                }),
+                AffectedColumn = "ClientId",
+                CreatedBy = clientsModel.CreatedBy,
+                CreatedOn = DateTime.UtcNow
+            });
+
             var saveResult = await unitOfWork.SaveChangesAsync();
             if (saveResult.Status != ResultStatus.Succeeded)
             {
-                frameworkResult.ThrowCustomMessage(saveResult.Errors.FirstOrDefault()?.Description ?? "Failed to save provisioned client.");
+                frameworkResult.ThrowCustomMessage(
+                    saveResult.Errors.FirstOrDefault()?.Description
+                    ?? "Failed to persist provisioned client.");
             }
 
+            await provisioningTransactionHook.BeforeCommitAsync(clientsModel.ClientId);
+            await transaction.CommitAsync();
+
             var registeredModel = mapper.Map<Clients, ClientsModel>(clientEntity);
-            if (rawSecret != null)
-            {
-                registeredModel.ClientSecret = rawSecret;
-            }
+            registeredModel.ClientSecret = rawSecret;
+            loggerService.WriteTo(Log.Information, $"Provisioned client: {clientsModel.ClientId}");
             return registeredModel;
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            loggerService.WriteToWithCaller(
+                Log.Error,
+                ex,
+                $"Client provisioning transaction rolled back for client: {clientsModel.ClientId}");
+            throw;
+        }
+    }
+
+    private async Task ValidateProvisioningRequestAsync(ClientsModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.ClientId))
+            throw new InvalidOperationException("CLIENT_ID_REQUIRED: clientId is required.");
+        if (string.IsNullOrWhiteSpace(model.ClientName))
+            throw new InvalidOperationException("CLIENT_NAME_REQUIRED: clientName is required.");
+        if (!Enum.IsDefined(model.ApplicationType))
+            throw new InvalidOperationException("UNSUPPORTED_CLIENT_TYPE: applicationType is not supported.");
+
+        var allowedGrantTypes = new HashSet<string>(
+            new[]
+            {
+                OpenIdConstants.GrantTypes.AuthorizationCode,
+                OpenIdConstants.GrantTypes.RefreshToken,
+                OpenIdConstants.GrantTypes.ClientCredentials
+            },
+            StringComparer.Ordinal);
+        if (model.SupportedGrantTypes.Count == 0
+            || model.SupportedGrantTypes.Any(grant => !allowedGrantTypes.Contains(grant)))
+        {
+            throw new InvalidOperationException("UNSUPPORTED_GRANT_TYPE: requested grant type is not supported.");
+        }
+
+        var isPublic = model.ApplicationType is ApplicationType.SinglePageApp or ApplicationType.Native;
+        var isService = model.ApplicationType == ApplicationType.Service;
+        if (isPublic)
+        {
+            if (model.RequireClientSecret || !string.IsNullOrWhiteSpace(model.ClientSecret))
+                throw new InvalidOperationException("PUBLIC_CLIENT_SECRET_FORBIDDEN: public clients cannot have a secret.");
+            if (!model.RequirePkce)
+                throw new InvalidOperationException("PUBLIC_CLIENT_PKCE_REQUIRED: public clients must require PKCE.");
+            if (!model.SupportedGrantTypes.Contains(OpenIdConstants.GrantTypes.AuthorizationCode, StringComparer.Ordinal)
+                || model.SupportedGrantTypes.Contains(OpenIdConstants.GrantTypes.ClientCredentials, StringComparer.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    "INVALID_PUBLIC_CLIENT_GRANTS: public clients must use authorization_code and cannot use client_credentials.");
+            }
+        }
+        else if (isService)
+        {
+            if (!model.RequireClientSecret)
+                throw new InvalidOperationException("CONFIDENTIAL_CLIENT_SECRET_REQUIRED: service clients require credentials.");
+            if (model.SupportedGrantTypes.Count != 1
+                || !model.SupportedGrantTypes.Contains(
+                    OpenIdConstants.GrantTypes.ClientCredentials,
+                    StringComparer.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    "INVALID_SERVICE_CLIENT_GRANTS: service clients must use only client_credentials.");
+            }
+            if (model.RedirectUris.Count > 0)
+                throw new InvalidOperationException("SERVICE_CLIENT_REDIRECT_FORBIDDEN: service clients cannot use redirect URIs.");
         }
         else
         {
-            loggerService.WriteTo(Log.Information, $"Updating existing provisioned client: {clientsModel.ClientId}");
-            existingEntity.ClientName = clientsModel.ClientName ?? existingEntity.ClientName;
-            existingEntity.ClientUri = clientsModel.ClientUri ?? existingEntity.ClientUri;
-            existingEntity.RequirePkce = clientsModel.RequirePkce;
-            existingEntity.RequireClientSecret = clientsModel.RequireClientSecret;
-            existingEntity.AllowOfflineAccess = clientsModel.AllowOfflineAccess;
-            existingEntity.ApplicationType = clientsModel.ApplicationType;
-            if (!string.IsNullOrWhiteSpace(clientsModel.PreferredAudience))
+            if (!model.RequireClientSecret)
+                throw new InvalidOperationException("CONFIDENTIAL_CLIENT_SECRET_REQUIRED: web clients require credentials.");
+            if (!model.SupportedGrantTypes.Contains(OpenIdConstants.GrantTypes.AuthorizationCode, StringComparer.Ordinal)
+                || model.SupportedGrantTypes.Contains(OpenIdConstants.GrantTypes.ClientCredentials, StringComparer.Ordinal))
             {
-                existingEntity.PreferredAudience = clientsModel.PreferredAudience;
+                throw new InvalidOperationException(
+                    "INVALID_WEB_CLIENT_GRANTS: web clients must use authorization_code and cannot use client_credentials.");
             }
-            if (clientsModel.AllowedScopes != null && clientsModel.AllowedScopes.Count > 0)
-            {
-                existingEntity.AllowedScopes = string.Join(" ", clientsModel.AllowedScopes);
-            }
-            if (clientsModel.SupportedGrantTypes != null && clientsModel.SupportedGrantTypes.Count > 0)
-            {
-                existingEntity.SupportedGrantTypes = string.Join(" ", clientsModel.SupportedGrantTypes);
-            }
-            if (clientsModel.SupportedResponseTypes != null && clientsModel.SupportedResponseTypes.Count > 0)
-            {
-                existingEntity.SupportedResponseTypes = string.Join(" ", clientsModel.SupportedResponseTypes);
-            }
-
-            await unitOfWork.ClientRepository.UpdateAsync(existingEntity);
-            var updateResult = await unitOfWork.SaveChangesAsync();
-            if (updateResult.Status != ResultStatus.Succeeded)
-            {
-                frameworkResult.ThrowCustomMessage(updateResult.Errors.FirstOrDefault()?.Description ?? "Failed to update provisioned client.");
-            }
-
-            return mapper.Map<Clients, ClientsModel>(existingEntity);
         }
+
+        var usesAuthorizationCode = model.SupportedGrantTypes.Contains(
+            OpenIdConstants.GrantTypes.AuthorizationCode,
+            StringComparer.Ordinal);
+        if (usesAuthorizationCode)
+        {
+            if (model.RedirectUris.Count == 0)
+                throw new InvalidOperationException("REDIRECT_URI_REQUIRED: authorization-code clients require a redirect URI.");
+            if (!model.SupportedResponseTypes.Contains(OpenIdConstants.ResponseTypes.Code, StringComparer.Ordinal))
+                throw new InvalidOperationException("RESPONSE_TYPE_CODE_REQUIRED: authorization-code clients require response type code.");
+        }
+
+        foreach (var redirectUri in model.RedirectUris.Select(uri => uri.RedirectUri)
+                     .Concat(model.PostLogoutRedirectUris.Select(uri => uri.PostLogoutRedirectUri)))
+        {
+            if (string.IsNullOrWhiteSpace(redirectUri)
+                || redirectUri.Contains('*', StringComparison.Ordinal)
+                || !Uri.TryCreate(redirectUri, UriKind.Absolute, out var parsed)
+                || !string.Equals(parsed.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+                    "INVALID_REDIRECT_URI: redirect URIs must be exact absolute HTTPS URIs without wildcards.");
+            }
+        }
+
+        var identityResources = (await identityResourceRepository.GetAllAsync())
+            .Select(resource => resource.Name)
+            .ToHashSet(StringComparer.Ordinal);
+        var apiResources = (await apiResourceRepository.GetAllAsync())
+            .Select(resource => resource.Name)
+            .ToHashSet(StringComparer.Ordinal);
+        var apiScopes = (await apiScopeRepository.GetAllAsync())
+            .Select(scope => scope.Name)
+            .ToHashSet(StringComparer.Ordinal);
+        var knownScopes = identityResources
+            .Concat(apiResources)
+            .Concat(apiScopes)
+            .Append(AuthenticationConstants.IdentityScopes.OfflineAccess)
+            .ToHashSet(StringComparer.Ordinal);
+
+        var unknownScopes = model.AllowedScopes.Where(scope => !knownScopes.Contains(scope)).ToArray();
+        if (model.AllowedScopes.Count == 0 || unknownScopes.Length > 0)
+            throw new InvalidOperationException("UNKNOWN_SCOPE: one or more requested scopes are not registered.");
+        if (isService && model.AllowedScopes.Any(scope =>
+                identityResources.Contains(scope)
+                || string.Equals(
+                    scope,
+                    AuthenticationConstants.IdentityScopes.OfflineAccess,
+                    StringComparison.Ordinal)))
+        {
+            throw new InvalidOperationException(
+                "INVALID_SERVICE_SCOPE: service clients may request only registered API scopes.");
+        }
+
+        var knownAudiences = apiResources
+            .Append(tokenConfig.ApiIdentifier)
+            .Where(audience => !string.IsNullOrWhiteSpace(audience))
+            .ToHashSet(StringComparer.Ordinal);
+        if (string.IsNullOrWhiteSpace(model.PreferredAudience)
+            || !knownAudiences.Contains(model.PreferredAudience))
+        {
+            throw new InvalidOperationException("UNKNOWN_AUDIENCE: preferredAudience is not registered.");
+        }
+    }
+
+    private static void NormalizeProvisioningRequest(ClientsModel model)
+    {
+        model.ClientId = model.ClientId?.Trim();
+        model.ClientName = model.ClientName?.Trim();
+        model.PreferredAudience = model.PreferredAudience?.Trim();
+        model.CreatedBy = string.IsNullOrWhiteSpace(model.CreatedBy)
+            ? "HCL.CS Management API"
+            : model.CreatedBy.Trim();
+        model.AllowedScopes = NormalizeValues(model.AllowedScopes);
+        model.SupportedGrantTypes = NormalizeValues(model.SupportedGrantTypes);
+        model.SupportedResponseTypes = NormalizeValues(model.SupportedResponseTypes);
+        model.RedirectUris ??= new List<ClientRedirectUrisModel>();
+        model.PostLogoutRedirectUris ??= new List<ClientPostLogoutRedirectUrisModel>();
+
+        EnsureNoDuplicates(
+            model.RedirectUris.Select(uri => uri.RedirectUri),
+            "DUPLICATE_REDIRECT_URI");
+        EnsureNoDuplicates(
+            model.PostLogoutRedirectUris.Select(uri => uri.PostLogoutRedirectUri),
+            "DUPLICATE_POST_LOGOUT_REDIRECT_URI");
+        model.RedirectUris = model.RedirectUris
+            .OrderBy(uri => uri.RedirectUri, StringComparer.Ordinal)
+            .ToList();
+        model.PostLogoutRedirectUris = model.PostLogoutRedirectUris
+            .OrderBy(uri => uri.PostLogoutRedirectUri, StringComparer.Ordinal)
+            .ToList();
+    }
+
+    private static List<string> NormalizeValues(IEnumerable<string> values)
+    {
+        var normalized = (values ?? Array.Empty<string>())
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Select(value => value.Trim())
+            .ToList();
+        EnsureNoDuplicates(normalized, "DUPLICATE_VALUE");
+        return normalized.OrderBy(value => value, StringComparer.Ordinal).ToList();
+    }
+
+    private static void EnsureNoDuplicates(IEnumerable<string> values, string errorCode)
+    {
+        var materialized = values
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Select(value => value.Trim())
+            .ToList();
+        if (materialized.Count != materialized.Distinct(StringComparer.Ordinal).Count())
+            throw new InvalidOperationException($"{errorCode}: duplicate values are not allowed.");
+    }
+
+    private static void EnsureIdempotentDefinition(Clients existing, ClientsModel requested)
+    {
+        var existingScopes = SplitValues(existing.AllowedScopes);
+        var existingGrants = SplitValues(existing.SupportedGrantTypes);
+        var existingResponses = SplitValues(existing.SupportedResponseTypes);
+        var existingRedirects = existing.RedirectUris?
+            .Select(uri => uri.RedirectUri)
+            .OrderBy(value => value, StringComparer.Ordinal)
+            .ToArray() ?? Array.Empty<string>();
+        var requestedRedirects = requested.RedirectUris
+            .Select(uri => uri.RedirectUri)
+            .OrderBy(value => value, StringComparer.Ordinal)
+            .ToArray();
+
+        var definitionMatches =
+            string.Equals(existing.ClientName, requested.ClientName, StringComparison.Ordinal)
+            && existing.ApplicationType == requested.ApplicationType
+            && existing.RequirePkce == requested.RequirePkce
+            && existing.RequireClientSecret == requested.RequireClientSecret
+            && existing.AllowOfflineAccess == requested.AllowOfflineAccess
+            && string.Equals(existing.PreferredAudience, requested.PreferredAudience, StringComparison.Ordinal)
+            && existingScopes.SequenceEqual(requested.AllowedScopes, StringComparer.Ordinal)
+            && existingGrants.SequenceEqual(requested.SupportedGrantTypes, StringComparer.Ordinal)
+            && existingResponses.SequenceEqual(requested.SupportedResponseTypes, StringComparer.Ordinal)
+            && existingRedirects.SequenceEqual(requestedRedirects, StringComparer.Ordinal);
+
+        if (definitionMatches
+            && !string.IsNullOrWhiteSpace(requested.ClientSecret)
+            && !string.Equals(
+                existing.ClientSecret,
+                requested.ClientSecret.Sha256(),
+                StringComparison.Ordinal))
+        {
+            definitionMatches = false;
+        }
+
+        if (!definitionMatches)
+            throw new InvalidOperationException(
+                "CLIENT_DEFINITION_CONFLICT: the client ID already exists with a different definition.");
+    }
+
+    private static string[] SplitValues(string values)
+    {
+        return (values ?? string.Empty)
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .OrderBy(value => value, StringComparer.Ordinal)
+            .ToArray();
     }
 }
