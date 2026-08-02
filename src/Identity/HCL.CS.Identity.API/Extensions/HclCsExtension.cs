@@ -75,8 +75,7 @@ public static class HclCsExtension
 
         if (ErrorList.Count > 0) throw new AggregateException("Multiple Errors Occurred", ErrorList);
 
-        using var serviceProvider = services.BuildServiceProvider();
-        services.AddSecurityLoggerInstance(serviceProvider, logConfig);
+        services.AddSecurityLoggerInstance(logConfig);
         return services;
     }
 
@@ -108,8 +107,7 @@ public static class HclCsExtension
             .AddCheck<DatabaseDependencyHealthCheck>("database", tags: new[] { "ready" })
             .AddCheck<CacheDependencyHealthCheck>("cache", tags: new[] { "ready" });
 
-        using var serviceProvider = services.BuildServiceProvider();
-        services.AddSecurityLoggerInstance(serviceProvider, HclCsConfig.SystemSettings.LogConfig);
+        services.AddSecurityLoggerInstance(HclCsConfig.SystemSettings.LogConfig);
 
         return services;
     }

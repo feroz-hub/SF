@@ -76,10 +76,24 @@ public class UserAgentHandler : DelegatingHandler
 
         if (AllowCookies && response.Headers.Contains("Set-Cookie"))
         {
-            var responseCookieHeader = string.Join(",", response.Headers.GetValues("Set-Cookie"));
-            cookieContainer.SetCookies(request.RequestUri, responseCookieHeader);
+            foreach (var responseCookieHeader in response.Headers.GetValues("Set-Cookie"))
+            {
+                cookieContainer.SetCookies(request.RequestUri, responseCookieHeader);
+                ExpireDeletedCookie(request.RequestUri, responseCookieHeader);
+            }
         }
 
         return response;
+    }
+
+    private void ExpireDeletedCookie(Uri requestUri, string setCookieHeader)
+    {
+        var firstSegment = setCookieHeader.Split(';', 2)[0];
+        var separator = firstSegment.IndexOf('=');
+        if (separator <= 0 || !string.IsNullOrEmpty(firstSegment[(separator + 1)..])) return;
+
+        var name = firstSegment[..separator].Trim();
+        var cookie = cookieContainer.GetCookies(requestUri).FirstOrDefault(candidate => candidate.Name == name);
+        if (cookie != null) cookie.Expired = true;
     }
 }

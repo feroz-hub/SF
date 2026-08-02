@@ -10,6 +10,7 @@ using System.Threading;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.DomainServices.Repository.Api;
+using HCL.CS.DomainServices.UnitOfWork.Endpoint;
 
 namespace HCL.CS.DomainServices.UnitOfWork.Api;
 
@@ -23,6 +24,7 @@ public interface IUserManagementUnitOfWork
     IRepository<Notification> NotificationRepository { get; }
     IRepository<PasswordHistory> PasswordHistoryRepository { get; }
     IRepository<SecurityQuestions> SecurityQuestionsRepository { get; }
+    Task<IUnitOfWorkTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
     Task SetAddedStatusAsync<T>(T entity);
     Task SetConcurrencyOriginalValueAsync<T>(T entity, string concurrencyStamp);
     Task SetModifiedStatusAsync<T>(T entity, string concurrencyStamp);

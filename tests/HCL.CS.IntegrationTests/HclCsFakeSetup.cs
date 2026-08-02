@@ -101,6 +101,7 @@ public abstract class HclCsFakeSetup : IDisposable
     private static readonly string RuntimeDatabasePath = Path.Combine(IntegrationRuntimeDirectory, "runtime.db");
     private static bool templateDatabaseReady;
     private static List<AsymmetricKeyInfoModel> cachedAsymmetricKeys;
+    private static int constructedFixtureCount;
     private string runtimeDatabasePath;
     private TestServer testServer;
 
@@ -118,7 +119,7 @@ public abstract class HclCsFakeSetup : IDisposable
             "HCL.CS S256 Client",
             new ClientInfoDictonary
             {
-                ClientId = "ZqWJUx2H09BegYdhYCfNqyaRR/5WKdPW7PYQYC8jG3U=",
+                ClientId = "/3iwUSqOjqPfOFLUj2sRWdesVhPQBqBbe+UaLj7LHys=",
                 ClientSecret = "4JjFMCgRmQ1aI1jGIkHF5BoX3klaVfDe1yOrl3ENY1Q="
             }
         },
@@ -269,6 +270,12 @@ public abstract class HclCsFakeSetup : IDisposable
 
     public HclCsFakeSetup(string basePath = null)
     {
+        if (Interlocked.Increment(ref constructedFixtureCount) % 4 == 0)
+        {
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+            GC.WaitForPendingFinalizers();
+        }
+
         ConfigureClientMasterData();
         Initialize();
         UserName = "checktest";
@@ -1456,8 +1463,8 @@ public abstract class HclCsFakeSetup : IDisposable
 
         systemSettings.LogConfig.WriteLogTo = WriteLogTo.File;
         systemSettings.LogConfig.LogFileConfig.FilePath = Path.Combine(logDirectoryPath, "hcl-cs-integration.log");
-        systemSettings.LogConfig.LogFileConfig.RestrictedToMinimumLevel = Log.Debug;
-        systemSettings.LogConfig.LogFileConfig.MinimumConfiguration = Log.Debug;
+        systemSettings.LogConfig.LogFileConfig.RestrictedToMinimumLevel = Log.Error;
+        systemSettings.LogConfig.LogFileConfig.MinimumConfiguration = Log.Error;
         systemSettings.LogConfig.LogFileConfig.SetLogFileSize = true;
         systemSettings.LogConfig.LogFileConfig.FileSizeInBytes = 5242880;
 
@@ -1689,15 +1696,20 @@ public abstract class HclCsFakeSetup : IDisposable
         else
             IssueUrl = BaseUrl;
 
-        var builder = new WebHostBuilder();
-        builder.ConfigureServices(ConfigureServices);
-        builder.Configure(app => { ConfigureApp(app); });
-        testServer = new TestServer(builder);
+        testServer = CreateTestServer();
         ServiceProvider = testServer.Services;
         var handler = testServer.CreateHandler();
 
         FrontChannelClient = new UserAgent(new UserAgentHandler(handler));
         BackChannelClient = new HttpClient(handler);
+    }
+
+    private TestServer CreateTestServer()
+    {
+        var builder = new WebHostBuilder();
+        builder.ConfigureServices(ConfigureServices);
+        builder.Configure(ConfigureApp);
+        return new TestServer(builder);
     }
 
     public void Dispose()
@@ -1719,8 +1731,9 @@ public abstract class HclCsFakeSetup : IDisposable
         {
             SqliteConnection.ClearAllPools();
             File.Delete(runtimeDatabasePath);
-            runtimeDatabasePath = null;
         }
+
+        runtimeDatabasePath = null;
     }
 
     public async Task LoginAsync(UserModel user)

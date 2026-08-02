@@ -18,156 +18,127 @@ namespace IntegrationTests.Endpoint.FlowTests;
 
 public class RevocationTestsFlow : HclCsFakeSetup
 {
-    private readonly string positiveCaseClientName = "HCL.CS Plain PKCE Client";
-    private readonly string redirectUri = "https://127.0.0.1:63562/";
-    private ClientsModel clientModel;
+    private const string RedirectUri = "https://127.0.0.1:63562/";
 
     [Fact]
     public async Task TokenRevocation_ValidInput_ReturnSuccess()
     {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code id_token token",
-            "openid email profile offline_access phone",
-            responseMode: "fragment",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseFragmentString();
-
-        var tokenClient = BackChannelClient;
-
-        var tokenRequest = CreateRevocationRequest(
-            clientModel.ClientId,
-            clientModel.ClientSecret,
-            response.RefreshToken,
+        var (client, tokens) = await IssueTokensAsync();
+        var request = CreateRevocationRequest(
+            client.ClientId,
+            client.ClientSecret,
+            tokens.refresh_token,
             OpenIdConstants.TokenType.RefreshToken);
-        var revocationResponse =
-            await tokenClient.PostAsync(RevocationEndpoint, new FormUrlEncodedContent(tokenRequest));
-        revocationResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var response = await BackChannelClient.PostAsync(
+            RevocationEndpoint,
+            new FormUrlEncodedContent(request));
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var introspectionRequest = CreateIntroSpecRequest(
+            clientId: client.ClientId,
+            clientSecret: client.ClientSecret,
+            token: tokens.refresh_token,
+            tokenTypeHint: OpenIdConstants.TokenType.RefreshToken);
+        var introspectionResponse = await BackChannelClient.PostAsync(
+            IntrospectionEndpoint,
+            new FormUrlEncodedContent(introspectionRequest));
+        var introspection = await introspectionResponse.ParseIntrospectionResponse();
+        introspection.Active.Should().BeFalse();
     }
 
     [Fact]
     public async Task Token_Revocation_MissingToken_ReturnInvalidRequest()
     {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code id_token token",
-            "openid email profile offline_access phone",
-            responseMode: "fragment",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-
-        var tokenClient = BackChannelClient;
-
-        var tokenRequest = CreateRevocationRequest(
-            clientModel.ClientId,
-            clientModel.ClientSecret,
+        var (client, _) = await IssueTokensAsync();
+        var request = CreateRevocationRequest(
+            client.ClientId,
+            client.ClientSecret,
             tokentypehint: OpenIdConstants.TokenType.RefreshToken);
-        var revocationResponse =
-            await tokenClient.PostAsync(RevocationEndpoint, new FormUrlEncodedContent(tokenRequest));
 
-        var revocationResult = await revocationResponse.ParseIntrospectionErrorResponse();
-        revocationResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        revocationResult.IsError.Should().Be(true);
-        revocationResult.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
+        var response = await BackChannelClient.PostAsync(
+            RevocationEndpoint,
+            new FormUrlEncodedContent(request));
+        var error = await response.ParseIntrospectionErrorResponse();
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        error.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
     }
 
     [Fact]
-    public async Task Token_Revocation_InvalidToken_ReturnInvalidRequest()
+    public async Task Token_Revocation_UnknownToken_IsIdempotent()
     {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code id_token token",
-            "openid email profile offline_access phone",
-            responseMode: "fragment",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseFragmentString();
-
-        var tokenClient = BackChannelClient;
-
-        var tokenRequest = CreateRevocationRequest(
-            clientModel.ClientId,
-            clientModel.ClientSecret,
-            response.RefreshToken + "123",
+        var (client, tokens) = await IssueTokensAsync();
+        var request = CreateRevocationRequest(
+            client.ClientId,
+            client.ClientSecret,
+            tokens.refresh_token + "unknown",
             OpenIdConstants.TokenType.RefreshToken);
-        var revocationResponse =
-            await tokenClient.PostAsync(RevocationEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var revocationResult = await revocationResponse.ParseIntrospectionErrorResponse();
-        revocationResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        revocationResult.IsError.Should().Be(true);
-        revocationResult.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
-    }
 
+        var response = await BackChannelClient.PostAsync(
+            RevocationEndpoint,
+            new FormUrlEncodedContent(request));
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
 
     [Fact]
     public async Task Token_Revocation_InvalidTokenHinttype_ReturnErrorUnsupportedTokenType()
     {
+        var (client, tokens) = await IssueTokensAsync();
+        var request = CreateRevocationRequest(
+            client.ClientId,
+            client.ClientSecret,
+            tokens.refresh_token,
+            OpenIdConstants.TokenType.RefreshToken + "invalid");
+
+        var response = await BackChannelClient.PostAsync(
+            RevocationEndpoint,
+            new FormUrlEncodedContent(request));
+        var error = await response.ParseIntrospectionErrorResponse();
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        error.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedTokenType);
+    }
+
+    private async Task<(ClientsModel Client, TokenResponseResultModel Tokens)> IssueTokensAsync()
+    {
         await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
+        var client = await FetchClientDetails("HCL.CS S256 Client");
+        client.Should().NotBeNull();
+
         var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code id_token token",
+        var authorizeRequest = CreateAuthorizeRequestUrl(
+            client.ClientId,
+            "code",
             "openid email profile offline_access phone",
-            responseMode: "fragment",
+            responseMode: "query",
             prompt: "none",
             codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
+            codeChallengeMethod: OpenIdConstants.CodeChallengeMethods.Sha256,
             maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseFragmentString();
+            redirectUri: RedirectUri,
+            nonce: Guid.NewGuid().ToString("N"));
+        var authorizeResponse = await FrontChannelClient.GetAsync(authorizeRequest);
+        var authorization = authorizeResponse.Headers.Location.ToString().ParseQueryString();
+        authorization.Code.Should().NotBeNullOrWhiteSpace();
 
-        var tokenClient = BackChannelClient;
+        var tokenRequest = CreateTokenRequest(
+            client.ClientId,
+            client.ClientSecret,
+            authorization.Code,
+            RedirectUri,
+            OpenIdConstants.GrantTypes.AuthorizationCode,
+            codeVerifier);
+        var tokenResponse = await BackChannelClient.PostAsync(
+            TokenEndpoint,
+            new FormUrlEncodedContent(tokenRequest));
+        var tokens = await tokenResponse.ParseTokenResponseResult();
 
-        var tokenRequest = CreateRevocationRequest(
-            clientModel.ClientId,
-            clientModel.ClientSecret,
-            response.RefreshToken,
-            OpenIdConstants.TokenType.RefreshToken + "123");
-        var revocationResponse =
-            await tokenClient.PostAsync(RevocationEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var revocationResult = await revocationResponse.ParseIntrospectionErrorResponse();
-        revocationResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        revocationResult.IsError.Should().Be(true);
-        revocationResult.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedTokenType);
+        tokenResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        tokens.refresh_token.Should().NotBeNullOrWhiteSpace();
+        return (client, tokens);
     }
 }

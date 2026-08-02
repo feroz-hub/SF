@@ -81,6 +81,7 @@ public class ApiResourceService(
                     apiResourceEntity.Enabled = apiResourceModel.Enabled;
                     apiResourceEntity.ModifiedBy = apiResourceModel.ModifiedBy;
                     apiResourceEntity.ModifiedOn = apiResourceModel.ModifiedOn;
+                    apiResourceEntity.RowVersion = apiResourceModel.RowVersion;
                     loggerService.WriteTo(Log.Debug, "Entered into update api resource :" + apiResourceEntity.Name);
                     await apiResourceRepository.UpdateAsync(apiResourceEntity);
                     return await apiResourceRepository.SaveChangesAsync();

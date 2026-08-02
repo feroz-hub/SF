@@ -13,7 +13,7 @@ using HCL.CS.Infrastructure.Services.Implementation;
 
 namespace HCL.CS.Infrastructure.Services.Extension;
 
-public class LoggerInstance : ILoggerInstance
+public class LoggerInstance : ILoggerInstance, IDisposable
 {
     private readonly Dictionary<string, ILoggerService> logInstanceCollection = new();
 
@@ -61,5 +61,14 @@ public class LoggerInstance : ILoggerInstance
     {
         if (logInstanceCollection != null && !logInstanceCollection.ContainsKey(name))
             logInstanceCollection.Add(name, logService);
+    }
+
+    public void Dispose()
+    {
+        foreach (var loggerService in logInstanceCollection.Values.OfType<IDisposable>())
+            loggerService.Dispose();
+
+        logInstanceCollection.Clear();
+        GC.SuppressFinalize(this);
     }
 }

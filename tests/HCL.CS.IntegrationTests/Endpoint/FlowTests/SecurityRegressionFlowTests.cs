@@ -14,6 +14,7 @@ using FluentAssertions;
 using IntegrationTests.ApiDomainModel;
 using IntegrationTests.Endpoint.Helper;
 using IntegrationTests.Endpoint.Setup;
+using Microsoft.IdentityModel.Tokens;
 using Xunit;
 using HCL.CS.Domain.Constants.Endpoint;
 
@@ -207,8 +208,10 @@ public class SecurityRegressionFlowTests : HclCsFakeSetup
     {
         var (_, token) = await GetAuthorizationCodeTokenAsync();
         var validator = new JwksTestHelper();
-        var rawToken = await validator.ValidateToken(token.access_token, "security.hcl-cs.com", "wrong.audience");
-        rawToken.Should().BeNull();
+        var validate = async () =>
+            await validator.ValidateToken(token.access_token, "security.hcl-cs.com", "wrong.audience");
+
+        await validate.Should().ThrowAsync<SecurityTokenInvalidAudienceException>();
     }
 
     private async Task<(ClientsModel Client, string Code, string CodeVerifier)> GetAuthorizationCodeAsync()

@@ -99,7 +99,7 @@ internal class ClientsUnitOfWork : BaseDispose, IClientsUnitOfWork
     }
 }
 
-internal sealed class EfUnitOfWorkTransaction(
+public sealed class EfUnitOfWorkTransaction(
     Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction)
     : IUnitOfWorkTransaction
 {

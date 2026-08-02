@@ -16,7 +16,6 @@ using IntegrationTests.Endpoint.Setup;
 using Microsoft.IdentityModel.Tokens;
 using Xunit;
 using HCL.CS.Domain.Constants.Endpoint;
-using HCL.CS.Domain.ErrorCodes;
 using HCL.CS.Service.Implementation.Endpoint.Extensions;
 using static HCL.CS.Domain.Constants.Endpoint.OpenIdConstants;
 
@@ -24,581 +23,146 @@ namespace IntegrationTests.Endpoint.FlowTests;
 
 public class JWTPostFlowTest : HclCsFakeSetup
 {
-    private readonly string positiveCaseClientName = "HCL.CS Plain PKCE Client";
-    private readonly string redirectUri = "https://127.0.0.1:63562/";
-    private ClientsModel clientModel;
+    private const string PositiveCaseClientName = "HCL.CS Plain PKCE Client";
+    private const string RedirectUri = "https://127.0.0.1:63562/";
 
-    // JWT Secret Start
-    public string GenerateJWTSecretRequest(ClientsModel client)
+    public static IEnumerable<object[]> RejectedClientAssertionScenarios()
+    {
+        foreach (var scenario in Enum.GetValues<ClientAssertionScenario>()) yield return new object[] { scenario };
+    }
+
+    [Theory]
+    [MemberData(nameof(RejectedClientAssertionScenarios))]
+    public async Task ConfidentialClient_ClientSecretJwt_IsRejectedBeforeGrantValidation(
+        ClientAssertionScenario scenario)
+    {
+        await LoginAsync(User);
+        var client = await FetchClientDetails(PositiveCaseClientName);
+        client.Should().NotBeNull();
+
+        var codeVerifier = GeneratePkceCodeVerifier();
+        FrontChannelClient.AllowAutoRedirect = false;
+        var authorizeRequest = CreateAuthorizeRequestUrl(
+            client.ClientId,
+            ResponseTypes.Code,
+            "openid email profile phone",
+            responseMode: ResponseModes.Query,
+            prompt: "none",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
+            maxAge: "60",
+            redirectUri: RedirectUri,
+            nonce: Guid.NewGuid().ToString());
+        var authorizeResponse = await FrontChannelClient.GetAsync(authorizeRequest);
+        var authorizeResult = authorizeResponse.Headers.Location!.ToString().ParseQueryString();
+        authorizeResult.Code.Should().NotBeNullOrWhiteSpace();
+
+        var assertionClient = new ClientsModel
+        {
+            ClientId = client.ClientId,
+            ClientSecret = client.ClientSecret,
+            AccessTokenExpiration = client.AccessTokenExpiration
+        };
+        if (scenario == ClientAssertionScenario.InvalidClientId)
+            assertionClient.ClientId += "-unknown";
+        else if (scenario == ClientAssertionScenario.InvalidClientSecret)
+            assertionClient.ClientSecret += "-invalid";
+
+        var tokenRequest = CreateTokenRequest(
+            code: authorizeResult.Code,
+            redirectUri: RedirectUri,
+            grantType: GrantTypes.AuthorizationCode,
+            codeVerifier: codeVerifier,
+            clientAssertionType: ClientAssertionTypes.JwtBearer,
+            clientAssertion: GenerateJwtSecretRequest(assertionClient));
+
+        ApplyScenario(tokenRequest, scenario);
+
+        var tokenResponse = await BackChannelClient.PostAsync(
+            TokenEndpoint,
+            new FormUrlEncodedContent(tokenRequest));
+        var tokenError = await tokenResponse.ParseTokenErrorResponse();
+
+        tokenResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        tokenError.ErrorCode.Should().Be(Errors.InvalidClient);
+    }
+
+    private static string GenerateJwtSecretRequest(ClientsModel client)
     {
         var now = DateTime.UtcNow;
-        var algorithm = Algorithms.HmacSha256;
         var securityKey = Encoding.ASCII.GetBytes(client.ClientSecret);
-        var credentials = new SigningCredentials(new SymmetricSecurityKey(securityKey), algorithm);
+        var credentials = new SigningCredentials(
+            new SymmetricSecurityKey(securityKey),
+            Algorithms.HmacSha256);
         var claims = new List<Claim>
         {
             new("sub", client.ClientId),
             new("iat", now.ToUnixTime().ToString()),
             new("jti", AuthenticationConstants.KeySize32.RandomString())
         };
-
-        // Create the JWT and write it to a string
         var jwt = new JwtSecurityToken(
             client.ClientId,
             TokenEndpoint,
             claims,
             now,
-            DateTime.UtcNow.AddSeconds(client.AccessTokenExpiration),
+            now.AddMinutes(5),
             credentials);
-
-        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-        return encodedJwt;
+        return new JwtSecurityTokenHandler().WriteToken(jwt);
     }
 
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_JWTSecret_ValidInput_Success()
+    private static void ApplyScenario(
+        IDictionary<string, string> tokenRequest,
+        ClientAssertionScenario scenario)
     {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-
-        var tokenResult = await tokenResponse.ParseTokenResponseResult();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        tokenResult.access_token.Should().NotBeNull();
-        tokenResult.id_token.Should().NotBeNull();
-        tokenResult.refresh_token.Should().BeNullOrEmpty();
-        tokenResult.scope.Should().NotBeNull();
-        tokenResult.expires_in.Should().BeGreaterThan(0);
-        tokenResult.token_type.Should().Be(TokenResponseType.BearerTokenType);
+        switch (scenario)
+        {
+            case ClientAssertionScenario.MissingCode:
+                tokenRequest.Remove(TokenRequest.Code);
+                break;
+            case ClientAssertionScenario.InvalidCode:
+                tokenRequest[TokenRequest.Code] += "-invalid";
+                break;
+            case ClientAssertionScenario.MissingRedirectUri:
+                tokenRequest.Remove(TokenRequest.RedirectUri);
+                break;
+            case ClientAssertionScenario.InvalidRedirectUri:
+                tokenRequest[TokenRequest.RedirectUri] += "invalid";
+                break;
+            case ClientAssertionScenario.MissingGrantType:
+                tokenRequest.Remove(TokenRequest.GrantType);
+                break;
+            case ClientAssertionScenario.InvalidGrantType:
+                tokenRequest[TokenRequest.GrantType] = "unsupported_grant";
+                break;
+            case ClientAssertionScenario.MissingCodeVerifier:
+                tokenRequest.Remove(TokenRequest.CodeVerifier);
+                break;
+            case ClientAssertionScenario.InvalidCodeVerifier:
+                tokenRequest[TokenRequest.CodeVerifier] += "-invalid";
+                break;
+            case ClientAssertionScenario.MissingAssertionType:
+                tokenRequest.Remove(TokenRequest.ClientAssertionType);
+                break;
+            case ClientAssertionScenario.InvalidAssertionType:
+                tokenRequest[TokenRequest.ClientAssertionType] = "unsupported_assertion_type";
+                break;
+        }
     }
 
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_MissingcodeJWTSecret_ReturnAuthorizationCodeMissingError()
+    public enum ClientAssertionScenario
     {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResult.ErrorCode.Should().Be(Errors.InvalidGrant);
-        tokenResult.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.AuthorizationCodeMissing));
-    }
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_InvalidCodeJWTSecret_ReturnInvalidAuthorizationCode()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code + "123",
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResult.ErrorCode.Should().Be(Errors.InvalidGrant);
-        tokenResult.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidAuthorizationCode));
-    }
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_MissingRedirectUriJWTSecret_ReturnRedirectUriMissingError()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        tokenResult.ErrorCode.Should().Be(Errors.UnauthorizedClient);
-        tokenResult.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.RedirectUriMissing));
-    }
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_InvalidRedirectUrIJWTSecret_ReturnInvalidRedirectUriError()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri + "123",
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        tokenResult.ErrorCode.Should().Be(Errors.InvalidGrant);
-        tokenResult.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidRedirectUri));
-    }
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_MissingGrantTypeJWTSecret_ReturnGrantTypeIsMissingError()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri,
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        tokenResult.ErrorCode.Should().Be(Errors.UnsupportedGrantType);
-        tokenResult.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.GrantTypeIsMissing));
-    }
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_InvalidGrantTypwJWTSecret_ReturnGrantTypeIsMissingError()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode + "123",
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        tokenResult.ErrorCode.Should().Be(Errors.UnsupportedGrantType);
-        tokenResult.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.GrantTypeIsMissing));
-    }
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_MissingCodeChallengeJWTSecret_ReturnInvalidCodeVerifierError()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        tokenResult.ErrorCode.Should().Be(Errors.InvalidGrant);
-        tokenResult.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidCodeVerifier));
-    }
-
-    [Fact]
-    public async Task
-        TokenGeneration_AuthCodeFlow_InvalidCodeChallengeJWTSecret_ReturnUnsupportedCodeChallengeMethodError()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier + "123",
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        tokenResult.ErrorCode.Should().Be(Errors.InvalidGrant);
-        tokenResult.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.UnsupportedCodeChallengeMethod));
-    }
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_MissingClientAssertionTypeJWTSecret_ReturnInvalidClientError()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier,
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        tokenResult.ErrorCode.Should().Be(Errors.InvalidClient);
-    }
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_InvalidClientAssertionJWTSecret_ReturnInvalidClientidError()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer" + "1234",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        tokenResult.ErrorCode.Should().Be(Errors.InvalidClient);
-    }
-
-    [Fact]
-    public async Task TokenGeneration_AuthCodeFlow_clientAssertionInvalidClientIDJWTSecret_returnInvalidClientIDError()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        clientModel.ClientId = clientModel.ClientId + "123";
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        tokenResult.ErrorCode.Should().Be(Errors.InvalidClient);
-    }
-
-    [Fact]
-    public async Task
-        TokenGeneration_AuthCodeFlow_clientAssertionInvalidClientSecretJWTSecret_returnErrorInvalidClientSecretJWT()
-    {
-        await LoginAsync(User);
-        clientModel = await FetchClientDetails(positiveCaseClientName);
-        clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = GeneratePkceCodeVerifier();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "openid email profile phone",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier.GenerateCodeChallenge(),
-            codeChallengeMethod: "S256",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
-
-        clientModel.ClientSecret = clientModel.ClientSecret + "123";
-
-        var tokenClient = BackChannelClient;
-        var tokenRequest = CreateTokenRequest(
-            code: code,
-            redirectUri: redirectUri,
-            grantType: GrantTypes.AuthorizationCode,
-            codeVerifier: codeVerifier,
-            clientAssertionType: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            clientAssertion: GenerateJWTSecretRequest(clientModel));
-
-        var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
-        var tokenResult = await tokenResponse.ParseTokenErrorResponse();
-        tokenResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        tokenResult.ErrorCode.Should().Be(Errors.InvalidClient);
+        ValidAssertion,
+        MissingCode,
+        InvalidCode,
+        MissingRedirectUri,
+        InvalidRedirectUri,
+        MissingGrantType,
+        InvalidGrantType,
+        MissingCodeVerifier,
+        InvalidCodeVerifier,
+        MissingAssertionType,
+        InvalidAssertionType,
+        InvalidClientId,
+        InvalidClientSecret
     }
 }

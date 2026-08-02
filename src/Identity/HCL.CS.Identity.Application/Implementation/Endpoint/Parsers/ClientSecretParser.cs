@@ -57,8 +57,11 @@ internal class ClientSecretParser : IClientSecretParser
                 if (secret.IsError && secret.Type != AuthenticationConstants.ParsedTypes.NoSecret)
                 {
                     secret = await ClientSecretMtls(context);
-                    if (secret.IsError && secret.Type != AuthenticationConstants.ParsedTypes.NoSecret)
-                        parsedSecret = secret;
+                    parsedSecret = secret;
+                }
+                else
+                {
+                    parsedSecret = secret;
                 }
             }
             else

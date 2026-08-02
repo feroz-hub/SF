@@ -6,7 +6,6 @@
 - HCL is obtained. This is proprietary and confidential to HCL.
  */
 
-using System.Transactions;
 using System.Text.Json;
 using AutoMapper;
 using HCL.CS.Domain;
@@ -159,8 +158,9 @@ public class ClientService(
         {
             var clientsEntity = await GetClientDetailsAsync(clientId);
             if (clientsEntity != null)
-                // Transaction scope required - because delete client token is hard delete. we can't use UOF here.
-                using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                await using var transaction = await unitOfWork.BeginTransactionAsync();
+                try
                 {
                     loggerService.WriteTo(Log.Debug, "Entered into remove Client :" + clientsEntity.ClientName);
                     await unitOfWork.ClientRepository.DeleteAsync(clientsEntity);
@@ -168,10 +168,19 @@ public class ClientService(
                     if (result.Status == ResultStatus.Succeeded)
                         result = await DeleteClientTokens(clientsEntity.ClientId);
 
-                    if (result.Status == ResultStatus.Succeeded) transactionScope.Complete();
+                    if (result.Status == ResultStatus.Succeeded)
+                        await transaction.CommitAsync();
+                    else
+                        await transaction.RollbackAsync();
 
                     return result;
                 }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
 
             return frameworkResult.Failed<FrameworkResult>(EndpointErrorCodes.ClientDoesNotExist);
         }

@@ -13,6 +13,8 @@ using HCL.CS.Domain.Entities.Api;
 using HCL.CS.DomainServices;
 using HCL.CS.DomainServices.Repository.Api;
 using HCL.CS.DomainServices.UnitOfWork.Api;
+using HCL.CS.DomainServices.UnitOfWork.Endpoint;
+using HCL.CS.Infrastructure.Data.UnitOfWork.Endpoint;
 using HCL.CS.Infrastructure.Data.Repository.Api;
 
 namespace HCL.CS.Infrastructure.Data.UnitOfWork.Api;
@@ -122,6 +124,15 @@ internal class UserManagementUnitOfWork : BaseDispose, IUserManagementUnitOfWork
             securityQuestionsRepository = new BaseRepository<SecurityQuestions>(context);
             return securityQuestionsRepository;
         }
+    }
+
+    public async Task<IUnitOfWorkTransaction> BeginTransactionAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var transaction = await ((ApplicationDbContext)context)
+            .Database
+            .BeginTransactionAsync(cancellationToken);
+        return new EfUnitOfWorkTransaction(transaction);
     }
 
     public Task SetAddedStatusAsync<T>(T entity)

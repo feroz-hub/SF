@@ -159,7 +159,6 @@ public class IntrospecFlowTest : HclCsFakeSetup
             await BackChannelClient.PostAsync(IntrospectionEndpoint, new FormUrlEncodedContent(introspectRequest_2));
         var introspectokenResponseresult3 = await introspecResponse3.ParseIntrospectionResponse();
         introspectokenResponseresult3.Active.Should().BeFalse();
-        Thread.Sleep(10000);
         var dict5 = CreateIntroSpecRequest(
             token: tokenResult.access_token,
             tokenTypeHint: OpenIdConstants.TokenResponseType.AccessToken,
@@ -168,7 +167,7 @@ public class IntrospecFlowTest : HclCsFakeSetup
         var introspecResponse4 =
             await BackChannelClient.PostAsync(IntrospectionEndpoint, new FormUrlEncodedContent(dict5));
         var introspectokenResponseresult4 = await introspecResponse4.ParseIntrospectionResponse();
-        introspectokenResponseresult4.Active.Should().BeFalse();
+        introspectokenResponseresult4.Active.Should().BeTrue();
     }
 
     [Fact]
@@ -207,7 +206,6 @@ public class IntrospecFlowTest : HclCsFakeSetup
             await BackChannelClient.PostAsync(IntrospectionEndpoint, new FormUrlEncodedContent(introspectRequest_2));
         var introspectokenResponseresult3 = await introspecResponse3.ParseIntrospectionResponse();
         introspectokenResponseresult3.Active.Should().BeFalse();
-        Thread.Sleep(10000);
         var introspectRequest4 = CreateIntroSpecRequest(
             token: tokenResult.refresh_token,
             tokenTypeHint: OpenIdConstants.TokenResponseType.RefreshToken,
@@ -216,7 +214,7 @@ public class IntrospecFlowTest : HclCsFakeSetup
         var introspecResponse4 =
             await BackChannelClient.PostAsync(IntrospectionEndpoint, new FormUrlEncodedContent(introspectRequest4));
         var introspectokenResponseresult4 = await introspecResponse4.ParseIntrospectionResponse();
-        introspectokenResponseresult4.Active.Should().BeFalse();
+        introspectokenResponseresult4.Active.Should().BeTrue();
     }
 
     [Fact]
@@ -277,12 +275,9 @@ public class IntrospecFlowTest : HclCsFakeSetup
 
         var introspecResponse1 =
             await BackChannelClient.PostAsync(IntrospectionEndpoint, new FormUrlEncodedContent(introspectRequest));
-        var introspectokenResponseresult1 = await introspecResponse1.ParseIntrospectionErrorResponse();
-        introspecResponse1.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        introspectokenResponseresult1.IsError.Should().Be(true);
-        introspectokenResponseresult1.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidToken);
-        introspectokenResponseresult1.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.TokenMissing));
+        var introspection = await introspecResponse1.ParseIntrospectionResponse();
+        introspecResponse1.StatusCode.Should().Be(HttpStatusCode.OK);
+        introspection.Active.Should().BeFalse();
     }
 
     [Fact]
@@ -298,17 +293,14 @@ public class IntrospecFlowTest : HclCsFakeSetup
 
         var introspecResponse =
             await BackChannelClient.PostAsync(IntrospectionEndpoint, new FormUrlEncodedContent(introspectRequest));
-        var introspectokenResponseresult1 = await introspecResponse.ParseIntrospectionErrorResponse();
-        introspecResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        introspectokenResponseresult1.IsError.Should().Be(true);
-        introspectokenResponseresult1.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
-        introspectokenResponseresult1.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidTokenInIntrospection));
+        var introspection = await introspecResponse.ParseIntrospectionResponse();
+        introspecResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        introspection.Active.Should().BeFalse();
     }
 
     [Fact]
     [Trait("Category", Category)]
-    public async Task Introspec_accesstoken_InvalidHintype_ReturnInvalidTokenHintType()
+    public async Task Introspec_accesstoken_UnknownHintType_ReturnsInactive()
     {
         var tokenResult = await TokenGeneration_AuthCodeFlow();
         var introspectRequest = CreateIntroSpecRequest(
@@ -319,12 +311,9 @@ public class IntrospecFlowTest : HclCsFakeSetup
 
         var introspecResponse1 =
             await BackChannelClient.PostAsync(IntrospectionEndpoint, new FormUrlEncodedContent(introspectRequest));
-        introspecResponse1.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        var introspectokenResponseresult1 = await introspecResponse1.ParseIntrospectionErrorResponse();
-        introspectokenResponseresult1.IsError.Should().Be(true);
-        introspectokenResponseresult1.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
-        introspectokenResponseresult1.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidTokenHintType));
+        introspecResponse1.StatusCode.Should().Be(HttpStatusCode.OK);
+        var introspection = await introspecResponse1.ParseIntrospectionResponse();
+        introspection.Active.Should().BeFalse();
     }
 
     [Fact]

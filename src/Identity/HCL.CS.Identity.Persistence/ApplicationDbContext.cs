@@ -86,8 +86,9 @@ public class ApplicationDbContext :
         try
         {
             ApplyAuditState(true);
+            ApplySqliteRowVersionValues();
             NormalizeDateTimesToUtc();
-            var changes = await base.SaveChangesAsync(cancellationToken);
+            var changes = await base.SaveChangesAsync(true, cancellationToken);
             return BuildResult(changes);
         }
         catch (DbUpdateConcurrencyException)
@@ -105,8 +106,9 @@ public class ApplicationDbContext :
         try
         {
             ApplyAuditState(false);
+            ApplySqliteRowVersionValues();
             NormalizeDateTimesToUtc();
-            var changes = await base.SaveChangesAsync(cancellationToken);
+            var changes = await base.SaveChangesAsync(true, cancellationToken);
             return BuildResult(changes);
         }
         catch (DbUpdateConcurrencyException)
@@ -161,12 +163,14 @@ public class ApplicationDbContext :
 
     public override int SaveChanges()
     {
+        ApplySqliteRowVersionValues();
         NormalizeDateTimesToUtc();
         return base.SaveChanges();
     }
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
+        ApplySqliteRowVersionValues();
         NormalizeDateTimesToUtc();
         return base.SaveChanges(acceptAllChangesOnSuccess);
     }
@@ -175,6 +179,7 @@ public class ApplicationDbContext :
         CancellationToken cancellationToken = default)
     {
         ApplyAuditState(true);
+        ApplySqliteRowVersionValues();
         NormalizeDateTimesToUtc();
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
@@ -295,13 +300,35 @@ public class ApplicationDbContext :
                         entry.Entity.ModifiedBy = entry.Entity.CreatedBy;
                 }
             }
+
+        var userEntries = ChangeTracker.Entries<Users>()
+            .Where(e => e.State is EntityState.Added or EntityState.Modified)
+            .ToList();
+
+        foreach (var entry in userEntries)
+            if (entry.State == EntityState.Added)
+            {
+                if (entry.Entity.CreatedOn == default) entry.Entity.CreatedOn = utcNow;
+
+                if (string.IsNullOrWhiteSpace(entry.Entity.CreatedBy)) entry.Entity.CreatedBy = "System";
+
+                entry.Entity.ModifiedOn = null;
+                entry.Entity.IsDeleted = false;
+            }
+            else
+            {
+                if (entry.Entity.ModifiedOn == null) entry.Entity.ModifiedOn = utcNow;
+
+                if (string.IsNullOrWhiteSpace(entry.Entity.ModifiedBy))
+                    entry.Entity.ModifiedBy = entry.Entity.CreatedBy;
+            }
     }
 
     private void NormalizeDateTimesToUtc()
     {
         foreach (var entry in ChangeTracker.Entries())
         {
-            if (entry.State is not (EntityState.Added or EntityState.Modified)) continue;
+            if (entry.State is not (EntityState.Added or EntityState.Modified or EntityState.Deleted)) continue;
 
             foreach (var property in entry.Properties)
             {
@@ -323,6 +350,23 @@ public class ApplicationDbContext :
                 if (normalized.Kind != value.Kind || normalized.Ticks != value.Ticks)
                     property.CurrentValue = normalized;
             }
+        }
+    }
+
+    private void ApplySqliteRowVersionValues()
+    {
+        if (!Database.IsSqlite()) return;
+
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            if (entry.State is not (EntityState.Added or EntityState.Modified)) continue;
+
+            var rowVersion = entry.Metadata.FindProperty(nameof(BaseEntity.RowVersion));
+            if (rowVersion == null) continue;
+
+            var property = entry.Property(nameof(BaseEntity.RowVersion));
+            property.CurrentValue = Guid.NewGuid().ToByteArray();
+            property.IsModified = entry.State == EntityState.Modified;
         }
     }
 

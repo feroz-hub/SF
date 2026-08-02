@@ -139,8 +139,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             clientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientsModel), Encoding.UTF8, "application/json"));
         var clientResponse = await clientsModelresponse.Content.ReadAsStringAsync();
-        var clientResponseResult = JsonConvert.DeserializeObject(clientResponse);
-        clientResponseResult.Should()
+        var clientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(clientResponse);
+        clientResponseResult.error_description.Should()
             .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.ClientNameIsRequired));
     }
 
@@ -162,8 +162,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             clientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientsModel), Encoding.UTF8, "application/json"));
         var clientResponse = await clientsModelresponse.Content.ReadAsStringAsync();
-        var clientResponseResult = JsonConvert.DeserializeObject(clientResponse);
-        clientResponseResult.Should().Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.ClientNameTooLong));
+        var clientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(clientResponse);
+        clientResponseResult.error_description.Should().Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.ClientNameTooLong));
     }
 
     // CheckValidLogoURI
@@ -186,8 +186,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             clientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientsModel), Encoding.UTF8, "application/json"));
         var clientResponse = await clientsModelresponse.Content.ReadAsStringAsync();
-        var clientResponseResult = JsonConvert.DeserializeObject(clientResponse);
-        clientResponseResult.Should().Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidLogoUri));
+        var clientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(clientResponse);
+        clientResponseResult.error_description.Should().Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidLogoUri));
     }
 
     [Fact]
@@ -208,8 +208,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             clientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientsModel), Encoding.UTF8, "application/json"));
         var clientResponse = await clientsModelresponse.Content.ReadAsStringAsync();
-        var clientResponseResult = JsonConvert.DeserializeObject(clientResponse);
-        clientResponseResult.Should().Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidLogoUri));
+        var clientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(clientResponse);
+        clientResponseResult.error_description.Should().Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidLogoUri));
     }
 
     [Fact]
@@ -230,8 +230,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             clientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientsModel), Encoding.UTF8, "application/json"));
         var clientResponse = await clientsModelresponse.Content.ReadAsStringAsync();
-        var clientResponseResult = JsonConvert.DeserializeObject(clientResponse);
-        clientResponseResult.Should().Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidPolicyUri));
+        var clientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(clientResponse);
+        clientResponseResult.error_description.Should().Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidPolicyUri));
     }
 
     [Fact]
@@ -252,8 +252,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             clientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientsModel), Encoding.UTF8, "application/json"));
         var clientResponse = await clientsModelresponse.Content.ReadAsStringAsync();
-        var clientResponseResult = JsonConvert.DeserializeObject(clientResponse);
-        clientResponseResult.Should()
+        var clientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(clientResponse);
+        clientResponseResult.error_description.Should()
             .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.AllowedScopesIsRequired));
     }
 
@@ -286,7 +286,7 @@ public class ClientServiceProxyTest : HclCsFakeSetup
         clientsModel.ClientName = "testCleint";
         clientsModel.ClientId = Guid.NewGuid().ToString();
         clientsModel.ClientSecret = Guid.NewGuid().ToString();
-        clientsModel.AccessTokenExpiration = 200;
+        clientsModel.AccessTokenExpiration = 30;
 
         var token = await GetAccessToken();
         // Call lock user middleware
@@ -297,8 +297,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             clientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientsModel), Encoding.UTF8, "application/json"));
         var clientResponse = await clientsModelresponse.Content.ReadAsStringAsync();
-        var clientResponseResult = JsonConvert.DeserializeObject(clientResponse);
-        clientResponseResult.Should()
+        var clientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(clientResponse);
+        clientResponseResult.error_description.Should()
             .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidAccessTokenExpireRange));
     }
 
@@ -320,8 +320,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             clientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientsModel), Encoding.UTF8, "application/json"));
         var clientResponse = await clientsModelresponse.Content.ReadAsStringAsync();
-        var clientResponseResult = JsonConvert.DeserializeObject(clientResponse);
-        clientResponseResult.Should()
+        var clientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(clientResponse);
+        clientResponseResult.error_description.Should()
             .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidRefreshTokenExpireRange));
     }
 
@@ -332,7 +332,7 @@ public class ClientServiceProxyTest : HclCsFakeSetup
         clientsModel.ClientName = "testCleint";
         clientsModel.ClientId = Guid.NewGuid().ToString();
         clientsModel.ClientSecret = Guid.NewGuid().ToString();
-        clientsModel.AuthorizationCodeExpiration = 200;
+        clientsModel.AuthorizationCodeExpiration = 30;
 
         var token = await GetAccessToken();
         // Call lock user middleware
@@ -343,8 +343,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             clientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientsModel), Encoding.UTF8, "application/json"));
         var clientResponse = await clientsModelresponse.Content.ReadAsStringAsync();
-        var clientResponseResult = JsonConvert.DeserializeObject(clientResponse);
-        clientResponseResult.Should()
+        var clientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(clientResponse);
+        clientResponseResult.error_description.Should()
             .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidAuthorizationCodeExpireRange));
     }
 
@@ -369,8 +369,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             updateClientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientResponseResult), Encoding.UTF8, "application/json"));
         var updateClientResponse = await updateclientsModelResponse.Content.ReadAsStringAsync();
-        var updateclientResponseResult = JsonConvert.DeserializeObject(updateClientResponse);
-        updateclientResponseResult.Should()
+        var updateclientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(updateClientResponse);
+        updateclientResponseResult.error_description.Should()
             .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.ClientDoesNotExist));
     }
 
@@ -398,8 +398,8 @@ public class ClientServiceProxyTest : HclCsFakeSetup
             updateClientsModelurl,
             new StringContent(JsonConvert.SerializeObject(clientResponseResult), Encoding.UTF8, "application/json"));
         var updateClientResponse = await updateclientsModelResponse.Content.ReadAsStringAsync();
-        var updateclientResponseResult = JsonConvert.DeserializeObject(updateClientResponse);
-        updateclientResponseResult.Should()
+        var updateclientResponseResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(updateClientResponse);
+        updateclientResponseResult.error_description.Should()
             .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.ModifiedByTooLong));
     }
 

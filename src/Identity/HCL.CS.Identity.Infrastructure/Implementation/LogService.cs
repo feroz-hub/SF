@@ -24,7 +24,7 @@ using Log = HCL.CS.Domain.Log;
 
 namespace HCL.CS.Infrastructure.Services.Implementation;
 
-public class LogService : ILoggerService
+public class LogService : ILoggerService, IDisposable
 {
     private readonly IResourceStringHandler resourceStringHandler;
     private ILogger logger;
@@ -191,6 +191,14 @@ public class LogService : ILoggerService
         }
 
         logger = loggerConfiguration.CreateLogger();
+    }
+
+    public void Dispose()
+    {
+        if (logger is IDisposable disposableLogger) disposableLogger.Dispose();
+
+        logger = null;
+        GC.SuppressFinalize(this);
     }
 
     private void LogFileSetup(LoggerConfiguration loggerConfiguration, LogFileConfig logConfig)

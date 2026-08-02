@@ -182,7 +182,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var registerUser_result = JsonConvert.DeserializeObject<FrameworkResult>(userDetails);
         registerUser_result.Should().BeOfType<FrameworkResult>();
         registerUser_result.Status.Should().Be(ResultStatus.Failed);
-        registerUser_result.Errors.FirstOrDefault().Code.Should().Be(ApiErrorCodes.InvalidEmailFormat);
+        registerUser_result.Errors.FirstOrDefault().Code.Should().Be(ApiErrorCodes.AuthLocalEmailInvalid);
     }
 
     [Fact]
@@ -240,7 +240,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var randomString = random.Next().ToString();
         userModelInput.UserName =
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-        userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
+        userModelInput.Email = "username.length@hcltech.com";
 
         // Getting Security Questions
         var securityQuestionResult_url = BaseUrl + ApiRoutePathConstants.GetAllSecurityQuestions;
@@ -424,7 +424,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
         // Getting create User Model.
         var userModelInput = CreateUserRequestModel();
         var randomString = random.Next().ToString();
-        userModelInput.UserName = random.Next().ToString();
+        userModelInput.UserName = $"createdbynull{Guid.NewGuid():N}";
         userModelInput.CreatedBy = null;
         userModelInput.Email = string.Concat(userModelInput.UserName, "@", "hcltech.com");
 
@@ -459,7 +459,9 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var userDetails = await registerUser_response.Content.ReadAsStringAsync();
         var registerUser_result = JsonConvert.DeserializeObject<FrameworkResult>(userDetails);
         registerUser_result.Should().BeOfType<FrameworkResult>();
-        registerUser_result.Status.Should().Be(ResultStatus.Success);
+        registerUser_result.Status.Should().Be(
+            ResultStatus.Success,
+            string.Join(",", registerUser_result.Errors?.Select(error => error.Code) ?? Array.Empty<string>()));
     }
 
     [Fact]
@@ -667,7 +669,7 @@ public class UserAccountProxyTests : HclCsFakeSetup
             new AuthenticationHeaderValue("Bearer", token.access_token);
 
         // With Seed Data
-        var userEmailId = "bob.test@test.com";
+        var userEmailId = "bobuser@hcltech.com";
         var url = BaseUrl + ApiRoutePathConstants.GetUserByEmail;
         var response = await FrontChannelClient
             .PostAsync(url,
@@ -729,7 +731,10 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var deleteUser_Resopnse = await response.Content.ReadAsStringAsync();
         var deleteUser_Result = JsonConvert.DeserializeObject<FrameworkResult>(deleteUser_Resopnse);
         deleteUser_Result.Should().BeOfType<FrameworkResult>();
-        deleteUser_Result.Status.Should().Be(ResultStatus.Success);
+        deleteUser_Result.Status.Should().Be(
+            ResultStatus.Success,
+            string.Join(",", deleteUser_Result.Errors?.Select(error => $"{error.Code}:{error.Description}") ??
+                             Array.Empty<string>()));
     }
 
     [Fact]
@@ -765,7 +770,10 @@ public class UserAccountProxyTests : HclCsFakeSetup
         var deleteUser_Resopnse = await response.Content.ReadAsStringAsync();
         var deleteUser_Result = JsonConvert.DeserializeObject<FrameworkResult>(deleteUser_Resopnse);
         deleteUser_Result.Should().BeOfType<FrameworkResult>();
-        deleteUser_Result.Status.Should().Be(ResultStatus.Success);
+        deleteUser_Result.Status.Should().Be(
+            ResultStatus.Success,
+            string.Join(",", deleteUser_Result.Errors?.Select(error => $"{error.Code}:{error.Description}") ??
+                             Array.Empty<string>()));
     }
 
     [Fact]
@@ -2107,8 +2115,8 @@ public class UserAccountProxyTests : HclCsFakeSetup
                 getRoleUrl,
                 new StringContent(JsonConvert.SerializeObject(userId), Encoding.UTF8, "application/json"));
         var roleDetails = await getRoleResponse.Content.ReadAsStringAsync();
-        var getRoleResult = JsonConvert.DeserializeObject(roleDetails);
-        getRoleResult.Should().Be("User Identifier is invalid.");
+        var getRoleResult = JsonConvert.DeserializeObject<ErrorResponseResultModel>(roleDetails);
+        getRoleResult.error_description.Should().Be("User Identifier is invalid.");
     }
 
     [Fact]

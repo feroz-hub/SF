@@ -26,9 +26,9 @@ HCL is obtained. This is proprietary and confidential to HCL.
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer">
       <Version>8.0.11</Version>
     </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="8.0.5"/>
     <ProjectReference Include="..\..\SharedKernel\DomainValidation\DomainValidation.csproj"/>
     <ProjectReference Include="..\HCL.CS.Identity.Domain\HCL.CS.Domain.csproj"/>
   </ItemGroup>
 
 </Project>
-

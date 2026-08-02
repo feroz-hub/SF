@@ -81,7 +81,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().BeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
@@ -115,7 +115,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnauthorizedClient);
@@ -149,7 +149,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedResponseType);
@@ -184,7 +184,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedResponseType);
@@ -219,15 +219,15 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedResponseType);
         response.Result.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidResponseMode));
+            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.ResponseTypeMissing));
         response.Result.ErrorUri.Should().Be(BaseUrl.IncludeEndSlash() + ErrorUrl);
-        response.Result.ResponseMode.Should().NotBeNullOrEmpty();
-        response.Result.RedirectUri.Should().NotBeNullOrEmpty();
+        response.Result.ResponseMode.Should().BeNull();
+        response.Result.RedirectUri.Should().BeNull();
         response.Result.TraceId.Should().NotBeNullOrEmpty();
     }
 
@@ -254,7 +254,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedResponseType);
@@ -289,15 +289,15 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedResponseType);
         response.Result.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidResponseMode));
+            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.ResponseTypeMissing));
         response.Result.ErrorUri.Should().Be(BaseUrl.IncludeEndSlash() + ErrorUrl);
-        response.Result.ResponseMode.Should().NotBeNullOrEmpty();
-        response.Result.RedirectUri.Should().NotBeNullOrEmpty();
+        response.Result.ResponseMode.Should().BeNull();
+        response.Result.RedirectUri.Should().BeNull();
         response.Result.TraceId.Should().NotBeNullOrEmpty();
     }
 
@@ -324,15 +324,15 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedResponseType);
         response.Result.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.InvalidResponseMode));
+            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.ResponseTypeMissing));
         response.Result.ErrorUri.Should().Be(BaseUrl.IncludeEndSlash() + ErrorUrl);
-        response.Result.ResponseMode.Should().NotBeNullOrEmpty();
-        response.Result.RedirectUri.Should().NotBeNullOrEmpty();
+        response.Result.ResponseMode.Should().BeNull();
+        response.Result.RedirectUri.Should().BeNull();
         response.Result.TraceId.Should().NotBeNullOrEmpty();
     }
 
@@ -392,12 +392,12 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
         response.Result.ErrorDescription.Should()
-            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.RequestedScopeNotAllowedForClient));
+            .Be(ResourceStringHandler.GetResourceString(EndpointErrorCodes.ResponseTypeRequiresOpenIdScope));
         response.Result.ErrorUri.Should().Be(BaseUrl.IncludeEndSlash() + ErrorUrl);
         response.Result.ResponseMode.Should().NotBeNullOrEmpty();
         response.Result.RedirectUri.Should().NotBeNullOrEmpty();
@@ -426,7 +426,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedResponseType);
@@ -460,7 +460,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedResponseType);
@@ -494,7 +494,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.UnsupportedResponseType);
@@ -554,7 +554,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             redirectUri: redirectUri,
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
@@ -613,7 +613,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
@@ -814,7 +814,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);
@@ -848,7 +848,7 @@ public class AuthorizeCodeFlowTests : HclCsFakeSetup
             nonce: nonce);
         var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
         var response = returnQuery.Headers.Location.ToString().ParseErrorQueryStringAsync();
-        returnQuery.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        returnQuery.StatusCode.Should().Be(HttpStatusCode.Found);
         response.Result.IsError.Should().Be(true);
         response.Result.ClientId.Should().NotBeNullOrEmpty();
         response.Result.ErrorCode.Should().Be(OpenIdConstants.Errors.InvalidRequest);

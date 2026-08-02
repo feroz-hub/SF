@@ -174,6 +174,7 @@ public static class ApiErrorCodes
     public const string InvalidLengthForFirstName = "INVALID_FIRST_NAME_LENGTH";
     public const string InvalidLengthForLastName = "INVALID_LAST_NAME_LENGTH";
     public const string InvalidEmailFormat = "INVALID_EMAIL_FORMAT";
+    public const string AuthLocalEmailInvalid = "AUTH_LOCAL_EMAIL_INVALID";
     public const string InvalidLengthForPhoneNumber = "INVALID_PHONENUMBER_LENGTH";
     public const string LastnameRequired = "LASTNAME_REQUIRED";
     public const string PhonenumberRequired = "PHONENUMBER_REQUIRED";
