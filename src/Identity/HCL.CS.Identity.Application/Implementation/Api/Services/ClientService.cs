@@ -6,6 +6,7 @@
 - HCL is obtained. This is proprietary and confidential to HCL.
  */
 
+using System.Linq.Expressions;
 using System.Text.Json;
 using AutoMapper;
 using HCL.CS.Domain;
@@ -22,7 +23,6 @@ using HCL.CS.DomainServices.Infra;
 using HCL.CS.DomainServices.Repository.Api;
 using HCL.CS.DomainServices.UnitOfWork.Endpoint;
 using HCL.CS.Service.Implementation.Api.Specifications;
-using HCL.CS.Service.Implementation.Endpoint.Comparers;
 using HCL.CS.Service.Implementation.Endpoint.Extensions;
 using HCL.CS.Service.Interfaces.Interfaces.Api;
 
@@ -98,11 +98,14 @@ public class ClientService(
             if (clientModelValidation.IsValid)
             {
                 loggerService.WriteTo(Log.Debug, "Entered into update Client :" + clientsModel.ClientName);
-                var clientsEntity = await unitOfWork.ClientRepository.GetAsync(client =>
-                    client.ClientId == clientsModel.ClientId);
+                var clientsEntity = await unitOfWork.ClientRepository.GetAsync(
+                    client => client.ClientId == clientsModel.ClientId,
+                    new Expression<Func<Clients, object>>[]
+                    {
+                        client => client.RedirectUris,
+                        client => client.PostLogoutRedirectUris
+                    });
 
-                var redirectUris = new List<ClientRedirectUrisModel>(clientsModel.RedirectUris);
-                var postRedirectUris = new List<ClientPostLogoutRedirectUrisModel>(clientsModel.PostLogoutRedirectUris);
                 if (clientsEntity.ContainsAny())
                 {
                     var clientEntity = clientsEntity.FirstOrDefault();
@@ -116,16 +119,22 @@ public class ClientService(
                     if (DateTime.Compare(clientSecretExpiresAt, DateTime.UtcNow) < 0)
                         frameworkResult.Throw(EndpointErrorCodes.ClientSecretExpired);
 
-                    clientsModel.ClientIdIssuedAt = clientEntity.ClientIdIssuedAt.ToDateTime();
-                    clientsModel.ClientSecretExpiresAt = clientEntity.ClientSecretExpiresAt.ToDateTime();
-                    clientsModel.RequireClientSecret = true;
-                    clientsModel.IsFirstPartyApp = true;
+                    // Update the tracked entity graph in place. Server-managed fields (Id, ClientId, ClientSecret,
+                    // ClientIdIssuedAt, ClientSecretExpiresAt, CreatedOn/CreatedBy and the RowVersion concurrency
+                    // token) are intentionally NOT overwritten from the client payload. The child URI collections
+                    // are reconciled against the loaded, tracked rows so EF Core emits correct UPDATE / INSERT /
+                    // soft-DELETE statements without detaching rows, duplicating unique (ClientId, Uri) keys, or
+                    // writing payload timestamps (DateTimeKind.Unspecified) into the audit columns.
+                    var actor = ResolveModifier(clientsModel, clientEntity);
+                    ApplyEditableClientFields(clientEntity, clientsModel);
+                    // Always record the update on the client row so an unchanged-but-resubmitted client (for
+                    // example a scope-only edit or a repeat submit) still persists as a modification rather than
+                    // returning "No changes written". CreatedOn/CreatedBy remain untouched.
+                    clientEntity.ModifiedBy = actor;
+                    clientEntity.ModifiedOn = DateTime.UtcNow;
+                    await ReconcileRedirectUrisAsync(clientEntity, clientsModel.RedirectUris, actor);
+                    await ReconcilePostLogoutRedirectUrisAsync(clientEntity, clientsModel.PostLogoutRedirectUris, actor);
 
-                    clientEntity = mapper.Map(clientsModel, clientEntity);
-                    var redirectUrisEntity = mapper.Map<List<ClientRedirectUris>>(redirectUris);
-                    var postRedirectUrisEntity = mapper.Map<List<ClientPostLogoutRedirectUris>>(postRedirectUris);
-                    await unitOfWork.ClientRepository.UpdateAsync(clientEntity);
-                    await UpdateClientReferencesAsync(clientEntity, redirectUrisEntity, postRedirectUrisEntity);
                     var result = await unitOfWork.SaveChangesAsync();
                     if (result.Status != ResultStatus.Succeeded)
                         frameworkResult.ThrowCustomMessage(result.Errors.ToList()[0].Description);
@@ -308,73 +317,99 @@ public class ClientService(
         }
     }
 
-    private async Task UpdateClientReferencesAsync(Clients clientEntity, List<ClientRedirectUris> redirectUris,
-        List<ClientPostLogoutRedirectUris> postLogoutRedirectUris)
+    private static string ResolveModifier(ClientsModel clientsModel, Clients clientEntity)
     {
-        try
-        {
-            var redirectUriEntities =
-                await unitOfWork.RedirectUrisRepository.GetAsync(uri => uri.ClientId == clientEntity.Id);
-            var redirectUrisToBeDeleted = redirectUriEntities.Except(redirectUris, new ClientRedirectUriComparer());
+        if (!string.IsNullOrWhiteSpace(clientsModel.ModifiedBy)) return clientsModel.ModifiedBy;
+        if (!string.IsNullOrWhiteSpace(clientsModel.CreatedBy)) return clientsModel.CreatedBy;
+        return string.IsNullOrWhiteSpace(clientEntity.CreatedBy) ? "hcl-cs-admin" : clientEntity.CreatedBy;
+    }
 
-            if (clientEntity.RedirectUris.ContainsAny())
-                foreach (var redirectUri in clientEntity.RedirectUris)
-                {
-                    var redirectURIList = await unitOfWork.RedirectUrisRepository.GetAsync(x => x.Id == redirectUri.Id);
-                    if (redirectURIList.ContainsAny())
-                    {
-                        var redirectUriEntity = redirectURIList.FirstOrDefault();
+    private static void ApplyEditableClientFields(Clients clientEntity, ClientsModel clientsModel)
+    {
+        // Only client-editable fields are copied. Identity, secret, issuance/expiry, audit and concurrency
+        // fields are deliberately preserved from the loaded entity.
+        clientEntity.ClientName = clientsModel.ClientName;
+        clientEntity.ClientUri = clientsModel.ClientUri;
+        clientEntity.LogoUri = clientsModel.LogoUri;
+        clientEntity.TermsOfServiceUri = clientsModel.TermsOfServiceUri;
+        clientEntity.PolicyUri = clientsModel.PolicyUri;
+        clientEntity.RefreshTokenExpiration = clientsModel.RefreshTokenExpiration;
+        clientEntity.AccessTokenExpiration = clientsModel.AccessTokenExpiration;
+        clientEntity.IdentityTokenExpiration = clientsModel.IdentityTokenExpiration;
+        clientEntity.LogoutTokenExpiration = clientsModel.LogoutTokenExpiration;
+        clientEntity.AuthorizationCodeExpiration = clientsModel.AuthorizationCodeExpiration;
+        clientEntity.AccessTokenType = clientsModel.AccessTokenType;
+        clientEntity.RequirePkce = clientsModel.RequirePkce;
+        clientEntity.IsPkceTextPlain = clientsModel.IsPkceTextPlain;
+        clientEntity.RequireClientSecret = true;
+        clientEntity.IsFirstPartyApp = true;
+        clientEntity.AllowOfflineAccess = clientsModel.AllowOfflineAccess;
+        clientEntity.AllowAccessTokensViaBrowser = clientsModel.AllowAccessTokensViaBrowser;
+        clientEntity.ApplicationType = clientsModel.ApplicationType;
+        clientEntity.AllowedSigningAlgorithm = clientsModel.AllowedSigningAlgorithm;
+        clientEntity.FrontChannelLogoutSessionRequired = clientsModel.FrontChannelLogoutSessionRequired;
+        clientEntity.FrontChannelLogoutUri = clientsModel.FrontChannelLogoutUri;
+        clientEntity.BackChannelLogoutSessionRequired = clientsModel.BackChannelLogoutSessionRequired;
+        clientEntity.BackChannelLogoutUri = clientsModel.BackChannelLogoutUri;
+        clientEntity.PreferredAudience = clientsModel.PreferredAudience;
+        clientEntity.AllowedScopes = string.Join(" ", clientsModel.AllowedScopes ?? new List<string>());
+        clientEntity.SupportedGrantTypes = string.Join(" ", clientsModel.SupportedGrantTypes ?? new List<string>());
+        clientEntity.SupportedResponseTypes = string.Join(" ", clientsModel.SupportedResponseTypes ?? new List<string>());
+    }
 
-                        if (redirectUrisToBeDeleted.Where(uri => uri.Id == redirectUriEntity.Id).ContainsAny())
-                        {
-                            await unitOfWork.RedirectUrisRepository.DeleteAsync(redirectUriEntity);
-                        }
-                        else
-                        {
-                            redirectUriEntity = mapper.Map(redirectUri, redirectUriEntity);
-                            await unitOfWork.RedirectUrisRepository.UpdateAsync(redirectUriEntity);
-                        }
-                    }
-                    else
-                    {
-                        await unitOfWork.RedirectUrisRepository.InsertAsync(redirectUri);
-                    }
-                }
+    private async Task ReconcileRedirectUrisAsync(Clients clientEntity, List<ClientRedirectUrisModel> incoming, string actor)
+    {
+        clientEntity.RedirectUris ??= new List<ClientRedirectUris>();
+        var incomingUris = (incoming ?? new List<ClientRedirectUrisModel>())
+            .Select(uri => uri.RedirectUri)
+            .Where(uri => !string.IsNullOrWhiteSpace(uri))
+            .Distinct()
+            .ToList();
 
-            var postLogoutRedirectUriEntities =
-                await unitOfWork.PostLogoutRedirectUrisRepository.GetAsync(uri => uri.ClientId == clientEntity.Id);
-            var postLogoutRedirectUrisToBeDeleted =
-                postLogoutRedirectUriEntities.Except(postLogoutRedirectUris, new ClientPostLogoutRedirectUriComparer());
-            if (clientEntity.PostLogoutRedirectUris.ContainsAny())
-                foreach (var postRedirectUri in clientEntity.PostLogoutRedirectUris)
-                {
-                    var postRedirectURIList =
-                        await unitOfWork.PostLogoutRedirectUrisRepository.GetAsync(x => x.Id == postRedirectUri.Id);
-                    if (postRedirectURIList.ContainsAny())
-                    {
-                        var postRedirectUriEntity = postRedirectURIList.FirstOrDefault();
-                        if (postLogoutRedirectUrisToBeDeleted.Where(uri => uri.Id == postRedirectUriEntity.Id)
-                            .ContainsAny())
-                        {
-                            await unitOfWork.PostLogoutRedirectUrisRepository.DeleteAsync(postRedirectUriEntity);
-                        }
-                        else
-                        {
-                            postRedirectUriEntity = mapper.Map(postRedirectUri, postRedirectUriEntity);
-                            await unitOfWork.PostLogoutRedirectUrisRepository.UpdateAsync(postRedirectUriEntity);
-                        }
-                    }
-                    else
-                    {
-                        await unitOfWork.PostLogoutRedirectUrisRepository.InsertAsync(postRedirectUri);
-                    }
-                }
-        }
-        catch (Exception ex)
-        {
-            loggerService.WriteToWithCaller(Log.Error, ex, ex.Message);
-            throw;
-        }
+        foreach (var removed in clientEntity.RedirectUris
+                     .Where(existing => incomingUris.All(uri => uri != existing.RedirectUri))
+                     .ToList())
+            await unitOfWork.RedirectUrisRepository.DeleteAsync(removed);
+
+        foreach (var uri in incomingUris.Where(uri => clientEntity.RedirectUris.All(existing => existing.RedirectUri != uri)))
+            // Id is left as the default (empty) value: the key is store-generated, so EF Core treats the row as
+            // Added and INSERTs it (a non-empty key would be read as an existing row and issue a failing UPDATE).
+            clientEntity.RedirectUris.Add(new ClientRedirectUris
+            {
+                ClientId = clientEntity.Id,
+                RedirectUri = uri,
+                CreatedBy = actor,
+                CreatedOn = DateTime.UtcNow,
+                IsDeleted = false
+            });
+    }
+
+    private async Task ReconcilePostLogoutRedirectUrisAsync(Clients clientEntity,
+        List<ClientPostLogoutRedirectUrisModel> incoming, string actor)
+    {
+        clientEntity.PostLogoutRedirectUris ??= new List<ClientPostLogoutRedirectUris>();
+        var incomingUris = (incoming ?? new List<ClientPostLogoutRedirectUrisModel>())
+            .Select(uri => uri.PostLogoutRedirectUri)
+            .Where(uri => !string.IsNullOrWhiteSpace(uri))
+            .Distinct()
+            .ToList();
+
+        foreach (var removed in clientEntity.PostLogoutRedirectUris
+                     .Where(existing => incomingUris.All(uri => uri != existing.PostLogoutRedirectUri))
+                     .ToList())
+            await unitOfWork.PostLogoutRedirectUrisRepository.DeleteAsync(removed);
+
+        foreach (var uri in incomingUris.Where(uri =>
+                     clientEntity.PostLogoutRedirectUris.All(existing => existing.PostLogoutRedirectUri != uri)))
+            // Id left as default (empty): store-generated key => EF Core treats the row as Added and INSERTs it.
+            clientEntity.PostLogoutRedirectUris.Add(new ClientPostLogoutRedirectUris
+            {
+                ClientId = clientEntity.Id,
+                PostLogoutRedirectUri = uri,
+                CreatedBy = actor,
+                CreatedOn = DateTime.UtcNow,
+                IsDeleted = false
+            });
     }
 
     private async Task<FrameworkResult> DeleteClientTokens(string clientId)

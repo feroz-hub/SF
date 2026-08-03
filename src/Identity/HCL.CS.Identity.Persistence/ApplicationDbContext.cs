@@ -95,6 +95,10 @@ public class ApplicationDbContext :
         {
             return BuildFailedResult(ApiErrorCodes.ConcurrencyFailure, "Concurrency conflict while saving changes.");
         }
+        catch (DbUpdateException ex)
+        {
+            return BuildFailedResult(ApiErrorCodes.InvalidOrNullObject, DescribeDbUpdateException(ex));
+        }
         catch (Exception ex)
         {
             return BuildFailedResult(ApiErrorCodes.InvalidOrNullObject, ex.Message);
@@ -114,6 +118,10 @@ public class ApplicationDbContext :
         catch (DbUpdateConcurrencyException)
         {
             return BuildFailedResult(ApiErrorCodes.ConcurrencyFailure, "Concurrency conflict while saving changes.");
+        }
+        catch (DbUpdateException ex)
+        {
+            return BuildFailedResult(ApiErrorCodes.InvalidOrNullObject, DescribeDbUpdateException(ex));
         }
         catch (Exception ex)
         {
@@ -264,6 +272,27 @@ public class ApplicationDbContext :
                 }
             }
         };
+    }
+
+    /// <summary>
+    /// Produces a safe, non-opaque message for a persistence failure. The concrete database detail (which may
+    /// contain table, column, constraint or index names) is intentionally NOT surfaced to callers/UI; only a
+    /// categorised, human-meaningful reason is returned.
+    /// </summary>
+    private static string DescribeDbUpdateException(DbUpdateException ex)
+    {
+        var detail = (ex.GetBaseException().Message ?? string.Empty).ToLowerInvariant();
+
+        if (detail.Contains("unique") || detail.Contains("duplicate"))
+            return "The record could not be saved because it would duplicate an existing unique value.";
+
+        if (detail.Contains("foreign key"))
+            return "The record could not be saved because it references data that does not exist.";
+
+        if (detail.Contains("not-null") || detail.Contains("not null") || detail.Contains("null value"))
+            return "The record could not be saved because a required value was missing.";
+
+        return "The record could not be saved due to a database constraint violation.";
     }
 
     private void ApplyAuditState(bool softDelete)

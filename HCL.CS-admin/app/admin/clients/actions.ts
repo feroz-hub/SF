@@ -20,6 +20,7 @@ import {
 import { isUnauthorizedError } from "@/lib/api/client";
 import { listClientScopes } from "@/lib/api/clientScopes";
 import { auth } from "@/lib/auth";
+import { LIFETIME_LIMITS, lifetimeRangeMessage } from "@/lib/clients/lifetimeContract";
 import { type ActionResult, type ApplicationType, type ClientsModel } from "@/lib/types/hcl-cs";
 
 const ZERO_GUID = "00000000-0000-0000-0000-000000000000";
@@ -80,11 +81,31 @@ const formSchema = z.object({
     .array(z.string())
     .transform((items) => normalizeItems(items))
     .refine((items) => items.length > 0, "At least one scope is required."),
-  accessTokenLifetime: z.coerce.number().int().min(60).max(900),
-  refreshTokenLifetime: z.coerce.number().int().min(300).max(86400),
-  identityTokenLifetime: z.coerce.number().int().min(60).max(3600),
-  logoutTokenLifetime: z.coerce.number().int().min(1800).max(86400),
-  authorizationCodeLifetime: z.coerce.number().int().min(60).max(600),
+  accessTokenLifetime: z.coerce
+    .number()
+    .int(lifetimeRangeMessage("accessToken"))
+    .min(LIFETIME_LIMITS.accessToken.min, lifetimeRangeMessage("accessToken"))
+    .max(LIFETIME_LIMITS.accessToken.max, lifetimeRangeMessage("accessToken")),
+  refreshTokenLifetime: z.coerce
+    .number()
+    .int(lifetimeRangeMessage("refreshToken"))
+    .min(LIFETIME_LIMITS.refreshToken.min, lifetimeRangeMessage("refreshToken"))
+    .max(LIFETIME_LIMITS.refreshToken.max, lifetimeRangeMessage("refreshToken")),
+  identityTokenLifetime: z.coerce
+    .number()
+    .int(lifetimeRangeMessage("identityToken"))
+    .min(LIFETIME_LIMITS.identityToken.min, lifetimeRangeMessage("identityToken"))
+    .max(LIFETIME_LIMITS.identityToken.max, lifetimeRangeMessage("identityToken")),
+  logoutTokenLifetime: z.coerce
+    .number()
+    .int(lifetimeRangeMessage("logoutToken"))
+    .min(LIFETIME_LIMITS.logoutToken.min, lifetimeRangeMessage("logoutToken"))
+    .max(LIFETIME_LIMITS.logoutToken.max, lifetimeRangeMessage("logoutToken")),
+  authorizationCodeLifetime: z.coerce
+    .number()
+    .int(lifetimeRangeMessage("authorizationCode"))
+    .min(LIFETIME_LIMITS.authorizationCode.min, lifetimeRangeMessage("authorizationCode"))
+    .max(LIFETIME_LIMITS.authorizationCode.max, lifetimeRangeMessage("authorizationCode")),
   logoUri: z.string().optional().default("").transform((s) => (s?.trim() || "https://localhost:3000/logo")),
   clientUri: z.string().optional().default("").transform((s) => (s?.trim() || "https://localhost:3000")),
   termsOfServiceUri: z.string().optional().default("").transform((s) => (s?.trim() || "https://localhost:3000/terms")),
@@ -280,10 +301,10 @@ function mergeClientModel(existing: ClientsModel, input: ParsedClientFormInput, 
   };
 }
 
-function formatValidationMessage(err: z.ZodError): string {
+function formatValidationMessage(err: z.ZodError, fallback = "Validation failed. Please review the highlighted fields."): string {
   const flat = err.flatten();
   const first = flat.fieldErrors && Object.values(flat.fieldErrors).flat().filter(Boolean)[0];
-  return (typeof first === "string" ? first : flat.formErrors?.[0]) || "Validation failed for client creation.";
+  return (typeof first === "string" ? first : flat.formErrors?.[0]) || fallback;
 }
 
 export async function createClientAction(input: ClientFormInput): Promise<ActionResult<{ clientId: string; secret: string }>> {
@@ -291,7 +312,7 @@ export async function createClientAction(input: ClientFormInput): Promise<Action
   if (!parsed.success) {
     return {
       ok: false,
-      message: formatValidationMessage(parsed.error),
+      message: formatValidationMessage(parsed.error, "Validation failed for client creation."),
       errors: parsed.error.flatten().fieldErrors
     };
   }
@@ -342,7 +363,7 @@ export async function updateClientAction(input: ClientFormInput): Promise<Action
   if (!parsed.success) {
     return {
       ok: false,
-      message: "Validation failed for client update.",
+      message: formatValidationMessage(parsed.error, "Validation failed for client update."),
       errors: parsed.error.flatten().fieldErrors
     };
   }

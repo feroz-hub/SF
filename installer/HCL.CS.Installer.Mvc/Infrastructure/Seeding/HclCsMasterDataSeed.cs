@@ -911,10 +911,14 @@ public static class HclCsMasterDataSeed
             TermsOfServiceUri = string.Empty,
             PolicyUri = string.Empty,
 
+            // Token lifetimes MUST stay within the canonical contract enforced by the backend
+            // (HCL.CS.Domain.Configurations.Endpoint.TokenExpiration defaults) and the Admin UI.
+            // These match HCL.CS.Domain.Models.Endpoint.ClientsModel defaults so a freshly seeded
+            // Admin client can be opened and updated in the Admin UI without altering unrelated fields.
             RefreshTokenExpiration = 86400,
-            AccessTokenExpiration = 3600,
+            AccessTokenExpiration = 900,
             IdentityTokenExpiration = 3600,
-            AuthorizationCodeExpiration = 1800,
+            AuthorizationCodeExpiration = 600,
             LogoutTokenExpiration = 1800,
 
             AccessTokenType = AccessTokenType.JWT,
