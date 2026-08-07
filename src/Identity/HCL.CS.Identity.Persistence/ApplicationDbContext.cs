@@ -86,13 +86,18 @@ public class ApplicationDbContext :
         try
         {
             ApplyAuditState(true);
+            ApplySqliteRowVersionValues();
             NormalizeDateTimesToUtc();
-            var changes = await base.SaveChangesAsync(cancellationToken);
+            var changes = await base.SaveChangesAsync(true, cancellationToken);
             return BuildResult(changes);
         }
         catch (DbUpdateConcurrencyException)
         {
             return BuildFailedResult(ApiErrorCodes.ConcurrencyFailure, "Concurrency conflict while saving changes.");
+        }
+        catch (DbUpdateException ex)
+        {
+            return BuildFailedResult(ApiErrorCodes.InvalidOrNullObject, DescribeDbUpdateException(ex));
         }
         catch (Exception ex)
         {
@@ -105,13 +110,18 @@ public class ApplicationDbContext :
         try
         {
             ApplyAuditState(false);
+            ApplySqliteRowVersionValues();
             NormalizeDateTimesToUtc();
-            var changes = await base.SaveChangesAsync(cancellationToken);
+            var changes = await base.SaveChangesAsync(true, cancellationToken);
             return BuildResult(changes);
         }
         catch (DbUpdateConcurrencyException)
         {
             return BuildFailedResult(ApiErrorCodes.ConcurrencyFailure, "Concurrency conflict while saving changes.");
+        }
+        catch (DbUpdateException ex)
+        {
+            return BuildFailedResult(ApiErrorCodes.InvalidOrNullObject, DescribeDbUpdateException(ex));
         }
         catch (Exception ex)
         {
@@ -161,12 +171,14 @@ public class ApplicationDbContext :
 
     public override int SaveChanges()
     {
+        ApplySqliteRowVersionValues();
         NormalizeDateTimesToUtc();
         return base.SaveChanges();
     }
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
+        ApplySqliteRowVersionValues();
         NormalizeDateTimesToUtc();
         return base.SaveChanges(acceptAllChangesOnSuccess);
     }
@@ -175,6 +187,7 @@ public class ApplicationDbContext :
         CancellationToken cancellationToken = default)
     {
         ApplyAuditState(true);
+        ApplySqliteRowVersionValues();
         NormalizeDateTimesToUtc();
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
@@ -261,6 +274,27 @@ public class ApplicationDbContext :
         };
     }
 
+    /// <summary>
+    /// Produces a safe, non-opaque message for a persistence failure. The concrete database detail (which may
+    /// contain table, column, constraint or index names) is intentionally NOT surfaced to callers/UI; only a
+    /// categorised, human-meaningful reason is returned.
+    /// </summary>
+    private static string DescribeDbUpdateException(DbUpdateException ex)
+    {
+        var detail = (ex.GetBaseException().Message ?? string.Empty).ToLowerInvariant();
+
+        if (detail.Contains("unique") || detail.Contains("duplicate"))
+            return "The record could not be saved because it would duplicate an existing unique value.";
+
+        if (detail.Contains("foreign key"))
+            return "The record could not be saved because it references data that does not exist.";
+
+        if (detail.Contains("not-null") || detail.Contains("not null") || detail.Contains("null value"))
+            return "The record could not be saved because a required value was missing.";
+
+        return "The record could not be saved due to a database constraint violation.";
+    }
+
     private void ApplyAuditState(bool softDelete)
     {
         var utcNow = DateTime.UtcNow;
@@ -295,13 +329,35 @@ public class ApplicationDbContext :
                         entry.Entity.ModifiedBy = entry.Entity.CreatedBy;
                 }
             }
+
+        var userEntries = ChangeTracker.Entries<Users>()
+            .Where(e => e.State is EntityState.Added or EntityState.Modified)
+            .ToList();
+
+        foreach (var entry in userEntries)
+            if (entry.State == EntityState.Added)
+            {
+                if (entry.Entity.CreatedOn == default) entry.Entity.CreatedOn = utcNow;
+
+                if (string.IsNullOrWhiteSpace(entry.Entity.CreatedBy)) entry.Entity.CreatedBy = "System";
+
+                entry.Entity.ModifiedOn = null;
+                entry.Entity.IsDeleted = false;
+            }
+            else
+            {
+                if (entry.Entity.ModifiedOn == null) entry.Entity.ModifiedOn = utcNow;
+
+                if (string.IsNullOrWhiteSpace(entry.Entity.ModifiedBy))
+                    entry.Entity.ModifiedBy = entry.Entity.CreatedBy;
+            }
     }
 
     private void NormalizeDateTimesToUtc()
     {
         foreach (var entry in ChangeTracker.Entries())
         {
-            if (entry.State is not (EntityState.Added or EntityState.Modified)) continue;
+            if (entry.State is not (EntityState.Added or EntityState.Modified or EntityState.Deleted)) continue;
 
             foreach (var property in entry.Properties)
             {
@@ -323,6 +379,23 @@ public class ApplicationDbContext :
                 if (normalized.Kind != value.Kind || normalized.Ticks != value.Ticks)
                     property.CurrentValue = normalized;
             }
+        }
+    }
+
+    private void ApplySqliteRowVersionValues()
+    {
+        if (!Database.IsSqlite()) return;
+
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            if (entry.State is not (EntityState.Added or EntityState.Modified)) continue;
+
+            var rowVersion = entry.Metadata.FindProperty(nameof(BaseEntity.RowVersion));
+            if (rowVersion == null) continue;
+
+            var property = entry.Property(nameof(BaseEntity.RowVersion));
+            property.CurrentValue = Guid.NewGuid().ToByteArray();
+            property.IsModified = entry.State == EntityState.Modified;
         }
     }
 

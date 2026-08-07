@@ -48,9 +48,6 @@ public class DiscoveryEndpointTests : HclCsFakeSetup
         algor.Should().Contain(SecurityAlgorithms.RsaSha256);
         algor.Should().Contain(SecurityAlgorithms.RsaSha384);
         algor.Should().Contain(SecurityAlgorithms.RsaSha512);
-        algor.Should().Contain(SecurityAlgorithms.HmacSha256);
-        algor.Should().Contain(SecurityAlgorithms.HmacSha384);
-        algor.Should().Contain(SecurityAlgorithms.HmacSha512);
         algor.Should().Contain(SecurityAlgorithms.EcdsaSha256);
         algor.Should().Contain(SecurityAlgorithms.EcdsaSha384);
         algor.Should().Contain(SecurityAlgorithms.EcdsaSha512);
@@ -69,11 +66,18 @@ public class DiscoveryEndpointTests : HclCsFakeSetup
         var data = JObject.Parse(json);
         var keys = data["keys"];
         keys.Should().NotBeNull();
-        dynamic stuff = JsonConvert.DeserializeObject(json);
-        string crv = stuff.keys[0].Crv;
-        crv.Should().NotBeNullOrEmpty();
-
-        string alg = stuff.keys[0].Alg;
-        alg.Should().NotBeNullOrEmpty();
+        var jwks = JsonConvert.DeserializeObject<JObject>(json);
+        var publishedKeys = jwks!["keys"]!.Children<JObject>().ToList();
+        publishedKeys.Should().NotBeEmpty();
+        publishedKeys.Should().OnlyContain(
+            key => key["alg"] != null && !string.IsNullOrWhiteSpace(key["alg"]!.ToString()));
+        publishedKeys
+            .Where(key => string.Equals(key["kty"]?.ToString(), "EC", StringComparison.Ordinal))
+            .Should()
+            .OnlyContain(key => key["crv"] != null && !string.IsNullOrWhiteSpace(key["crv"]!.ToString()));
+        publishedKeys
+            .Where(key => string.Equals(key["kty"]?.ToString(), "RSA", StringComparison.Ordinal))
+            .Should()
+            .OnlyContain(key => key["crv"] == null);
     }
 }

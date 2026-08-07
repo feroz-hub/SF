@@ -42,6 +42,7 @@ HCL is obtained. This is proprietary and confidential to HCL.
     <PackageReference Include="System.DirectoryServices" Version="8.0.0"/>
     <PackageReference Include="System.DirectoryServices.Protocols" Version="8.0.1"/>
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0"/>
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.4"/>
     <!--<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

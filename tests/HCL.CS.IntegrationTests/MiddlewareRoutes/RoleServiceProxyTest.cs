@@ -285,6 +285,7 @@ public class RoleServiceProxyTest : HclCsFakeSetup
 
         var addRoleClaimModelInput = RoleHelper.CreateRoleClaimModel();
         addRoleClaimModelInput.RoleId = roleModel.Id;
+        addRoleClaimModelInput.ClaimType.Should().Be("capabilities");
         //string randomString = random.Next().ToString();
         //addRoleClaimModelInput.ClaimType = string.Concat("Access", "_", randomString);
         //addRoleClaimModelInput.ClaimValue = string.Concat("Access.Role", "_", randomString);
@@ -297,7 +298,10 @@ public class RoleServiceProxyTest : HclCsFakeSetup
         var addRoleClaimResponse = await addRoleClaimresponse.Content.ReadAsStringAsync();
         var result = JsonConvert.DeserializeObject<FrameworkResult>(addRoleClaimResponse);
         result.Should().BeOfType<FrameworkResult>();
-        result.Status.Should().Be(ResultStatus.Success);
+        result.Status.Should().Be(
+            ResultStatus.Success,
+            "the capabilities claim is valid; response={0}",
+            addRoleClaimResponse);
     }
 
     [Fact]

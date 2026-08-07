@@ -24,7 +24,7 @@ public static class ClientHelper
         {
             ClientId = "e2AK48mjbwaXpXjeL0QPJ44Dm0QOrr8ubs5piIH2ckY=",
             ClientName = "HCL.CS Client 001",
-            ClientUri = "http://identity.io",
+            ClientUri = "https://identity.io",
             ClientIdIssuedAt = DateTime.Now,
             ClientSecret = "fZJnyNuhdcsw94ULApd7mHW8VimdTVMeY36nYrWCg3U=",
             ClientSecretExpiresAt = DateTime.Now.AddDays(10),
@@ -33,13 +33,14 @@ public static class ClientHelper
             PolicyUri = "https://localhost:44300/Policy.cshtml",
 
             RefreshTokenExpiration = 1800,
-            AccessTokenExpiration = 1800,
+            AccessTokenExpiration = 600,
             IdentityTokenExpiration = 1800,
-            AuthorizationCodeExpiration = 1800,
+            AuthorizationCodeExpiration = 600,
+            LogoutTokenExpiration = 1800,
 
             AccessTokenType = 0,
             RequirePkce = true,
-            IsPkceTextPlain = true,
+            IsPkceTextPlain = false,
             RequireClientSecret = true,
             IsFirstPartyApp = false,
 
@@ -56,20 +57,20 @@ public static class ClientHelper
             },
 
             SupportedGrantTypes = new List<string>
-                { "authorization_code", "client_credentials", "password", "refresh_token", "hybrid" },
+                { "authorization_code", "refresh_token" },
 
             // AllowedScopes = "openid clientapi offline_access",
 
-            AllowedSigningAlgorithm = Algorithms.HmacSha512,
+            AllowedSigningAlgorithm = Algorithms.RsaSha256,
 
             AllowOfflineAccess = true,
 
-            ApplicationType = ApplicationType.SinglePageApp,
+            ApplicationType = ApplicationType.RegularWeb,
             AllowedScopes = new List<string>
             {
                 "hcl-cs.client"
             },
-            SupportedResponseTypes = new List<string> { "code token id_token" }
+            SupportedResponseTypes = new List<string> { "code" }
         };
 
         return clientModel;

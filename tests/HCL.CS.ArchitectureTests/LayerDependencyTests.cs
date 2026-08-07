@@ -107,6 +107,37 @@ public class LayerDependencyTests
         violatingFiles.Should().BeEmpty("domain layer must remain independent from infrastructure namespaces");
     }
 
+    [Fact]
+    public void RuntimeEntrypoint_MustNotExecuteSchemaMutation()
+    {
+        var repositoryRoot = GetRepositoryRoot();
+        var entrypointPath = Path.Combine(repositoryRoot, "docker", "entrypoint.identity.sh");
+        var entrypoint = File.ReadAllText(entrypointPath);
+
+        entrypoint.Should().NotContain("generated-migrations");
+        entrypoint.Should().NotContain("psql");
+        entrypoint.Should().NotContain("CREATE TABLE");
+        entrypoint.Should().NotContain("ALTER TABLE");
+        entrypoint.Should().NotContain("dotnet ef database update");
+        entrypoint.Should().NotContain("Database.Migrate");
+    }
+
+    [Fact]
+    public void RuntimeCompositionRoot_MustNotExecuteSchemaMutationOrSeedData()
+    {
+        var repositoryRoot = GetRepositoryRoot();
+        var programPath = Path.Combine(repositoryRoot, "demos", "HCL.CS.Demo.Server", "Program.cs");
+        var program = File.ReadAllText(programPath);
+
+        program.Should().NotContain(".Database.Migrate(");
+        program.Should().NotContain(".Database.MigrateAsync(");
+        program.Should().NotContain(".Database.EnsureCreated(");
+        program.Should().NotContain(".Database.EnsureDeleted(");
+        program.Should().NotContain("ExecuteSqlRaw");
+        program.Should().NotContain("SeedDataService");
+        program.Should().NotContain("DatabaseReconciliationService");
+    }
+
     private static string GetRepositoryRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);

@@ -1,0 +1,10 @@
+{
+  "provider": "SQLite",
+  "scriptPath": "scripts/generated-migrations/sqlite/20260728_hcl_cs_canonical_sqlite.sql",
+  "migrationRange": "20220802110433_HclCsSqliteV1 -> 20260728140000_Phase2CCoreInfrastructureSchema",
+  "efCoreVersion": "8.0.11",
+  "providerPackageVersion": "8.0.11",
+  "isIdempotent": false,
+  "sha256": "dba331de687c8b5dae51cfa2537ca938c20664bf163d6a9a698dddcec8e96136",
+  "generatedAtUtc": "2026-07-28T23:55:00Z"
+}

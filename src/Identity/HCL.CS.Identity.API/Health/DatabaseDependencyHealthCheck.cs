@@ -14,12 +14,12 @@ namespace HCL.CS.Hosting.Health;
 
 public class DatabaseDependencyHealthCheck : IHealthCheck
 {
-    private static readonly TimeSpan DependencyTimeout = TimeSpan.FromSeconds(2);
-    private readonly IApplicationDbContext dbContext;
+    private static readonly TimeSpan DependencyTimeout = TimeSpan.FromSeconds(3);
+    private readonly DbContext dbContext;
 
     public DatabaseDependencyHealthCheck(IApplicationDbContext dbContext)
     {
-        this.dbContext = dbContext;
+        this.dbContext = (DbContext)dbContext;
     }
 
     public async Task<HealthCheckResult> CheckHealthAsync(
@@ -31,16 +31,44 @@ public class DatabaseDependencyHealthCheck : IHealthCheck
 
         try
         {
-            _ = await dbContext.Users.AnyAsync(timeoutToken.Token);
-            return HealthCheckResult.Healthy("Database reachable.");
+            var provider = dbContext.Database.ProviderName ?? "Unknown";
+            var connectivity = await dbContext.Database.CanConnectAsync(timeoutToken.Token);
+            if (!connectivity)
+            {
+                return HealthCheckResult.Unhealthy("Unable to connect to database.", data: new Dictionary<string, object>
+                {
+                    { "Provider", provider },
+                    { "ConnectivityStatus", false }
+                });
+            }
+
+            var applied = (await dbContext.Database.GetAppliedMigrationsAsync(timeoutToken.Token)).ToList();
+            var pending = (await dbContext.Database.GetPendingMigrationsAsync(timeoutToken.Token)).ToList();
+            bool isCompatible = pending.Count == 0;
+
+            var data = new Dictionary<string, object>
+            {
+                { "Provider", provider },
+                { "ConnectivityStatus", true },
+                { "SchemaCompatibilityStatus", isCompatible },
+                { "AppliedMigrationsCount", applied.Count },
+                { "PendingMigrationsCount", pending.Count }
+            };
+
+            if (isCompatible)
+            {
+                return HealthCheckResult.Healthy("Database schema and connectivity validated.", data);
+            }
+
+            return HealthCheckResult.Degraded($"Database schema is behind. Pending migration count: {pending.Count}", data: data);
         }
         catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
         {
             return HealthCheckResult.Unhealthy("Database health check timed out.");
         }
-        catch
+        catch (Exception ex)
         {
-            return HealthCheckResult.Unhealthy("Database health check failed.");
+            return HealthCheckResult.Unhealthy($"Database health check failed: {ex.Message}");
         }
     }
 }

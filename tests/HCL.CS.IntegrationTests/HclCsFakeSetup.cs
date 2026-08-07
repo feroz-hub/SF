@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -97,9 +98,11 @@ public abstract class HclCsFakeSetup : IDisposable
         Path.Combine(Path.GetTempPath(), "hcl-cs-integration-tests");
 
     private static readonly string TemplateDatabasePath = Path.Combine(IntegrationRuntimeDirectory, "template.db");
+    private static readonly string RuntimeDatabasePath = Path.Combine(IntegrationRuntimeDirectory, "runtime.db");
     private static bool templateDatabaseReady;
-    private static int runtimeDatabaseCounter;
     private static List<AsymmetricKeyInfoModel> cachedAsymmetricKeys;
+    private static int constructedFixtureCount;
+    private string runtimeDatabasePath;
     private TestServer testServer;
 
     internal readonly Dictionary<string, ClientInfoDictonary> clientMasterData = new()
@@ -116,7 +119,7 @@ public abstract class HclCsFakeSetup : IDisposable
             "HCL.CS S256 Client",
             new ClientInfoDictonary
             {
-                ClientId = "ZqWJUx2H09BegYdhYCfNqyaRR/5WKdPW7PYQYC8jG3U=",
+                ClientId = "/3iwUSqOjqPfOFLUj2sRWdesVhPQBqBbe+UaLj7LHys=",
                 ClientSecret = "4JjFMCgRmQ1aI1jGIkHF5BoX3klaVfDe1yOrl3ENY1Q="
             }
         },
@@ -267,6 +270,12 @@ public abstract class HclCsFakeSetup : IDisposable
 
     public HclCsFakeSetup(string basePath = null)
     {
+        if (Interlocked.Increment(ref constructedFixtureCount) % 4 == 0)
+        {
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+            GC.WaitForPendingFinalizers();
+        }
+
         ConfigureClientMasterData();
         Initialize();
         UserName = "checktest";
@@ -283,7 +292,7 @@ public abstract class HclCsFakeSetup : IDisposable
 
     public List<AsymmetricKeyInfoModel> AsymmetricKeys { get; set; }
 
-    public ServiceProvider ServiceProvider { get; set; }
+    public IServiceProvider ServiceProvider { get; set; }
 
     public UserAgent FrontChannelClient { get; set; }
 
@@ -336,15 +345,13 @@ public abstract class HclCsFakeSetup : IDisposable
     {
         var integrationRootPath = GetIntegrationTestsRootPath();
         var notificationSettings = LoadNotificationTemplateSettings(integrationRootPath);
-        var runtimeDatabasePath = CreateIsolatedDatabase(notificationSettings);
+        runtimeDatabasePath = CreateIsolatedDatabase(notificationSettings);
         var systemSettings = CreateSystemSettings(runtimeDatabasePath);
         var tokenSettings = CreateTokenSettings();
 
         services.AddHclCs(systemSettings, tokenSettings, notificationSettings)
             .AddAsymmetricKeystore(LoadAsymmetricKey());
         OnPostConfigureServices(services);
-
-        ServiceProvider = services.BuildServiceProvider();
     }
 
     private void ConfigureClientMasterData()
@@ -371,15 +378,12 @@ public abstract class HclCsFakeSetup : IDisposable
         {
             Directory.CreateDirectory(IntegrationRuntimeDirectory);
             EnsureTemplateDatabase(notificationSettings);
+            SqliteConnection.ClearAllPools();
 
-            var runtimeDatabasePath = Path.Combine(
-                IntegrationRuntimeDirectory,
-                $"integration-{Interlocked.Increment(ref runtimeDatabaseCounter)}.db");
+            if (File.Exists(RuntimeDatabasePath)) File.Delete(RuntimeDatabasePath);
 
-            if (File.Exists(runtimeDatabasePath)) File.Delete(runtimeDatabasePath);
-
-            File.Copy(TemplateDatabasePath, runtimeDatabasePath, true);
-            return runtimeDatabasePath;
+            File.Copy(TemplateDatabasePath, RuntimeDatabasePath, true);
+            return RuntimeDatabasePath;
         }
     }
 
@@ -806,39 +810,39 @@ public abstract class HclCsFakeSetup : IDisposable
         var utcNow = DateTime.UtcNow;
         var seedClients = new[]
         {
-            new ClientSeedDefinition("HCL.CS Plain PKCE Client", OpenIdConstants.Algorithms.RsaSha256, true, true, 3600,
+            new ClientSeedDefinition("HCL.CS Plain PKCE Client", OpenIdConstants.Algorithms.RsaSha256, false, true, 3600,
                 3600, 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS S256 Client", OpenIdConstants.Algorithms.RsaSha256, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS S256 Client", OpenIdConstants.Algorithms.RsaSha256, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS Early Token Expire Client", OpenIdConstants.Algorithms.RsaSha256, true,
+            new ClientSeedDefinition("HCL.CS Early Token Expire Client", OpenIdConstants.Algorithms.RsaSha256, false,
                 true, 1800, 1800, 1800, 1800, 180),
-            new ClientSeedDefinition("Client Secret Expire Client", OpenIdConstants.Algorithms.RsaSha256, true, true,
+            new ClientSeedDefinition("Client Secret Expire Client", OpenIdConstants.Algorithms.RsaSha256, false, true,
                 3600, 3600, 7200, 1900, -1),
-            new ClientSeedDefinition("HCL.CS HS256", OpenIdConstants.Algorithms.HmacSha256, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS HS256", OpenIdConstants.Algorithms.HmacSha256, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS HS512", OpenIdConstants.Algorithms.HmacSha512, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS HS512", OpenIdConstants.Algorithms.HmacSha512, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS HS384", OpenIdConstants.Algorithms.HmacSha384, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS HS384", OpenIdConstants.Algorithms.HmacSha384, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS RS256", OpenIdConstants.Algorithms.RsaSha256, true, true, 3600, 3600, 7200,
+            new ClientSeedDefinition("HCL.CS RS256", OpenIdConstants.Algorithms.RsaSha256, false, true, 3600, 3600, 7200,
                 1900, 180),
-            new ClientSeedDefinition("HCL.CS RS512", OpenIdConstants.Algorithms.RsaSha512, true, true, 3600, 3600, 7200,
+            new ClientSeedDefinition("HCL.CS RS512", OpenIdConstants.Algorithms.RsaSha512, false, true, 3600, 3600, 7200,
                 1900, 180),
-            new ClientSeedDefinition("HCL.CS RS384", OpenIdConstants.Algorithms.RsaSha384, true, true, 3600, 3600, 7200,
+            new ClientSeedDefinition("HCL.CS RS384", OpenIdConstants.Algorithms.RsaSha384, false, true, 3600, 3600, 7200,
                 1900, 180),
-            new ClientSeedDefinition("HCL.CS PS256", OpenIdConstants.Algorithms.RsaSsaPssSha256, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS PS256", OpenIdConstants.Algorithms.RsaSsaPssSha256, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS PS512", OpenIdConstants.Algorithms.RsaSsaPssSha512, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS PS512", OpenIdConstants.Algorithms.RsaSsaPssSha512, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS PS384", OpenIdConstants.Algorithms.RsaSsaPssSha384, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS PS384", OpenIdConstants.Algorithms.RsaSsaPssSha384, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS ES256", OpenIdConstants.Algorithms.EcdsaSha256, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS ES256", OpenIdConstants.Algorithms.EcdsaSha256, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS ES512", OpenIdConstants.Algorithms.EcdsaSha512, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS ES512", OpenIdConstants.Algorithms.EcdsaSha512, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS ES384", OpenIdConstants.Algorithms.EcdsaSha384, true, true, 3600, 3600,
+            new ClientSeedDefinition("HCL.CS ES384", OpenIdConstants.Algorithms.EcdsaSha384, false, true, 3600, 3600,
                 7200, 1900, 180),
-            new ClientSeedDefinition("HCL.CS ES256 Algorithm Client", OpenIdConstants.Algorithms.EcdsaSha256, true,
+            new ClientSeedDefinition("HCL.CS ES256 Algorithm Client", OpenIdConstants.Algorithms.EcdsaSha256, false,
                 true, 3600, 3600, 7200, 1900, 180)
         };
 
@@ -1459,8 +1463,8 @@ public abstract class HclCsFakeSetup : IDisposable
 
         systemSettings.LogConfig.WriteLogTo = WriteLogTo.File;
         systemSettings.LogConfig.LogFileConfig.FilePath = Path.Combine(logDirectoryPath, "hcl-cs-integration.log");
-        systemSettings.LogConfig.LogFileConfig.RestrictedToMinimumLevel = Log.Debug;
-        systemSettings.LogConfig.LogFileConfig.MinimumConfiguration = Log.Debug;
+        systemSettings.LogConfig.LogFileConfig.RestrictedToMinimumLevel = Log.Error;
+        systemSettings.LogConfig.LogFileConfig.MinimumConfiguration = Log.Error;
         systemSettings.LogConfig.LogFileConfig.SetLogFileSize = true;
         systemSettings.LogConfig.LogFileConfig.FileSizeInBytes = 5242880;
 
@@ -1692,14 +1696,20 @@ public abstract class HclCsFakeSetup : IDisposable
         else
             IssueUrl = BaseUrl;
 
-        var builder = new WebHostBuilder();
-        builder.ConfigureServices(ConfigureServices);
-        builder.Configure(app => { ConfigureApp(app); });
-        testServer = new TestServer(builder);
+        testServer = CreateTestServer();
+        ServiceProvider = testServer.Services;
         var handler = testServer.CreateHandler();
 
         FrontChannelClient = new UserAgent(new UserAgentHandler(handler));
         BackChannelClient = new HttpClient(handler);
+    }
+
+    private TestServer CreateTestServer()
+    {
+        var builder = new WebHostBuilder();
+        builder.ConfigureServices(ConfigureServices);
+        builder.Configure(ConfigureApp);
+        return new TestServer(builder);
     }
 
     public void Dispose()
@@ -1716,8 +1726,14 @@ public abstract class HclCsFakeSetup : IDisposable
         BackChannelClient = null;
         testServer?.Dispose();
         testServer = null;
-        ServiceProvider?.Dispose();
         ServiceProvider = null;
+        if (!string.IsNullOrWhiteSpace(runtimeDatabasePath) && File.Exists(runtimeDatabasePath))
+        {
+            SqliteConnection.ClearAllPools();
+            File.Delete(runtimeDatabasePath);
+        }
+
+        runtimeDatabasePath = null;
     }
 
     public async Task LoginAsync(UserModel user)
@@ -1738,6 +1754,9 @@ public abstract class HclCsFakeSetup : IDisposable
         var model = JsonConvert.DeserializeObject<SignInResponseModel>(content);
         if (!model.Succeeded)
             throw new InvalidOperationException($"Test login failed for '{user.UserName}': {model?.Message}");
+        if (FrontChannelClient.GetCookie(BaseUrl, ".AspNetCore.Identity.Application") == null)
+            throw new InvalidOperationException(
+                "Test login reported success but did not issue the authentication cookie.");
 
         // this.Subject = new FrameworkUser(user.Id.ToString(), user.UserName).CreatePrincipal();
         //GlobalConfiguration.UserName = user.UserName.ToString();
@@ -1774,6 +1793,7 @@ public abstract class HclCsFakeSetup : IDisposable
         string codeChallengeMethod = null)
     {
         var dict = new Dictionary<string, string>();
+        state ??= Guid.NewGuid().ToString("N");
         if (!string.IsNullOrEmpty(clientId)) dict.Add(OpenIdConstants.AuthorizeRequest.ClientId, clientId);
 
         if (!string.IsNullOrEmpty(responseType)) dict.Add(OpenIdConstants.AuthorizeRequest.ResponseType, responseType);
@@ -1786,9 +1806,9 @@ public abstract class HclCsFakeSetup : IDisposable
 
         if (!string.IsNullOrEmpty(nonce)) dict.Add(OpenIdConstants.AuthorizeRequest.Nonce, nonce);
 
-        if (!string.IsNullOrEmpty(nonce)) dict.Add(OpenIdConstants.AuthorizeRequest.Prompt, prompt);
+        if (!string.IsNullOrEmpty(prompt)) dict.Add(OpenIdConstants.AuthorizeRequest.Prompt, prompt);
 
-        if (!string.IsNullOrEmpty(nonce)) dict.Add(OpenIdConstants.AuthorizeRequest.MaxAge, maxAge);
+        if (!string.IsNullOrEmpty(maxAge)) dict.Add(OpenIdConstants.AuthorizeRequest.MaxAge, maxAge);
 
         if (!string.IsNullOrEmpty(loginHint)) dict.Add("login_hint", loginHint);
 
@@ -2005,7 +2025,7 @@ public abstract class HclCsFakeSetup : IDisposable
         return tokenResponseResultModel;
     }
 
-    private static string GeneratePkceCodeVerifier()
+    protected static string GeneratePkceCodeVerifier()
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32))
             .TrimEnd('=')

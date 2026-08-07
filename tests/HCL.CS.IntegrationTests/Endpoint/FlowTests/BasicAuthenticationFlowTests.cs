@@ -37,7 +37,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -45,8 +45,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);
@@ -77,7 +77,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -85,8 +85,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);
@@ -116,7 +116,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -124,8 +124,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);
@@ -157,7 +157,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -165,8 +165,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);
@@ -199,7 +199,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -207,8 +207,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);
@@ -234,34 +234,14 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
     [Fact]
     public async Task TokenGeneration_AuthCodeBasicAuthenticationFloWClientCredentialGrantType_ReturnSuccess()
     {
-        await LoginAsync(User);
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
-        var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
-        FrontChannelClient.AllowAutoRedirect = false;
-        var authcodeRequest = CreateAuthorizeRequestUrl(
-            clientModel.ClientId,
-            "code",
-            "hcl-cs.client",
-            responseMode: "query",
-            prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
-            maxAge: "60",
-            redirectUri: redirectUri,
-            nonce: nonce);
-        var returnQuery = await FrontChannelClient.GetAsync(authcodeRequest);
-        var response = returnQuery.Headers.Location.ToString().ParseQueryString();
-        response.Code.Should().NotBeNull();
-        var code = response.Code;
 
         var tokenClient = BackChannelClient;
         tokenClient.SetBasicAuthentication(clientModel.ClientId, clientModel.ClientSecret);
         var tokenRequest = CreateTokenRequest(
-            code: code,
             grantType: OpenIdConstants.GrantTypes.ClientCredentials,
-            codeVerifier: codeVerifier);
+            scope: "hcl-cs.client");
         var tokenResponse = await tokenClient.PostAsync(TokenEndpoint, new FormUrlEncodedContent(tokenRequest));
         var tokenResult = await tokenResponse.ParseTokenResponseResult();
         tokenResponse.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -278,7 +258,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -286,8 +266,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);
@@ -319,7 +299,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -327,8 +307,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);
@@ -360,7 +340,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -368,8 +348,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);
@@ -402,7 +382,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -410,8 +390,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);
@@ -837,7 +817,7 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
         clientModel = await FetchClientDetails(positiveCaseClientName);
         clientModel.Should().NotBeNull();
         var nonce = Guid.NewGuid().ToString();
-        var codeVerifier = 32.RandomString();
+        var codeVerifier = GeneratePkceCodeVerifier();
         FrontChannelClient.AllowAutoRedirect = false;
         var authcodeRequest = CreateAuthorizeRequestUrl(
             clientModel.ClientId,
@@ -845,8 +825,8 @@ public class BasicAuthenticationFlowTests : HclCsFakeSetup
             "openid email profile offline_access phone",
             responseMode: "query",
             prompt: "none",
-            codeChallenge: codeVerifier,
-            codeChallengeMethod: "plain",
+            codeChallenge: codeVerifier.GenerateCodeChallenge(),
+            codeChallengeMethod: "S256",
             maxAge: "60",
             redirectUri: redirectUri,
             nonce: nonce);

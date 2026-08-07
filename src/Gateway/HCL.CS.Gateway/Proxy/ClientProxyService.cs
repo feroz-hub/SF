@@ -35,6 +35,7 @@ public sealed class ClientProxyService : ClientService, IClientServices
         IApiResourceRepository apiResourceRepository,
         IRepository<ApiScopes> apiScopeRepository,
         IIdentityResourceRepository identityResourceRepository,
+        IClientProvisioningTransactionHook provisioningTransactionHook,
         IApiValidator apiValidator)
         : base(
             instance,
@@ -44,7 +45,8 @@ public sealed class ClientProxyService : ClientService, IClientServices
             securityConfig,
             apiResourceRepository,
             apiScopeRepository,
-            identityResourceRepository)
+            identityResourceRepository,
+            provisioningTransactionHook)
     {
         this.apiValidator = apiValidator;
         this.frameworkResult = frameworkResult;
@@ -101,5 +103,14 @@ public sealed class ClientProxyService : ClientService, IClientServices
             frameworkResult.ThrowCustomMessage(result.Errors.FirstOrDefault().Description);
 
         return await base.UpdateClientAsync(clientsModel);
+    }
+
+    public override async Task<ClientsModel> ProvisionClientAsync(ClientsModel clientsModel)
+    {
+        var result = await apiValidator.ValidateRequest();
+        if (result.Status == ResultStatus.Failed)
+            frameworkResult.ThrowCustomMessage(result.Errors.FirstOrDefault().Description);
+
+        return await base.ProvisionClientAsync(clientsModel);
     }
 }

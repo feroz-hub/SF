@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "node --test \"lib/clients/*.test.ts\"",
     "api:coverage": "node scripts/check-api-coverage.js",
     "format:check": "prettier --check ."
   },

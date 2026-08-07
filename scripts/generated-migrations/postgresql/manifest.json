@@ -1,0 +1,9 @@
+{
+  "provider": "PostgreSQL",
+  "scriptFile": "20260728_hcl_cs_canonical_postgresql.sql",
+  "migrationRange": "20220726113011_HclCsPostgreSqlV1 -> 20260728140000_Phase2CCoreInfrastructureSchema",
+  "idempotent": true,
+  "sha256": "2847bc8ff265901d51dd3897fb54fffbe48fc57f7753be6e3251053a29615d2e",
+  "efCoreVersion": "8.0.11",
+  "generationTimestamp": "2026-07-28T23:38:05Z"
+}

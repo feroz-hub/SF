@@ -28,6 +28,12 @@ import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/toaster";
 import { notifyClientActionError } from "@/lib/clientActionErrors";
+import {
+  LIFETIME_DEFAULTS,
+  LIFETIME_LIMITS,
+  isLifetimeInRange,
+  lifetimeRangeMessage
+} from "@/lib/clients/lifetimeContract";
 import { type ClientsModel } from "@/lib/types/hcl-cs";
 import { cn, formatUtcDateTime } from "@/lib/utils";
 
@@ -64,11 +70,11 @@ const baseForm: ClientFormState = {
   redirectUrisText: "",
   postLogoutUrisText: "",
   allowedScopes: [],
-  accessTokenLifetime: 900,
-  refreshTokenLifetime: 86400,
-  identityTokenLifetime: 3600,
-  logoutTokenLifetime: 1800,
-  authorizationCodeLifetime: 600,
+  accessTokenLifetime: LIFETIME_DEFAULTS.accessToken,
+  refreshTokenLifetime: LIFETIME_DEFAULTS.refreshToken,
+  identityTokenLifetime: LIFETIME_DEFAULTS.identityToken,
+  logoutTokenLifetime: LIFETIME_DEFAULTS.logoutToken,
+  authorizationCodeLifetime: LIFETIME_DEFAULTS.authorizationCode,
   clientUri: "",
   logoUri: "",
   termsOfServiceUri: "",
@@ -235,16 +241,18 @@ function buildScopeGroups(allScopes: string[]): ScopeGroup[] {
 
 const MAX_CLIENT_NAME_LENGTH = 255;
 const MAX_URI_LENGTH = 2048;
-const ACCESS_TOKEN_MIN = 60;
-const ACCESS_TOKEN_MAX = 900;
-const REFRESH_TOKEN_MIN = 300;
-const REFRESH_TOKEN_MAX = 86400;
-const IDENTITY_TOKEN_MIN = 60;
-const IDENTITY_TOKEN_MAX = 3600;
-const LOGOUT_TOKEN_MIN = 1800;
-const LOGOUT_TOKEN_MAX = 86400;
-const AUTH_CODE_MIN = 60;
-const AUTH_CODE_MAX = 600;
+// Lifetime bounds are sourced from the shared contract so the Admin form, the Admin server
+// action, and the Installer seed cannot drift apart. See lib/clients/lifetimeContract.ts.
+const ACCESS_TOKEN_MIN = LIFETIME_LIMITS.accessToken.min;
+const ACCESS_TOKEN_MAX = LIFETIME_LIMITS.accessToken.max;
+const REFRESH_TOKEN_MIN = LIFETIME_LIMITS.refreshToken.min;
+const REFRESH_TOKEN_MAX = LIFETIME_LIMITS.refreshToken.max;
+const IDENTITY_TOKEN_MIN = LIFETIME_LIMITS.identityToken.min;
+const IDENTITY_TOKEN_MAX = LIFETIME_LIMITS.identityToken.max;
+const LOGOUT_TOKEN_MIN = LIFETIME_LIMITS.logoutToken.min;
+const LOGOUT_TOKEN_MAX = LIFETIME_LIMITS.logoutToken.max;
+const AUTH_CODE_MIN = LIFETIME_LIMITS.authorizationCode.min;
+const AUTH_CODE_MAX = LIFETIME_LIMITS.authorizationCode.max;
 
 function validateForm(
   form: ClientFormState,
@@ -290,29 +298,24 @@ function validateForm(
     }
   }
 
-  const access = Number(form.accessTokenLifetime);
-  if (access < ACCESS_TOKEN_MIN || access > ACCESS_TOKEN_MAX) {
-    errors.push(`Access token lifetime must be between ${ACCESS_TOKEN_MIN} and ${ACCESS_TOKEN_MAX} seconds.`);
+  if (!isLifetimeInRange("accessToken", Number(form.accessTokenLifetime))) {
+    errors.push(lifetimeRangeMessage("accessToken"));
   }
 
-  const refresh = Number(form.refreshTokenLifetime);
-  if (refresh < REFRESH_TOKEN_MIN || refresh > REFRESH_TOKEN_MAX) {
-    errors.push(`Refresh token lifetime must be between ${REFRESH_TOKEN_MIN} and ${REFRESH_TOKEN_MAX} seconds.`);
+  if (!isLifetimeInRange("refreshToken", Number(form.refreshTokenLifetime))) {
+    errors.push(lifetimeRangeMessage("refreshToken"));
   }
 
-  const identity = Number(form.identityTokenLifetime);
-  if (identity < IDENTITY_TOKEN_MIN || identity > IDENTITY_TOKEN_MAX) {
-    errors.push(`Identity token lifetime must be between ${IDENTITY_TOKEN_MIN} and ${IDENTITY_TOKEN_MAX} seconds.`);
+  if (!isLifetimeInRange("identityToken", Number(form.identityTokenLifetime))) {
+    errors.push(lifetimeRangeMessage("identityToken"));
   }
 
-  const logout = Number(form.logoutTokenLifetime);
-  if (logout < LOGOUT_TOKEN_MIN || logout > LOGOUT_TOKEN_MAX) {
-    errors.push(`Logout token lifetime must be between ${LOGOUT_TOKEN_MIN} and ${LOGOUT_TOKEN_MAX} seconds.`);
+  if (!isLifetimeInRange("logoutToken", Number(form.logoutTokenLifetime))) {
+    errors.push(lifetimeRangeMessage("logoutToken"));
   }
 
-  const authCode = Number(form.authorizationCodeLifetime);
-  if (authCode < AUTH_CODE_MIN || authCode > AUTH_CODE_MAX) {
-    errors.push(`Authorization code lifetime must be between ${AUTH_CODE_MIN} and ${AUTH_CODE_MAX} seconds.`);
+  if (!isLifetimeInRange("authorizationCode", Number(form.authorizationCodeLifetime))) {
+    errors.push(lifetimeRangeMessage("authorizationCode"));
   }
 
   if (errors.length > 0) {

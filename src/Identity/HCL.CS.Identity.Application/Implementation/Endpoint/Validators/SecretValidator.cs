@@ -90,7 +90,7 @@ internal class SecretValidator : ISecretValidator
                 var jwt = new JwtSecurityToken(token);
 
                 var audience = httpContext.GetHclCsBaseUrl().IncludeEndSlash() +
-                               OpenIdConstants.EndpointRoutePaths.Token;
+                               OpenIdConstants.EndpointRoutePaths.Token.RemoveFrontSlash();
                 if (jwt.SignatureAlgorithm.StartsWith("HS"))
                 {
                     var (decodedToken, _) =
@@ -136,7 +136,7 @@ internal class SecretValidator : ISecretValidator
                         return Task.FromResult(false);
                     }
 
-                    var exp = jwtToken.Payload.Exp;
+                    var exp = jwtToken.Payload.Expiration;
                     if (!exp.HasValue)
                     {
                         loggerService.WriteTo(Log.Error, "exp is missing in client assertion JWT.");

@@ -9,6 +9,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using System.Web;
 using HtmlAgilityPack;
 using IntegrationTests.ApiDomainModel;
@@ -76,7 +77,9 @@ public static class IntegrationExtensions
                 ? 0
                 : Convert.ToInt32(parameters["AccessTokenLifetime"]),
             SessionState = parameters["session_state"],
-            IsError = Convert.ToBoolean(parameters["IsError"])
+            IsError = Convert.ToBoolean(parameters["IsError"]),
+            ErrorCode = parameters["error"],
+            ErrorDescription = parameters["error_description"]
         };
         return response;
     }
@@ -164,17 +167,14 @@ public static class IntegrationExtensions
 
     public static ErrorResponseModel ParseUserInfoErrorResponse(this HttpResponseMessage userInfoResponse)
     {
-        var authorizationHeader = userInfoResponse.Headers.WwwAuthenticate;
-        var authHeader = authorizationHeader.ToString();
-        var result = authHeader.Replace("\"", string.Empty);
-        var headers = result.Split(',');
         var errorResponse = new ErrorResponseModel();
+        var authHeader = userInfoResponse.Headers.WwwAuthenticate.ToString();
+        if (string.IsNullOrWhiteSpace(authHeader)) return errorResponse;
 
-        if (headers[0] == OpenIdConstants.AuthenticationSchemes.AuthorizationHeaderBearer)
-        {
-            errorResponse.ErrorCode = headers[1].Split('=')[1];
-            errorResponse.ErrorDescription = headers[2].Split('=')[1];
-        }
+        var error = Regex.Match(authHeader, "error=\"(?<value>[^\"]*)\"");
+        var description = Regex.Match(authHeader, "error_description=\"(?<value>[^\"]*)\"");
+        if (error.Success) errorResponse.ErrorCode = error.Groups["value"].Value;
+        if (description.Success) errorResponse.ErrorDescription = description.Groups["value"].Value;
 
         return errorResponse;
     }

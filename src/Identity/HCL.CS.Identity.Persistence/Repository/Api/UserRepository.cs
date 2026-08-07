@@ -38,7 +38,12 @@ internal class UserRepository : BaseDispose, IUserRepository
     public Task DeleteAsync(Users entity)
     {
         entity.IsDeleted = true;
-        context.Users.Remove(entity);
+        entity.ModifiedOn = DateTime.UtcNow;
+        if (string.IsNullOrWhiteSpace(entity.ModifiedBy)) entity.ModifiedBy = entity.CreatedBy;
+
+        context.SetPropertyModifiedStatus(entity, nameof(Users.IsDeleted));
+        context.SetPropertyModifiedStatus(entity, nameof(Users.ModifiedOn));
+        context.SetPropertyModifiedStatus(entity, nameof(Users.ModifiedBy));
         return Task.CompletedTask;
     }
 

@@ -7,7 +7,6 @@
  */
 
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.RateLimiting;
@@ -16,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -27,7 +27,10 @@ using HCL.CS.Domain;
 using HCL.CS.Domain.Configurations.Api;
 using HCL.CS.Domain.Enums;
 using HCL.CS.Domain.Models.Endpoint;
+using HCL.CS.DomainServices;
 using HCL.CS.Hosting.Extensions;
+using HCL.CS.Infrastructure.Data.Validation;
+using HCL.CS.Infrastructure.Resources;
 
 var applicationRootPath = ResolveApplicationRoot();
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
@@ -73,7 +76,7 @@ var logConfig = new LogConfig
 logConfig.LogFileConfig.FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Authentication.txt");
 
 builder.Services.AddHclCs(systemSettings, tokenSettings, notificationSettings)
-    .AddAsymmetricKeystore(LoadAsymmetricCertificate(builder.Environment))
+    .AddAsymmetricKeystore(LoadAsymmetricCertificate())
     .AddLoggerInstance(logConfig);
 
 builder.Services.AddOptions<GoogleOidcOptions>()
@@ -277,6 +280,8 @@ var formActionDirective = cspFormActionOrigins.Length > 0
 
 var app = builder.Build();
 
+await ValidateRuntimeDatabaseCompatibilityAsync(app.Services, app.Logger);
+
 app.Logger.LogInformation("Data Protection keys path: {KeysPath}", keysPath);
 if (ShouldWarnAboutEphemeralDataProtectionKeys(keysPath))
 {
@@ -338,6 +343,30 @@ app.MapDefaultControllerRoute();
 
 app.Run();
 return;
+
+static async Task ValidateRuntimeDatabaseCompatibilityAsync(
+    IServiceProvider services,
+    ILogger logger)
+{
+    using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+    using var scope = services.CreateScope();
+    var applicationDbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
+    var compatibilityService = new RuntimeSchemaCompatibilityService((DbContext)applicationDbContext);
+    var report = await compatibilityService.ValidateCompatibilityAsync(timeout.Token);
+
+    if (!report.ConnectivityStatus || !report.SchemaCompatibilityStatus || !report.BootstrapReadinessStatus)
+    {
+        throw new InvalidOperationException(
+            $"HCL.CS runtime database compatibility validation failed for provider '{report.Provider}'. " +
+            $"{report.ActionRequired} Runtime startup does not apply migrations or seed data; " +
+            "run the HCL.CS Installer or an approved migration command.");
+    }
+
+    logger.LogInformation(
+        "Runtime database compatibility validation succeeded for provider {Provider}; applied migrations: {AppliedMigrationCount}.",
+        report.Provider,
+        report.AppliedMigrations.Count);
+}
 
 static (SystemSettings SystemSettings, TokenSettings TokenSettings, NotificationTemplateSettings NotificationSettings)
     LoadHclCsConfiguration(string contentRootPath)
@@ -676,153 +705,57 @@ static string ResolveSecretPlaceholders(string value, bool required = false)
     });
 }
 
-static List<AsymmetricKeyInfoModel> LoadAsymmetricCertificate(IHostEnvironment environment)
+static List<AsymmetricKeyInfoModel> LoadAsymmetricCertificate()
 {
     var certificatePassword = Environment.GetEnvironmentVariable("HCL_CS_SIGNING_CERT_PASSWORD");
-    var allowDevelopmentFallback = environment.IsDevelopment() &&
-                                   string.Equals(
-                                       Environment.GetEnvironmentVariable(
-                                           "HCL_CS_ALLOW_EPHEMERAL_SIGNING_KEYS"),
-                                       "true",
-                                       StringComparison.OrdinalIgnoreCase);
-    var keyInfos = new List<AsymmetricKeyInfoModel>();
+    if (string.IsNullOrWhiteSpace(certificatePassword))
+        throw new InvalidOperationException(
+            "A password for persistent signing certificates is required in 'HCL_CS_SIGNING_CERT_PASSWORD'.");
 
-    var rsaCertificate = LoadCertificateFromEnvironment(
+    return new List<AsymmetricKeyInfoModel>
+    {
+        LoadCertificateFromEnvironment(
         "HCL_CS_RSA_SIGNING_CERT_BASE64",
         "HCL_CS_RSA_SIGNING_CERT_PATH",
         certificatePassword,
         SigningAlgorithm.RS256,
-        "CN=HCL.CS Demo RSA",
-        allowDevelopmentFallback);
-
-    var ecdsaCertificate = LoadCertificateFromEnvironment(
+        Environment.GetEnvironmentVariable("HCL_CS_RSA_SIGNING_KID") ?? "hcl-cs-rsa-current"),
+        LoadCertificateFromEnvironment(
         "HCL_CS_ECDSA_SIGNING_CERT_BASE64",
         "HCL_CS_ECDSA_SIGNING_CERT_PATH",
         certificatePassword,
         SigningAlgorithm.ES256,
-        "CN=HCL.CS Demo ECDSA",
-        allowDevelopmentFallback);
-
-    keyInfos.Add(new AsymmetricKeyInfoModel
-    {
-        Certificate = rsaCertificate,
-        Algorithm = SigningAlgorithm.RS256,
-        KeyId = Environment.GetEnvironmentVariable("HCL_CS_RSA_SIGNING_KID") ?? "hcl-cs-rsa-current"
-    });
-
-    keyInfos.Add(new AsymmetricKeyInfoModel
-    {
-        Certificate = ecdsaCertificate,
-        Algorithm = SigningAlgorithm.ES256,
-        KeyId = Environment.GetEnvironmentVariable("HCL_CS_ECDSA_SIGNING_KID") ?? "hcl-cs-ecdsa-current"
-    });
-
-    return keyInfos;
+        Environment.GetEnvironmentVariable("HCL_CS_ECDSA_SIGNING_KID") ?? "hcl-cs-ecdsa-current")
+    };
 }
 
-static X509Certificate2 LoadCertificateFromEnvironment(
+static AsymmetricKeyInfoModel LoadCertificateFromEnvironment(
     string base64EnvKey,
     string pathEnvKey,
-    string? password,
+    string password,
     SigningAlgorithm algorithm,
-    string subjectName,
-    bool allowDevelopmentFallback)
+    string keyId)
 {
-    const X509KeyStorageFlags storageFlags = X509KeyStorageFlags.Exportable | X509KeyStorageFlags.EphemeralKeySet;
     var certificateBase64 = Environment.GetEnvironmentVariable(base64EnvKey);
     if (!string.IsNullOrWhiteSpace(certificateBase64))
     {
-        if (string.IsNullOrWhiteSpace(password))
-            throw new InvalidOperationException(
-                $"'{base64EnvKey}' is set but 'HCL_CS_SIGNING_CERT_PASSWORD' is missing.");
-
         var rawBytes = Convert.FromBase64String(certificateBase64);
-        var certificate = new X509Certificate2(rawBytes, password, storageFlags);
-        return IsCertificateUsable(certificate, algorithm)
-            ? certificate
-            : throw new InvalidOperationException(
-                $"Certificate loaded from '{base64EnvKey}' is not valid for {algorithm}.");
+        try
+        {
+            return SigningCertificateLoader.LoadFromBytes(rawBytes, password, algorithm, keyId);
+        }
+        finally
+        {
+            CryptographicOperations.ZeroMemory(rawBytes);
+        }
     }
 
     var certificatePath = Environment.GetEnvironmentVariable(pathEnvKey);
     if (string.IsNullOrWhiteSpace(certificatePath))
-    {
-        if (!allowDevelopmentFallback)
-            throw new InvalidOperationException(
-                $"A persistent {algorithm} signing certificate is required. Configure '{base64EnvKey}' or '{pathEnvKey}'.");
-
-        Console.Error.WriteLine(
-            $"WARNING: using an ephemeral development-only {algorithm} signing certificate. " +
-            "Outstanding tokens will not survive restart.");
-        return CreateSelfSignedCertificate(algorithm, subjectName);
-    }
-
-    if (!File.Exists(certificatePath))
         throw new InvalidOperationException(
-            $"Signing certificate configured by '{pathEnvKey}' does not exist.");
+            $"A persistent {algorithm} signing certificate is required. Configure '{base64EnvKey}' or '{pathEnvKey}'.");
 
-    {
-        if (string.IsNullOrWhiteSpace(password))
-            throw new InvalidOperationException(
-                $"'{pathEnvKey}' is set but 'HCL_CS_SIGNING_CERT_PASSWORD' is missing.");
-
-        var certificate = new X509Certificate2(certificatePath, password, storageFlags);
-        return IsCertificateUsable(certificate, algorithm)
-            ? certificate
-            : throw new InvalidOperationException(
-                $"Certificate loaded from '{pathEnvKey}' is not valid for {algorithm}.");
-    }
-}
-
-static bool IsCertificateUsable(X509Certificate2 certificate, SigningAlgorithm algorithm)
-{
-    if (!certificate.HasPrivateKey || certificate.NotAfter <= DateTime.UtcNow) return false;
-
-    var algorithmName = Enum.GetName(typeof(SigningAlgorithm), algorithm);
-    if (algorithmName is null) return false;
-
-    if (algorithmName.StartsWith("RS", StringComparison.OrdinalIgnoreCase)
-        || algorithmName.StartsWith("PS", StringComparison.OrdinalIgnoreCase))
-    {
-        using var privateKey = certificate.GetRSAPrivateKey();
-        return privateKey != null;
-    }
-
-    if (!algorithmName.StartsWith("ES", StringComparison.OrdinalIgnoreCase)) return false;
-    {
-        using var privateKey = certificate.GetECDsaPrivateKey();
-        return privateKey != null;
-    }
-}
-
-static X509Certificate2 CreateSelfSignedCertificate(SigningAlgorithm algorithm, string subjectName)
-{
-    var notBefore = DateTimeOffset.UtcNow.AddMinutes(-5);
-    var notAfter = DateTimeOffset.UtcNow.AddYears(1);
-    var algorithmName = Enum.GetName(typeof(SigningAlgorithm), algorithm);
-    if (algorithmName is null) throw new InvalidOperationException("Unsupported signing algorithm.");
-
-    if (algorithmName.StartsWith("ES", StringComparison.OrdinalIgnoreCase))
-    {
-        using var ecdsa = ECDsa.Create(ECCurve.NamedCurves.nistP256);
-        var request = new CertificateRequest(subjectName, ecdsa, HashAlgorithmName.SHA256);
-        request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, false));
-        request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature, false));
-        request.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(request.PublicKey, false));
-        return request.CreateSelfSigned(notBefore, notAfter);
-    }
-
-    if (!algorithmName.StartsWith("RS", StringComparison.OrdinalIgnoreCase)
-        && !algorithmName.StartsWith("PS", StringComparison.OrdinalIgnoreCase))
-        throw new InvalidOperationException("Unsupported signing algorithm.");
-    {
-        using var rsa = RSA.Create(2048);
-        var request = new CertificateRequest(subjectName, rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-        request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, false));
-        request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature, false));
-        request.CertificateExtensions.Add(new X509SubjectKeyIdentifierExtension(request.PublicKey, false));
-        return request.CreateSelfSigned(notBefore, notAfter);
-    }
+    return SigningCertificateLoader.LoadFromFile(certificatePath, password, algorithm, keyId);
 }
 
 static string GetClientIdentifierFromAuthorizationHeader(string authorizationHeader)

@@ -8,6 +8,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using HCL.CS.Domain;
 using HCL.CS.DomainServices.Infra;
 using HCL.CS.Infrastructure.Services.Implementation;
@@ -52,15 +53,44 @@ public static class InfrastructureServiceExtension
     }
 
     public static IServiceCollection AddSecurityLoggerInstance(this IServiceCollection services,
-        IServiceProvider serviceProvider, LogConfig logConfig)
+        LogConfig logConfig)
     {
-        var loggerInstance = serviceProvider.GetService<ILoggerInstance>();
-        if (loggerInstance != null)
+        var registration = services
+            .Where(descriptor => descriptor.ServiceType == typeof(LoggerInstanceRegistration))
+            .Select(descriptor => descriptor.ImplementationInstance)
+            .OfType<LoggerInstanceRegistration>()
+            .SingleOrDefault();
+
+        if (registration == null)
         {
-            loggerInstance.InitiateLoggerInstance(logConfig);
-            services.AddSingleton(loggerInstance);
+            registration = new LoggerInstanceRegistration();
+            services.AddSingleton(registration);
+            services.RemoveAll<ILoggerInstance>();
+            services.AddSingleton<ILoggerInstance>(serviceProvider =>
+            {
+                var loggerInstance = new LoggerInstance(
+                    serviceProvider.GetRequiredService<IResourceStringHandler>());
+                loggerInstance.InitiateLoggerInstance(registration.Configurations.ToList());
+                return loggerInstance;
+            });
         }
 
+        registration.Add(logConfig);
+
         return services;
+    }
+
+    private sealed class LoggerInstanceRegistration
+    {
+        private readonly List<LogConfig> configurations = new();
+
+        public IReadOnlyList<LogConfig> Configurations => configurations;
+
+        public void Add(LogConfig configuration)
+        {
+            if (configurations.All(existing =>
+                    !string.Equals(existing.InstanceName, configuration.InstanceName, StringComparison.Ordinal)))
+                configurations.Add(configuration);
+        }
     }
 }

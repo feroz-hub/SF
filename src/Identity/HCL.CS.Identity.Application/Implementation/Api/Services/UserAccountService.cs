@@ -9,7 +9,6 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Transactions;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using HCL.CS.Domain;
@@ -1200,80 +1199,84 @@ public partial class UserAccountService : SecurityBase, IUserAccountService
 
     private async Task<FrameworkResult> DeleteUserAsync(Users user)
     {
-        if (user != null)
+        if (user == null)
+            return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.InvalidUserId);
+
+        await using var transaction = await userManagementUnitOfWork.BeginTransactionAsync();
+        try
         {
-            // Transaction scope required - because delete client token is hard delete. we can't use UOF here.
-            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            loggerService.WriteTo(Log.Debug, "Entered in delete user: " + user.UserName);
+
+            // As identity doesn�t have any additional logic on delete claim API deleting claim is done via repository.
+            var userClaims = await userManagementUnitOfWork.UserClaimRepository.GetClaimsAsync(user.Id);
+            if (userClaims.ContainsAny())
+                await userManagementUnitOfWork.UserClaimRepository.DeleteAsync(userClaims);
+
+            // Deleting user token if any.
+            var userToken = await userManagementUnitOfWork.UserTokenRepository.GetUserTokenAsync(user.Id);
+            if (userToken.ContainsAny()) await userManagementUnitOfWork.UserTokenRepository.DeleteAsync(userToken);
+
+            // Deleting user role if any.
+            var userroles = await userManagementUnitOfWork.UserRoleRepository.GetUserRoleAsync(user.Id);
+            if (userroles.ContainsAny()) await userManagementUnitOfWork.UserRoleRepository.DeleteAsync(userroles);
+
+            // Deleting user security question if any.
+            var userSecurityQuestion =
+                await userManagementUnitOfWork.UserSecurityQuestionsRepository.GetAsync(x =>
+                    x.UserId == user.Id);
+            if (userSecurityQuestion.ContainsAny())
+                await userManagementUnitOfWork.UserSecurityQuestionsRepository.DeleteAsync(userSecurityQuestion
+                    .ToList());
+
+            // Deleting user password if any.
+            var userPasswordHistory =
+                await userManagementUnitOfWork.PasswordHistoryRepository.GetAsync(x =>
+                    x.UserId == user.Id);
+            if (userPasswordHistory.ContainsAny())
+                await userManagementUnitOfWork.PasswordHistoryRepository.DeleteAsync(
+                    userPasswordHistory.ToList());
+
+            // Deleting user notification if any.
+            var userNotification =
+                await userManagementUnitOfWork.NotificationRepository.GetAsync(x =>
+                    x.UserId == user.Id);
+            if (userNotification.ContainsAny())
+                await userManagementUnitOfWork.NotificationRepository.DeleteAsync(userNotification.ToList());
+
+            // As identity doesn�t have any additional logic on delete API deleting user is done via repository.
+            await userManagementUnitOfWork.UserRepository.DeleteAsync(user);
+
+            var csresult = await userManagementUnitOfWork.SaveChangesAsync();
+            if (csresult.Status == ResultStatus.Failed)
             {
-                loggerService.WriteTo(Log.Debug, "Entered in delete user: " + user.UserName);
+                loggerService.WriteTo(Log.Error, "User deletion failed for user: " + user.UserName);
+                await transaction.RollbackAsync();
+                return csresult;
+            }
 
-                // As identity doesn�t have any additional logic on delete claim API deleting claim is done via repository.
-                var userClaims = await userManagementUnitOfWork.UserClaimRepository.GetClaimsAsync(user.Id);
-                if (userClaims.ContainsAny())
-                    await userManagementUnitOfWork.UserClaimRepository.DeleteAsync(userClaims);
+            var securityTokenList =
+                await securityTokenRepository.GetAsync(x => x.SubjectId == Convert.ToString(user.Id));
+            if (securityTokenList.ContainsAny())
+            {
+                await securityTokenRepository.DeleteAsync(securityTokenList);
 
-                // Deleting user token if any.
-                var userToken = await userManagementUnitOfWork.UserTokenRepository.GetUserTokenAsync(user.Id);
-                if (userToken.ContainsAny()) await userManagementUnitOfWork.UserTokenRepository.DeleteAsync(userToken);
-
-                // Deleting user role if any.
-                var userroles = await userManagementUnitOfWork.UserRoleRepository.GetUserRoleAsync(user.Id);
-                if (userroles.ContainsAny()) await userManagementUnitOfWork.UserRoleRepository.DeleteAsync(userroles);
-
-                // Deleting user security question if any.
-                var userSecurityQuestion =
-                    await userManagementUnitOfWork.UserSecurityQuestionsRepository.GetAsync(x =>
-                        x.UserId == user.Id);
-                if (userSecurityQuestion.ContainsAny())
-                    await userManagementUnitOfWork.UserSecurityQuestionsRepository.DeleteAsync(userSecurityQuestion
-                        .ToList());
-
-                // Deleting user password if any.
-                var userPasswordHistory =
-                    await userManagementUnitOfWork.PasswordHistoryRepository.GetAsync(x =>
-                        x.UserId == user.Id);
-                if (userPasswordHistory.ContainsAny())
-                    await userManagementUnitOfWork.PasswordHistoryRepository.DeleteAsync(
-                        userPasswordHistory.ToList());
-
-                // Deleting user notification if any.
-                var userNotification =
-                    await userManagementUnitOfWork.NotificationRepository.GetAsync(x =>
-                        x.UserId == user.Id);
-                if (userNotification.ContainsAny())
-                    await userManagementUnitOfWork.NotificationRepository.DeleteAsync(userNotification.ToList());
-
-                // As identity doesn�t have any additional logic on delete API deleting user is done via repository.
-                await userManagementUnitOfWork.UserRepository.DeleteAsync(user);
-
-                var csresult = await userManagementUnitOfWork.SaveChangesAsync();
+                csresult = await securityTokenRepository.SaveChangesWithHardDeleteAsync();
                 if (csresult.Status == ResultStatus.Failed)
                 {
                     loggerService.WriteTo(Log.Error, "User deletion failed for user: " + user.UserName);
+                    await transaction.RollbackAsync();
                     return csresult;
                 }
-
-                var securityTokenList =
-                    await securityTokenRepository.GetAsync(x => x.SubjectId == Convert.ToString(user.Id));
-                if (securityTokenList.ContainsAny())
-                {
-                    await securityTokenRepository.DeleteAsync(securityTokenList);
-
-                    csresult = await securityTokenRepository.SaveChangesWithHardDeleteAsync();
-                    if (csresult.Status == ResultStatus.Failed)
-                    {
-                        loggerService.WriteTo(Log.Error, "User deletion failed for user: " + user.UserName);
-                        return csresult;
-                    }
-                }
-
-                transactionScope.Complete();
             }
 
+            await transaction.CommitAsync();
             return frameworkResultService.Succeeded();
         }
-
-        return frameworkResultService.Failed<FrameworkResult>(ApiErrorCodes.InvalidUserId);
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
 
