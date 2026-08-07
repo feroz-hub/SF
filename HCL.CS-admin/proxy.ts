@@ -10,23 +10,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 import { isHardSessionError } from "@/lib/auth-errors";
-
-function readRolesFromToken(token: Awaited<ReturnType<typeof getToken>>): string[] {
-  if (!token || typeof token === "string") {
-    return [];
-  }
-
-  const rawRoles = token.roles;
-  if (Array.isArray(rawRoles)) {
-    return rawRoles.map((item) => String(item));
-  }
-
-  return [];
-}
-
-function isAdminRole(roles: string[]): boolean {
-  return roles.some((role) => role.toLowerCase().includes("admin"));
-}
+import { isAuthorizedAdminToken } from "@/lib/authentication/authorization";
 
 function hasUsableAuthState(token: Awaited<ReturnType<typeof getToken>>): boolean {
   if (!token || typeof token === "string") {
@@ -52,8 +36,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  const roles = readRolesFromToken(token);
-  if (!isAdminRole(roles)) {
+  if (!isAuthorizedAdminToken(token)) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("reason", "admin_required");
     loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname + request.nextUrl.search);

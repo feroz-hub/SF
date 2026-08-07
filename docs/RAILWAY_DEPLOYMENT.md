@@ -195,7 +195,7 @@ Recommended:
 
 | Variable | Value |
 | --- | --- |
-| `HCL_CS_SCOPES` | `openid profile email offline_access phone hcl-cs.apiresource hcl-cs.client hcl-cs.user hcl-cs.role hcl-cs.identityresource hcl-cs.adminuser hcl-cs.securitytoken` |
+| `HCL_CS_SCOPES` | `openid profile email phone offline_access hcl-cs.apiresource.read hcl-cs.apiresource.write hcl-cs.apiresource.manage hcl-cs.apiresource.delete hcl-cs.identityresource.read hcl-cs.identityresource.write hcl-cs.identityresource.manage hcl-cs.identityresource.delete hcl-cs.client.read hcl-cs.client.write hcl-cs.client.manage hcl-cs.client.delete hcl-cs.user.read hcl-cs.user.write hcl-cs.user.manage hcl-cs.user.delete hcl-cs.role.read hcl-cs.role.write hcl-cs.role.manage hcl-cs.role.delete hcl-cs.adminuser.read hcl-cs.adminuser.write hcl-cs.adminuser.manage hcl-cs.adminuser.delete hcl-cs.securitytoken.read hcl-cs.securitytoken.manage` |
 | `HCL_CS_ENABLE_FEDERATED_LOGOUT` | `false` for the first deployment |
 | `HCL_CS_ALLOW_INSECURE_TLS` | `false` |
 | `NEXT_PUBLIC_GOOGLE_LOGIN_ENABLED` | `false` unless you explicitly configure Google flow support |

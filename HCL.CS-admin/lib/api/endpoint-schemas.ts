@@ -956,7 +956,12 @@ export const endpointSchemas: Record<string, EndpointSchema> = {
       { name: "password", type: "string", required: true, placeholder: "Password" },
       { name: "client_id", type: "string", required: true, placeholder: "e.g. my-client" },
       { name: "client_secret", type: "string", required: true, placeholder: "Client secret" },
-      { name: "scope", type: "string", required: true, placeholder: "e.g. hcl-cs.apiresource hcl-cs.client" },
+      {
+        name: "scope",
+        type: "string",
+        required: true,
+        placeholder: "e.g. hcl-cs.apiresource.read hcl-cs.client.read"
+      },
     ],
   },
   "/Security/Api/Authentication/IsUserSignedIn": {
@@ -1202,7 +1207,7 @@ export const endpointSchemas: Record<string, EndpointSchema> = {
       { name: "grant_type", type: "enum", required: true, enumValues: ["client_credentials", "authorization_code", "refresh_token", "password"], description: "OAuth grant type" },
       { name: "client_id", type: "string", required: true, placeholder: "e.g. my-client" },
       { name: "client_secret", type: "string", placeholder: "Client secret" },
-      { name: "scope", type: "string", placeholder: "e.g. openid profile hcl-cs.apiresource" },
+      { name: "scope", type: "string", placeholder: "e.g. openid profile hcl-cs.apiresource.read" },
       { name: "code", type: "string", placeholder: "Authorization code (for authorization_code grant)" },
       { name: "redirect_uri", type: "string", placeholder: "e.g. https://myapp.com/callback" },
       { name: "refresh_token", type: "string", placeholder: "Refresh token (for refresh_token grant)" },

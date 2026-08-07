@@ -9,6 +9,7 @@
 using System.Linq.Expressions;
 using HCL.CS.Domain;
 using HCL.CS.Domain.Constants;
+using HCL.CS.Domain.Constants.Endpoint;
 using HCL.CS.Domain.Entities.Api;
 using HCL.CS.Domain.Models.Endpoint;
 using HCL.CS.Domain.Models.Endpoint.Request;
@@ -165,7 +166,12 @@ internal class DiscoveryService : SecurityBase, IDiscoveryService
                 supportedScopesList.Add(apiScope.Name);
             }
 
+        // offline_access is a protocol-level scope parsed by ResourceScopeValidator rather than a
+        // persisted identity/API resource. It enables refresh-token issuance for eligible clients
+        // and therefore must still be advertised in discovery.
+        supportedScopesList.Add(AuthenticationConstants.IdentityScopes.OfflineAccess);
+
         supportedClaimsList = supportedClaimsList.Distinct().ToList();
-        supportedScopesList = supportedScopesList.Distinct().ToList();
+        supportedScopesList = supportedScopesList.Distinct(StringComparer.Ordinal).ToList();
     }
 }

@@ -399,7 +399,7 @@ export function ApiExplorerModule() {
             grant_type: "client_credentials",
             client_id: "<client-id>",
             client_secret: "<client-secret>",
-            scope: "hcl-cs.apiresource hcl-cs.client"
+            scope: "hcl-cs.apiresource.read hcl-cs.client.read"
           },
           null,
           2
@@ -445,7 +445,7 @@ export function ApiExplorerModule() {
             password: "<password>",
             client_id: "<client-id>",
             client_secret: "<client-secret>",
-            scope: "hcl-cs.apiresource hcl-cs.client"
+            scope: "hcl-cs.apiresource.read hcl-cs.client.read"
           },
           null,
           2

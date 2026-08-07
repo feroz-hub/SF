@@ -1287,45 +1287,6 @@ pre {
   box-shadow: 0 0 0 3px var(--accent-dim);
 }
 
-.password-field {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.password-field-input {
-  padding-right: 48px;
-}
-
-.password-field-toggle {
-  position: absolute;
-  right: 10px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition:
-    color var(--duration-fast) var(--ease-snap),
-    background-color var(--duration-fast) var(--ease-snap);
-}
-
-.password-field-toggle:hover:not(:disabled) {
-  color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.06);
-}
-
-.password-field-toggle:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 .dialog-actions {
   margin-top: 0.9rem;
   display: flex;
@@ -2662,29 +2623,6 @@ body::after {
   min-height: 44px;
 }
 
-.login-alternate {
-  display: grid;
-  gap: 12px;
-}
-
-.login-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--text-muted);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.login-divider::before,
-.login-divider::after {
-  content: "";
-  height: 1px;
-  flex: 1;
-  background: var(--border-subtle);
-}
-
 .login-help-link {
   margin: 0;
   text-align: center;
@@ -2993,11 +2931,6 @@ body::after {
   border-color: var(--accent);
   background: var(--bg-base);
   box-shadow: 0 0 0 3px var(--accent-dim);
-}
-
-.password-field-toggle:hover:not(:disabled) {
-  color: var(--accent);
-  background: var(--accent-dim);
 }
 
 .btn {

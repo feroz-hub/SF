@@ -77,19 +77,6 @@ export function Header() {
     }
   };
 
-  const [copied, setCopied] = useState(false);
-  const copySessionToken = async () => {
-    const token = session?.accessToken;
-    if (!token) return;
-    try {
-      await navigator.clipboard.writeText(token);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
-
   const userName = session?.user?.name ?? "Administrator";
   const apiLabel =
     apiHealth === "ok"
@@ -128,18 +115,6 @@ export function Header() {
       </div>
       <div className="admin-header-actions">
         <div className="toolbar" style={{ marginRight: "0.5rem" }}>
-          {session?.accessToken && (
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={copySessionToken}
-              title="Copy session Bearer token for testing (e.g. Postman)"
-              className="text-caption"
-              style={{ marginRight: "0.5rem" }}
-            >
-              {copied ? "Copied" : "Copy Bearer token"}
-            </Button>
-          )}
           <div
             className="sidebar-theme-toggle"
             aria-label="API health status"
