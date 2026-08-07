@@ -47,7 +47,7 @@ function account(overrides: Partial<Account> = {}): Account {
   };
 }
 
-test("HCL.CS provider uses discovery, Authorization Code, PKCE, state, and confidential client auth", () => {
+test("HCL.CS provider uses OIDC discovery, Authorization Code, PKCE, state, nonce, and confidential client auth", () => {
   const provider = createHclCsProvider({
     issuer: "https://localhost:5180/",
     metadataAddress: "https://localhost:5180/.well-known/openid-configuration",
@@ -61,7 +61,7 @@ test("HCL.CS provider uses discovery, Authorization Code, PKCE, state, and confi
   assert.equal(provider.type, "oauth");
   assert.equal(provider.issuer, "https://localhost:5180");
   assert.equal(provider.wellKnown, "https://localhost:5180/.well-known/openid-configuration");
-  assert.deepEqual(provider.checks, ["pkce", "state"]);
+  assert.deepEqual(provider.checks, ["pkce", "state", "nonce"]);
   assert.equal(
     provider.authorization && typeof provider.authorization === "object"
       ? provider.authorization.params?.response_type
@@ -74,6 +74,26 @@ test("HCL.CS provider uses discovery, Authorization Code, PKCE, state, and confi
     `https://localhost:3001/api/auth/callback/${provider.id}`,
     "https://localhost:3001/api/auth/callback/hcl-cs"
   );
+});
+
+test("HCL.CS provider delegates nonce generation and persistence to NextAuth", async () => {
+  const provider = createHclCsProvider({
+    issuer: "https://localhost:5180",
+    metadataAddress: "https://localhost:5180/.well-known/openid-configuration",
+    clientId: "admin-client",
+    clientSecret: "server-only-secret",
+    scopes: configuredScopes
+  });
+  const authorizationParams =
+    provider.authorization && typeof provider.authorization === "object"
+      ? provider.authorization.params
+      : undefined;
+  const providerSource = await readFile(new URL("./provider.ts", import.meta.url), "utf8");
+
+  assert.equal(provider.checks?.includes("nonce"), true);
+  assert.equal(provider.idToken, true);
+  assert.equal(authorizationParams?.nonce, undefined);
+  assert.doesNotMatch(providerSource, /localStorage|Math\.random|randomUUID|generators\.nonce/);
 });
 
 test("configured authorization scopes include identity, offline access, and every required HCL.CS scope", () => {

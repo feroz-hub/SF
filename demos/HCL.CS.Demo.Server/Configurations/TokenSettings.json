@@ -15,7 +15,7 @@
     "InputLengthRestrictionsConfig": {
       "ClientId": 100,
       "ClientSecret": 100,
-      "Scope": 300,
+      "Scope": 700,
       "RedirectUri": 400,
       "Nonce": 300,
       "State": 2048,

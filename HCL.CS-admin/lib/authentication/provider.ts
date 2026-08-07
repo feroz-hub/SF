@@ -40,7 +40,7 @@ export function createHclCsProvider(config: HclCsProviderConfig): OAuthConfig<Hc
       token_endpoint_auth_method: "client_secret_basic"
     },
     idToken: true,
-    checks: ["pkce", "state"],
+    checks: ["pkce", "state", "nonce"],
     authorization: {
       params: {
         response_type: "code",
