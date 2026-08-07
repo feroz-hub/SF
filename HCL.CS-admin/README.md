@@ -22,11 +22,17 @@ Important: HCL.CS validates redirect URLs as HTTPS. Run this app over `https://l
 Copy `.env.example` to `.env.local` and fill values.
 
 Required keys:
+
 - `NEXTAUTH_URL`
 - `NEXTAUTH_SECRET`
-- `HCL_CS_AUTHORITY`
+- `HCL_CS_ISSUER`
 - `HCL_CS_CLIENT_ID`
 - `HCL_CS_CLIENT_SECRET`
+- `HCL_CS_SCOPES`
+- `HCL_CS_METADATA_ADDRESS`
+- `HCL_CS_TOKEN_ENDPOINT`
+- `HCL_CS_REVOCATION_ENDPOINT`
+- `HCL_CS_POST_LOGOUT_REDIRECT_URI`
 
 ## 2) Installer URIs for this client
 
@@ -53,18 +59,8 @@ npm run dev:https
 
 Open `https://localhost:3001`.
 
-## 4) If you see self-signed certificate error
+## 4) Local certificate trust
 
-Preferred (safer) option:
-
-```bash
-NODE_OPTIONS=--use-system-ca npm run dev:https
-```
-
-If that still fails in local dev, set in `.env.local`:
-
-```bash
-HCL_CS_ALLOW_INSECURE_TLS=true
-```
-
-This disables TLS certificate validation for this app process in non-production only.
+Trust the HCL.CS development CA in the operating-system trust store, or provide
+that CA to Node through `NODE_EXTRA_CA_CERTS`. TLS validation is not disabled by
+the Admin authentication implementation.

@@ -23,8 +23,7 @@ namespace HclCsInstallerMVC.Infrastructure.Services;
 
 public sealed class SeedDataService : ISeedDataService
 {
-    private const string DefaultScopes =
-        "openid email profile offline_access hcl-cs.apiresource phone hcl-cs.client hcl-cs.user hcl-cs.role hcl-cs.identityresource hcl-cs.adminuser hcl-cs.securitytoken";
+    private static readonly string DefaultScopes = AdminClientScopeContract.SpaceSeparated;
 
     private readonly ILogger<SeedDataService> _logger;
 

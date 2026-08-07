@@ -13,6 +13,8 @@ using HCL.CS.Domain.Entities.Endpoint;
 using HCL.CS.Domain.Models.Endpoint;
 using HCL.CS.Service.Implementation.Api.Validators;
 using HclCsInstallerMVC.Infrastructure.Seeding;
+using HclCsInstallerMVC.Infrastructure.Services;
+using System.Reflection;
 using Xunit;
 
 namespace HCL.CS.UnitTests;
@@ -141,5 +143,38 @@ public class InstallerAdminClientContractTests
         contract.MaxLogoutTokenExpiration.Should().Be(86400);
         contract.MinAuthorizationCodeExpiration.Should().Be(60);
         contract.MaxAuthorizationCodeExpiration.Should().Be(600);
+    }
+
+    [Fact]
+    public void InstallerDefaultAdminScopes_MatchSeededGranularScopeContract()
+    {
+        var defaultScopesField = typeof(SeedDataService).GetField(
+            "DefaultScopes",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        var installerDefaultScopes = ((string)defaultScopesField!.GetValue(null)!)
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        installerDefaultScopes.Should().Equal(AdminClientScopeContract.AllScopes);
+        installerDefaultScopes.Should().OnlyHaveUniqueItems();
+
+        var seededPermissionScopes = HclCsMasterDataSeed.GetApiResourceEntityMaster()
+            .SelectMany(resource => resource.ApiScopes)
+            .Select(scope => scope.Name)
+            .ToArray();
+        AdminClientScopeContract.PermissionScopes.Should().BeEquivalentTo(seededPermissionScopes);
+
+        var persistedIdentityScopes = HclCsMasterDataSeed.CreateIdentityResourceModelMaster()
+            .Select(resource => resource.Name)
+            .ToHashSet(StringComparer.Ordinal);
+        AdminClientScopeContract.IdentityScopes
+            .Where(scope => scope != AuthenticationConstants.IdentityScopes.OfflineAccess)
+            .Should().OnlyContain(scope => persistedIdentityScopes.Contains(scope));
+        AdminClientScopeContract.IdentityScopes.Should()
+            .Contain(AuthenticationConstants.IdentityScopes.OfflineAccess);
+
+        var obsoleteUmbrellaScopes = HclCsMasterDataSeed.GetApiResourceEntityMaster()
+            .Select(resource => resource.Name);
+        installerDefaultScopes.Intersect(obsoleteUmbrellaScopes, StringComparer.Ordinal)
+            .Should().BeEmpty();
     }
 }

@@ -412,22 +412,26 @@ HCL.CS-admin/
 
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
-| `NEXTAUTH_URL` | Yes | Public URL of this app | `https://localhost:3000` |
+| `NEXTAUTH_URL` | Yes | Public URL of this app | `https://localhost:3001` |
 | `NEXTAUTH_SECRET` | Yes | JWT encryption secret | `random-secret-string` |
-| `HCL_CS_ISSUER` | Yes | HCL.CS server base URL | `https://localhost:5001` |
+| `HCL_CS_ISSUER` | Yes | HCL.CS server base URL | `https://localhost:5180` |
 | `HCL_CS_CLIENT_ID` | Yes | OAuth client ID | `hcl-cs-admin-client` |
 | `HCL_CS_CLIENT_SECRET` | Yes | OAuth client secret | `client-secret` |
-| `HCL_CS_API_BASE_URL` | No | HCL.CS API base (defaults to issuer) | `https://localhost:5001` |
+| `HCL_CS_API_BASE_URL` | No | HCL.CS API base (defaults to issuer) | `https://localhost:5180` |
 | `HCL_CS_SCOPES` | No | Requested OAuth scopes | See default below |
 | `HCL_CS_ENABLE_FEDERATED_LOGOUT` | No | Use IdP logout | `false` |
-| `HCL_CS_ALLOW_INSECURE_TLS` | No | Dev only: skip TLS verify | `false` |
 
 ### Default Scopes
 
 ```
-openid profile email offline_access phone 
-hcl-cs.apiresource hcl-cs.client hcl-cs.user hcl-cs.role 
-hcl-cs.identityresource hcl-cs.adminuser hcl-cs.securitytoken
+openid profile email phone offline_access
+hcl-cs.apiresource.read hcl-cs.apiresource.write hcl-cs.apiresource.manage hcl-cs.apiresource.delete
+hcl-cs.identityresource.read hcl-cs.identityresource.write hcl-cs.identityresource.manage hcl-cs.identityresource.delete
+hcl-cs.client.read hcl-cs.client.write hcl-cs.client.manage hcl-cs.client.delete
+hcl-cs.user.read hcl-cs.user.write hcl-cs.user.manage hcl-cs.user.delete
+hcl-cs.role.read hcl-cs.role.write hcl-cs.role.manage hcl-cs.role.delete
+hcl-cs.adminuser.read hcl-cs.adminuser.write hcl-cs.adminuser.manage hcl-cs.adminuser.delete
+hcl-cs.securitytoken.read hcl-cs.securitytoken.manage
 ```
 
 ### Environment File Setup
@@ -437,9 +441,9 @@ hcl-cs.identityresource hcl-cs.adminuser hcl-cs.securitytoken
 cp .env.example .env.local
 
 # Edit .env.local
-NEXTAUTH_URL=https://localhost:3000
+NEXTAUTH_URL=https://localhost:3001
 NEXTAUTH_SECRET=your-random-secret-here
-HCL_CS_ISSUER=https://localhost:5001
+HCL_CS_ISSUER=https://localhost:5180
 HCL_CS_CLIENT_ID=your-client-id
 HCL_CS_CLIENT_SECRET=your-client-secret
 ```

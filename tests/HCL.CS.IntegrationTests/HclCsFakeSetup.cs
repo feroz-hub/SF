@@ -691,6 +691,13 @@ public abstract class HclCsFakeSetup : IDisposable
         };
 
         foreach (var resourceName in resourceNames)
+        {
+            // Keep the umbrella scope used by legacy flow tests while also mirroring the granular
+            // production scope catalog used by Installer-created Admin clients.
+            var scopeNames = new[] { resourceName }
+                .Concat(AdminClientScopeContract.PermissionScopes.Where(
+                    scope => scope.StartsWith($"{resourceName}.", StringComparison.Ordinal)));
+
             dbContext.ApiResources.Add(new ApiResources
             {
                 Id = Guid.NewGuid(),
@@ -712,14 +719,12 @@ public abstract class HclCsFakeSetup : IDisposable
                         CreatedOn = utcNow
                     }
                 },
-                ApiScopes = new List<ApiScopes>
-                {
-                    new()
+                ApiScopes = scopeNames.Select(scopeName => new ApiScopes
                     {
                         Id = Guid.NewGuid(),
-                        Name = resourceName,
-                        DisplayName = resourceName,
-                        Description = $"{resourceName} scope",
+                        Name = scopeName,
+                        DisplayName = scopeName,
+                        Description = $"{scopeName} scope",
                         Required = false,
                         Emphasize = false,
                         CreatedBy = "Seed",
@@ -736,9 +741,10 @@ public abstract class HclCsFakeSetup : IDisposable
                                 CreatedOn = utcNow
                             }
                         }
-                    }
-                }
+                    })
+                    .ToList()
             });
+        }
 
         dbContext.ApiResources.Add(new ApiResources
         {
@@ -847,8 +853,12 @@ public abstract class HclCsFakeSetup : IDisposable
         };
 
         var allowedScopes = string.Join(
-            " ", "openid", "email", "profile", "phone", "address", "offline_access", "hcl-cs.client", "hcl-cs.user",
-            "hcl-cs.role", "hcl-cs.apiresource", "hcl-cs.identityresource", "hcl-cs.adminuser", "hcl-cs.securitytoken");
+            " ",
+            new[]
+            {
+                "openid", "email", "profile", "phone", "address", "offline_access", "hcl-cs.client", "hcl-cs.user",
+                "hcl-cs.role", "hcl-cs.apiresource", "hcl-cs.identityresource", "hcl-cs.adminuser", "hcl-cs.securitytoken"
+            }.Concat(AdminClientScopeContract.PermissionScopes));
 
         var supportedGrantTypes = string.Join(
             " ", OpenIdConstants.GrantTypes.AuthorizationCode, OpenIdConstants.GrantTypes.ClientCredentials,

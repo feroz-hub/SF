@@ -7,6 +7,7 @@
  */
 
 using FluentAssertions;
+using HCL.CS.Domain.Constants.Endpoint;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -54,6 +55,19 @@ public class DiscoveryEndpointTests : HclCsFakeSetup
         algor.Should().Contain(SecurityAlgorithms.RsaSsaPssSha256);
         algor.Should().Contain(SecurityAlgorithms.RsaSsaPssSha384);
         algor.Should().Contain(SecurityAlgorithms.RsaSsaPssSha512);
+    }
+
+    [Fact]
+    [Trait("Category", Category)]
+    public async Task Discovery_advertises_every_installer_admin_scope()
+    {
+        var result = await BackChannelClient.GetAsync(DiscoveryEndpoint);
+        var json = await result.Content.ReadAsStringAsync();
+        var data = JObject.Parse(json);
+        var scopes = data["scopes_supported"]!.Values<string>().ToArray();
+
+        scopes.Should().Contain(AdminClientScopeContract.AllScopes);
+        scopes.Should().OnlyHaveUniqueItems();
     }
 
     [Fact]
