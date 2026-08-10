@@ -1,0 +1,177 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
+using System.Linq.Expressions;
+using HCL.CS.Domain;
+using HCL.CS.Domain.Constants;
+using HCL.CS.Domain.Constants.Endpoint;
+using HCL.CS.Domain.Entities.Api;
+using HCL.CS.Domain.Models.Endpoint;
+using HCL.CS.Domain.Models.Endpoint.Request;
+using HCL.CS.DomainServices.Infra;
+using HCL.CS.DomainServices.Repository.Api;
+using HCL.CS.Service.Implementation.Endpoint.Extensions;
+using HCL.CS.Service.Interfaces.Interfaces.Endpoint;
+using static HCL.CS.Domain.Constants.Endpoint.OpenIdConstants;
+
+namespace HCL.CS.Service.Implementation.Endpoint.Services;
+
+internal class DiscoveryService : SecurityBase, IDiscoveryService
+{
+    private readonly IApiResourceRepository apiResourceRepository;
+    private readonly TokenSettings configSettings;
+    private readonly IIdentityResourceRepository identityResourceRepository;
+    private readonly Dictionary<string, AsymmetricKeyInfoModel> keyStore;
+    private readonly ILoggerService loggerService;
+    private List<string> supportedClaimsList;
+    private List<string> supportedScopesList;
+
+    public DiscoveryService(
+        ILoggerInstance instance,
+        IIdentityResourceRepository identityResourceRepository,
+        IApiResourceRepository apiResourceRepository,
+        Dictionary<string, AsymmetricKeyInfoModel> keyStore,
+        HclCsConfig tokenSettings)
+    {
+        this.identityResourceRepository = identityResourceRepository;
+        this.apiResourceRepository = apiResourceRepository;
+        this.keyStore = keyStore;
+        configSettings = tokenSettings.TokenSettings;
+        loggerService = instance.GetLoggerInstance(LoggerKeyConstants.DefaultLoggerKey);
+        supportedClaimsList = new List<string>();
+        supportedScopesList = new List<string>();
+    }
+
+    public async Task<Dictionary<string, object>> GenerateDiscoveryMetaData(DiscoveryRequestModel request)
+    {
+        loggerService.WriteTo(Log.Debug, "Entered into generate discovery metadata.");
+        await GetSupportedClaims();
+        var tokenAuthMethods = new[]
+        {
+            AuthenticationMethods.None,
+            AuthenticationMethods.ClientSecretBasic,
+            AuthenticationMethods.ClientSecretPost
+        };
+        var responseTypes = new[]
+        {
+            ResponseTypes.Code
+        };
+        var responseModes = new[]
+        {
+            ResponseModes.Query,
+            ResponseModes.FormPost
+        };
+        var grantTypes = new[]
+        {
+            GrantTypes.AuthorizationCode,
+            GrantTypes.RefreshToken,
+            GrantTypes.ClientCredentials,
+            GrantTypes.Password,
+            GrantTypes.UserCode
+        };
+        var idTokenSigningAlgorithms = keyStore.Keys
+            .Where(algorithm => !string.IsNullOrWhiteSpace(algorithm))
+            .Distinct()
+            .ToArray();
+        if (idTokenSigningAlgorithms.Length == 0) idTokenSigningAlgorithms = new[] { Algorithms.RsaSha256 };
+
+        var codeChallengeMethods = new[]
+        {
+            CodeChallengeMethods.Sha256
+        };
+
+        var metaData = new Dictionary<string, object>
+        {
+            // Issuer
+            { "issuer", configSettings.TokenConfig.IssuerUri },
+
+            // Token endpoint auth methods (RFC 8414)
+            { "token_endpoint_auth_methods_supported", tokenAuthMethods },
+
+            // Supported modes
+            { "scopes_supported", supportedScopesList.ToArray() },
+            { "claims_supported", supportedClaimsList.ToArray() },
+            { "response_types_supported", responseTypes },
+            { "response_modes_supported", responseModes },
+            { "grant_types_supported", grantTypes },
+            { "subject_types_supported", new[] { "public" } },
+
+            { "id_token_signing_alg_values_supported", idTokenSigningAlgorithms },
+            { "code_challenge_methods_supported", codeChallengeMethods }
+        };
+
+        if (configSettings.EndpointsConfig.EnableAuthorizeEndpoint)
+            metaData.Add("authorization_endpoint", request.BaseUrl + EndpointRoutePaths.Authorize);
+
+        if (configSettings.EndpointsConfig.EnableTokenEndpoint)
+            metaData.Add("token_endpoint", request.BaseUrl + EndpointRoutePaths.Token);
+
+        if (configSettings.EndpointsConfig.EnableIntrospectionEndpoint)
+            metaData.Add("introspection_endpoint", request.BaseUrl + EndpointRoutePaths.Introspection);
+
+        if (configSettings.EndpointsConfig.EnableJWKSEndpoint && keyStore.ContainsAny())
+            metaData.Add("jwks_uri", request.BaseUrl.RemoveBackSlash() + EndpointRoutePaths.JWKSWebKeys);
+
+        if (configSettings.EndpointsConfig.EnableUserInfoEndpoint)
+            metaData.Add("userinfo_endpoint", request.BaseUrl + EndpointRoutePaths.UserInfo);
+
+        if (configSettings.EndpointsConfig.EnableTokenRevocationEndpoint)
+            metaData.Add("revocation_endpoint", request.BaseUrl + EndpointRoutePaths.Revocation);
+
+        if (configSettings.EndpointsConfig.EnableEndSessionEndpoint)
+            metaData.Add("end_session_endpoint", request.BaseUrl + EndpointRoutePaths.EndSession);
+
+        if (configSettings.EndpointsConfig.FrontchannelLogoutSupported)
+            metaData.Add("frontchannel_logout_supported", true);
+
+        if (configSettings.EndpointsConfig.FrontchannelLogoutSessionRequired)
+            metaData.Add("frontchannel_logout_session_supported", true);
+
+        if (configSettings.EndpointsConfig.BackchannelLogoutSupported)
+            metaData.Add("backchannel_logout_supported", true);
+
+        if (configSettings.EndpointsConfig.BackchannelLogoutSessionRequired)
+            metaData.Add("backchannel_logout_session_supported", true);
+
+        return metaData;
+    }
+
+    private async Task GetSupportedClaims()
+    {
+        supportedClaimsList.Clear();
+        supportedScopesList.Clear();
+        var identityResources = await identityResourceRepository.GetAllAsync(new Expression<Func<IdentityResources, object>>[] { x => x.IdentityClaims });
+        if (identityResources.ContainsAny())
+            foreach (var identityResource in identityResources)
+            {
+                supportedClaimsList.AddRange(identityResource.IdentityClaims.ConvertAll(x => x.Type));
+                supportedScopesList.Add(identityResource.Name);
+            }
+
+        var apiResources = await apiResourceRepository.GetAllApiResourcesAsync();
+        if (apiResources.ContainsAny())
+            foreach (var apiResource in apiResources)
+                supportedClaimsList.AddRange(apiResource.ApiResourceClaims.ConvertAll(x => x.Type));
+
+        var apiScopes = await apiResourceRepository.GetAllApiScopesAsync();
+        if (apiScopes.ContainsAny())
+            foreach (var apiScope in apiScopes)
+            {
+                supportedClaimsList.AddRange(apiScope.ApiScopeClaims.ConvertAll(x => x.Type));
+                supportedScopesList.Add(apiScope.Name);
+            }
+
+        // offline_access is a protocol-level scope parsed by ResourceScopeValidator rather than a
+        // persisted identity/API resource. It enables refresh-token issuance for eligible clients
+        // and therefore must still be advertised in discovery.
+        supportedScopesList.Add(AuthenticationConstants.IdentityScopes.OfflineAccess);
+
+        supportedClaimsList = supportedClaimsList.Distinct().ToList();
+        supportedScopesList = supportedScopesList.Distinct(StringComparer.Ordinal).ToList();
+    }
+}

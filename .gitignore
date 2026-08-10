@@ -1,0 +1,43 @@
+# Build
+**/bin/
+**/obj/
+
+# IDE
+.vs/
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test outputs
+TestResults/
+
+# Local runtime data
+.data/
+**/DataProtection-Keys/
+**/*migration_test*.db
+**/Certificates/*.pfx
+**/Certificates/*.p12
+
+# NuGet
+*.nupkg
+**/packages/
+
+# Logs
+*.log
+DbCreationLogs.txt
+
+# Generated native-Windows configuration, certificates, and secrets
+.windows/
+
+# Local HCL.CS signing secrets
+certificates/signing/*.key
+certificates/signing/*.pfx
+certificates/signing/*.base64
+certificates/signing/hcl-cs-es256-signing.crt
+certificates/signing/hcl-cs-rs256-signing.crt
+
+# HCL.CS Installer generated completion state
+installer/HCL.CS.Installer.Mvc/App_Data/installer.lock.json

@@ -1,0 +1,85 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using HCL.CS.Domain.Entities.Api;
+
+namespace HCL.CS.Infrastructure.Data.Mapper.Api;
+
+public class UsersMap
+{
+    public UsersMap(EntityTypeBuilder<Users> entityBuilder)
+    {
+        UserMapping(entityBuilder);
+    }
+
+    private void UserMapping(EntityTypeBuilder<Users> entityBuilder)
+    {
+        if (entityBuilder != null)
+        {
+            entityBuilder.ToTable("HclCs_Users");
+
+            // Primary Key
+            entityBuilder.HasKey(t => t.Id);
+
+            // Properties
+            entityBuilder.Property(t => t.UserName).IsRequired().HasMaxLength(255);
+            entityBuilder.Property(t => t.NormalizedUserName).IsRequired().HasMaxLength(255);
+            entityBuilder.Property(t => t.FirstName).IsRequired().HasMaxLength(255);
+            entityBuilder.Property(t => t.LastName).HasMaxLength(255);
+            entityBuilder.Property(t => t.Email).IsRequired().HasMaxLength(255);
+            entityBuilder.Property(t => t.NormalizedEmail).IsRequired().HasMaxLength(255);
+            entityBuilder.Property(t => t.PhoneNumber).HasMaxLength(15);
+            entityBuilder.Property(t => t.ConcurrencyStamp).HasMaxLength(255);
+            entityBuilder.Property(t => t.SecurityStamp).HasMaxLength(255);
+            entityBuilder.Property(t => t.DirectoryImmutableId).HasMaxLength(512);
+            entityBuilder.Property(t => t.EmployeeId).HasMaxLength(255);
+            entityBuilder.Property(t => t.UserPrincipalName).HasMaxLength(255);
+            entityBuilder.Property(t => t.DisplayName).HasMaxLength(255);
+            entityBuilder.Property(t => t.Department).HasMaxLength(255);
+            entityBuilder.Property(t => t.AuthenticationSource).HasMaxLength(32);
+            entityBuilder.HasIndex(t => t.NormalizedEmail)
+                .IsUnique()
+                .HasDatabaseName("EmailIndex");
+            entityBuilder.HasIndex(t => t.DirectoryImmutableId)
+                .IsUnique()
+                .HasDatabaseName("UX_USERS_DIRECTORY_IMMUTABLE_ID");
+            entityBuilder.HasIndex(t => t.UserPrincipalName)
+                .IsUnique()
+                .HasDatabaseName("UX_USERS_USER_PRINCIPAL_NAME");
+            entityBuilder.HasIndex(t => t.EmployeeId)
+                .HasDatabaseName("IX_USERS_EMPLOYEE_ID");
+
+            // Table & Column Mappings
+            entityBuilder.Property(t => t.Id).HasColumnName("Id");
+            entityBuilder.Property(t => t.EmailConfirmed).IsRequired().HasColumnName("EmailConfirmed");
+            entityBuilder.Property(t => t.PhoneNumberConfirmed).HasColumnName("PhoneNumberConfirmed");
+            entityBuilder.Property(t => t.DateOfBirth).HasColumnName("DateOfBirth");
+            entityBuilder.Property(t => t.PasswordHash).IsRequired().HasColumnName("PasswordHash");
+            entityBuilder.Property(t => t.LastPasswordChangedDate).HasColumnName("LastPasswordChangedDate");
+            entityBuilder.Property(t => t.RequiresDefaultPasswordChange).HasColumnName("RequiresDefaultPasswordChange");
+            entityBuilder.Property(t => t.LastLoginDateTime).HasColumnName("LastLoginDateTime");
+            entityBuilder.Property(t => t.LastLogoutDateTime).HasColumnName("LastLogoutDateTime");
+            entityBuilder.Property(t => t.IdentityProviderType).HasColumnName("IdentityProviderType");
+            entityBuilder.Property(t => t.DirectoryImmutableId).HasColumnName("DirectoryImmutableId");
+            entityBuilder.Property(t => t.EmployeeId).HasColumnName("EmployeeId");
+            entityBuilder.Property(t => t.UserPrincipalName).HasColumnName("UserPrincipalName");
+            entityBuilder.Property(t => t.DisplayName).HasColumnName("DisplayName");
+            entityBuilder.Property(t => t.Department).HasColumnName("Department");
+            entityBuilder.Property(t => t.AuthenticationSource).HasColumnName("AuthenticationSource");
+            entityBuilder.Property(t => t.DirectoryLastValidatedAt).HasColumnName("DirectoryLastValidatedAt");
+            entityBuilder.Property(t => t.IsDeleted).IsRequired().HasColumnName("IsDeleted");
+            entityBuilder.Property(t => t.CreatedOn).IsRequired().HasColumnName("CreatedOn");
+            entityBuilder.Property(t => t.CreatedBy).IsRequired().HasMaxLength(255).HasColumnName("CreatedBy");
+            entityBuilder.Property(t => t.ModifiedOn).HasColumnName("ModifiedOn");
+            entityBuilder.Property(t => t.ModifiedBy).HasMaxLength(255).HasColumnName("ModifiedBy");
+            entityBuilder.HasQueryFilter(m => EF.Property<bool>(m, "IsDeleted") == false);
+        }
+    }
+}

@@ -1,0 +1,71 @@
+Test run for /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:12.33]     IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_PassingIdentityToken_ReturnInvalidTokenFormatError [FAIL]
+  Failed IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_PassingIdentityToken_ReturnInvalidTokenFormatError [11 s]
+  Error Message:
+   System.NullReferenceException : Object reference not set to an instance of an object.
+  Stack Trace:
+     at IntegrationTests.Endpoint.Setup.IntegrationExtensions.ParseAuthorizeResponse(HttpResponseMessage authResponse) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Setup/IntegrationExtensions.cs:line 207
+   at IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_PassingIdentityToken_ReturnInvalidTokenFormatError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/UserInfo/UserInfoEndpointTests.cs:line 155
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:13.28]     IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_MissingTokenAuthorizationHeader_ReturnInvalidUserClaimsError [FAIL]
+  Failed IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_MissingTokenAuthorizationHeader_ReturnInvalidUserClaimsError [949 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Unauthorized {value: 401}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_MissingTokenAuthorizationHeader_ReturnInvalidUserClaimsError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/UserInfo/UserInfoEndpointTests.cs:line 190
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:14.14]     IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_InvalidAccessToken_ReturnTokenIsNullOrInvalidError [FAIL]
+[xUnit.net 00:00:15.10]     IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_PassingRefreeshToken_ReturnInvalidTokenFormatError [FAIL]
+  Failed IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_InvalidAccessToken_ReturnTokenIsNullOrInvalidError [866 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_InvalidAccessToken_ReturnTokenIsNullOrInvalidError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/UserInfo/UserInfoEndpointTests.cs:line 82
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_PassingRefreeshToken_ReturnInvalidTokenFormatError [953 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_PassingRefreeshToken_ReturnInvalidTokenFormatError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/UserInfo/UserInfoEndpointTests.cs:line 119
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:16.01]     IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_ValidInput_Success [FAIL]
+  Failed IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_ValidInput_Success [911 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.UserInfo.UserInfoEndpointTests.UserInfoEndpoint_ValidInput_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/UserInfo/UserInfoEndpointTests.cs:line 50
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:     5, Passed:     0, Skipped:     0, Total:     5, Duration: 3 s - HCL.CS.IntegrationTests.dll (net8.0)

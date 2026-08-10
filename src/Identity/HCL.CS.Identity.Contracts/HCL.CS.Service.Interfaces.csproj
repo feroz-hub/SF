@@ -1,0 +1,45 @@
+<!--
+Copyright (c) 2021 HCL CORPORATION.
+All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+HCL is obtained. This is proprietary and confidential to HCL.
+-->
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HCL.CS.Identity.DomainServices\HCL.CS.DomainServices.csproj"/>
+    <ProjectReference Include="..\HCL.CS.Identity.Domain\HCL.CS.Domain.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>HCL.CS.UnitTests</_Parameter1>
+      <!-- We use the value of AssemblyName to declare the value of the attribute -->
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>HCL.CS.IntegrationTests</_Parameter1>
+      <!-- We use the value of AssemblyName to declare the value of the attribute -->
+    </AssemblyAttribute>
+
+    <!--<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.MSBuild" Version="6.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>-->
+  </ItemGroup>
+
+</Project>
+

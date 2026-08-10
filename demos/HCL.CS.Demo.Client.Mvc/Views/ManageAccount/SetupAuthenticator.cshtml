@@ -1,0 +1,65 @@
+﻿@*
+Copyright (c) 2021 HCL CORPORATION.
+All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+HCL is obtained. This is proprietary and confidential to HCL.
+*@
+
+@model HCL.CS.DemoClientMvc.Models.SetupAuthenticatorViewModel
+@{
+    ViewData["Title"] = "Setup authenticator";
+}
+
+<h4>@ViewData["Title"]</h4>
+<div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <p>To use an authenticator app go through the following steps:</p>
+    <ol class="list">
+        <li>
+            <p>Scan the QR Code or enter this key <kbd>@Model.SharedKey</kbd> into your two factor authenticator app.
+                Spaces and casing do not matter.</p>
+            <div class="alert alert-info">To enable QR code generation please read our <a
+                    href="https://go.microsoft.com/fwlink/?Linkid=852423">documentation</a>.
+            </div>
+            <div id="qrCode"></div>
+            <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
+        </li>
+        <li>
+            <p>
+                Once you have scanned the QR code or input the key above, your two factor authentication app will
+                provide you
+                with a unique code. Enter the code in the confirmation box below.
+            </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="post">
+                        <div class="form-group">
+                            <label asp-for="VerificationCode" class="control-label">Verification Code</label>
+                            <input asp-for="VerificationCode" class="form-control" autocomplete="off"/>
+                            <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-primary text-uppercase rounded-0">Verify</button>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </form>
+                </div>
+            </div>
+        </li>
+    </ol>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/lib/qrcodejs/qrcode.js"></script>
+    <script type="text/javascript">
+        generatedQRCode = new QRCode(document.getElementById("qrCode"),
+            {
+                text: "@Html.Raw(Model.AuthenticatorUri)",
+                width: 200,
+                height: 200,
+                colorDark: "#000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+    </script>
+}

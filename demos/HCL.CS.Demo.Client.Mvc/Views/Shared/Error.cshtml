@@ -1,0 +1,33 @@
+﻿@*
+Copyright (c) 2021 HCL CORPORATION.
+All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+HCL is obtained. This is proprietary and confidential to HCL.
+*@
+
+@model HCL.CS.DemoClientMvc.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+    var errorCode = string.IsNullOrWhiteSpace(Model?.ErrorCode) ? "UnhandledError" : Model.ErrorCode;
+    var errorMessage = string.IsNullOrWhiteSpace(Model?.ErrorMessage)
+        ? "The request could not be completed due to an unexpected error."
+        : Model.ErrorMessage;
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<p>
+    <strong>Error Code:</strong> <code>@errorCode</code>
+</p>
+<p>
+    <strong>Error Message:</strong> <code>@errorMessage</code>
+</p>

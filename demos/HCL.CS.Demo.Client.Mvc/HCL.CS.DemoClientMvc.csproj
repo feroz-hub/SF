@@ -1,0 +1,35 @@
+﻿<!--
+Copyright (c) 2021 HCL CORPORATION.
+All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+HCL is obtained. This is proprietary and confidential to HCL.
+-->
+
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Globals">
+    <UserSecretsId>4c67e590-7f69-4aec-935b-d372695d33ab</UserSecretsId>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lib.AspNetCore.Mvc.JqGrid.Helper" Version="3.0.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.11"/>
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.16.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11"/>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11"/>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.43"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Identity\HCL.CS.Identity.Domain\HCL.CS.Domain.csproj"/>
+  </ItemGroup>
+
+</Project>

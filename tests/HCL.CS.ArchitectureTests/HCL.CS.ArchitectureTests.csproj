@@ -1,0 +1,36 @@
+<!--
+Copyright (c) 2021 HCL CORPORATION.
+All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+HCL is obtained. This is proprietary and confidential to HCL.
+-->
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>HCL.CS.ArchitectureTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.1.0"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1"/>
+    <PackageReference Include="System.Net.Http" Version="4.3.4"/>
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1"/>
+    <PackageReference Include="xunit" Version="2.4.1"/>
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Identity\HCL.CS.Identity.Domain\HCL.CS.Domain.csproj"/>
+    <ProjectReference Include="..\..\src\Identity\HCL.CS.Identity.DomainServices\HCL.CS.DomainServices.csproj"/>
+    <ProjectReference Include="..\..\src\Identity\HCL.CS.Identity.Application\HCL.CS.Service.csproj"/>
+    <ProjectReference Include="..\..\src\Identity\HCL.CS.Identity.Persistence\HCL.CS.Infrastructure.Data.csproj"/>
+  </ItemGroup>
+
+</Project>

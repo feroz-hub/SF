@@ -1,0 +1,47 @@
+﻿@*
+Copyright (c) 2021 HCL CORPORATION.
+All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+HCL is obtained. This is proprietary and confidential to HCL.
+*@
+
+<div>
+    <h4>Manage Claims</h4>
+    <hr/>
+    <div class="form-group">
+        <table id="UserClaims" cellpadding="0" cellspacing="0"></table>
+        <div id="UserClaimsPager"></div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            var $resources = $('#UserClaims');
+            $resources.jqGrid({
+                url: '@Url.Action("GetUserClaimsByUserId", "ManageApi", new { claimUserId = TempData["ClaimUserId"] })',
+                editurl: '@Url.Action("UpdateUserClaim", "ManageApi", new { claimUserId = TempData["ClaimUserId"] })',
+                datatype: 'json',
+                mtype: 'POST',
+                /*cmTemplate: { align: 'center' },*/
+                colNames: ['ClaimType', 'ClaimValue'],
+                colModel: [
+                    {name: 'ClaimType', sortable: false, editable: true, width: 200},
+                    {name: 'ClaimValue', sortable: false, editable: true, width: 200}],
+                caption: 'User Claims',
+                footerrow: true,
+                userDataOnFooter: true,
+                jsonReader: {repeatitems: false, id: 'Id'},
+                pager: $('#UserClaimsPager'),
+                rowNum: 10,
+                viewrecords: true,
+                height: '100%',
+            })
+                .jqGrid('navGrid', '#UserClaimsPager', {add: false, edit: false, del: true, search: false})
+                .jqGrid('inlineNav', '#UserClaimsPager', {edit: false, addParams: {rowID: '-1'}})
+                .bind('jqGridInlineSuccessSaveRow', demo.jqGrid.onJqGridInlineSuccessSaveRow)
+                .bind('jqGridInlineAfterSaveRow', demo.jqGrid.onJqGridInlineAfterSaveRow);
+        });
+    </script>
+}

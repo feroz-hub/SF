@@ -1,0 +1,44 @@
+{
+  "OAuth": {
+    "Authority": "https://identity.example.com",
+    "MetadataAddress": "https://identity.example.com/.well-known/openid-configuration",
+    "ClientId": "${HCL_CS_OAUTH_CLIENT_ID}",
+    "ClientSecret": "${HCL_CS_OAUTH_CLIENT_SECRET}",
+    "CallbackPath": "/signin-oidc",
+    "SignedOutCallbackPath": "/signout-callback-oidc",
+    "RequireHttpsMetadata": true,
+    "TokenEndpoint": "https://identity.example.com/security/token",
+    "RevocationEndpoint": "https://identity.example.com/security/revocation",
+    "ResourceApiBaseUrl": "https://api.example.com",
+    "ApiTimeoutSeconds": 30,
+    "RefreshBeforeExpirySeconds": 120,
+    "Scopes": [
+      "openid",
+      "profile",
+      "email",
+      "offline_access",
+      "hcl-cs.apiresource"
+    ]
+  },
+  "Security": {
+    "Cors": {
+      "AllowedOrigins": [
+        "https://app.example.com"
+      ]
+    }
+  },
+  "SystemSettings": {
+    "DBConfig": {
+      "Database": 3,
+      "DBConnectionString": "${HCL_CS_DB_CONNECTION_STRING}"
+    },
+    "LogConfig": {
+      "WriteLogTo": "File",
+      "LogFileConfig": {
+        "FilePath": "/var/log/hcl-cs/identity.log",
+        "RestrictedToMinimumLevel": "Information",
+        "MinimumConfiguration": "Information"
+      }
+    }
+  }
+}

@@ -1,0 +1,453 @@
+Test run for /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:12.04]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidClientID_ReturnUnauthorizedClient [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidClientID_ReturnUnauthorizedClient [10 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidClientID_ReturnUnauthorizedClient() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 286
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:12.86]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingredirectUri_ReturnInvalidRedirectUri [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingredirectUri_ReturnInvalidRedirectUri [817 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingredirectUri_ReturnInvalidRedirectUri() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 451
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:13.75]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidScope_ReturnResponseTypeRequiresOpenIdScope [FAIL]
+[xUnit.net 00:00:14.64]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingcodeVerifier_ReturnInvalidCodeChallenge [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidScope_ReturnResponseTypeRequiresOpenIdScope [884 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidScope_ReturnResponseTypeRequiresOpenIdScope() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 319
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingcodeVerifier_ReturnInvalidCodeChallenge [882 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingcodeVerifier_ReturnInvalidCodeChallenge() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 683
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:15.56]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidScope_ReturnResponseTypeRequiresOpenIdScope [FAIL]
+[xUnit.net 00:00:16.44]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidCodeChallengeMethod_ReturnInvalidCodeChallenge [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidScope_ReturnResponseTypeRequiresOpenIdScope [922 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidScope_ReturnResponseTypeRequiresOpenIdScope() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 619
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidCodeChallengeMethod_ReturnInvalidCodeChallenge [877 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidCodeChallengeMethod_ReturnInvalidCodeChallenge() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 418
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:17.31]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingcodeVerifier_ReturnInvalidCodeChallenge [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingcodeVerifier_ReturnInvalidCodeChallenge [868 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingcodeVerifier_ReturnInvalidCodeChallenge() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 1014
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:18.17]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingClientID_ReturnClientIdMissingInRequest [FAIL]
+[xUnit.net 00:00:19.08]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_Only_IdToken_ReturnSuccess [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingClientID_ReturnClientIdMissingInRequest [865 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingClientID_ReturnClientIdMissingInRequest() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 849
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_Only_IdToken_ReturnSuccess [907 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_Only_IdToken_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 51
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:19.99]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidredirectUri_ReturnInvalidRedirectUri [FAIL]
+[xUnit.net 00:00:20.82]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_IgnoreScope_ReturnSuccess [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidredirectUri_ReturnInvalidRedirectUri [908 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidredirectUri_ReturnInvalidRedirectUri() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 783
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_IgnoreScope_ReturnSuccess [829 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_IgnoreScope_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 914
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:21.76]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidCodeChallengeMethod_ReturnInvalidRequest [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidCodeChallengeMethod_ReturnInvalidRequest [935 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidCodeChallengeMethod_ReturnInvalidRequest() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 1081
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:22.59]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidredirectUri_ReturnInvalidRedirectUri [FAIL]
+[xUnit.net 00:00:23.41]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidScope_ReturnResponseTypeRequiresOpenIdScope [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidredirectUri_ReturnInvalidRedirectUri [827 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidredirectUri_ReturnInvalidRedirectUri() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 484
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidScope_ReturnResponseTypeRequiresOpenIdScope [819 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidScope_ReturnResponseTypeRequiresOpenIdScope() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 949
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:24.22]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_Only_IdToken_GetAccesstokenByAuthCode [FAIL]
+[xUnit.net 00:00:25.04]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingNonce_ReturnInvalidNonce [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_Only_IdToken_GetAccesstokenByAuthCode [809 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_Only_IdToken_GetAccesstokenByAuthCode() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 82
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingNonce_ReturnInvalidNonce [818 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingNonce_ReturnInvalidNonce() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 1181
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:25.85]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingClientID_ReturnClientIdMissingInRequest [FAIL]
+[xUnit.net 00:00:26.70]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidredirectUri_ReturnInvalidRedirectUri [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingClientID_ReturnClientIdMissingInRequest [812 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingClientID_ReturnClientIdMissingInRequest() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 552
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidredirectUri_ReturnInvalidRedirectUri [851 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidredirectUri_ReturnInvalidRedirectUri() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 1147
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:27.51]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingredirectUri_ReturnInvalidRedirectUri [FAIL]
+[xUnit.net 00:00:28.39]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidClientID_ReturnUnauthorizedClient [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingredirectUri_ReturnInvalidRedirectUri [810 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingredirectUri_ReturnInvalidRedirectUri() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 750
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidClientID_ReturnUnauthorizedClient [877 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidClientID_ReturnUnauthorizedClient() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 883
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:29.40]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingNonce_ReturnInvalidNonce [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingNonce_ReturnInvalidNonce [1 s]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingNonce_ReturnInvalidNonce() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 518
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:30.17]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_Only_AccessToken [FAIL]
+[xUnit.net 00:00:31.01]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidcodeVerifier_Returnfail [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_Only_AccessToken [768 ms]
+  Error Message:
+   System.NullReferenceException : Object reference not set to an instance of an object.
+  Stack Trace:
+     at IntegrationTests.Endpoint.Setup.IntegrationExtensions.ParseAuthorizeResponse(HttpResponseMessage authResponse) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Setup/IntegrationExtensions.cs:line 207
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_Only_AccessToken() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 141
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidcodeVerifier_Returnfail [837 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidcodeVerifier_Returnfail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 1045
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:31.82]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_All_Token_Jwt_fragment [FAIL]
+[xUnit.net 00:00:32.62]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidCodeChallengeMethod_ReturnSuccess [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_All_Token_Jwt_fragment [815 ms]
+  Error Message:
+   Expected response.AccessToken not to be <null> or empty, but found <null>.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringAssertions`1.NotBeNullOrEmpty(String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_All_Token_Jwt_fragment() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 216
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidCodeChallengeMethod_ReturnSuccess [794 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidCodeChallengeMethod_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 717
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:33.39]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingredirectUri_ReturnInvalidRedirectUri [FAIL]
+[xUnit.net 00:00:34.16]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidClientID_ReturnUnauthorizedClient [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingredirectUri_ReturnInvalidRedirectUri [772 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_MissingredirectUri_ReturnInvalidRedirectUri() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 1114
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidClientID_ReturnUnauthorizedClient [771 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidClientID_ReturnUnauthorizedClient() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 586
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:34.96]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidPrompt_ReturnFail [FAIL]
+[xUnit.net 00:00:35.77]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingcodeVerifier_ReturnInvalidCodeChallenge [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidPrompt_ReturnFail [794 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_InvalidPrompt_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 652
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingcodeVerifier_ReturnInvalidCodeChallenge [808 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingcodeVerifier_ReturnInvalidCodeChallenge() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 384
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:36.58]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingNonce_ReturnInvalidNonce [FAIL]
+[xUnit.net 00:00:37.47]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidPrompt_ReturnFail [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingNonce_ReturnInvalidNonce [813 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_Token_MissingNonce_ReturnInvalidNonce() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 817
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidPrompt_ReturnFail [891 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_InvalidPrompt_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 350
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:38.35]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingClientID_ReturnClientIdMissingInRequest [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingClientID_ReturnClientIdMissingInRequest [871 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_Only_IdToken_MissingClientID_ReturnClientIdMissingInRequest() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 252
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:39.15]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_All_Token_form_post [FAIL]
+[xUnit.net 00:00:39.95]     IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidPrompt_ReturnSuccess [FAIL]
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_All_Token_form_post [803 ms]
+  Error Message:
+   System.NullReferenceException : Object reference not set to an instance of an object.
+  Stack Trace:
+     at IntegrationTests.Endpoint.Setup.IntegrationExtensions.ParseAuthorizeResponse(HttpResponseMessage authResponse) in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Setup/IntegrationExtensions.cs:line 207
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.TokenGeneration_HybridFlow_All_Token_form_post() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 177
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidPrompt_ReturnSuccess [796 ms]
+  Error Message:
+   Expected the enum to be HttpStatusCode.BadRequest {value: 400}, but found HttpStatusCode.Found {value: 302}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.Endpoint.FlowTests.HybridFlowTests.HybridFlow_AllToken_InvalidPrompt_ReturnSuccess() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/HybridFlowTests.cs:line 980
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:    34, Passed:     0, Skipped:     0, Total:    34, Duration: 27 s - HCL.CS.IntegrationTests.dll (net8.0)

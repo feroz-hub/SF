@@ -1,0 +1,126 @@
+# Copyright (c) 2021 HCL CORPORATION.
+# All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+# This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+# decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+# HCL is obtained. This is proprietary and confidential to HCL.
+
+name: hcl-cs-dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: hcl-cs-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${HCL_CS_DB_NAME:-hcl-cs}
+      POSTGRES_USER: ${HCL_CS_DB_USER:-hcl-cs}
+      POSTGRES_PASSWORD: ${HCL_CS_DB_PASSWORD:-hcl-cs}
+    ports:
+      - "${HCL_CS_DB_PORT:-55433}:5432"
+    volumes:
+      - hcl-cs-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${HCL_CS_DB_USER:-hcl-cs} -d ${HCL_CS_DB_NAME:-hcl-cs}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+
+  redis:
+    image: redis:7-alpine
+    container_name: hcl-cs-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${HCL_CS_REDIS_PORT:-56380}:6379"
+    volumes:
+      - hcl-cs-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+
+  hcl-cs:
+    build:
+      context: ..
+      dockerfile: docker/identity-api.Dockerfile
+    image: hcl-cs/identity-api:local
+    container_name: hcl-cs-identity
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "https://+:8443"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/app/https/hcl-cs-devcert.pfx"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "${HCL_CS_HTTPS_CERT_PASSWORD:-hcl-cs-dev-cert}"
+
+      # OIDC/JWT RS256 signing certificate
+      HCL_CS_RSA_SIGNING_CERT_PATH: "/app/signing/hcl-cs-rs256-signing.pfx"
+      HCL_CS_SIGNING_CERT_PASSWORD: "${HCL_CS_SIGNING_CERT_PASSWORD}"
+      HCL_CS_RSA_SIGNING_KID: "${HCL_CS_RSA_SIGNING_KID:-hcl-cs-rsa-current}"
+
+        # ECDSA / ES256 token-signing certificate
+      HCL_CS_ECDSA_SIGNING_CERT_PATH: "/app/signing/hcl-cs-es256-signing.pfx"
+      HCL_CS_ECDSA_SIGNING_KID: "${HCL_CS_ECDSA_SIGNING_KID:-hcl-cs-ecdsa-current}"
+
+      HCL_CS_DB_CONNECTION_STRING: "Host=postgres;Port=5432;Database=${HCL_CS_DB_NAME:-hcl-cs};Username=${HCL_CS_DB_USER:-hcl-cs};Password=${HCL_CS_DB_PASSWORD:-hcl-cs}"
+      SystemSettings__DBConfig__Database: PostgreSQL
+      TokenSettings__TokenConfig__IssuerUri: "${HCL_CS_ISSUER_URI:-https://localhost:5180}"
+      Security__Cors__AllowedOrigins__0: "https://localhost:3000"
+      Security__Cors__AllowedOrigins__1: "https://localhost:3001"
+      HCL_CS_REDIS_CONNECTION_STRING: "redis:6379"
+      HCL_CS_REDIS_INSTANCE_NAME: "hcl-cs:"
+    ports:
+      - "${HCL_CS_PORT:-5180}:8443"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fk", "https://127.0.0.1:8443/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    volumes:
+      - hcl-cs-data:/app/.data
+      - hcl-cs-keys:/app/DataProtection-Keys
+      - hcl-cs-https:/app/https
+      - ../certificates/signing/hcl-cs-rs256-signing.pfx:/app/signing/hcl-cs-rs256-signing.pfx:ro
+      - ../certificates/signing/hcl-cs-es256-signing.pfx:/app/signing/hcl-cs-es256-signing.pfx:ro
+  installer:
+    profiles: ["extras"]
+    build:
+      context: ..
+      dockerfile: docker/installer.Dockerfile
+    image: hcl-cs/installer:local
+    container_name: hcl-cs-installer
+    restart: unless-stopped
+    ports:
+      - "${HCL_CS_INSTALLER_PORT:-7039}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  gateway:
+    profiles: ["extras"]
+    build:
+      context: ..
+      dockerfile: docker/gateway.Dockerfile
+    image: hcl-cs/gateway:local
+    container_name: hcl-cs-gateway
+    command: ["dotnet", "--info"]
+
+volumes:
+  hcl-cs-postgres-data:
+  hcl-cs-redis-data:
+  hcl-cs-data:
+  hcl-cs-keys:
+  hcl-cs-https:

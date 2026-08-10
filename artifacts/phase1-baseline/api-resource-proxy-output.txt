@@ -1,0 +1,83 @@
+/private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj : warning NU1902: Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr
+  DomainValidation -> /private/tmp/hclcs-phase0-baseline/src/SharedKernel/DomainValidation/bin/Debug/net8.0/DomainValidation.dll
+  HCL.CS.Domain -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Domain/bin/Debug/net8.0/HCL.CS.Domain.dll
+  HCL.CS.DomainServices -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.DomainServices/bin/Debug/net8.0/HCL.CS.DomainServices.dll
+  HCL.CS.Service.Interfaces -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Contracts/bin/Debug/net8.0/HCL.CS.Service.Interfaces.dll
+  HCL.CS.Infrastructure.Data -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Persistence/bin/Debug/net8.0/HCL.CS.Infrastructure.Data.dll
+  HCL.CS.Service -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Application/bin/Debug/net8.0/HCL.CS.Service.dll
+  HCL.CS.ProxyService -> /private/tmp/hclcs-phase0-baseline/src/Gateway/HCL.CS.Gateway/bin/Debug/net8.0/HCL.CS.ProxyService.dll
+  HCL.CS.Infrastructure.Resources -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure.Resources/bin/Debug/net8.0/HCL.CS.Infrastructure.Resources.dll
+  HCL.CS.Infrastructure.Services -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.Infrastructure/bin/Debug/net8.0/HCL.CS.Infrastructure.Services.dll
+  TestApp.Helper -> /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.TestApp.Helper/bin/Debug/net8.0/TestApp.Helper.dll
+  HCL.CS.Hosting -> /private/tmp/hclcs-phase0-baseline/src/Identity/HCL.CS.Identity.API/bin/Debug/net8.0/HCL.CS.Hosting.dll
+  IntegrationTests -> /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll
+Test run for /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.4.3+1b45f5407b (64-bit .NET 8.0.24)
+[xUnit.net 00:00:01.28]   Discovering: HCL.CS.IntegrationTests
+[xUnit.net 00:00:01.34]   Discovered:  HCL.CS.IntegrationTests
+[xUnit.net 00:00:01.35]   Starting:    HCL.CS.IntegrationTests
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiScopeById_ReturnSuccess [11 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.UpdateApiScope_ReturnSuccess [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiScope_DuplicateExists_ReturnsError_AddFailure [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiResourceClaim_Type_LengthExceedsLimit_ThrowException [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiResourceAsync_Name_LengthExceededLimit_DBExceptionThrown [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiResourceAsync_DisplayName_LengthExceededLimit_DBExceptionThrown [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.GetApiResource_Success [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiScopeClaimAsyncByScopeId_Success [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.UpdateApiResource_Name_LengthExceedsLimit_ThrowsException [2 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiResource_ByName_NoRecordsFound_ReturnsError_InvalidResourceName [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.GetAllApiResource_Success [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiResourceAsync_DuplicateExists_ForGivenResourceName_ReturnsError_AddFailure [2 s]
+[xUnit.net 00:00:29.59]     IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.UpdateApiResource_ConcurrencyError [FAIL]
+[xUnit.net 00:00:29.59]       Expected the enum to be ResultStatus.Failed {value: 1}, but found ResultStatus.Success {value: 0}.
+[xUnit.net 00:00:29.59]       Stack Trace:
+[xUnit.net 00:00:29.59]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:29.59]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:29.59]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:29.59]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:29.59]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:29.59]         /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ApiResourceProxyServiceTests.cs(920,0): at IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.UpdateApiResource_ConcurrencyError()
+[xUnit.net 00:00:29.59]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.UpdateApiResource_ConcurrencyError [2 s]
+  Error Message:
+   Expected the enum to be ResultStatus.Failed {value: 1}, but found ResultStatus.Success {value: 0}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.UpdateApiResource_ConcurrencyError() in /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ApiResourceProxyServiceTests.cs:line 920
+--- End of stack trace from previous location ---
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiScopeByName_ReturnSuccess [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiScopeClaimAsync_Success [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiScope_ReturnSuccess [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiResourceClaim_DuplicateExists_ForResourceIdAndType_ReturnsError_AddFailure [980 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiScope_ByName_NoRecordsForScopeName_ReturnError [960 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiResourceByName_ReturnSuccess [970 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.Add_ApiResource_ReturnSuccess [995 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiScopeClaim_ByScopeId_NoRecordsFound_Returns_InvalidScopeId_Error [943 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiResourceAsync_NameIsNull_ReturnsError [941 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.UpdateApiResource_ReturnSuccess [973 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiScope_ById_NoRecordsForScopeId_ReturnError [983 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiScope_Name_IsEmpty_ErrorReturned_AddFailure [965 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiResourceClaim_ReturnSuccess [987 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiResourceClaimById_ReturnSuccess [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiResourceById_ReturnSuccess [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiResourceClaim_ReturnSuccess [1 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.UpdateApiResource_NoActiveRecordsFound_ForGivenResourceID_ReturnsError [2 s]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.AddApiScope_ApiScopeName_LengthExceeded_ThrowDbException [1 s]
+[xUnit.net 00:00:51.85]   Finished:    HCL.CS.IntegrationTests
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiResourceClaim_ById_NoRecordsFound_ReturnsError_InvalidResourceId [970 ms]
+  Passed IntegrationTests.MiddlewareRoutes.ApiResourceProxyServiceTests.DeleteApiScopeClaimAsync_Success [1 s]
+Results File: /private/tmp/hclcs-phase0-baseline/tests/HCL.CS.IntegrationTests/TestResults/phase0-api-resource-proxy.trx
+
+Test Run Failed.
+Total tests: 33
+     Passed: 32
+     Failed: 1
+ Total time: 52.4667 Seconds

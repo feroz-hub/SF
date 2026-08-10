@@ -1,0 +1,32 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
+using HCL.CS.Domain;
+using HCL.CS.Domain.Models.Api;
+using HCL.CS.Domain.Models.Api.Response;
+
+namespace HCL.CS.Service.Interfaces.Interfaces.Api;
+
+public partial interface IUserAccountService
+{
+    Task<FrameworkResult> AddUserRoleAsync(UserRoleModel userRoleModel);
+
+    Task<FrameworkResult> AddUserRolesAsync(IList<UserRoleModel> modelList);
+
+    Task<FrameworkResult> RemoveUserRoleAsync(UserRoleModel userRoleModel);
+
+    Task<FrameworkResult> RemoveUserRolesAsync(IList<UserRoleModel> modelList);
+
+    Task<IList<string>> GetUserRolesAsync(Guid userId);
+
+    Task<IList<UserModel>> GetUsersInRoleAsync(string roleName);
+
+    Task<UserPermissionsResponseModel> GetUserRoleClaimsByIdAsync(Guid userId);
+
+    Task<UserPermissionsResponseModel> GetUserRoleClaimsByNameAsync(string userName);
+}

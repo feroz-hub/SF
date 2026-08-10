@@ -1,0 +1,51 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
+import { NextResponse, type NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
+
+import { isHardSessionError } from "@/lib/auth-errors";
+import { isAuthorizedAdminToken } from "@/lib/authentication/authorization";
+
+function hasUsableAuthState(token: Awaited<ReturnType<typeof getToken>>): boolean {
+  if (!token || typeof token === "string") {
+    return false;
+  }
+
+  if (typeof token.accessToken !== "string" || token.accessToken.length === 0) {
+    return false;
+  }
+
+  return !isHardSessionError(token.error);
+}
+
+export async function proxy(request: NextRequest) {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET
+  });
+
+  if (!hasUsableAuthState(token)) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname + request.nextUrl.search);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  if (!isAuthorizedAdminToken(token)) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("reason", "admin_required");
+    loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname + request.nextUrl.search);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/admin/:path*"]
+};

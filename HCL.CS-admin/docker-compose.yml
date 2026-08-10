@@ -1,0 +1,57 @@
+# Copyright (c) 2021 HCL CORPORATION.
+# All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+# This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+# decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+# HCL is obtained. This is proprietary and confidential to HCL.
+
+version: "3.9"
+
+services:
+  identity-api:
+    build:
+      context: ..
+      dockerfile: docker/identity-api.Dockerfile
+    image: hcl-cs/identity-api:local
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  admin-api:
+    build:
+      context: ..
+      dockerfile: docker/admin-api.Dockerfile
+    image: hcl-cs/admin-api:local
+    ports:
+      - "8081:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  gateway:
+    build:
+      context: ..
+      dockerfile: docker/gateway.Dockerfile
+    image: hcl-cs/gateway:local
+    command: ["dotnet", "--info"]
+
+  hcl-cs-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hcl-cs/hcl-cs-admin:local
+    ports:
+      - "3001:3000"
+    depends_on:
+      - identity-api
+    environment:
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-https://localhost:3001}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-replace-with-long-random-secret}
+      HCL_CS_ISSUER: ${HCL_CS_ISSUER:-https://localhost:5180}
+      HCL_CS_CLIENT_ID: ${HCL_CS_CLIENT_ID:-}
+      HCL_CS_CLIENT_SECRET: ${HCL_CS_CLIENT_SECRET:-}
+      HCL_CS_API_BASE_URL: ${HCL_CS_API_BASE_URL:-https://localhost:5180}
+      HCL_CS_METADATA_ADDRESS: ${HCL_CS_METADATA_ADDRESS:-https://localhost:5180/.well-known/openid-configuration}
+      HCL_CS_TOKEN_ENDPOINT: ${HCL_CS_TOKEN_ENDPOINT:-https://localhost:5180/security/token}
+      HCL_CS_REVOCATION_ENDPOINT: ${HCL_CS_REVOCATION_ENDPOINT:-https://localhost:5180/security/revocation}
+      HCL_CS_SCOPES: ${HCL_CS_SCOPES:-openid profile email phone offline_access hcl-cs.apiresource.read hcl-cs.apiresource.write hcl-cs.apiresource.manage hcl-cs.apiresource.delete hcl-cs.identityresource.read hcl-cs.identityresource.write hcl-cs.identityresource.manage hcl-cs.identityresource.delete hcl-cs.client.read hcl-cs.client.write hcl-cs.client.manage hcl-cs.client.delete hcl-cs.user.read hcl-cs.user.write hcl-cs.user.manage hcl-cs.user.delete hcl-cs.role.read hcl-cs.role.write hcl-cs.role.manage hcl-cs.role.delete hcl-cs.adminuser.read hcl-cs.adminuser.write hcl-cs.adminuser.manage hcl-cs.adminuser.delete hcl-cs.securitytoken.read hcl-cs.securitytoken.manage}
+      HCL_CS_POST_LOGOUT_REDIRECT_URI: ${HCL_CS_POST_LOGOUT_REDIRECT_URI:-https://localhost:3001/login}

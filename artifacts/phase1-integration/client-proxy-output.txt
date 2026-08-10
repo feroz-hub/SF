@@ -1,0 +1,332 @@
+/Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj : warning NU1902: Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr
+  DomainValidation -> /Users/ferozebasha/SF/src/SharedKernel/DomainValidation/bin/Debug/net8.0/DomainValidation.dll
+  HCL.CS.Domain -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Domain/bin/Debug/net8.0/HCL.CS.Domain.dll
+  HCL.CS.DomainServices -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.DomainServices/bin/Debug/net8.0/HCL.CS.DomainServices.dll
+  HCL.CS.Service.Interfaces -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Contracts/bin/Debug/net8.0/HCL.CS.Service.Interfaces.dll
+  HCL.CS.Infrastructure.Data -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Persistence/bin/Debug/net8.0/HCL.CS.Infrastructure.Data.dll
+  HCL.CS.Service -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Application/bin/Debug/net8.0/HCL.CS.Service.dll
+  HCL.CS.ProxyService -> /Users/ferozebasha/SF/src/Gateway/HCL.CS.Gateway/bin/Debug/net8.0/HCL.CS.ProxyService.dll
+  HCL.CS.Infrastructure.Resources -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure.Resources/bin/Debug/net8.0/HCL.CS.Infrastructure.Resources.dll
+  HCL.CS.Infrastructure.Services -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/bin/Debug/net8.0/HCL.CS.Infrastructure.Services.dll
+  TestApp.Helper -> /Users/ferozebasha/SF/tests/HCL.CS.TestApp.Helper/bin/Debug/net8.0/TestApp.Helper.dll
+  HCL.CS.Hosting -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.API/bin/Debug/net8.0/HCL.CS.Hosting.dll
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/ApiDomainModel/DomainResourceModel.cs(358,19): warning CS0108: 'AuditSearchRequestModel.CreatedBy' hides inherited member 'BaseTrailModel.CreatedBy'. Use the new keyword if hiding was intended. [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/ApiDomainModel/DomainResourceModel.cs(366,22): warning CS0114: 'AuditSearchRequestModel.CreatedOn' hides inherited member 'BaseTrailModel.CreatedOn'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword. [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/UserAccountProxyTests.cs(3443,50): warning CS0108: 'UserAccountProxyTests.GetAccessToken()' hides inherited member 'HclCsFakeSetup.GetAccessToken()'. Use the new keyword if hiding was intended. [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/HclCsFakeSetup.cs(63,19): warning CS0649: Field 'UserInfoDictonary.Password' is never assigned to, and will always have its default value null [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/FlowTests/ClientCredentialFlowTests.cs(21,20): warning CS0414: The field 'ClientCredentialFlowTests.userName' is assigned but its value is never used [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Services/AuthorizationServiceTests.cs(116,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/Endpoint/Services/AuthorizationServiceTests.cs(137,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ApiResourceProxyServiceTests.cs(623,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ApiResourceProxyServiceTests.cs(1060,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ApiResourceProxyServiceTests.cs(1088,13): warning CA2200: Re-throwing caught exception changes stack information (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2200) [/Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj]
+  IntegrationTests -> /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll
+Test run for /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.4.3+1b45f5407b (64-bit .NET 8.0.24)
+[xUnit.net 00:00:01.67]   Discovering: HCL.CS.IntegrationTests
+[xUnit.net 00:00:01.77]   Discovered:  HCL.CS.IntegrationTests
+[xUnit.net 00:00:01.77]   Starting:    HCL.CS.IntegrationTests
+[xUnit.net 00:00:13.54]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_NullAllowedScopes_ReturnFail [FAIL]
+[xUnit.net 00:00:13.54]       Expected clientResponseResult to be "Allowed scopes is required.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:13.54]       Stack Trace:
+[xUnit.net 00:00:13.54]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:13.54]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:13.54]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:13.54]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:13.54]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:13.54]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:13.54]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:13.54]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(256,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_NullAllowedScopes_ReturnFail()
+[xUnit.net 00:00:13.54]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_NullAllowedScopes_ReturnFail [11 s]
+  Error Message:
+   Expected clientResponseResult to be "Allowed scopes is required.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_NullAllowedScopes_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 256
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:14.67]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CheckNullLogoURI_ReturnFail [FAIL]
+[xUnit.net 00:00:14.67]       Expected clientResponseResult to be "Logo URI is null or invalid.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:14.67]       Stack Trace:
+[xUnit.net 00:00:14.67]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:14.67]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:14.67]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:14.67]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:14.67]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:14.67]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:14.67]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:14.67]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(190,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CheckNullLogoURI_ReturnFail()
+[xUnit.net 00:00:14.67]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CheckNullLogoURI_ReturnFail [1 s]
+  Error Message:
+   Expected clientResponseResult to be "Logo URI is null or invalid.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CheckNullLogoURI_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 190
+--- End of stack trace from previous location ---
+  Passed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_Success [1 s]
+[xUnit.net 00:00:17.67]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidRefershTokenExpirationRange_ReturnFail [FAIL]
+[xUnit.net 00:00:17.67]       Expected clientResponseResult to be "Value not in the Refresh Token Expiration Range.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:17.67]       Stack Trace:
+[xUnit.net 00:00:17.67]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:17.67]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:17.67]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:17.67]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:17.67]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:17.67]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:17.67]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:17.67]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(324,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidRefershTokenExpirationRange_ReturnFail()
+[xUnit.net 00:00:17.67]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidRefershTokenExpirationRange_ReturnFail [1 s]
+  Error Message:
+   Expected clientResponseResult to be "Value not in the Refresh Token Expiration Range.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidRefershTokenExpirationRange_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 324
+--- End of stack trace from previous location ---
+  Passed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.GenerarateClientSecret_Success [1 s]
+[xUnit.net 00:00:21.77]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_Success [FAIL]
+[xUnit.net 00:00:21.77]       System.NullReferenceException : Object reference not set to an instance of an object.
+[xUnit.net 00:00:21.77]       Stack Trace:
+[xUnit.net 00:00:21.77]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(69,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_Success()
+[xUnit.net 00:00:21.77]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_Success [2 s]
+  Error Message:
+   System.NullReferenceException : Object reference not set to an instance of an object.
+  Stack Trace:
+     at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 69
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:23.75]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_ModifyByLengthExceeds [FAIL]
+[xUnit.net 00:00:23.75]       Expected updateclientResponseResult to be "The specified length of modified by exceeds maximum limit.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:23.76]       Stack Trace:
+[xUnit.net 00:00:23.76]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:23.76]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:23.76]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:23.76]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:23.76]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:23.76]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:23.76]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:23.76]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(402,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_ModifyByLengthExceeds()
+[xUnit.net 00:00:23.76]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_ModifyByLengthExceeds [1 s]
+  Error Message:
+   Expected updateclientResponseResult to be "The specified length of modified by exceeds maximum limit.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_ModifyByLengthExceeds() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 402
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:25.09]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidAuthorizatoonTokenExpirationRange_ReturnFail [FAIL]
+[xUnit.net 00:00:25.09]       Expected clientResponseResult to be "Value not in the Authorization Code Expiration Range.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:25.09]       Stack Trace:
+[xUnit.net 00:00:25.09]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:25.09]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:25.09]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:25.09]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:25.09]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:25.09]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:25.09]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:25.09]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(347,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidAuthorizatoonTokenExpirationRange_ReturnFail()
+[xUnit.net 00:00:25.09]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidAuthorizatoonTokenExpirationRange_ReturnFail [1 s]
+  Error Message:
+   Expected clientResponseResult to be "Value not in the Authorization Code Expiration Range.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidAuthorizatoonTokenExpirationRange_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 347
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:26.31]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_NullValidPolicyURI_ReturnFail [FAIL]
+[xUnit.net 00:00:26.31]       Expected clientResponseResult to be "Policy URI is null or invalid.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:26.31]       Stack Trace:
+[xUnit.net 00:00:26.31]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:26.31]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:26.31]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:26.31]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:26.31]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:26.31]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:26.31]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:26.31]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(234,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_NullValidPolicyURI_ReturnFail()
+[xUnit.net 00:00:26.31]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_NullValidPolicyURI_ReturnFail [1 s]
+  Error Message:
+   Expected clientResponseResult to be "Policy URI is null or invalid.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_NullValidPolicyURI_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 234
+--- End of stack trace from previous location ---
+  Passed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.DeleteClient_InvalidClientId [1 s]
+[xUnit.net 00:00:29.21]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CheckInvalidLogoURI_ReturnFail [FAIL]
+[xUnit.net 00:00:29.21]       Expected clientResponseResult to be "Logo URI is null or invalid.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:29.21]       Stack Trace:
+[xUnit.net 00:00:29.21]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:29.21]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:29.21]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:29.21]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:29.21]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:29.21]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:29.21]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:29.21]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(212,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CheckInvalidLogoURI_ReturnFail()
+[xUnit.net 00:00:29.21]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CheckInvalidLogoURI_ReturnFail [1 s]
+  Error Message:
+   Expected clientResponseResult to be "Logo URI is null or invalid.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CheckInvalidLogoURI_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 212
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:30.37]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidAccessTokenExpirationRange_ReturnFail [FAIL]
+[xUnit.net 00:00:30.37]       Expected clientResponseResult to be "Access token expiration value not within configured range.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:30.37]       Stack Trace:
+[xUnit.net 00:00:30.37]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:30.37]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:30.37]            at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+[xUnit.net 00:00:30.37]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:30.37]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:30.37]            at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+[xUnit.net 00:00:30.37]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:30.37]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(301,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidAccessTokenExpirationRange_ReturnFail()
+[xUnit.net 00:00:30.37]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidAccessTokenExpirationRange_ReturnFail [1 s]
+  Error Message:
+   Expected clientResponseResult to be "Access token expiration value not within configured range.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidValidAccessTokenExpirationRange_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 301
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:32.22]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.DeleteClient_Success [FAIL]
+[xUnit.net 00:00:32.22]       Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+[xUnit.net 00:00:32.22]       Stack Trace:
+[xUnit.net 00:00:32.22]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:32.22]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:32.22]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:32.22]            at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:32.22]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(94,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.DeleteClient_Success()
+[xUnit.net 00:00:32.22]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.DeleteClient_Success [1 s]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.DeleteClient_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 94
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:34.44]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_InvalidClientName [FAIL]
+[xUnit.net 00:00:34.44]       Expected updateclientResponseResult to be "Client does not exist.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:34.44]       Stack Trace:
+[xUnit.net 00:00:34.44]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:34.44]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:34.44]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:34.44]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:34.44]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(373,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_InvalidClientName()
+[xUnit.net 00:00:34.44]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_InvalidClientName [2 s]
+  Error Message:
+   Expected updateclientResponseResult to be "Client does not exist.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.UpdateClient_InvalidClientName() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 373
+--- End of stack trace from previous location ---
+  Passed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidResponseTypes_ReturnFail [1 s]
+[xUnit.net 00:00:36.49]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CleintNameLenthExceed_ReturnFail [FAIL]
+[xUnit.net 00:00:36.49]       Expected clientResponseResult to be "Length of Client name exceeded maximimum character limit.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:36.49]       Stack Trace:
+[xUnit.net 00:00:36.49]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:36.49]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:36.49]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:36.49]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:36.49]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(166,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CleintNameLenthExceed_ReturnFail()
+[xUnit.net 00:00:36.49]         --- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CleintNameLenthExceed_ReturnFail [999 ms]
+  Error Message:
+   Expected clientResponseResult to be "Length of Client name exceeded maximimum character limit.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_CleintNameLenthExceed_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 166
+--- End of stack trace from previous location ---
+  Passed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.GetAllCleints_Success [1 s]
+[xUnit.net 00:00:39.40]     IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidCleintName_ReturnFail [FAIL]
+[xUnit.net 00:00:39.40]       Expected clientResponseResult to be "Client name is required.", but found {{{empty}}, {{empty}}}.
+[xUnit.net 00:00:39.40]       Stack Trace:
+[xUnit.net 00:00:39.40]            at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+[xUnit.net 00:00:39.40]            at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+[xUnit.net 00:00:39.40]            at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+[xUnit.net 00:00:39.40]            at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+[xUnit.net 00:00:39.40]         /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs(143,0): at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidCleintName_ReturnFail()
+[xUnit.net 00:00:39.40]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:39.41]   Finished:    HCL.CS.IntegrationTests
+  Failed IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidCleintName_ReturnFail [1 s]
+  Error Message:
+   Expected clientResponseResult to be "Client name is required.", but found {{{empty}}, {{empty}}}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.ObjectAssertions`2.Be(TSubject expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.ClientServiceProxyTest.RegisterClient_InvalidCleintName_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/ClientServiceProxyTest.cs:line 143
+--- End of stack trace from previous location ---
+Results File: /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/TestResults/phase1-client-proxy.trx
+
+Test Run Failed.
+Total tests: 18
+     Passed: 5
+     Failed: 13
+ Total time: 40.0255 Seconds

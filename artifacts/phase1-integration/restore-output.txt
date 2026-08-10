@@ -1,0 +1,20 @@
+  Determining projects to restore...
+  Restored /Users/ferozebasha/SF/demos/HCL.CS.Demo.Client.Mvc/HCL.CS.DemoClientMvc.csproj (in 1.43 sec).
+  Restored /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Contracts/HCL.CS.Service.Interfaces.csproj (in 1.43 sec).
+  Restored /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Domain/HCL.CS.Domain.csproj (in 1.43 sec).
+  Restored /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.DomainServices/HCL.CS.DomainServices.csproj (in 1.44 sec).
+  Restored /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Application/HCL.CS.Service.csproj (in 1.44 sec).
+  Restored /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure.Resources/HCL.CS.Infrastructure.Resources.csproj (in 1.38 sec).
+  Restored /Users/ferozebasha/SF/src/Gateway/HCL.CS.Gateway/HCL.CS.ProxyService.csproj (in 1.44 sec).
+  Restored /Users/ferozebasha/SF/tests/HCL.CS.TestApp.Helper/TestApp.Helper.csproj (in 32 ms).
+  Restored /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Persistence/HCL.CS.Infrastructure.Data.csproj (in 31 ms).
+  Restored /Users/ferozebasha/SF/src/SharedKernel/DomainValidation/DomainValidation.csproj (in 3 ms).
+/Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj : warning NU1902: Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr [/Users/ferozebasha/SF/HCL.CS.sln]
+  Restored /Users/ferozebasha/SF/installer/HCL.CS.Installer.Mvc/HclCsInstallerMVC.csproj (in 126 ms).
+  Restored /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.API/HCL.CS.Hosting.csproj (in 1.55 sec).
+  Restored /Users/ferozebasha/SF/tests/HCL.CS.ArchitectureTests/HCL.CS.ArchitectureTests.csproj (in 94 ms).
+  Restored /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj (in 193 ms).
+  Restored /Users/ferozebasha/SF/demos/HCL.CS.Demo.Server/HCL.CS.DemoServerApp.csproj (in 207 ms).
+  Restored /Users/ferozebasha/SF/tests/HCL.CS.UnitTests/HCL.CS.UnitTests.csproj (in 208 ms).
+  Restored /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/IntegrationTests.csproj (in 211 ms).
+  2 of 19 projects are up-to-date for restore.

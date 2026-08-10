@@ -1,0 +1,38 @@
+@*
+Copyright (c) 2021 HCL CORPORATION.
+All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+HCL is obtained. This is proprietary and confidential to HCL.
+*@
+
+@model HclCsInstallerMVC.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Installer Error";
+}
+
+<section class="surface">
+    <header class="surface-header">
+        <p class="eyebrow">Installer Fault</p>
+        <h1>Unexpected Error</h1>
+        <p>The installer encountered an unhandled condition while processing your request.</p>
+    </header>
+
+    <div class="status-card status-danger">
+        <h2>Action Required</h2>
+        <p>Review logs and retry the previous step. If the issue persists, capture diagnostics and contact the platform
+            team.</p>
+    </div>
+
+    @if (Model.ShowRequestId)
+    {
+        <div class="meta-item mt-3">
+            <span class="meta-label">Trace Id</span>
+            <code>@Model.RequestId</code>
+        </div>
+    }
+
+    <div class="action-row mt-4">
+        <a class="btn btn-accent btn-lg" asp-controller="Setup" asp-action="Root">Return to Setup</a>
+    </div>
+</section>

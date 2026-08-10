@@ -1,0 +1,127 @@
+{
+  "SystemSettings": {
+    "DBConfig": {
+      "Database": "SQLite",
+      "DBConnectionString": "Data Source=.data/hclCs_identity.db;Mode=ReadWriteCreate;Cache=Shared;"
+    },
+    "LoginConfig": {
+      "IsPersistent": false,
+      "LockoutOnFailure": true,
+      "RememberClient": false
+    },
+    "UserConfig": {
+      "MinUserNameLength": 6,
+      "MaxUserNameLength": 255,
+      "MinFirstAndLastNameLength": 2,
+      "MaxFirstAndLastNameLength": 255,
+      "MinPhoneNumberLength": 4,
+      "MaxPhoneNumberLength": 17,
+      "MinSecurityQuestions": 1,
+      "MinSecurityAnswersLength": 2,
+      "MinDobyear": 18,
+      "MaxDobyear": 100,
+      "AccessFailedCount": 3,
+      "RequiredRecoveryCodes": 2,
+      "RequireUniqueEmail": true,
+      "RequireConfirmedEmail": true,
+      "RequireConfirmedPhoneNumber": false,
+      "LockOutAllowedForNewUsers": true,
+      "DefaultLockoutTimeSpanMin": 10,
+      "MaxFailedAccessAttempts": 3,
+      "EmailTokenExpiry": 5,
+      "OTPTokenExpiry": 5,
+      "PasswordResetTokenExpiry": 5,
+      "UserTokenExpiry": 5,
+      "LockAccountPeriod": 30,
+      "MinNoOfQuestions": 0,
+      "DefaultUserRole": "HclCsUser"
+    },
+    "PasswordConfig": {
+      "MinPasswordLength": 8,
+      "MaxPasswordLength": 40,
+      "RequiredUniqueChars": 1,
+      "RequireDigit": true,
+      "RequireLowercase": true,
+      "RequireUppercase": true,
+      "RequireSpecialChar": true,
+      "PasswordPattern": "",
+      "MaxLimitPasswordReuse": 3,
+      "MaxPasswordExpiry": 30,
+      "PasswordNotificationBeforeExpiry": 3
+    },
+    "EmailConfig": {
+      "SmtpServer": "smtp.office365.com",
+      "Port": 587,
+      "UserName": "${HCL_CS_SMTP_USERNAME}",
+      "Password": "${HCL_CS_SMTP_PASSWORD}",
+      "UseDefaultCredentials": false,
+      "EmailNotificationType": "Token",
+      "SecureSocketOptions": false
+    },
+    "SMSConfig": {
+      "SMSAccountIdentification": "${HCL_CS_SMS_ACCOUNT_ID}",
+      "SMSAccountPassword": "${HCL_CS_SMS_ACCOUNT_PASSWORD}",
+      "SMSAccountFrom": "${HCL_CS_SMS_ACCOUNT_FROM}",
+      "SMSStatusCallbackURL": "${HCL_CS_SMS_STATUS_CALLBACK_URL}"
+    },
+    "LDAPConfig": {
+      "Enabled": false,
+      "LdapHostName": "",
+      "LdapDomainName": "",
+      "LDAPPort": 636,
+      "IsSecureConnection": false,
+      "UseSsl": true,
+      "UseStartTls": false,
+      "AllowUnencryptedForDevelopment": false,
+      "UserSearchBase": "",
+      "UserSearchFilter": "(userPrincipalName={0})",
+      "BindDn": "",
+      "BindPassword": "${HCL_CS_LDAP__BINDPASSWORD}",
+      "ConnectTimeoutSeconds": 10,
+      "SearchTimeoutSeconds": 10,
+      "RequireEmployeeId": false,
+      "RequireDepartment": false,
+      "RequireUserPrincipalName": false,
+      "Attributes": {
+        "ImmutableId": "objectGUID",
+        "EmployeeId": "employeeID",
+        "UserPrincipalName": "userPrincipalName",
+        "Email": "mail",
+        "DisplayName": "displayName",
+        "Department": "department",
+        "AccountStatus": "userAccountControl"
+      },
+      "IsTwoFactorAuthenticationRequired": false,
+      "TwoFactorType": "Email"
+    },
+    "LocalAuthenticationConfig": {
+      "EnabledWhenLdapDisabledOrUnconfigured": true,
+      "AllowedEmailDomains": [
+        "hcltech.com"
+      ],
+      "RequireEmailConfirmation": true,
+      "AllowSelfRegistration": true,
+      "AllowAdministratorCreation": true
+    },
+    "CryptoConfig": {
+      "RandomStringLength": 32
+    },
+    "LogConfig": {
+      "WriteLogTo": "File",
+      "LogFileConfig": {
+        "FilePath": "",
+        "RollingIntervalType": "Day",
+        "RestrictedToMinimumLevel": "Debug",
+        "MinimumConfiguration": "Debug",
+        "SetLogFileSize": "true",
+        "FileSizeInBytes": "5242880"
+      },
+      "LogDbConfig": {
+        "Database": "SQLite",
+        "ConnectionString": "Data Source=.data/hclCs_log.db;Mode=ReadWriteCreate;Cache=Shared;",
+        "RestrictedToMinimumLevel": "Debug",
+        "MinimumConfiguration": "Debug"
+      }
+    }
+  }
+}

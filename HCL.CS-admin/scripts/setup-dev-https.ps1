@@ -1,0 +1,32 @@
+<#
+Copyright (c) 2021 HCL CORPORATION.
+All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+HCL is obtained. This is proprietary and confidential to HCL.
+#>
+
+$ErrorActionPreference = "Stop"
+$adminRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$certificateDir = Join-Path $adminRoot "certificates"
+New-Item -ItemType Directory -Force $certificateDir | Out-Null
+
+$mkcert = Get-Command mkcert.exe -ErrorAction SilentlyContinue
+if (-not $mkcert) {
+    if (-not (Get-Command winget.exe -ErrorAction SilentlyContinue)) {
+        throw "mkcert is required. Install it manually or run: winget install FiloSottile.mkcert"
+    }
+    & winget.exe install --exact --id FiloSottile.mkcert --silent `
+        --accept-source-agreements --accept-package-agreements
+    $mkcert = Get-Command mkcert.exe -ErrorAction SilentlyContinue
+    if (-not $mkcert) {
+        throw "mkcert was installed but is not yet on PATH. Open a new PowerShell and rerun this script."
+    }
+}
+
+& $mkcert.Source -install
+if ($LASTEXITCODE -ne 0) { throw "mkcert trust installation failed." }
+& $mkcert.Source -cert-file (Join-Path $certificateDir "localhost.crt") `
+    -key-file (Join-Path $certificateDir "localhost.key") localhost 127.0.0.1 ::1
+if ($LASTEXITCODE -ne 0) { throw "mkcert certificate generation failed." }
+Write-Host "Trusted HCL.CS Admin certificate created in $certificateDir" -ForegroundColor Green

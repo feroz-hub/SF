@@ -1,0 +1,88 @@
+# Copyright (c) 2021 HCL CORPORATION.
+# All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+# This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+# decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+# HCL is obtained. This is proprietary and confidential to HCL.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hcl-cs-admin
+  labels:
+    app: hcl-cs-admin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hcl-cs-admin
+  template:
+    metadata:
+      labels:
+        app: hcl-cs-admin
+    spec:
+      containers:
+        - name: hcl-cs-admin
+          image: hcl-cs/hcl-cs-admin:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NEXTAUTH_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: hcl-cs-admin-config
+                  key: NEXTAUTH_URL
+            - name: NEXTAUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: hcl-cs-admin-secrets
+                  key: NEXTAUTH_SECRET
+            - name: HCL_CS_ISSUER
+              valueFrom:
+                configMapKeyRef:
+                  name: hcl-cs-admin-config
+                  key: HCL_CS_ISSUER
+            - name: HCL_CS_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: hcl-cs-admin-secrets
+                  key: HCL_CS_CLIENT_ID
+            - name: HCL_CS_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: hcl-cs-admin-secrets
+                  key: HCL_CS_CLIENT_SECRET
+            - name: HCL_CS_API_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: hcl-cs-admin-config
+                  key: HCL_CS_API_BASE_URL
+            - name: HCL_CS_SCOPES
+              valueFrom:
+                configMapKeyRef:
+                  name: hcl-cs-admin-config
+                  key: HCL_CS_SCOPES
+            - name: HCL_CS_POST_LOGOUT_REDIRECT_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: hcl-cs-admin-config
+                  key: HCL_CS_POST_LOGOUT_REDIRECT_URI
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

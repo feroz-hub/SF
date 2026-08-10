@@ -1,0 +1,207 @@
+/Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/HCL.CS.Infrastructure.Services.csproj : warning NU1902: Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr
+  DomainValidation -> /Users/ferozebasha/SF/src/SharedKernel/DomainValidation/bin/Debug/net8.0/DomainValidation.dll
+  HCL.CS.Domain -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Domain/bin/Debug/net8.0/HCL.CS.Domain.dll
+  HCL.CS.DomainServices -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.DomainServices/bin/Debug/net8.0/HCL.CS.DomainServices.dll
+  HCL.CS.Service.Interfaces -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Contracts/bin/Debug/net8.0/HCL.CS.Service.Interfaces.dll
+  HCL.CS.Infrastructure.Data -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Persistence/bin/Debug/net8.0/HCL.CS.Infrastructure.Data.dll
+  HCL.CS.Service -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Application/bin/Debug/net8.0/HCL.CS.Service.dll
+  HCL.CS.ProxyService -> /Users/ferozebasha/SF/src/Gateway/HCL.CS.Gateway/bin/Debug/net8.0/HCL.CS.ProxyService.dll
+  HCL.CS.Infrastructure.Resources -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure.Resources/bin/Debug/net8.0/HCL.CS.Infrastructure.Resources.dll
+  HCL.CS.Infrastructure.Services -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.Infrastructure/bin/Debug/net8.0/HCL.CS.Infrastructure.Services.dll
+  TestApp.Helper -> /Users/ferozebasha/SF/tests/HCL.CS.TestApp.Helper/bin/Debug/net8.0/TestApp.Helper.dll
+  HCL.CS.Hosting -> /Users/ferozebasha/SF/src/Identity/HCL.CS.Identity.API/bin/Debug/net8.0/HCL.CS.Hosting.dll
+  IntegrationTests -> /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll
+Test run for /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/bin/Debug/net8.0/HCL.CS.IntegrationTests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (arm64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:11.23]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success [9 s]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:11.84]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Update_InvalidRole_ReturnFail [FAIL]
+[xUnit.net 00:00:12.48]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Add_RoleClaimListModel_RoleClaimExists [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Update_InvalidRole_ReturnFail [610 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Update_InvalidRole_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 207
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Add_RoleClaimListModel_RoleClaimExists [636 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Add_RoleClaimListModel_RoleClaimExists() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 452
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:13.16]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Add_RoleClaim_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Add_RoleClaim_Success [682 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Add_RoleClaim_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 276
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:15.48]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Update_InvalidNameLength_ReturnFail [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Update_InvalidNameLength_ReturnFail [836 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Update_InvalidNameLength_ReturnFail() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 179
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:17.23]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRoleAsync_DuplicateRoleExists_ReturnsError_RoleAlreadyExists [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRoleAsync_DuplicateRoleExists_ReturnsError_RoleAlreadyExists [888 ms]
+  Error Message:
+   Expected frameworkResult.Errors.FirstOrDefault().Code to be "ROLE_ALREADY_EXISTS" with a length of 19, but "INVALID_SCOPE_CLAIMS" has a length of 20, differs near "INV" (index 0).
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstLengthDifferences()
+   at FluentAssertions.Primitives.StringValidator.Validate()
+   at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRoleAsync_DuplicateRoleExists_ReturnsError_RoleAlreadyExists() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 72
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:18.07]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Delete_RoleByName_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Delete_RoleByName_Success [848 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Delete_RoleByName_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 259
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:18.86]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Add_RoleClaimListModel_Success [FAIL]
+[xUnit.net 00:00:19.68]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Update_Role_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Add_RoleClaimListModel_Success [784 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Add_RoleClaimListModel_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 307
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Update_Role_Success [816 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Update_Role_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 152
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:20.48]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Remove_InvalidRoleClaimModel_ReturnError [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Remove_InvalidRoleClaimModel_ReturnError [805 ms]
+  Error Message:
+   Expected removeresult.Errors.FirstOrDefault().Code to be "ROLECLAIM_NOT_EXISTS", but "INVALID_SCOPE_CLAIMS" differs near "INV" (index 0).
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.StringEqualityValidator.ValidateAgainstMismatch()
+   at FluentAssertions.Primitives.StringValidator.Validate()
+   at FluentAssertions.Primitives.StringAssertions`1.Be(String expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Remove_InvalidRoleClaimModel_ReturnError() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 400
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:22.20]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Remove_RoleClaimList_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Remove_RoleClaimList_Success [872 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Execution.AssertionScope.FailWith(String message, Object[] args)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Remove_RoleClaimList_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 406
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:23.87]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Delete_RoleById_Success [FAIL]
+[xUnit.net 00:00:24.39]     IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Remove_RoleClaim_Success [FAIL]
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Delete_RoleById_Success [807 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Delete_RoleById_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 234
+--- End of stack trace from previous location ---
+  Failed IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Remove_RoleClaim_Success [526 ms]
+  Error Message:
+   Expected the enum to be ResultStatus.Success {value: 0}, but found ResultStatus.Failed {value: 1}.
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.AssertionScope.FailWith(Func`1 failReasonFunc)
+   at FluentAssertions.Primitives.EnumAssertions`2.Be(TEnum expected, String because, Object[] becauseArgs)
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.CreateRole_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 43
+   at IntegrationTests.MiddlewareRoutes.RoleServiceProxyTest.Remove_RoleClaim_Success() in /Users/ferozebasha/SF/tests/HCL.CS.IntegrationTests/MiddlewareRoutes/RoleServiceProxyTest.cs:line 342
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:    13, Passed:     5, Skipped:     0, Total:    18, Duration: 13 s - HCL.CS.IntegrationTests.dll (net8.0)

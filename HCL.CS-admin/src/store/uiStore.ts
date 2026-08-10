@@ -1,0 +1,47 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
+import { create } from "zustand";
+
+const STORAGE_KEY = "hcl-cs-sidebar-collapsed";
+
+function getInitialCollapsed(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(STORAGE_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+type UiState = {
+  navCollapsed: boolean;
+  activeRoute: string;
+  setNavCollapsed: (value: boolean) => void;
+  toggleNavCollapsed: () => void;
+  setActiveRoute: (route: string) => void;
+};
+
+export const useUiStore = create<UiState>((set, get) => ({
+  navCollapsed: getInitialCollapsed(),
+  activeRoute: "/future-dashboard",
+  setNavCollapsed: (value) => {
+    set({ navCollapsed: value });
+    try {
+      window.localStorage.setItem(STORAGE_KEY, String(value));
+    } catch {}
+  },
+  toggleNavCollapsed: () => {
+    const next = !get().navCollapsed;
+    set({ navCollapsed: next });
+    try {
+      window.localStorage.setItem(STORAGE_KEY, String(next));
+    } catch {}
+  },
+  setActiveRoute: (route) => set({ activeRoute: route }),
+}));

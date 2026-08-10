@@ -1,0 +1,160 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
+import { ApiRoutes } from "@/lib/api/routes";
+import { hclCsPostWithSession } from "@/lib/api/client";
+import {
+  type FrameworkResult,
+  type PagingModel,
+  type TokenModel,
+  type UserClaimModel,
+  type UserDisplayModel,
+  type UserModel,
+  type UserRoleModel,
+  type UUID
+} from "@/lib/types/hcl-cs";
+
+type UserTokenLookupRequest = {
+  user_list: string[];
+  paging_model?: PagingModel;
+};
+
+export async function listUsers(): Promise<UserDisplayModel[]> {
+  return hclCsPostWithSession<UserDisplayModel[]>(ApiRoutes.user.getAllUsers, "");
+}
+
+export async function registerUser(user: UserModel): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserModel>(ApiRoutes.user.registerUser, user);
+}
+
+export async function getUser(userId: UUID): Promise<UserModel> {
+  return hclCsPostWithSession<UserModel, UUID>(ApiRoutes.user.getUserById, userId);
+}
+
+export async function getUserByName(userName: string): Promise<UserModel> {
+  return hclCsPostWithSession<UserModel, string>(ApiRoutes.user.getUserByName, userName);
+}
+
+export async function getUserByEmail(email: string): Promise<UserModel> {
+  return hclCsPostWithSession<UserModel, string>(ApiRoutes.user.getUserByEmail, email);
+}
+
+export async function updateUser(user: UserModel): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserModel>(ApiRoutes.user.updateUser, user);
+}
+
+export async function deleteUserById(userId: UUID): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UUID>(ApiRoutes.user.deleteUserById, userId);
+}
+
+export async function deleteUserByName(userName: string): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, string>(ApiRoutes.user.deleteUserByName, userName);
+}
+
+export async function isUserExistsById(userId: UUID): Promise<boolean> {
+  return hclCsPostWithSession<boolean, UUID>(ApiRoutes.user.isUserExistsById, userId);
+}
+
+export async function isUserExistsByName(userName: string): Promise<boolean> {
+  return hclCsPostWithSession<boolean, string>(ApiRoutes.user.isUserExistsByName, userName);
+}
+
+export async function lockUser(userId: UUID): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UUID>(ApiRoutes.user.lockUser, userId);
+}
+
+export async function unlockUser(userName: string): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, string>(ApiRoutes.user.unLockUser, userName);
+}
+
+export async function unlockUserByToken(payload: unknown): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, unknown>(ApiRoutes.user.unLockUserByToken, payload);
+}
+
+export async function unlockUserBySecurityQuestions(payload: unknown): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, unknown>(ApiRoutes.user.unLockUserByuserSecurityQuestions, payload);
+}
+
+export async function getUserRoles(userId: UUID): Promise<string[]> {
+  return hclCsPostWithSession<string[], UUID>(ApiRoutes.user.getUserRoles, userId);
+}
+
+export async function addUserRole(model: UserRoleModel): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserRoleModel>(ApiRoutes.user.addUserRole, model);
+}
+
+export async function addUserRoles(models: UserRoleModel[]): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserRoleModel[]>(ApiRoutes.user.addUserRolesList, models);
+}
+
+export async function removeUserRole(model: UserRoleModel): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserRoleModel>(ApiRoutes.user.removeUserRole, model);
+}
+
+export async function removeUserRoles(models: UserRoleModel[]): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserRoleModel[]>(ApiRoutes.user.removeUserRoleList, models);
+}
+
+export async function getAdminUserClaims(userId: UUID): Promise<UserClaimModel[]> {
+  return hclCsPostWithSession<UserClaimModel[], UUID>(ApiRoutes.user.getAdminUserClaims, userId);
+}
+
+export async function addAdminUserClaim(model: UserClaimModel): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserClaimModel>(ApiRoutes.user.addAdminClaim, model);
+}
+
+export async function addAdminUserClaims(models: UserClaimModel[]): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserClaimModel[]>(ApiRoutes.user.addAdminClaimList, models);
+}
+
+export async function removeAdminUserClaim(model: UserClaimModel): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserClaimModel>(ApiRoutes.user.removeAdminClaim, model);
+}
+
+export async function removeAdminUserClaims(models: UserClaimModel[]): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserClaimModel[]>(ApiRoutes.user.removeAdminClaimList, models);
+}
+
+export async function getUserClaims(userId: UUID): Promise<UserClaimModel[]> {
+  return hclCsPostWithSession<UserClaimModel[], UUID>(ApiRoutes.user.getUserClaims, userId);
+}
+
+export async function addUserClaim(model: UserClaimModel): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserClaimModel>(ApiRoutes.user.addClaim, model);
+}
+
+export async function addUserClaims(models: UserClaimModel[]): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserClaimModel[]>(ApiRoutes.user.addClaimList, models);
+}
+
+export async function removeUserClaim(model: UserClaimModel): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserClaimModel>(ApiRoutes.user.removeClaim, model);
+}
+
+export async function removeUserClaims(models: UserClaimModel[]): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, UserClaimModel[]>(ApiRoutes.user.removeClaimList, models);
+}
+
+export async function replaceUserClaim(model: unknown): Promise<FrameworkResult> {
+  return hclCsPostWithSession<FrameworkResult, unknown>(ApiRoutes.user.replaceClaim, model);
+}
+
+export async function listUserActiveTokens(
+  userIds: string[],
+  paging: PagingModel | undefined = undefined
+): Promise<TokenModel[]> {
+  const payload: UserTokenLookupRequest = {
+    user_list: userIds
+  };
+
+  if (paging) {
+    payload.paging_model = paging;
+  }
+
+  return hclCsPostWithSession<TokenModel[], UserTokenLookupRequest>(ApiRoutes.securityToken.getByUserIds, payload);
+}

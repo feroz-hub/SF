@@ -1,0 +1,62 @@
+﻿@*
+Copyright (c) 2021 HCL CORPORATION.
+All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+HCL is obtained. This is proprietary and confidential to HCL.
+*@
+
+@model HCL.CS.DemoClientMvc.ViewModels.Profile.ProfileViewModel
+
+<div class="row g-3">
+    <div class="col-12 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h4">Profile</h2>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Username</dt>
+                    <dd class="col-sm-8 text-break">@Model.UserName</dd>
+
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8 text-break">@Model.Email</dd>
+
+                    <dt class="col-sm-4">Subject</dt>
+                    <dd class="col-sm-8 text-break">@Model.SubjectId</dd>
+
+                    <dt class="col-sm-4">Roles</dt>
+                    <dd class="col-sm-8 text-break">
+                        @(Model.Roles.Count > 0 ? string.Join(", ", Model.Roles) : "(none)")
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-8">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="h5">Claims</h3>
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped align-middle mb-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">Type</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var claim in Model.Claims)
+                        {
+                            <tr>
+                                <td><code>@claim.Type</code></td>
+                                <td class="text-break">@claim.Value</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

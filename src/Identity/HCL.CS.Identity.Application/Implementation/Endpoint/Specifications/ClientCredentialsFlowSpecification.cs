@@ -1,0 +1,157 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
+using System.Linq.Expressions;
+using DomainValidation.Interfaces.Specification;
+using DomainValidation.Validation;
+using HCL.CS.Domain.Constants.Endpoint;
+using HCL.CS.Domain.ErrorCodes;
+using HCL.CS.Domain.Models.Endpoint;
+using HCL.CS.Domain.Models.Endpoint.Request;
+using HCL.CS.Service.Implementation.Endpoint.Extensions;
+using HCL.CS.Service.Implementation.Endpoint.Validators;
+using HCL.CS.Service.Interfaces.Interfaces.Endpoint.Validators;
+using static HCL.CS.Domain.Constants.Endpoint.AuthenticationConstants;
+
+namespace HCL.CS.Service.Implementation.Endpoint.Specifications;
+
+internal sealed class ClientCredentialsFlowSpecification : BaseRequestModelValidator<ValidatedTokenRequestModel>
+{
+    internal ClientCredentialsFlowSpecification(IResourceScopeValidator resourceScopeValidator)
+    {
+        Add("CheckClientAuthorizedForGrantType", new Rule<ValidatedTokenRequestModel>(
+            new CheckClientAuthorizedForGrantType<ValidatedTokenRequestModel>(new List<string>
+            {
+                GrantType.ClientCredentials
+            }),
+            OpenIdConstants.Errors.UnauthorizedClient,
+            EndpointErrorCodes.ClientNotAuthorizedForGrantType));
+        Add("ValidateRequestedScopes", new Rule<ValidatedTokenRequestModel>(
+            new ValidateRequestedClientCredentialScopes(resourceScopeValidator),
+            OpenIdConstants.Errors.InvalidScope,
+            EndpointErrorCodes.InvalidScopeOrNotAllowed));
+        Add("CheckParsedIdentityResources", new Rule<ValidatedTokenRequestModel>(
+            new CheckParsedIdentityResources(request => request.AllowedScopesParserModel),
+            OpenIdConstants.Errors.UnauthorizedClient,
+            EndpointErrorCodes.OpenIdScopeNotAllowed));
+        Add("CheckOfflineAccess", new Rule<ValidatedTokenRequestModel>(
+            new CheckOfflineAccess(request => request.AllowedScopesParserModel),
+            OpenIdConstants.Errors.InvalidScope,
+            EndpointErrorCodes.RefreshTokenRequestNotAllowed));
+    }
+}
+
+internal class ValidateRequestedClientCredentialScopes : ISpecification<ValidatedTokenRequestModel>
+{
+    private readonly IResourceScopeValidator resourceScopeValidator;
+
+    internal ValidateRequestedClientCredentialScopes(IResourceScopeValidator resourceScopeValidator)
+    {
+        this.resourceScopeValidator = resourceScopeValidator;
+    }
+
+    public bool IsSatisfiedBy(ValidatedTokenRequestModel model)
+    {
+        var scopes = model.GetValue(OpenIdConstants.TokenRequest.Scope);
+
+        if (string.IsNullOrWhiteSpace(scopes))
+        {
+            if (model.Client.AllowedScopes.ContainsAny())
+            {
+                var allowedScopes = model.Client.AllowedScopes.Except(typeof(IdentityScopes).GetArray().ToList());
+                scopes = string.Join(" ", allowedScopes.ToArray());
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            // To check any identity scope present in client credential if yes return false to throw invalid scope error.
+            var scopeList = scopes.SplitBySpace().Select(x => x.ToLower());
+            var identityList = typeof(IdentityScopes).GetArray().ToList();
+            if (scopeList.Intersect(identityList).ContainsAny()) return false;
+        }
+
+        if (scopes.Length > model.TokenConfigOptions.InputLengthRestrictionsConfig.Scope) return false;
+
+        var requestedScopes = scopes.ParseScopesString().ToList();
+        var checkClientScope = resourceScopeValidator
+            .ValidateRequestedScopeWithClientAsync(model.Client.AllowedScopes, requestedScopes).GetAwaiter()
+            .GetResult();
+        AllowedScopesParserModel allowedScopesParser;
+        if (checkClientScope)
+        {
+            var resourceScopeModel = new ResourceScopeModel
+            {
+                RawData = model.RequestRawData,
+                RequestedScope = requestedScopes,
+                Client = model.Client
+            };
+
+            allowedScopesParser = resourceScopeValidator.ValidateRequestedScopesAsync(resourceScopeModel).GetAwaiter()
+                .GetResult();
+            model.TokenDetails = allowedScopesParser.TokenDetails;
+        }
+        else
+        {
+            return false;
+        }
+
+        model.AllowedScopesParserModel = allowedScopesParser;
+
+        return true;
+    }
+}
+
+internal class CheckParsedIdentityResources : ISpecification<ValidatedTokenRequestModel>
+{
+    private readonly Expression<Func<ValidatedTokenRequestModel, object>> expression;
+
+    internal CheckParsedIdentityResources(Expression<Func<ValidatedTokenRequestModel, object>> expression)
+    {
+        this.expression = expression;
+    }
+
+    public bool IsSatisfiedBy(ValidatedTokenRequestModel model)
+    {
+        var value = expression.Compile()(model);
+        if (value == null) return false;
+
+        var type = value.GetType();
+        if (type != typeof(AllowedScopesParserModel)) return false;
+
+        if (model.AllowedScopesParserModel.ParsedIdentityResources.ContainsAny()) return false;
+
+        return true;
+    }
+}
+
+internal class CheckOfflineAccess : ISpecification<ValidatedTokenRequestModel>
+{
+    private readonly Expression<Func<ValidatedTokenRequestModel, object>> expression;
+
+    internal CheckOfflineAccess(Expression<Func<ValidatedTokenRequestModel, object>> expression)
+    {
+        this.expression = expression;
+    }
+
+    public bool IsSatisfiedBy(ValidatedTokenRequestModel model)
+    {
+        var value = expression.Compile()(model);
+        if (value == null) return false;
+
+        var type = value.GetType();
+        if (type != typeof(AllowedScopesParserModel)) return false;
+
+        if (model.AllowedScopesParserModel.AllowOfflineAccess) return false;
+
+        return true;
+    }
+}

@@ -1,0 +1,30 @@
+/*
+- Copyright (c) 2021 HCL CORPORATION.
+- All rights reserved. HCL source code is an unpublished work and the use of a copyright notice does not imply otherwise.
+- This source code contains confidential, trade secret material of HCL. Any attempt or participation in deciphering,
+- decoding, reverse engineering or in any way altering the source code is strictly prohibited, unless the prior written consent of
+- HCL is obtained. This is proprietary and confidential to HCL.
+ */
+
+"use client";
+
+import { type ReactNode } from "react";
+
+type Props = {
+  title: string;
+  subtitle?: string;
+  actions?: ReactNode;
+};
+
+export function PageHeader({ title, subtitle, actions }: Props) {
+  return (
+    <header className="card-head">
+      <div>
+        <h2>{title}</h2>
+        {subtitle ? <p className="inline-message">{subtitle}</p> : null}
+      </div>
+      {actions ? <div style={{ display: "flex", gap: "0.6rem", alignItems: "center" }}>{actions}</div> : null}
+    </header>
+  );
+}
+
