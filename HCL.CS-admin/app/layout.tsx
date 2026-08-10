@@ -11,6 +11,7 @@ import { DM_Sans, JetBrains_Mono } from "next/font/google";
 
 import { Providers } from "@/components/providers";
 import { auth } from "@/lib/auth";
+import { toClientSession } from "@/lib/authentication/session";
 
 import "./globals.css";
 
@@ -40,7 +41,8 @@ const fontMono = JetBrains_Mono({
 });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth();
+  const serverSession = await auth();
+  const session = toClientSession(serverSession);
 
   return (
     <html

@@ -27,3 +27,29 @@ export function attachServerOnlyTokens(session: Session, token: JWT): ServerSess
   });
   return session as ServerSession;
 }
+
+/**
+ * Produces a plain, serializable session for Client Components. The
+ * server-only tokens attached above are deliberately omitted.
+ */
+export function toClientSession(session: ServerSession | null): Session | null {
+  if (!session) {
+    return null;
+  }
+
+  return {
+    user: session.user
+      ? {
+          name: session.user.name,
+          email: session.user.email,
+          image: session.user.image
+        }
+      : undefined,
+    expires: session.expires,
+    accessTokenExpires: session.accessTokenExpires,
+    scopes: session.scopes,
+    roles: session.roles ? [...session.roles] : [],
+    isAdmin: Boolean(session.isAdmin),
+    error: session.error
+  };
+}
